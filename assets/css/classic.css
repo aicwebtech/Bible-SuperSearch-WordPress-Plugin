@@ -1,0 +1,77 @@
+/* Styles for classic apparence */
+
+/* Body of form */
+.biblesupersearch_container.interface_classic {
+    min-height: 100px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.biblesupersearch_classic_form {
+    margin-left:auto;
+    margin-right:auto; 
+    padding:5px; 
+    background-color:tan;
+    max-width:400px;
+    margin-bottom: 20px;
+}
+
+/* Title - appears at TOP of page, ie Bible SuperSearch */
+.biblesupersearch_classic_title {
+    font-size:18.0pt; 
+    color: darkorange; 
+    text-align: center;
+}
+
+.biblesupersearch_center_element {
+    text-align: center;
+}
+
+.biblesupersearch_classic_form input, textarea, select, button {
+    text-rendering: auto;
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 13.3333px Arial;
+}
+
+.biblesupersearch_classic_form button.user_friendly_random {
+    width: 110px;
+    font-size: 70%;
+    text-align: center;
+}
+
+.biblesupersearch_classic_form select.biblesupersearch_bible_selector_multi {
+    
+}
+
+.biblesupersearch_container.interface_classic .biblesupersearch_error_view {
+    max-width: 800px;
+}
+
+.biblesupersearch_pager {
+    margin: 15px auto;
+}
+
+.interface_classic .biblesupersearch_pager a {
+    margin: 0 4px;
+    text-decoration: none;
+}
+
+.interface_classic .biblesupersearch_pager a.current_page {
+    font-weight: bold;
+}
+
+.interface_classic .format_buttons {
+    margin-bottom: 10px;
+}
+
+.interface_classic .format_buttons img {
+    margin: 0 1px;
+}
