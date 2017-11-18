@@ -1,0 +1,23 @@
+.bss_bible_lang {
+    background-color: #DDD; 
+    float:left; 
+    display:inline-block; 
+    margin-bottom: 15px; 
+    margin-right: 15px; 
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.bss_bible {
+    /*loat:left;*/
+    display: block; 
+    width: 250px; 
+    padding-left: 10px;
+}
+
+.form-table th {
+    margin-bottom: 9px;
+    padding: 15px 10px;
+    line-height: 1.3;
+    vertical-align: middle;
+}
