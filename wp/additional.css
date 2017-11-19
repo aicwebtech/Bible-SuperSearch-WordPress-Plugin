@@ -1,0 +1,27 @@
+.biblesupersearch_render_table td, .biblesupersearch_render_table th {
+    padding: 0;
+    border: 0;
+    background-color: initial;
+    
+}
+
+.biblesupersearch_render_table th {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.biblesupersearch_render_table td {
+    font-size: 1em;
+}
+
+.biblesupersearch_container table {
+    margin: initial;
+}
+
+td.ver {
+    width: initial;
+}
+
+td.ver sup {
+    white-space: nowrap;
+}

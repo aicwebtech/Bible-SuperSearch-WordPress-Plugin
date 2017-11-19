@@ -18,6 +18,7 @@ require_once(dirname(__FILE__) . '/wp/class.shortcodes.php');
 function biblesupersearch_enqueue_depends() {
     wp_enqueue_script('biblesupersearch_main', plugins_url('app/biblesupersearch.js', __FILE__));
     wp_enqueue_style('biblesupersearch_css',   plugins_url('app/biblesupersearch.css', __FILE__));
+    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/additional.css', __FILE__));
 }
 
 function biblesupersearch_enqueue_option() {
