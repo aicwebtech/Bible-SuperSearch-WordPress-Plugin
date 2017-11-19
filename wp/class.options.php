@@ -113,48 +113,51 @@ class BibleSuperSearch_Options {
         $statics = get_option('biblesupersearch_statics');
 
         $lang = array();
-        
-        foreach($statics['bibles'] as $module => &$bible) {
-            $lang[$module] = $bible['lang'];
 
-            $bible['display'] = $bible['name'] . ' (' . $bible['lang'] . ')';
-            $bible['display_short'] = $bible['name'];
+        if(is_array($statics['bibles'])) {        
+            foreach($statics['bibles'] as $module => &$bible) {
+                $lang[$module] = $bible['lang'];
+
+                $bible['display'] = $bible['name'] . ' (' . $bible['lang'] . ')';
+                $bible['display_short'] = $bible['name'];
+            }
+            
+            array_multisort($lang, SORT_REGULAR, $statics['bibles']);
+
+            return $statics['bibles'];
         }
 
-        array_multisort($lang, SORT_REGULAR, $statics['bibles']);
-
-        return $statics['bibles'];
 
         $bibles = array(
-            'kjv'           => array('name' => 'Authorized King James Version', 'shortname' => 'KJV'),
-            'kjv_strongs'   => array('name' => 'KJV with Strongs',              'shortname' => 'KJV Strongs'),
-            'tyndale'       => array('name' => 'Tyndale Bible',                 'shortname' => 'Tyndale'),
-            'coverdale'     => array('name' => 'Coverdale Bible',               'shortname' => 'Coverdale'),
-            'bishops'       => array('name' => 'Bishops Bible',                 'shortname' => 'Bishops'),
-            'geneva'        => array('name' => 'Geneva Bible',                  'shortname' => 'Geneva'),
-            'tr'            => array('name' => 'Textus Receptus NT',            'shortname' => 'TR'),
-            'trparsed'      => array('name' => 'Textus Receptus Parsed NT',     'shortname' => 'TR Parsed'),
-            'rv_1858'       => array('name' => 'Reina Valera 1858 NT',          'shortname' => 'RV 1858'),
-            'rv_1909'       => array('name' => 'Reina Valera 1909',             'shortname' => 'RV 1909'),
-            'sagradas'      => array('name' => 'Sagradas Escrituras',           'shortname' => 'Sagradas'),
-            'rvg'           => array('name' => 'Reina Valera Gómez',            'shortname' => 'RVG'),
-            'martin'        => array('name' => 'Martin',                        'shortname' => 'Martin'),
-            'epee'          => array('name' => 'La Bible de l\'Épée',           'shortname' => 'Epee'),
-            'oster'         => array('name' => 'Ostervald',                     'shortname' => 'Oster'),
-            'afri'          => array('name' => 'Afrikaans 1953',                'shortname' => 'Afrikaans'),
-            'svd'           => array('name' => 'Smith Van Dyke',                'shortname' => 'SVD'),
-            'bkr'           => array('name' => 'Bible Kralicka',                'shortname' => 'BKR'),
-            'stve'          => array('name' => 'Staten Vertaling',              'shortname' => 'Stve'),
-            'finn'          => array('name' => 'Finnish 1776 (Finnish)',        'shortname' => 'Finn'),
-            'luther'        => array('name' => 'Luther Bible',                  'shortname' => 'Luther'),
-            'diodati'       => array('name' => 'Diodati',                       'shortname' => 'Diodati'),
-            'synodal'       => array('name' => 'Synodal',                       'shortname' => 'Synodal'),
-            'karoli'        => array('name' => 'Karoli',                        'shortname' => 'Karoli'),
-            'lith'          => array('name' => 'Lithuanian Bible',              'shortname' => 'Lith'),
-            'maori'         => array('name' => 'Maori Bible',                   'shortname' => 'Maori'),
-            'cornilescu'    => array('name' => 'Cornilescu',                    'shortname' => 'Cornilescu'),
-            'thaikjv'       => array('name' => 'Thai KJV',                      'shortname' => 'Thaikjv'),
-            'wlc'           => array('name' => 'WLC',                           'shortname' => 'WLC'),
+            'kjv'           => array('name' => 'Authorized King James Version', 'lang' => 'English', 'shortname' => 'KJV'),
+            'kjv_strongs'   => array('name' => 'KJV with Strongs',              'lang' => 'English', 'shortname' => 'KJV Strongs'),
+            'tyndale'       => array('name' => 'Tyndale Bible',                 'lang' => 'English', 'shortname' => 'Tyndale'),
+            'coverdale'     => array('name' => 'Coverdale Bible',               'lang' => 'English', 'shortname' => 'Coverdale'),
+            'bishops'       => array('name' => 'Bishops Bible',                 'lang' => 'English', 'shortname' => 'Bishops'),
+            'geneva'        => array('name' => 'Geneva Bible',                  'lang' => 'English', 'shortname' => 'Geneva'),
+            'tr'            => array('name' => 'Textus Receptus NT',            'lang' => 'English', 'shortname' => 'TR'),
+            'trparsed'      => array('name' => 'Textus Receptus Parsed NT',     'lang' => 'English', 'shortname' => 'TR Parsed'),
+            'rv_1858'       => array('name' => 'Reina Valera 1858 NT',          'lang' => 'English', 'shortname' => 'RV 1858'),
+            'rv_1909'       => array('name' => 'Reina Valera 1909',             'lang' => 'English', 'shortname' => 'RV 1909'),
+            'sagradas'      => array('name' => 'Sagradas Escrituras',           'lang' => 'English', 'shortname' => 'Sagradas'),
+            'rvg'           => array('name' => 'Reina Valera Gómez',            'lang' => 'English', 'shortname' => 'RVG'),
+            'martin'        => array('name' => 'Martin',                        'lang' => 'English', 'shortname' => 'Martin'),
+            'epee'          => array('name' => 'La Bible de l\'Épée',           'lang' => 'English', 'shortname' => 'Epee'),
+            'oster'         => array('name' => 'Ostervald',                     'lang' => 'English', 'shortname' => 'Oster'),
+            'afri'          => array('name' => 'Afrikaans 1953',                'lang' => 'English', 'shortname' => 'Afrikaans'),
+            'svd'           => array('name' => 'Smith Van Dyke',                'lang' => 'English', 'shortname' => 'SVD'),
+            'bkr'           => array('name' => 'Bible Kralicka',                'lang' => 'English', 'shortname' => 'BKR'),
+            'stve'          => array('name' => 'Staten Vertaling',              'lang' => 'English', 'shortname' => 'Stve'),
+            'finn'          => array('name' => 'Finnish 1776 (Finnish)',        'lang' => 'English', 'shortname' => 'Finn'),
+            'luther'        => array('name' => 'Luther Bible',                  'lang' => 'English', 'shortname' => 'Luther'),
+            'diodati'       => array('name' => 'Diodati',                       'lang' => 'English', 'shortname' => 'Diodati'),
+            'synodal'       => array('name' => 'Synodal',                       'lang' => 'English', 'shortname' => 'Synodal'),
+            'karoli'        => array('name' => 'Karoli',                        'lang' => 'English', 'shortname' => 'Karoli'),
+            'lith'          => array('name' => 'Lithuanian Bible',              'lang' => 'English', 'shortname' => 'Lith'),
+            'maori'         => array('name' => 'Maori Bible',                   'lang' => 'English', 'shortname' => 'Maori'),
+            'cornilescu'    => array('name' => 'Cornilescu',                    'lang' => 'English', 'shortname' => 'Cornilescu'),
+            'thaikjv'       => array('name' => 'Thai KJV',                      'lang' => 'English', 'shortname' => 'Thaikjv'),
+            'wlc'           => array('name' => 'WLC',                           'lang' => 'English', 'shortname' => 'WLC'),
         );
 
         return $bibles;
@@ -178,7 +181,7 @@ class BibleSuperSearch_Options {
         $result  = file_get_contents($url, false, $context);
         
         if ($result === FALSE) { 
-            die('unalble to load statics');
+            echo('unalble to load statics');
             return;
         }
 
