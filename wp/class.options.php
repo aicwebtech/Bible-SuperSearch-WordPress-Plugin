@@ -96,6 +96,7 @@ class BibleSuperSearch_Options {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
 
+        $this->setDefaultOptions();
         biblesupersearch_enqueue_option();
         $options = get_option( $this->option_index );
         $bibles = $this->getBible();
@@ -164,8 +165,8 @@ class BibleSuperSearch_Options {
     }
 
     public function loadStatics() {
-        $options = get_option( $this->option_index ); ;
-        $url = $options['apiUrl'] . '/statics';
+        $options = get_option( $this->option_index );
+        $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/statics';
         $data = array('language' => 'en');
 
         // use key 'http' even if you send the request to https://...
