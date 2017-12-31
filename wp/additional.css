@@ -18,6 +18,14 @@
     margin: initial;
 }
 
+.biblesupersearch_container table th {
+    text-align: center;
+}
+
+.biblesupersearch_container {
+    line-height: initial;
+}
+
 td.ver {
     width: initial;
 }

@@ -3,7 +3,7 @@
 /*
 Plugin Name: Bible SuperSearch
 Plugin URI:  https://biblesupersearch.com/
-Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes.
+Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes. 
 Version:     0.0.1
 Author:      Bible SuperSearch / AIC Web Tech
 Author URI:  https://biblesupersearch.com/
