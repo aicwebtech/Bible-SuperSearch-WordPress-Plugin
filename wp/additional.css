@@ -1,3 +1,7 @@
+.biblesupersearch_render_table {
+    border: 0;
+}
+
 .biblesupersearch_render_table td, .biblesupersearch_render_table th {
     padding: 0;
     border: 0;
@@ -15,7 +19,7 @@
 }
 
 .biblesupersearch_container table {
-    margin: initial;
+    /*margin: initial;*/
 }
 
 .biblesupersearch_container table th {
