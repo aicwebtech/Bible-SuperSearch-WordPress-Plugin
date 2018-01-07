@@ -8,12 +8,16 @@ class BibleSuperSearch_Options {
 
     protected $default_options = array(
         'defaultBible'      => 'kjv',
-        "apiUrl"            => "http://api.biblesupersearch.com/api",
-        "useJSONP"          => FALSE,
-        "defaultLanguage"   => "en",
-        "enabledBibles"     => [],
-        "enableAllBibles"   => TRUE,
-        "interface"         => "Classic",
+        'apiUrl'            => 'https://api.biblesupersearch.com/api',
+        'useJSONP'          => FALSE,
+        'defaultLanguage'   => 'en',
+        'enabledBibles'     => [],
+        'enableAllBibles'   => TRUE,
+        'interface'         => 'Classic',
+        
+        // WordPress specific
+        'overrideCss'       => TRUE,
+        'extraCss'          => '',
     );  
     
     public function __construct() {
@@ -42,12 +46,29 @@ class BibleSuperSearch_Options {
             );
         }
 
-        register_setting( 'aicwebtech_plugin_options', 'biblesupersearch_options', $args );
+        register_setting( 'aicwebtech_plugin_options', $this->option_index, $args );
     }
 
     public function pluginMenu() {
         $Options = new static();
         add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
+    }
+
+    public function getOptions() {
+        $options = get_option( $this->option_index );
+
+        if(!is_array($options)) {
+            $this->setDefaultOptions();
+            return $this->default_options;
+        }
+
+        foreach($this->default_options as $key => $val) {
+            if(!array_key_exists($key, $options) || empty($options[$key]) && $options[$key] !== FALSE) {
+                $options[$key] = $val;
+            }
+        }
+
+        return $options;
     }
 
     public function setDefaultOptions() {
@@ -64,6 +85,8 @@ class BibleSuperSearch_Options {
         if(!isset($input['enableAllBibles'])) {
             $input['enableAllBibles'] = FALSE;
         }
+
+        $input['overrideCss'] = ($input['overrideCss']) ? TRUE : FALSE;
 
         // Cherry-pick default values 
         foreach($this->default_options as $item => $value) {
@@ -96,9 +119,9 @@ class BibleSuperSearch_Options {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
 
-        $this->setDefaultOptions();
+        // $this->setDefaultOptions();
         biblesupersearch_enqueue_option();
-        $options = get_option( $this->option_index );
+        $options = $this->getOptions();
         $bibles = $this->getBible();
         $interfaces = $this->getInterfaces(); 
 
@@ -127,7 +150,6 @@ class BibleSuperSearch_Options {
 
             return $statics['bibles'];
         }
-
 
         $bibles = array(
             'kjv'           => array('name' => 'Authorized King James Version', 'lang' => 'English', 'shortname' => 'KJV'),
@@ -164,8 +186,19 @@ class BibleSuperSearch_Options {
         return $bibles;
     }
 
+    public function getStatics() {
+        $statics = get_option('biblesupersearch_statics');
+        $threshold = time() - 600;
+
+        if(!is_array($statics) || intval($statics['timestamp']) < $threshold) {
+            return $this->loadStatics();
+        }
+
+        return $statics;
+    }
+
     public function loadStatics() {
-        $options = get_option( $this->option_index );
+        $options = $this->getOptions();
         $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/statics';
         $data = array('language' => 'en');
 
@@ -179,7 +212,7 @@ class BibleSuperSearch_Options {
         );
         
         $context = stream_context_create($options);
-        $result  = file_get_contents($url, false, $context);
+        $result  = file_get_contents($url, FALSE, $context);
         
         if ($result === FALSE) { 
             echo('unalble to load statics');
@@ -187,17 +220,18 @@ class BibleSuperSearch_Options {
         }
 
         else $data = json_decode($result, TRUE);
-        // print_r($data);
+        $data['results']['timestamp'] = time();
         update_option('biblesupersearch_statics', $data['results']);
         $_SESSION['biblesupersearch_statics_loaded'] = TRUE;
+        return $data['results'];
     }
 
     public function getInterfaces() {
         return array(
-            'TwentyTwenty' => array(
-                'name'  => 'Twenty Twenty', 
-                'class' => 'twentytwenty'
-            ),
+            // 'TwentyTwenty' => array(
+            //     'name'  => 'Twenty Twenty', 
+            //     'class' => 'twentytwenty'
+            // ),
             'Classic' => array(
                 'name'  => 'Classic', 
                 'class' => 'classic'
@@ -206,7 +240,7 @@ class BibleSuperSearch_Options {
                 'name'  => 'Classic - User Friendly 2', 
                 'class' => 'classic'
             ),
-            'ClassicUserAdvanced' => array(
+            'ClassicAdvanced' => array(
                 'name'  => 'Classic - Advanced', 
                 'class' => 'classic'
             ),

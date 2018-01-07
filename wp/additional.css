@@ -1,12 +1,24 @@
-.biblesupersearch_render_table {
+.biblesupersearch_container table {
+    margin: initial;
+}
+
+.biblesupersearch_container table th {
+    text-align: center;
+}
+
+.biblesupersearch_container {
+    line-height: initial;
+}
+
+table.biblesupersearch_render_table {
     border: 0;
+    margin: 0 0 5px;
 }
 
 .biblesupersearch_render_table td, .biblesupersearch_render_table th {
-    padding: 0;
+    padding: 1px;
     border: 0;
     background-color: initial;
-    
 }
 
 .biblesupersearch_render_table th {
@@ -18,17 +30,6 @@
     font-size: 1em;
 }
 
-.biblesupersearch_container table {
-    /*margin: initial;*/
-}
-
-.biblesupersearch_container table th {
-    text-align: center;
-}
-
-.biblesupersearch_container {
-    line-height: initial;
-}
 
 td.ver {
     width: initial;

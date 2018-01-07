@@ -7,10 +7,9 @@ class BibleSuperSearch_Shortcodes {
     static protected $instances = 0;
     
     static public function display($atts) {
-        biblesupersearch_enqueue_depends();
-        $options        = get_option('biblesupersearch_options');
-        $options_json   = json_encode($options);
-        $bss_dir        = plugins_url('app', dirname(__FILE__));
+        global $BibleSuperSearch_Options;
+        $options        = $BibleSuperSearch_Options->getOptions();
+        biblesupersearch_enqueue_depends($options['overrideCss']);
 
         $a = shortcode_atts( array(
             'container' => 'biblesupersearch_container',
@@ -20,8 +19,16 @@ class BibleSuperSearch_Shortcodes {
         if(static::$instances > 0) {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
         }
+        
+        $bss_dir        = plugins_url('app', dirname(__FILE__));
+        $options_json   = json_encode($options);
 
         $html  = '';
+
+        if(!empty($options['extraCss'])) {
+            $html .= '<style>' . $options['extraCss'] . '</style>';
+        }
+
         $html .= "<script>\n";
         $html .= "var biblesupersearch_config_options = {$options_json};\n";
         $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
@@ -32,8 +39,11 @@ class BibleSuperSearch_Shortcodes {
         return $html;
     }
 
+    // Lists all Bibles available
+    // (Not just ones enabled)
     static public function bibleList($atts) {
-        $statics = get_option('biblesupersearch_statics');
+        global $BibleSuperSearch_Options;
+        $statics = $BibleSuperSearch_Options->getStatics();
 
         $a = shortcode_atts( array(
             'verbose' => FALSE,
