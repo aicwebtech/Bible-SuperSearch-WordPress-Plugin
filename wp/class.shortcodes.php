@@ -33,7 +33,9 @@ class BibleSuperSearch_Shortcodes {
         $html .= "var biblesupersearch_config_options = {$options_json};\n";
         $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
         $html .= "</script>\n";
-        $html .= "<div id='biblesupersearch_container' style='idth: 800px; ax-height: 400px'></div>\n";
+        $html .= "<div id='biblesupersearch_container' style='idth: 800px; ax-height: 400px'>\n";
+        $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
+        $html .= "</div>\n";
 
         static::$instances ++;
         return $html;
