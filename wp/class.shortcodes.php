@@ -14,7 +14,18 @@ class BibleSuperSearch_Shortcodes {
         $a = shortcode_atts( array(
             'container' => 'biblesupersearch_container',
             'bar'       => 'something else',
+            'interface' => NULL,
         ), $atts );
+
+        $map = array(
+            'interface' => 'interface'
+        );
+
+        foreach($map as $att_key => $opt_key) {
+            if(!empty($a[$att_key])) {
+                $options[$opt_key] = $a[$att_key];
+            }
+        }
 
         if(static::$instances > 0) {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
@@ -38,6 +49,46 @@ class BibleSuperSearch_Shortcodes {
         $html .= "</div>\n";
 
         static::$instances ++;
+        return $html;
+    }    
+
+    static public function demo($atts) {
+        global $BibleSuperSearch_Options;
+        $interfaces     = $BibleSuperSearch_Options->getInterfaces();
+        $options        = $BibleSuperSearch_Options->getOptions();
+        $sel_interface  = !empty($_REQUEST['biblesupersearch_interface']) ? $_REQUEST['biblesupersearch_interface'] : $options['interface'];
+        $sel_interface  = isset($interfaces[$sel_interface]) ? $sel_interface : $options['interface'];
+
+        $a = shortcode_atts( array(
+            'sel_color' => NULL,
+            'selector_height' => '200px',
+        ), $atts );
+
+        if(static::$instances > 0) {
+            return '<div>Error: You can only have one [biblesupersearch] shortcode per page.  (Demo shortcode will create another).</div>';
+        }
+
+        $html = '';
+        $html .= "<div style='height: {$a['selector_height']}; overflow-y:auto'>";
+        $html .= "<table><tr><th>Name</th><th>ID</th><th>Select</th></tr>";
+        // $html .= "<tbody style='height: {$a['selector_height']}; overflow-y:auto'>";
+
+        foreach($interfaces as $id => $int) {
+            $selected = ($id == $sel_interface) ? TRUE : FALSE;
+            $display  = ($selected) ? 'Showing' : 'Show';
+            $style    = ($selected && $a['sel_color']) ? "style='background-color:{$a['sel_color']}'" : '';
+            $disabled = ($selected) ? "disabled='disabled'" : '';
+
+            $html .= "<tr {$style}><td>{$int['name']}</td><td>{$id}</td><td style='text-align: center'><form>"; 
+            $html .= "<input type='hidden' name='biblesupersearch_interface' value='{$id}' />";
+            $html .= "<input type='submit' value='{$display}' style='width: 70%' {$disabled} /></form></td></tr>";
+        }
+
+        // $html .= "</tbody></table>";
+        $html .= "</table></div>";
+        $html .= "<br /><h3>Displaying: {$interfaces[$sel_interface]['name']}</h3><br />";
+        $html .= do_shortcode("[biblesupersearch interface='{$sel_interface}']");
+
         return $html;
     }
 
@@ -88,5 +139,6 @@ class BibleSuperSearch_Shortcodes {
 }
 
 add_shortcode('biblesupersearch', array('BibleSuperSearch_Shortcodes', 'display'));
+add_shortcode('biblesupersearch_demo', array('BibleSuperSearch_Shortcodes', 'demo'));
 add_shortcode('biblesupersearch_bible_list', array('BibleSuperSearch_Shortcodes', 'bibleList'));
 

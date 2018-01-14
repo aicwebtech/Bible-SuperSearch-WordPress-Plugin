@@ -121,8 +121,8 @@ class BibleSuperSearch_Options {
 
         // $this->setDefaultOptions();
         biblesupersearch_enqueue_option();
-        $options = $this->getOptions();
-        $bibles = $this->getBible();
+        $options    = $this->getOptions();
+        $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
 
         require( dirname(__FILE__) . '/template.options.php');
@@ -243,7 +243,39 @@ class BibleSuperSearch_Options {
             'ClassicAdvanced' => array(
                 'name'  => 'Classic - Advanced', 
                 'class' => 'classic'
-            ),
+            ),                 
+            // 'Minimal' => array(
+            //     'name'  => 'Minimal', 
+            //     'class' => 'minimal'
+            // ),            
+            // 'CL2' => array(
+            //     'name'  => 'CL2', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL3' => array(
+            //     'name'  => 'CL3', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL4' => array(
+            //     'name'  => 'CL4', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL5' => array(
+            //     'name'  => 'CL5', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL6' => array(
+            //     'name'  => 'CL6', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL7' => array(
+            //     'name'  => 'CL7', 
+            //     'class' => 'classic'
+            // ),            
+            // 'CL8' => array(
+            //     'name'  => 'CL8', 
+            //     'class' => 'classic'
+            // ),
         );
     }
 }
