@@ -72,10 +72,16 @@
                     <?php settings_fields( 'aicwebtech_plugin_options' ); ?>
 
                     <div class="postbox tab-content">
+                        <div class='inside' style='font-weight: bold'>
+                            This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
+                            <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
+                            <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>
+                        </div>
+
                         <div class="inside">
                             <table class="form-table">
                                 <tr><td colspan='2'><h2><?php esc_html_e( 'Installation', 'biblesupersearch' ); ?></h2></td></tr>
-                                <tr><td colspan='2'>To use, simply add the shortscode <code>[biblesupersearch]</code> to any page</td></tr>
+                                <tr><td colspan='2'>To use, simply add the shortcode <code>[biblesupersearch]</code> to any page or post.</td></tr>
                                 <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
                                 <tr><td colspan='2'><?php submit_button(); ?></td></tr>
                                 

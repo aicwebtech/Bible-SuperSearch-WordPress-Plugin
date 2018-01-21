@@ -1,14 +1,14 @@
 <?php
 
 /*
-Plugin Name: Bible SuperSearch
-Plugin URI:  https://biblesupersearch.com/
-Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes. 
-Version:     0.0.1
-Author:      Bible SuperSearch / AIC Web Tech
-Author URI:  https://biblesupersearch.com/
-License:     GPL2
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+    Plugin Name: Bible SuperSearch
+    Plugin URI:  https://biblesupersearch.com/
+    Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes. 
+    Version:     0.0.1
+    Author:      Bible SuperSearch
+    Author URI:  https://biblesupersearch.com/
+    License:     GPL2
+    License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 require_once(dirname(__FILE__) . '/wp/class.options.php');
@@ -25,7 +25,7 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
 }
 
 function biblesupersearch_enqueue_option() {
-    wp_enqueue_script('biblesupersearch_options',   plugins_url('wp/options.js', __FILE__));
+    wp_enqueue_script('biblesupersearch_options',  plugins_url('wp/options.js', __FILE__));
     wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/options.css', __FILE__));
 }
 
