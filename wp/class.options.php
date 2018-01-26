@@ -8,7 +8,7 @@ class BibleSuperSearch_Options {
 
     protected $default_options = array(
         'defaultBible'      => 'kjv',
-        'apiUrl'            => 'https://api.biblesupersearch.com/api',
+        'apiUrl'            => 'https://api.biblesupersearch.com',
         'useJSONP'          => FALSE,
         'defaultLanguage'   => 'en',
         'enabledBibles'     => [],
@@ -199,7 +199,7 @@ class BibleSuperSearch_Options {
 
     public function loadStatics() {
         $options = $this->getOptions();
-        $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/statics';
+        $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/api/statics';
         $data = array('language' => 'en');
 
         // use key 'http' even if you send the request to https://...
