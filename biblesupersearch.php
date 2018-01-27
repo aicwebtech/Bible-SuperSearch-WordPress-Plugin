@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Plugin Name: Bible SuperSearch
+    Plugin Name: BibleSuperSearch
     Plugin URI:  https://biblesupersearch.com/
     Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes. 
     Version:     0.0.1

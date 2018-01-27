@@ -1,6 +1,6 @@
-=== Bible SuperSearch ===
+=== BibleSuperSearch ===
 Contributors: aicwebtech
-Tags: Bible, Search engine
+Tags: Bible search, Bible search engine, Bible
 Donate link: http://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
 Tested up to: 4.9
@@ -12,12 +12,13 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add a powerful Bible search engine to your WordPress site.
 
 == Description ==
-Official [Bible SuperSearch](http://biblesupersearch.com) plugin.  Allows seamless use of the Bible SuperSearch client and API on any WordPress site.
+Official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  Allows seamless use of the Bible SuperSearch client and API on any WordPress site.
 
 # Core Features
 
-1. Full functionality of the Bible search as seen on http://BibleSuperSearch.com
+1. Full functionality of the Bible search engine as seen on http://www.BibleSuperSearch.com
 1. Small footprint.   Uses our API - Doesn't take up your web hosting space!
+1. Now works in PHP 7
 1. Enable only the Bible translation(s) you want.
 1. Selectable interfaces
 
@@ -25,6 +26,7 @@ Official [Bible SuperSearch](http://biblesupersearch.com) plugin.  Allows seamle
 
 ### API
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
+
 This data includes
 * Results for all Bible search queries
 * List of available Bible translations
@@ -48,10 +50,11 @@ This plugin is a wrapper around the official Bible SuperSearch client.  This cli
 
 == Installation ==
 1. Unzip the plugin .zip file.
-2. Upload the \"biblesupersearch\" directory to the \"/wp-content/plugins/\" directory.
-3. Activate the plugin through the \"Plugins\" menu in WordPress.
-4. Configure the plugin settings.  Admin menu => Settings => Bible SuperSearch
-5. Place [biblesupersearch] shortcode on a page or post 
+1. Upload the \"biblesupersearch\" directory to the \"/wp-content/plugins/\" directory.
+1. Activate the plugin through the \"Plugins\" menu in WordPress.
+1. Configure the plugin settings.  Admin menu => Settings => Bible SuperSearch
+1. Place `[biblesupersearch]` shortcode on a page or post 
+1. Navigate to the page / post and see it in action.
 
 == Frequently Asked Questions ==
 = How do I only enable certain Bibles? =
@@ -63,7 +66,7 @@ You can select a different skin (interface) in the settings.
 To make the software better match your WordPress theme, uncheck \'Override Styles\'
 
 = How do I get a custom interface developed? =
-Please contact us directly.  
+Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Screenshots ==
 1. Client
