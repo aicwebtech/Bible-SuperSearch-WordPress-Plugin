@@ -23,11 +23,11 @@ table.biblesupersearch_render_table {
 
 .biblesupersearch_render_table th {
     font-weight: bold;
-    font-size: 1em;
+    /*font-size: 1em;*/
 }
 
 .biblesupersearch_render_table td {
-    font-size: 1em;
+    /*font-size: 1em;*/
 }
 
 
