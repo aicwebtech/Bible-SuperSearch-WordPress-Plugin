@@ -31,7 +31,6 @@ class BibleSuperSearch_Shortcodes {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
         }
         
-        $bss_dir        = plugins_url('app', dirname(__FILE__));
         $options_json   = json_encode($options);
 
         $html  = '';
@@ -42,7 +41,10 @@ class BibleSuperSearch_Shortcodes {
 
         $html .= "<script>\n";
         $html .= "var biblesupersearch_config_options = {$options_json};\n";
-        $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
+        // Dynamically generate link to biblesupersearch_root_dir
+        // No longer needed?, but retaining for now.
+        // $bss_dir        = plugins_url('app', dirname(__FILE__));
+        // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
         $html .= "</script>\n";
         $html .= "<div id='biblesupersearch_container' style='idth: 800px; ax-height: 400px'>\n";
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";

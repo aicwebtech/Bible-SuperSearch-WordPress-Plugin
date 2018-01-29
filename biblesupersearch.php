@@ -3,10 +3,9 @@
 /*
     Plugin Name: BibleSuperSearch
     Plugin URI:  https://biblesupersearch.com/
-    Description: Official Bible SuperSearch Wordpress plugin.  Free to use for NON-COMMERCIAL purposes. 
-    Version:     0.0.1
+    Description: Official Bible SuperSearch Wordpress plugin.  Easily add a powerful Bible search engine to your WordPress site.
+    Version:     2.6.0
     Author:      Bible SuperSearch
-    Author URI:  https://biblesupersearch.com/
     License:     GPL2
     License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
