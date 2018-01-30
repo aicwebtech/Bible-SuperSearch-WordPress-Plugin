@@ -105,7 +105,7 @@ class BibleSuperSearch_Options {
             }
         }
 
-        $_SESSION['biblesupersearch_statics_loaded'] = FALSE; // Force statics reload
+        // $this->getStatics(TRUE); //Reload statics here if needed?
         return $input;
     }
 
@@ -130,12 +130,7 @@ class BibleSuperSearch_Options {
     }
 
     public function getBible($module = NULL) {
-        if(empty($_SESSION['biblesupersearch_statics_loaded'])) {
-            $this->loadStatics();
-        }
-
-        $statics = get_option('biblesupersearch_statics');
-
+        $statics = $this->getStatics();
         $lang = array();
 
         if(is_array($statics['bibles'])) {        
@@ -186,23 +181,20 @@ class BibleSuperSearch_Options {
         return $bibles;
     }
 
-    public function getStatics() {
-        $statics = get_option('biblesupersearch_statics');
-        $threshold = time() - 600;
+    public function getStatics($force = FALSE) {
+        $cached_statics = get_option('biblesupersearch_statics');
 
-        if(!is_array($statics) || intval($statics['timestamp']) < $threshold) {
-            return $this->loadStatics();
+        $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
+
+        if($last_update_timestamp > time() - 3600 && !$force) {
+            return $cached_statics;
         }
 
-        return $statics;
-    }
-
-    public function loadStatics() {
         $options = $this->getOptions();
         $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/api/statics';
         $data = array('language' => 'en');
 
-        // use key 'http' even if you send the request to https://...
+        // Use key 'http' even if you send the request to https://...
         $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -215,14 +207,16 @@ class BibleSuperSearch_Options {
         $result  = file_get_contents($url, FALSE, $context);
         
         if ($result === FALSE) { 
-            echo('unalble to load statics');
-            return;
+            if($last_update_timestamp) {
+                return $cached_statics;
+            }
+
+            wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
         }
 
-        else $data = json_decode($result, TRUE);
+        $data = json_decode($result, TRUE);
         $data['results']['timestamp'] = time();
         update_option('biblesupersearch_statics', $data['results']);
-        $_SESSION['biblesupersearch_statics_loaded'] = TRUE;
         return $data['results'];
     }
 
@@ -236,10 +230,10 @@ class BibleSuperSearch_Options {
                 'name'  => 'Classic', 
                 'class' => 'classic'
             ),
-            'ClassicUserFriendly2' => array(
-                'name'  => 'Classic - User Friendly 2', 
-                'class' => 'classic'
-            ),
+            // 'ClassicUserFriendly2' => array(
+            //     'name'  => 'Classic - User Friendly 2', 
+            //     'class' => 'classic'
+            // ),
             'ClassicAdvanced' => array(
                 'name'  => 'Classic - Advanced', 
                 'class' => 'classic'

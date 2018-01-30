@@ -105,7 +105,7 @@
                                             <!-- (This will also automatically enable any Bibles added in the future.) -->
                                         </div>
                                         <br /><br />
-                                        <div class='biblesupersearch_enabled_bible'>
+                                        <div class='biblesupersearch_enabled_bible' style='display:none'>
                                             <div>
                                             <?php $old_lang = NULL ?>
                                             <?php foreach($bibles as $module => $bible): ?>
