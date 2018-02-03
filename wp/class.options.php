@@ -193,25 +193,47 @@ class BibleSuperSearch_Options {
         $options = $this->getOptions();
         $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/api/statics';
         $data = array('language' => 'en');
+        $result = FALSE;
+        $allow_url_fopen = intval(ini_get('allow_url_fopen'));
 
-        // Use key 'http' even if you send the request to https://...
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
+        // Attempt 1: Via file_get_contents
+        if($allow_url_fopen == 1) {        
+            // Use key 'http' even if you send the request to https://...
+            $options = array(
+                'http' => array(
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($data),
+                )
+            );
+ 
+            $context = stream_context_create($options);
+            $result  = file_get_contents($url, FALSE, $context);
+        }
         
-        $context = stream_context_create($options);
-        $result  = file_get_contents($url, FALSE, $context);
+        // Attempt 2: Fall back to cURL
+        if($result === FALSE && function_exists('curl_init')) {        
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+            $result = curl_exec($ch);
+            curl_close($ch);
+        }
         
         if ($result === FALSE) { 
             if($last_update_timestamp) {
                 return $cached_statics;
             }
-
-            wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
+            elseif(!function_exists('curl_init') && $allow_url_fopen == 0) {
+                wp_die( __( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue') );
+            }
+            else {
+                wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
+            }
         }
 
         $data = json_decode($result, TRUE);

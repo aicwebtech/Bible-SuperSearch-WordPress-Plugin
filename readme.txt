@@ -101,6 +101,9 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Upgrade Notice ==
 
+= 2.6.1 =
+Bugfix: Allowing for cURL or allow_url_fopen for loading statics
+
 = 2.6.0 =
 This version adds support for PHP 7+
 
