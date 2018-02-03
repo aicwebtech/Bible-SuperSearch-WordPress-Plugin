@@ -6,8 +6,8 @@
     Description: Official Bible SuperSearch Wordpress plugin.  Easily add a powerful Bible search engine to your WordPress site.
     Version:     2.6.0
     Author:      Bible SuperSearch
-    License:     GPL2
-    License URI: https://www.gnu.org/licenses/gpl-2.0.html
+    License:     GPLv3 or greater
+    License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
 
 require_once(dirname(__FILE__) . '/wp/class.options.php');
