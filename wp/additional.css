@@ -1,12 +1,12 @@
-.biblesupersearch_container table {
+.biblesupersearch_main table {
     margin: initial;
 }
 
-.biblesupersearch_container table th {
+.biblesupersearch_main table th {
     text-align: center;
 }
 
-.biblesupersearch_container {
+.biblesupersearch_main {
     line-height: initial;
 }
 

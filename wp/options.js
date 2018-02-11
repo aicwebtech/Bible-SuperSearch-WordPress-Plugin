@@ -16,6 +16,7 @@ jQuery(document).ready(function($) {
 
         // console.log('url', url, orig, e);
         $(that).css('background-color', 'transparent');
+        $('.button-primary').prop('disabled', true);
 
         $.ajax({
             dataType: "json",
@@ -25,9 +26,11 @@ jQuery(document).ready(function($) {
                 if(!data.results || !data.results.name || data.results.name != 'Bible SuperSearch API') {
                     alert('Error:\nURL \'' + url + '\' does not appear to be an instance of \nthe Bible SuperSearch API, reverting to original.');
                     $(that).val(orig);
+                    $('.button-primary').prop('disabled', false);
                 }
                 else {
                     $(that).css('background-color', '#8be088');
+                    $('.button-primary').prop('disabled', false);
                 }
             },
             error: function(data) {

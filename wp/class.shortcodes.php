@@ -46,7 +46,7 @@ class BibleSuperSearch_Shortcodes {
         // $bss_dir        = plugins_url('app', dirname(__FILE__));
         // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
         $html .= "</script>\n";
-        $html .= "<div id='biblesupersearch_container' style='idth: 800px; ax-height: 400px'>\n";
+        $html .= "<div id='biblesupersearch_container'>\n";
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
 
