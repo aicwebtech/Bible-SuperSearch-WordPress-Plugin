@@ -150,7 +150,7 @@
                                 <tr valign="top">
                                     <th scope="row"><?php esc_html_e( 'API URL', 'biblesupersearch' ); ?></th>
                                     <td>
-                                        <input type="text" size="40" name="biblesupersearch_options[apiUrl]"
+                                        <input type="text" size="40" name="biblesupersearch_options[apiUrl]" id='biblesupersearch_url'
                                                value="<?php echo empty( $options['apiUrl'] ) ? '' : $options['apiUrl']; ?>"/>
 
                                         <span style="color:#666666;margin-left:2px;">

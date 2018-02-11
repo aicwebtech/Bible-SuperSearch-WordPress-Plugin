@@ -95,6 +95,13 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 1. Enabling Bible Translations
 
 == Changelog ==
+
+= 2.6.2 =
+* Bugfix: checking custom API URL to make sure it's valid
+
+= 2.6.1 =
+* Bugfix: Allowing for cURL or allow_url_fopen for loading statics on options page
+
 = 2.6.0 =
 * Initial release of official WordPress plugin.
 * Complete rebuild of legacy Bible SuperSearch (version 2.2.x) code.

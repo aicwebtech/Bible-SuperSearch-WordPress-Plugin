@@ -54,11 +54,14 @@ class BibleSuperSearch_Options {
         add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
     }
 
-    public function getOptions() {
+    public function getOptions($dont_set_default = FALSE) {
         $options = get_option( $this->option_index );
 
         if(!is_array($options)) {
-            $this->setDefaultOptions();
+            if(!$dont_set_default) {
+                $this->setDefaultOptions();
+            }
+            
             return $this->default_options;
         }
 
@@ -82,6 +85,8 @@ class BibleSuperSearch_Options {
     }
 
     public function validateOptions( $input ) {
+        $current = $this->getOptions(TRUE);
+
         if(!isset($input['enableAllBibles'])) {
             $input['enableAllBibles'] = FALSE;
         }
@@ -105,12 +110,14 @@ class BibleSuperSearch_Options {
             }
         }
 
-        // $this->getStatics(TRUE); //Reload statics here if needed?
+        if($current['apiUrl'] != $input['apiUrl']) {
+            $this->_setStaticsReset(); // Force Reload statics here if URL changed
+        }
+
         return $input;
     }
 
     public function displayPluginOptions() {
-
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {
             $_REQUEST['settings-updated'] = false;
         }
@@ -129,6 +136,8 @@ class BibleSuperSearch_Options {
         return;
     }
 
+    // TODO - move to helper library
+
     public function getBible($module = NULL) {
         $statics = $this->getStatics();
         $lang = array();
@@ -142,7 +151,6 @@ class BibleSuperSearch_Options {
             }
             
             array_multisort($lang, SORT_REGULAR, $statics['bibles']);
-
             return $statics['bibles'];
         }
 
@@ -181,26 +189,88 @@ class BibleSuperSearch_Options {
         return $bibles;
     }
 
-    public function getStatics($force = FALSE) {
-        $cached_statics = get_option('biblesupersearch_statics');
+    protected function _setStaticsReset() {
+        $statics               = get_option('biblesupersearch_statics');
+        $last_update_timestamp = (is_array($statics) && array_key_exists('timestamp', $statics)) ? $statics['timestamp'] : 0;
 
+        if($last_update_timestamp) {
+            $statics['timestamp'] = 0;
+            update_option('biblesupersearch_statics', $statics);
+        }
+    }
+
+    // TODO - move to helper library
+    protected $statics_loading = FALSE;
+
+    public function getStatics($force = FALSE) {
+        if($this->statics_loading == TRUE) {
+            return FALSE;
+        }
+
+        $allow_url_fopen       = intval(ini_get('allow_url_fopen'));
+        $this->statics_loading = TRUE;
+        $cached_statics        = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
 
         if($last_update_timestamp > time() - 3600 && !$force) {
             return $cached_statics;
         }
 
-        $options = $this->getOptions();
-        $url = ($options['apiUrl'] ?: $this->default_options['apiUrl']) . '/api/statics';
-        $data = array('language' => 'en');
+        $options    = $this->getOptions();
+        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
+        $data       = array('language' => 'en');
+        $result     = $this->_apiActionHelper('statics', $url, $data);
+        
+        if ($result === FALSE) { 
+            if($last_update_timestamp && !$force) {
+                return $cached_statics;
+            }
+            elseif(!function_exists('curl_init') && $allow_url_fopen == 0) {
+                wp_die( __( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue') );
+            }
+            else {
+                if($options['apiUrl'] != $this->default_options['apiUrl']) {
+                    $msg = 'Error: unable to load data from a Bible SuperSearch API server at ' . $options['apiUrl'];
+                    $msg .= '<br />Reverting back to default of ' . $this->default_options['apiUrl'];
+                    
+                    $result = $this->_apiActionHelper('statics', $this->default_options['apiUrl'], $data);
+
+                    if($result === FALSE) {
+                        $msg .= '<br />Cannot connect to default API url, either';
+                    }
+
+                    $options['apiUrl'] = $this->default_options['apiUrl'];
+                    update_option($this->option_index, $options);
+                    wp_die($msg);
+                    // echo($msg);
+                }
+                else {
+                    wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
+                }
+            }
+        }
+
+        $result['results']['timestamp'] = time();
+        update_option('biblesupersearch_statics', $result['results']);
+        $this->statics_loading = FALSE;
+        return $result['results'];
+    }
+
+    // TODO - move to helper library
+
+    protected function _apiActionHelper($action, $api_url, $data) {
+        $url_action = ($action == 'query') ? '/api' : '/api/' . $action;
+        $url = $api_url . $url_action;
+
         $result = FALSE;
         $allow_url_fopen = intval(ini_get('allow_url_fopen'));
+        $err = error_reporting();
+        error_reporting(E_ERROR | E_PARSE);
 
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
-            // Use key 'http' even if you send the request to https://...
             $options = array(
-                'http' => array(
+                'http' => array(        // Use key 'http' even if you send the request to https://
                     'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                     'method'  => 'POST',
                     'content' => http_build_query($data),
@@ -214,33 +284,19 @@ class BibleSuperSearch_Options {
         // Attempt 2: Fall back to cURL
         if($result === FALSE && function_exists('curl_init')) {        
             $ch = curl_init();
-
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-
             $result = curl_exec($ch);
             curl_close($ch);
         }
-        
-        if ($result === FALSE) { 
-            if($last_update_timestamp) {
-                return $cached_statics;
-            }
-            elseif(!function_exists('curl_init') && $allow_url_fopen == 0) {
-                wp_die( __( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue') );
-            }
-            else {
-                wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
-            }
-        }
 
-        $data = json_decode($result, TRUE);
-        $data['results']['timestamp'] = time();
-        update_option('biblesupersearch_statics', $data['results']);
-        return $data['results'];
+        error_reporting($err);
+        return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
     }
+
+    // TODO - move to helper library
 
     public function getInterfaces() {
         return array(
