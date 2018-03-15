@@ -1,9 +1,9 @@
 /* Styles for classic apparence */
 
 /* Body of form */
-.biblesupersearch_container.interface_classic {
+.biblesupersearch_main.interface_classic {
     min-height: 100px;
-    max-height: 80vh;
+    /*max-height: 80vh;*/
     overflow-y: auto;
 }
 
@@ -12,8 +12,11 @@
     margin-right:auto; 
     padding:5px; 
     background-color:tan;
-    max-width:400px;
     margin-bottom: 20px;
+}
+
+.biblesupersearch_classic_form.user_friendly {
+    max-width:400px;
 }
 
 /* Title - appears at TOP of page, ie Bible SuperSearch */
@@ -42,8 +45,10 @@
 }
 
 .biblesupersearch_classic_form button.user_friendly_random {
-    width: 110px;
-    font-size: 70%;
+    /*width: 110px;*/
+    width: 120px;
+    /*font-size: 70%;*/
+    /*font-size: 0.7em;*/
     text-align: center;
 }
 
@@ -51,7 +56,7 @@
     
 }
 
-.biblesupersearch_container.interface_classic .biblesupersearch_error_view {
+.biblesupersearch_main.interface_classic .biblesupersearch_error_view {
     max-width: 800px;
 }
 
@@ -59,13 +64,35 @@
     margin: 15px auto;
 }
 
+.interface_classic a:link, .interface_classic a:visited {
+    color: #0000ee;
+    text-decoration: none;
+}
+
+.interface_classic a:hover {
+    text-decoration: underline overline;
+}
+
 .interface_classic .biblesupersearch_pager a {
-    margin: 0 4px;
+    margin: 0 3px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.interface_classic .biblesupersearch_pager a:hover {
+    background-color: #0000ee;
+    color: darkorange;
     text-decoration: none;
 }
 
 .interface_classic .biblesupersearch_pager a.current_page {
     font-weight: bold;
+    color: darkorange;
+    background-color: transparent;
+}
+
+.interface_classic .biblesupersearch_pager a:link, .interface_classic .biblesupersearch_pager a:visited {
+
 }
 
 .interface_classic .format_buttons {
@@ -74,4 +101,16 @@
 
 .interface_classic .format_buttons img {
     margin: 0 1px;
+}
+
+.biblesupersearch_classic_form.parallel2 .biblesupersearch_bible_selector_multi {
+    margin: 2px 0 3px;
+}
+
+.biblesupersearch_classic_form.parallel2 button {
+    text-align: center;
+}
+
+.nowrap {
+    white-space: nowrap;
 }

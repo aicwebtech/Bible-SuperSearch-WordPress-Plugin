@@ -305,21 +305,49 @@ class BibleSuperSearch_Options {
             //     'class' => 'twentytwenty'
             // ),
             'Classic' => array(
-                'name'  => 'Classic', 
-                'class' => 'classic'
+                'name'  => 'Classic (Default Classic Skin)', 
+                'class' => 'classic',
             ),
-            // 'ClassicUserFriendly2' => array(
-            //     'name'  => 'Classic - User Friendly 2', 
-            //     'class' => 'classic'
-            // ),
+            'ClassicUserFriendly1' => array(
+                'name'  => 'Classic - User Friendly 1', 
+                'class' => 'classic',
+            ),            
+            'ClassicUserFriendly2' => array(
+                'name'  => 'Classic - User Friendly 2', 
+                'class' => 'classic',
+            ),            
+            'ClassicParallel2' => array(
+                'name'  => 'Classic - Parallel 2', 
+                'class' => 'classic',
+            ),
             'ClassicAdvanced' => array(
                 'name'  => 'Classic - Advanced', 
-                'class' => 'classic'
+                'class' => 'classic',
             ),                 
-            // 'Minimal' => array(
-            //     'name'  => 'Minimal', 
-            //     'class' => 'minimal'
-            // ),            
+            'Minimal' => array(
+                'name'  => 'Minimal', 
+                'class' => 'minimal'
+            ),              
+            'MinimalWithBible' => array(
+                'name'  => 'Minimal with Bible', 
+                'class' => 'minimal'
+            ),              
+            'MinimalWithShortBible' => array(
+                'name'  => 'Minimal with Short Bible', 
+                'class' => 'minimal'
+            ),               
+            'MinimalGoRandom' => array(
+                'name'  => 'Minimal Go Random', 
+                'class' => 'minimal'
+            ),                
+            'MinimalGoRandomBible' => array(
+                'name'  => 'Minimal Go Random with Bible', 
+                'class' => 'minimal'
+            ),            
+            'MinimalGoRandomParallelBible' => array(
+                'name'  => 'Minimal Go Random with Parallel Bible', 
+                'class' => 'minimal'
+            ),            
             // 'CL2' => array(
             //     'name'  => 'CL2', 
             //     'class' => 'classic'
