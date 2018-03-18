@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 4.9
+Tested up to: 4.9.4
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -95,6 +95,10 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 1. Enabling Bible Translations
 
 == Changelog ==
+
+= 2.6.5 =
+* Adding several new interfaces
+* Misc bug fixes and formatting fixes
 
 = 2.6.2 =
 * Bugfix: checking custom API URL to make sure it's valid

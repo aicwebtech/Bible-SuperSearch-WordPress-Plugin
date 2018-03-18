@@ -304,16 +304,16 @@ class BibleSuperSearch_Options {
             //     'name'  => 'Twenty Twenty', 
             //     'class' => 'twentytwenty'
             // ),
-            'Classic' => array(
-                'name'  => 'Classic (Default Classic Skin)', 
-                'class' => 'classic',
-            ),
+            // 'Classic' => array(
+            //     'name'  => 'Classic (Default Classic Skin)', 
+            //     'class' => 'classic',
+            // ),
             'ClassicUserFriendly1' => array(
                 'name'  => 'Classic - User Friendly 1', 
                 'class' => 'classic',
             ),            
-            'ClassicUserFriendly2' => array(
-                'name'  => 'Classic - User Friendly 2', 
+            'Classic' => array(
+                'name'  => 'Classic - User Friendly 2',  // alias ClassicUserFriendly2
                 'class' => 'classic',
             ),            
             'ClassicParallel2' => array(

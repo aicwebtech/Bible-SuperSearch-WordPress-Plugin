@@ -1,3 +1,5 @@
+/* This CSS file is included on [biblesupersearch] shortcode when 'Override Styles' is enabled */
+
 .biblesupersearch_main table {
     margin: initial;
 }
@@ -37,4 +39,15 @@ td.ver {
 
 td.ver sup {
     white-space: nowrap;
+}
+
+table.biblesupersearch_classic_form {
+    margin: 0 auto 20px;
+    padding: 5px;
+}
+
+table.biblesupersearch_classic_form th, table.biblesupersearch_classic_form td {
+    padding: 1px;
+    border: 0;
+    font-size: 16px;
 }
