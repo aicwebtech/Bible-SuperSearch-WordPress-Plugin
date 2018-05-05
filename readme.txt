@@ -96,6 +96,12 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Changelog ==
 
+= 2.7.0 =
+* Added Strong's Numbers with definitions (KJV)
+* Added support for Italicised words (KJV / RVG)
+* Added support for Words of Christ in Red (KJV / RVG)
+* Misc bugfixes
+
 = 2.6.5 =
 * Adding several new interfaces
 * Misc bug fixes and formatting fixes
