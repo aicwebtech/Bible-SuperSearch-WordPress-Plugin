@@ -15,6 +15,15 @@ require_once(dirname(__FILE__) . '/wp/class.widgets.php');
 require_once(dirname(__FILE__) . '/wp/class.shortcodes.php');
 
 function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
+    // Quick workaround for new Gutenberg editor.
+    // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
+    // This is causing Bible SuperSearch to throw errors.
+    // Quick fix: block these incudes from being loaded from any admin page
+
+    if(is_admin()) {
+        return;
+    }
+
     wp_enqueue_script('biblesupersearch_main', plugins_url('app/biblesupersearch.js', __FILE__));
     wp_enqueue_style('biblesupersearch_css',   plugins_url('app/biblesupersearch.css', __FILE__));
     

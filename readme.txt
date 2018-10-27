@@ -96,6 +96,9 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Changelog ==
 
+= 2.7.2 =
+* Gutenberg editor support (quick fix)
+
 = 2.7.1 =
 * Bugfix: Fixed issues with Strong's dialogs causing breakage in Internet Explorer and Edge
 
