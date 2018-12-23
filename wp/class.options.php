@@ -18,6 +18,7 @@ class BibleSuperSearch_Options {
         // WordPress specific
         'overrideCss'       => TRUE,
         'extraCss'          => '',
+        'defaultLandingPage' => 0,
     );  
     
     public function __construct() {
@@ -134,6 +135,32 @@ class BibleSuperSearch_Options {
 
         require( dirname(__FILE__) . '/template.options.php');
         return;
+    }
+
+    public function getLandingPageOptions($render_html = FALSE, $value = NULL) {
+        global $wpdb;
+
+        $sql = "
+            SELECT ID, post_title, post_type, post_content FROM `wp_posts`
+            WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
+            AND post_type IN ('page','post') AND post_status = 'publish'
+        ";
+
+        $results = $wpdb->get_results($sql, ARRAY_A);
+
+        if(!$render_html) {
+            return $results;
+        }
+
+        $html = "<option value='0'> None </option>";
+
+        foreach($results as $res) {
+            $sel  = ($res['ID'] == $value) ? "selected = 'selected'" : '';
+            $type = ucfirst($res['post_type']);
+            $html .= "<option value='{$res['ID']}' {$sel}>{$type}: {$res['post_title']}</option>";
+        }
+
+        return $html;
     }
 
     // TODO - move to helper library

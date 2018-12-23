@@ -1,5 +1,6 @@
 <?php
     // global $options, $bibles, $interfaces;
+    global $BibleSuperSearch_Options;
 ?>
 
 <div class="biblesupersearch-option-tabs wrap">
@@ -142,6 +143,17 @@
                                         <input id='biblesupersearch_override_csss' type='checkbox' name='biblesupersearch_options[overrideCss]' value='1' 
                                             <?php if($options['overrideCss'] ) : echo "checked='checked'"; endif; ?>  />
                                         Attempts to override some CSS styles from WordPress to make Bible SuperSearch look as was originally designed.
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <th scope="row" style='vertical-align: top'><label for='biblesupersearch_default_landing'><?php esc_html_e( 'Default Destination Page', 'biblesupersearch' ); ?></label></th>
+                                    <td>
+                                        <select id='biblesupersearch_default_landing' type='checkbox' name='biblesupersearch_options[defaultDestinationPage]'>
+                                        <?php echo $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $options['defaultDestinationPage']); ?>
+                                        </select>
+                                        <br /><br />
+                                        Select a page or post containing the [biblesupersearch] shortcode, and all other Bible SuperSearch forms on your site will redirect here.
+                                        This allows you to have the form on one page, but display the results on another.  Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.
                                     </td>
                                 </tr>
                                 <tr><td colspan='2'><?php submit_button(); ?></td></tr>

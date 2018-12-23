@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 4.9.8
+Tested up to: 5.0.2
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -24,6 +24,8 @@ This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugi
     * Search for all words, any word or whole phrase
     * Search for words in nearby verses and not just all in the same verse
     * Search by boolean expressions and regular expressions
+    * Verse proximity search: Find keywords in nearby verses
+    * Strong's number searches and Strong's definition hover dialogs (on Strong's enabled Bibles)
     * Increase or decrease text size
     * Changable text style
     * Copy text with easy copy mode
@@ -95,6 +97,10 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 1. Enabling Bible Translations
 
 == Changelog ==
+
+= 2.7.5 =
+* Bugfix: Fixed Internet Explorer issue causing passage field to be ignored
+* Added Destination Page option
 
 = 2.7.2 =
 * Gutenberg editor support (quick fix)

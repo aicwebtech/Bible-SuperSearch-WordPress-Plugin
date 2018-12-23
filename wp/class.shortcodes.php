@@ -10,15 +10,27 @@ class BibleSuperSearch_Shortcodes {
         global $BibleSuperSearch_Options;
         $options        = $BibleSuperSearch_Options->getOptions();
         biblesupersearch_enqueue_depends($options['overrideCss']);
+        $container = 'biblesupersearch_container';
+        $destination_url = NULL;
+
+        if($options['defaultDestinationPage']) {
+            $destination_url = get_permalink($options['defaultDestinationPage']);
+        }
+
+        if(static::$instances > 0) {
+            $container .= '_' . static::$instances;
+        }        
 
         $a = shortcode_atts( array(
-            'container' => 'biblesupersearch_container',
-            'bar'       => 'something else',
-            'interface' => NULL,
+            'container'         => $container,
+            'bar'               => 'something else',
+            'interface'         => NULL,
+            'destination_url'   => $destination_url,
         ), $atts );
 
         $map = array(
-            'interface' => 'interface'
+            'interface'         => 'interface',
+            'destination_url'   => 'destinationUrl',
         );
 
         foreach($map as $att_key => $opt_key) {
@@ -46,7 +58,7 @@ class BibleSuperSearch_Shortcodes {
         // $bss_dir        = plugins_url('app', dirname(__FILE__));
         // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
         $html .= "</script>\n";
-        $html .= "<div id='biblesupersearch_container'>\n";
+        $html .= "<div id='{$a['container']}'>\n";
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
 
