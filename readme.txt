@@ -98,6 +98,9 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Changelog ==
 
+= 2.7.6 =
+* Bugfix: Fixed a couple issues with destination page options list
+
 = 2.7.5 =
 * Bugfix: Fixed Internet Explorer issue causing passage field to be ignored
 * Added Destination Page option

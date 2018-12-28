@@ -141,7 +141,7 @@ class BibleSuperSearch_Options {
         global $wpdb;
 
         $sql = "
-            SELECT ID, post_title, post_type, post_content FROM `wp_posts`
+            SELECT ID, post_title, post_type, post_content FROM `{$wpdb->prefix}posts`
             WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
             AND post_type IN ('page','post') AND post_status = 'publish'
         ";
@@ -155,9 +155,14 @@ class BibleSuperSearch_Options {
         $html = "<option value='0'> None </option>";
 
         foreach($results as $res) {
+            if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', $res['post_content'])) {
+                continue; // Ignore example shortcodes ie [[biblesupersearch]]
+            }
+
             $sel  = ($res['ID'] == $value) ? "selected = 'selected'" : '';
+            $title = ($res['post_title']) ? $res['post_title'] : '(No Title, ID = ' . $res['ID'] . ')';
             $type = ucfirst($res['post_type']);
-            $html .= "<option value='{$res['ID']}' {$sel}>{$type}: {$res['post_title']}</option>";
+            $html .= "<option value='{$res['ID']}' {$sel}>{$type}: {$title}</option>";
         }
 
         return $html;
