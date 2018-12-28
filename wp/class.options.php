@@ -155,7 +155,7 @@ class BibleSuperSearch_Options {
         $html = "<option value='0'> None </option>";
 
         foreach($results as $res) {
-            if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', $res['post_content'])) {
+            if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', ' ' . $res['post_content'])) {
                 continue; // Ignore example shortcodes ie [[biblesupersearch]]
             }
 
