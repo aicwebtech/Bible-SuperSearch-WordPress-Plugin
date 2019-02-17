@@ -8,7 +8,7 @@
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
 
     <div class="metabox-holder has-right-sidebar">
-<!--             <div class="inner-sidebar">
+             <div class="inner-sidebar">
 
             <div class="postbox sm-box">
                 <h3><span><?php esc_html_e( 'Need Some Help?', 'biblesupersearch' ); ?></span>
@@ -65,14 +65,23 @@
                     </div>
                 </div>
             </div>
-        </div> --> <!-- .inner-sidebar -->
+        </div>
+        <!-- .inner-sidebar -->
+
 
         <div id="post-body">
+            <div id='post-body-menu'>
+                <?php foreach($tabs as $key => $name): ?>
+                    <a class='bss-menu-item <?php if($key == $tab) echo 'selected' ?>' href='?page=biblesupersearch&tab=<?php echo $key ?>'><?php echo $name ?></a>
+                <?php endforeach; ?>
+            </div>
             <div id="post-body-content">
                 <form method="post" action="options.php">
                     <?php settings_fields( 'aicwebtech_plugin_options' ); ?>
 
                     <div class="postbox tab-content">
+                        <?php require_once(dirname(__FILE__) . '/templates/options_' . $tab . '.php'); ?>
+
                         <div class='inside' style='font-weight: bold'>
                             This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
                             <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 

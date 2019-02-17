@@ -22,3 +22,15 @@
     vertical-align: middle;
 }
 
+.bss-menu-item {
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #dddddd;
+    border-bottom: 2px solid #dddddd;
+    padding: 12px;
+}
+
+.bss-menu-item.selected {
+    border-bottom: 2px solid #006799;
+}

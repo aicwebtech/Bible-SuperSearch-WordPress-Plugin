@@ -11,7 +11,7 @@ class BibleSuperSearch_Options {
         'apiUrl'            => 'https://api.biblesupersearch.com',
         'useJSONP'          => FALSE,
         'defaultLanguage'   => 'en',
-        'enabledBibles'     => [],
+        'enabledBibles'     => array(),
         'enableAllBibles'   => TRUE,
         'interface'         => 'Classic',
         
@@ -119,12 +119,23 @@ class BibleSuperSearch_Options {
     }
 
     public function displayPluginOptions() {
+        $tabs = array(
+            'general'  => 'General',
+            'advanced' => 'Advanced',
+        );
+
+        $tab = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {
             $_REQUEST['settings-updated'] = false;
         }
 
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+
+        if(!$tabs[ $tab ]) {
+            wp_die( __( 'Invalid tab.' ) );
         }
 
         // $this->setDefaultOptions();
@@ -340,6 +351,10 @@ class BibleSuperSearch_Options {
             //     'name'  => 'Classic (Default Classic Skin)', 
             //     'class' => 'classic',
             // ),
+            'Expanding' => array(
+                'name'  => 'Expanding', 
+                'class' => 'expanding',
+            ),              
             'ClassicUserFriendly1' => array(
                 'name'  => 'Classic - User Friendly 1', 
                 'class' => 'classic',
