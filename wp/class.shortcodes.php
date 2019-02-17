@@ -13,7 +13,7 @@ class BibleSuperSearch_Shortcodes {
         $container = 'biblesupersearch_container';
         $destination_url = NULL;
 
-        if($options['defaultDestinationPage']) {
+        if(isset($options['defaultDestinationPage'])) {
             $destination_url = get_permalink($options['defaultDestinationPage']);
         }
 

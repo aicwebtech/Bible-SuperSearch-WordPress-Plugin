@@ -40,6 +40,8 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // $('input[type=color]').wpColorPicker();
+
     function changeAllBibles() {
         var value = $('#biblesupersearch_all_bibles').prop('checked');
 

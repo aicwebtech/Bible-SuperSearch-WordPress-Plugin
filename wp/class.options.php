@@ -13,13 +13,28 @@ class BibleSuperSearch_Options {
         'defaultLanguage'   => 'en',
         'enabledBibles'     => array(),
         'enableAllBibles'   => TRUE,
-        'interface'         => 'Classic',
+        'interface'         => 'Classic',  // 'Expanding'
+        'toggleAdvanced'    => TRUE,
         
         // WordPress specific
         'overrideCss'       => TRUE,
         'extraCss'          => '',
-        'defaultLandingPage' => 0,
+        'defaultDestinationPage' => 0,
     );  
+
+    protected $tabs = array(
+        'general'  => array(
+            'name' => 'General',
+            // need list of fields for each tab.  IF field is not in list, it won't save!
+            'fields' => array('defaultBible', 'enabledBibles', 'defaultDestinationPage', 'interface', 'formStyles'),
+            'checkboxes' => array('overrideCss', 'toggleAdvanced', 'enableAllBibles'),
+        ),
+        'advanced' => array(
+            'name' => 'Advanced',
+            'fields' => array('extraCss', 'apiUrl'),
+            'checkboxes' => array(),
+        ),
+    );
     
     public function __construct() {
         // Register some stuff with WordPress
@@ -85,14 +100,33 @@ class BibleSuperSearch_Options {
         // flush_rewrite_rules( true );
     }
 
-    public function validateOptions( $input ) {
-        $current = $this->getOptions(TRUE);
+    public function validateOptions( $incoming ) {
+        $current = $input = $this->getOptions(TRUE);
+        
+        $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
+        $tab_item = $this->tabs[ $tab ];
 
-        if(!isset($input['enableAllBibles'])) {
-            $input['enableAllBibles'] = FALSE;
+        foreach($tab_item['fields'] as $field) {
+            if(array_key_exists($field, $incoming) && !empty($incoming[$field])) {
+                $input[$field] = $incoming[$field];
+            }
+        }       
+
+        foreach($tab_item['checkboxes'] as $field) {
+            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
         }
 
-        $input['overrideCss'] = ($input['overrideCss']) ? TRUE : FALSE;
+        // var_dump($incoming['tab']);
+        // var_dump($_REQUEST['tab']);
+        // print_r($tab_item);
+        // print_r($input);
+        // die();
+
+        // if(!isset($input['enableAllBibles'])) {
+        //     $input['enableAllBibles'] = FALSE;
+        // }
+
+        // $input['overrideCss'] = ($input['overrideCss']) ? TRUE : FALSE;
 
         // Cherry-pick default values 
         foreach($this->default_options as $item => $value) {
@@ -101,13 +135,15 @@ class BibleSuperSearch_Options {
             }
         }
 
-        if($input['enableAllBibles']) {
-            $input['enabledBibles'] = [];
-        }
-        else {
-            // Make sure default Bible is in list of selected Bibles
-            if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
-                $input['enabledBibles'][] = $input['defaultBible'];
+        if($tab == 'general') {
+            if($input['enableAllBibles']) {
+                $input['enabledBibles'] = [];
+            }
+            else {
+                // Make sure default Bible is in list of selected Bibles
+                if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
+                    $input['enabledBibles'][] = $input['defaultBible'];
+                }
             }
         }
 
@@ -115,19 +151,18 @@ class BibleSuperSearch_Options {
             $this->_setStaticsReset(); // Force Reload statics here if URL changed
         }
 
+        // print_r($input);
+        // die();
+
         return $input;
     }
 
     public function displayPluginOptions() {
-        $tabs = array(
-            'general'  => 'General',
-            'advanced' => 'Advanced',
-        );
-
-        $tab = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+        $tabs = $this->tabs;
+        $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
 
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {
-            $_REQUEST['settings-updated'] = false;
+            $_REQUEST['settings-updated'] = FALSE;
         }
 
         if ( !current_user_can( 'manage_options' ) )  {
@@ -394,35 +429,7 @@ class BibleSuperSearch_Options {
             'MinimalGoRandomParallelBible' => array(
                 'name'  => 'Minimal Go Random with Parallel Bible', 
                 'class' => 'minimal'
-            ),            
-            // 'CL2' => array(
-            //     'name'  => 'CL2', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL3' => array(
-            //     'name'  => 'CL3', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL4' => array(
-            //     'name'  => 'CL4', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL5' => array(
-            //     'name'  => 'CL5', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL6' => array(
-            //     'name'  => 'CL6', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL7' => array(
-            //     'name'  => 'CL7', 
-            //     'class' => 'classic'
-            // ),            
-            // 'CL8' => array(
-            //     'name'  => 'CL8', 
-            //     'class' => 'classic'
-            // ),
+            ),
         );
     }
 }
