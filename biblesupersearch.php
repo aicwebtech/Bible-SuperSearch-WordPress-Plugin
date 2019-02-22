@@ -14,6 +14,8 @@ require_once(dirname(__FILE__) . '/wp/class.options.php');
 require_once(dirname(__FILE__) . '/wp/class.widgets.php');
 require_once(dirname(__FILE__) . '/wp/class.shortcodes.php');
 
+// wp_enqueue_media(); // does not work
+
 function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     // Quick workaround for new Gutenberg editor.
     // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode

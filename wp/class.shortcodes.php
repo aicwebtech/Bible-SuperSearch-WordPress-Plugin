@@ -5,42 +5,68 @@ defined( 'ABSPATH' ) or die; // exit if accessed directly
 
 class BibleSuperSearch_Shortcodes {
     static protected $instances = 0;
+
+    static public $displayAttributes = array(
+        'interface' => array(
+            'name'      => 'Skin',
+            'desc'      => 'Name of the skin to be used, see list below',
+            'map'       => 'interface',
+            'default'   => NULL,
+        ),
+        'destination_url' => array(
+            'name'      => 'Destination URL',
+            'desc'      => 'URL to page or post where form will redirect to when submitted.  The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.',
+            'map'       => 'destinationUrl',
+            'default'   => NULL,
+        ),
+    );
     
     static public function display($atts) {
         global $BibleSuperSearch_Options;
         $options        = $BibleSuperSearch_Options->getOptions();
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
+        $attr = static::$displayAttributes;
+
         $destination_url = NULL;
 
         if(isset($options['defaultDestinationPage'])) {
             $destination_url = get_permalink($options['defaultDestinationPage']);
+            $attr['destination_url']['default'] = $destination_url;
         }
 
         if(static::$instances > 0) {
             $container .= '_' . static::$instances;
         }        
 
-        $a = shortcode_atts( array(
-            'container'         => $container,
-            'bar'               => 'something else',
-            'interface'         => NULL,
-            'destination_url'   => $destination_url,
-        ), $atts );
-
-        $map = array(
-            'interface'         => 'interface',
-            'destination_url'   => 'destinationUrl',
-        );
-
-        foreach($map as $att_key => $opt_key) {
-            if(!empty($a[$att_key])) {
-                $options[$opt_key] = $a[$att_key];
-            }
-        }
-
         if(static::$instances > 0) {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
+        }
+        
+        $defaults = array(
+            'container' => $container,
+        );
+
+        foreach($attr as $key => $info) {
+            $defaults[$key] = $info['default'];
+        }
+        
+        $a = shortcode_atts($defaults, $atts);
+
+        if($a['interface']) {
+            $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
+
+            if(!$interface) {
+                return '<div>Error: Interface does not exist: ' . $a['interface'] . '</div>';
+            }
+
+            $a['interface'] = $interface['id'];
+        }
+
+        foreach($attr as $att_key => $info) {
+            if(!empty($a[$att_key])) {
+                $options[ $info['map'] ] = $a[$att_key];
+            }
         }
         
         $options_json   = json_encode($options);
@@ -107,7 +133,7 @@ class BibleSuperSearch_Shortcodes {
     }
 
     // Lists all Bibles available
-    // (Not just ones enabled)
+    // (Not just ones enabled in the plugin)
     static public function bibleList($atts) {
         global $BibleSuperSearch_Options;
         $statics = $BibleSuperSearch_Options->getStatics();

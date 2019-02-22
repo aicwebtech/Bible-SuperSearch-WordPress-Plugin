@@ -374,6 +374,36 @@ class BibleSuperSearch_Options {
         return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
     }
 
+    public function getInterfaceByName($name) {
+        $interfaces = $this->getInterfaces();
+        $proc = $this->_processInterfaceName($name);
+
+        if(array_key_exists($proc, $interfaces)) {
+            $interface = $interfaces[$proc];
+            $interface['id'] = $proc;
+            return $interface;
+        }
+
+        foreach($interfaces as $id => $info) {
+            $proc2 = $this->_processInterfaceName($info['name']);
+
+            if($info['name'] == $name || $proc == $proc2) {
+                $info['id'] = $id;
+                return $info;
+            }
+        }
+
+        return NULL;
+    }
+
+    private function _processInterfaceName($name) {
+        $proc = str_replace('-', '', $name);
+        // $proc = preg_replace('/\s*/', ' ', $proc);
+        $proc = ucwords($proc);
+        $proc = str_replace(' ', '', $proc);
+        return $proc;
+    }
+
     // TODO - move to helper library
 
     public function getInterfaces() {
