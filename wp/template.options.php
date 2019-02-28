@@ -83,11 +83,19 @@
 
                     <div class="postbox tab-content">
 
-                        <div class='inside' style='font-weight: bold'>
-                            This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
-                            <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
-                            <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>
-                        </div>
+                        <?php if($using_main_api): ?>
+                            <div class='inside' style='font-weight: bold'>
+                                This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
+                                <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
+                                <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>. <br /><br />
+                                Did you know that you can install our API on your server for FREE? &nbsp;Enjoy faster API speed and no usage limits.
+                                Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                            </div>
+                        <?php else: ?>
+                            <div class='inside' style='font-weight: bold'>
+                                You are currently using a third party install of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
+                            </div>
+                        <?php endif; ?>
 
                         <?php require_once(dirname(__FILE__) . '/templates/options_' . $tab . '.php'); ?>
                     </div>

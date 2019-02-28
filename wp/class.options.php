@@ -15,6 +15,7 @@ class BibleSuperSearch_Options {
         'enableAllBibles'   => TRUE,
         'interface'         => 'Classic',  // 'Expanding'
         'toggleAdvanced'    => TRUE,
+        'formatButtonsToggle'    => FALSE,
         
         // WordPress specific
         'overrideCss'       => TRUE,
@@ -24,15 +25,25 @@ class BibleSuperSearch_Options {
 
     protected $tabs = array(
         'general'  => array(
-            'name' => 'General',
+            'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
-            'fields' => array('defaultBible', 'enabledBibles', 'defaultDestinationPage', 'interface', 'formStyles'),
-            'checkboxes' => array('overrideCss', 'toggleAdvanced', 'enableAllBibles'),
-        ),
+            'fields'        => array('defaultDestinationPage', 'interface'),
+            'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
+        ),        
+        'bible'  => array(
+            'name'          => 'Bibles',
+            'fields'        => array('defaultBible', 'enabledBibles'),
+            'checkboxes'    => array('enableAllBibles'),
+        ),        
+        // 'style'  => array(
+        //     'name'          => 'Appearance',
+        //     'fields'        => array(), // 'formStyles'),
+        //     'checkboxes'    => array('overrideCss'),
+        // ),
         'advanced' => array(
-            'name' => 'Advanced',
-            'fields' => array('extraCss', 'apiUrl'),
-            'checkboxes' => array(),
+            'name'          => 'Advanced',
+            'fields'        => array('extraCss', 'apiUrl'),
+            'checkboxes'    => array(),
         ),
     );
     
@@ -178,6 +189,8 @@ class BibleSuperSearch_Options {
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
+
+        $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
         require( dirname(__FILE__) . '/template.options.php');
         return;
