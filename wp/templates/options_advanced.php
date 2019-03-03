@@ -31,5 +31,4 @@
         </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
-    <?php submit_button(); ?>
 </div>

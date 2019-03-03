@@ -15,7 +15,9 @@ class BibleSuperSearch_Shortcodes {
         ),
         'destination_url' => array(
             'name'      => 'Destination URL',
-            'desc'      => 'URL to page or post where form will redirect to when submitted.  The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.',
+            'desc'      => 'URL to page or post where form will redirect to when submitted.<br />
+                            The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.<br />
+                            Set to \'\' to force to current page and override \'Default Destination Page\'',
             'map'       => 'destinationUrl',
             'default'   => NULL,
         ),
@@ -27,6 +29,8 @@ class BibleSuperSearch_Shortcodes {
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
+
+        unset($options['formStyles']); // Not using this config right now
 
         $destination_url = NULL;
 

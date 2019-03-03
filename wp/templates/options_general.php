@@ -3,10 +3,14 @@
         <tr><td colspan='2'><h2><?php esc_html_e( 'Installation', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'>To use, simply add the shortcode <code>[biblesupersearch]</code> to any page or post.</td></tr>
         <tr><td colspan='2'>
-            <table>
-                <tr><th colspan='3'>Shortcode Options</th></tr>
+            <table class='shortcode-options-table'>
+                <tr><th colspan='3'>[biblesupersearch] Shortcode Options</th></tr>
                 <?php foreach(BibleSuperSearch_Shortcodes::$displayAttributes as $key => $info): ?>
-                    <tr><td><?php echo $key;?></td><td><?php echo $info['name']; ?></td><td><?php echo $info['desc']; ?></td></tr>
+                    <tr>
+                        <td style='vertical-align:top'><?php echo $key;?></td>
+                        <td style='vertical-align:top'><?php echo $info['name']; ?></td>
+                        <td><?php echo $info['desc']; ?></td>
+                    </tr>
                 <?php endforeach;?>
             </table>
         </td></tr>
@@ -21,7 +25,20 @@
                     <?php endforeach; ?>
                 </select>
             </td>
-        </tr>
+        </tr>        
+        <?php foreach($selectables as $field => $prop): ?>
+            <tr>
+                <th scope="row"><?php esc_html_e( $prop['name'], 'biblesupersearch' ); ?></th>
+                <td>
+                    <select name='biblesupersearch_options[<?php echo $field ?>]'>
+                        <?php foreach($prop['items'] as $key => $item) :?>
+                        <option value='<?php echo $key; ?>' <?php selected($key, $options[$field] ); ?> ><?php echo $item['name']?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    &nbsp; <?php echo $prop['desc']?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
         <tr>
             <th scope="row"><label for='biblesupersearch_override_csss'><?php esc_html_e( 'Override Styles', 'biblesupersearch' ); ?></label></th>
             <td>
@@ -39,7 +56,7 @@
             </td>
         </tr>             
         <tr>
-            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Hide Format Buttons', 'biblesupersearch' ); ?></label></th>
+            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Auto-Hide Formatting Buttons', 'biblesupersearch' ); ?></label></th>
             <td>
                 <input id='biblesupersearch_toggle_format_buttons' type='checkbox' name='biblesupersearch_options[formatButtonsToggle]' value='1' 
                     <?php if($options['formatButtonsToggle'] ) : echo "checked='checked'"; endif; ?>  />

@@ -1,9 +1,9 @@
 === Bible SuperSearch ===
 Contributors: aicwebtech
-Tags: Bible search, Bible search engine, Bible
+Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.0.2
+Tested up to: 5.1
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -37,12 +37,13 @@ This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugi
 
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
 
+
 Please see the Technical Details below for more information.
 
 By installing and using this plugin, you agree to the [API Terms of Service](https://api.biblesupersearch.com/documentation#tab_tos).
 Also see the [API Privacy Policy]((https://api.biblesupersearch.com/documentation#tab_privacy)) and [API full documentation](https://api.biblesupersearch.com/documentation)
 
-
+However, you have the option to install our API on your server, and run Bible SuperSearch entirely from your website.  https://www.biblesupersearch.com/downloads/
 
 ## Technical Details
 

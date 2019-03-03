@@ -16,18 +16,21 @@ class BibleSuperSearch_Options {
         'interface'         => 'Classic',  // 'Expanding'
         'toggleAdvanced'    => TRUE,
         'formatButtonsToggle'    => FALSE,
+        'defaultDestinationPage' => 0,
+        'pager'             => 'default',
+        'formatButtons'     => 'default',
+        'navigationButtons' => 'default',
         
         // WordPress specific
         'overrideCss'       => TRUE,
         'extraCss'          => '',
-        'defaultDestinationPage' => 0,
     );  
 
     protected $tabs = array(
         'general'  => array(
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
-            'fields'        => array('defaultDestinationPage', 'interface'),
+            'fields'        => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
@@ -189,6 +192,7 @@ class BibleSuperSearch_Options {
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
+        $selectables = $this->getSelectableItems();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
@@ -474,6 +478,72 @@ class BibleSuperSearch_Options {
                 'class' => 'minimal'
             ),
         );
+    }
+
+    public function getSelectableItems() {
+        return array(
+            'pager' => array(
+                'name' => 'Paginator',
+                'desc' => 'Used to browse through multiple pages of search results.',
+                'items' => $this->getPagers(),
+            ),
+            'navigationButtons' => array(
+                'name' => 'Navigation Buttons',
+                'desc' => 'Used to browse between chapters and books.',
+                'items' => $this->getNavigationButtons(),
+            ),
+            'formatButtons' => array(
+                'name' => 'Formatting Buttons',
+                'desc'  => 'Appears below form.',
+                'items' => $this->getFormatButtons(),
+            ),
+        );
+    }
+
+    public function getPagers() {
+        return array(
+            'default' => array(
+                'name' => $this->_getDefaultItemText(),
+            ),
+            'Classic' => array(
+                'name'  => 'Classic',
+            ),            
+            'Clean' => array(
+                'name'  => 'Clean',
+            ),
+        );
+    }    
+
+    public function getNavigationButtons() {
+        return array(
+            'default' => array(
+                'name' => $this->_getDefaultItemText(),
+            ),
+            'Classic' => array(
+                'name'  => 'Classic',
+            ),            
+            'Stylable' => array(
+                'name'  => 'Stylable',
+            ),
+        );
+    }    
+
+    public function getFormatButtons() {
+        return array(
+            'default' => array(
+                'name' => $this->_getDefaultItemText(),
+            ),
+            'Classic' => array(
+                'name'  => 'Classic',
+            ),            
+            'Stylable' => array(
+                'name'  => 'Stylable',
+            ),
+        );
+    }
+
+    protected function _getDefaultItemText() {
+        return 'Default for Selected Skin';
     }
 }
 
