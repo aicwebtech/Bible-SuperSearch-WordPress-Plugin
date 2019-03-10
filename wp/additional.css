@@ -55,7 +55,7 @@ table.biblesupersearch_classic_form th, table.biblesupersearch_classic_form td {
     color: black;
 }
 
-.biblesupersearch_main button {
+.biblesupersearch_main_none button {
     /*background-color: itial;*/
 align-items:
 flex-start

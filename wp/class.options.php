@@ -460,6 +460,10 @@ class BibleSuperSearch_Options {
             'MinimalWithBible' => array(
                 'name'  => 'Minimal with Bible', 
                 'class' => 'minimal'
+            ),               
+            'MinimalWithBibleWide' => array(
+                'name'  => 'Minimal with Bible - Wide', 
+                'class' => 'minimal'
             ),              
             'MinimalWithShortBible' => array(
                 'name'  => 'Minimal with Short Bible', 

@@ -88,7 +88,7 @@ class BibleSuperSearch_Shortcodes {
         // $bss_dir        = plugins_url('app', dirname(__FILE__));
         // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
         $html .= "</script>\n";
-        $html .= "<div id='{$a['container']}'>\n";
+        $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
 
