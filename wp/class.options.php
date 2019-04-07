@@ -171,6 +171,27 @@ class BibleSuperSearch_Options {
         return $input;
     }
 
+    public function getRecomendedPlugins($missing_only = FALSE) {
+        $plugins = array(
+            array(
+                'name'          => 'disable-emojis',
+                'file'          => 'disable-emojis/disable-emojis.php',
+                'label'         => 'Disable Emojis',
+                'description'   => ' - WordPress converts some characters to emojis, and this may cause Bible SuperSearch to not look as intended',
+            )
+        );
+
+        if($missing_only) {
+            foreach($plugins as $key => $plugin) {
+                if(is_plugin_active($plugin['file'])) {
+                    unset($plugins[$key]);
+                }
+            }
+        }
+
+        return $plugins;
+    }
+
     public function displayPluginOptions() {
         $tabs = $this->tabs;
         $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
@@ -195,6 +216,8 @@ class BibleSuperSearch_Options {
         $selectables = $this->getSelectableItems();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
+
+        $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
         require( dirname(__FILE__) . '/template.options.php');
         return;

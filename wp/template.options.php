@@ -96,9 +96,24 @@
                                 You are currently using a third party install of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
                             </div>
                         <?php endif; ?>
+    
+                        <?php if(!empty($reccomended_plugins)): ?>
+                            <div class='inside'>
+                                Bible SuperSearch Reccommends these plugins: <br /><br />
+                                <ul>
+                                    <?php foreach($reccomended_plugins as $p): ?>
+                                        <li>
+                                            <a href='plugin-install.php?tab=plugin-information&plugin=<?php echo $p['name']; ?>&TB_iframe=true&width=640&height=500' class='thickbox'><?php echo $p['label'] ?></a>
+                                            &nbsp; <?php echo $p['description'] ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                        </div>
+                        <?php endif; ?>
 
                         <?php require_once(dirname(__FILE__) . '/templates/options_' . $tab . '.php'); ?>
                     </div>
+
                 </form>
             </div>
         </div>
