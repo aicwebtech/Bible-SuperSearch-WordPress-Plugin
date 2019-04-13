@@ -30,12 +30,14 @@ class BibleSuperSearch_Options {
         'general'  => array(
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
-            'fields'        => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons'),
+            'texts'         => array(), // input and textarea
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
             'name'          => 'Bibles',
-            'fields'        => array('defaultBible', 'enabledBibles'),
+            'texts'         => array(),
+            'selects'       => array('defaultBible', 'enabledBibles'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
@@ -45,7 +47,8 @@ class BibleSuperSearch_Options {
         // ),
         'advanced' => array(
             'name'          => 'Advanced',
-            'fields'        => array('extraCss', 'apiUrl'),
+            'texts'         => array('extraCss', 'apiUrl'),
+            'selects'       => array(),
             'checkboxes'    => array(),
         ),
     );
@@ -120,7 +123,13 @@ class BibleSuperSearch_Options {
         $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
         $tab_item = $this->tabs[ $tab ];
 
-        foreach($tab_item['fields'] as $field) {
+        foreach($tab_item['texts'] as $field) {
+            if(array_key_exists($field, $incoming)) {
+                $input[$field] = $incoming[$field];
+            }
+        }          
+
+        foreach($tab_item['selects'] as $field) {
             if(array_key_exists($field, $incoming) && !empty($incoming[$field])) {
                 $input[$field] = $incoming[$field];
             }
@@ -159,6 +168,10 @@ class BibleSuperSearch_Options {
                     $input['enabledBibles'][] = $input['defaultBible'];
                 }
             }
+        }
+
+        if($tab == 'advanced' && empty($input['apiUrl'])) {
+            $input['apiUrl'] = $this->default_options['apiUrl'];
         }
 
         if($current['apiUrl'] != $input['apiUrl']) {

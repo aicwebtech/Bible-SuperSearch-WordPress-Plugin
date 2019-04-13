@@ -55,10 +55,6 @@ table.biblesupersearch_classic_form th, table.biblesupersearch_classic_form td {
     color: black;
 }
 
-.biblesupersearch_main .format_buttons_html .item.size_reg span {
-    display: inline;
-}
-
 .biblesupersearch_main button, .biblesupersearch_main input, .biblesupersearch_main select, .biblesupersearch_main textarea {
-    padding: initial;
+    /*padding: initial;*/
 }
