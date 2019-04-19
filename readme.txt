@@ -12,7 +12,11 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Easily add a powerful Bible search engine to your WordPress site.
 
 == Description ==
+Adds a powerful Bible search engine to your WordPress website.
+
 This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  Allows seamless use of the Bible SuperSearch client and API on any WordPress site.
+
+You also have the option to install our API on your server. 
 
 # Core Features
 
@@ -91,13 +95,29 @@ Also, to make the software better match your WordPress theme, uncheck 'Override 
 Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Screenshots ==
-1. Search Form
+1. Expanding Search Form - Contracted
+1. Expanding Search Form - Expanded
+1. Classic Search Form - User Friendly 2
 1. Reference Look Up
 1. Search Results
+1. Parallel Bibles
+1. Strong's Numbers with Hover Definitions
+1. Easy Copy
+1. Paragraph View
+1. Boolean Search
 1. Plugin Configs
 1. Enabling Bible Translations
+1. Advanced Options
 
 == Changelog ==
+
+= 4.0.0 =
+* Added: Expanding form
+* Added: Inline Strong's Definitions - Displayed at top of search results when search includes Strong's number(s).
+* Added: Disambiguation links - For when using the single request field but requesting something that could be either a keyword or a book of the Bible.
+* Added: More config options and expanded config page into tabs.
+* Added: Official release of our API code.
+* Bugfix: Fixed positioning of strongs dialog when inclosed in a positiioned element
 
 = 2.7.7 =
 * Bugfix: Fixed another issue with destination page options list
