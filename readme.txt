@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -116,7 +116,7 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 * Added: Inline Strong's Definitions - Displayed at top of search results when search includes Strong's number(s).
 * Added: Disambiguation links - For when using the single request field but requesting something that could be either a keyword or a book of the Bible.
 * Added: More config options and expanded config page into tabs.
-* Added: Official release of our API code.
+* Added: Official release of our API source code.
 * Bugfix: Fixed positioning of strongs dialog when inclosed in a positiioned element
 
 = 2.7.7 =
