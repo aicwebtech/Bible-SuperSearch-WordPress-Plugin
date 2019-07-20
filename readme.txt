@@ -111,6 +111,9 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 == Changelog ==
 
+= 4.0.1 =
+* Bugfix: Selection of book language now based on primary Bible
+
 = 4.0.0 =
 * Added: Expanding form
 * Added: Inline Strong's Definitions - Displayed at top of search results when search includes Strong's number(s).
