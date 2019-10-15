@@ -180,9 +180,38 @@ class BibleSuperSearch_Shortcodes {
         return $html;
     }
 
+
+    static public function downloadPage($atts) {
+        global $BibleSuperSearch_Options;
+        $statics = $BibleSuperSearch_Options->getStatics();
+
+        $a = shortcode_atts( array(
+            'verbose' => FALSE,
+        ), $atts );
+
+        if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
+            return 'The download feature is not available from the selected Bible SuperSearch API server.';
+        }
+
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download.css', __FILE__));
+
+        $formats = $statics['download_formats'];
+        $bibles  = $statics['bibles'];
+        $url     = $BibleSuperSearch_Options->getUrl();
+        $verbose = $a['verbose'];
+
+        ob_start();
+        include(dirname(__FILE__) . '/download.php');
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
 }
 
 add_shortcode('biblesupersearch', array('BibleSuperSearch_Shortcodes', 'display'));
 add_shortcode('biblesupersearch_demo', array('BibleSuperSearch_Shortcodes', 'demo'));
 add_shortcode('biblesupersearch_bible_list', array('BibleSuperSearch_Shortcodes', 'bibleList'));
+add_shortcode('biblesupersearch_downloads', array('BibleSuperSearch_Shortcodes', 'downloadPage'));
 

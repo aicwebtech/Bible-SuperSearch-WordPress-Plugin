@@ -333,6 +333,12 @@ class BibleSuperSearch_Options {
     // TODO - move to helper library
     protected $statics_loading = FALSE;
 
+    public function getUrl() {
+        $options    = $this->getOptions();
+        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
+        return $url;
+    }
+
     public function getStatics($force = FALSE) {
         if($this->statics_loading == TRUE) {
             return FALSE;
@@ -425,6 +431,10 @@ class BibleSuperSearch_Options {
 
         error_reporting($err);
         return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
+    }
+
+    public function renderDownloadPage() {
+
     }
 
     public function getInterfaceByName($name) {
