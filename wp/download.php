@@ -3,13 +3,14 @@
 </script>
 
 <form action='<?php echo $url ?>/api/download' method='POST' id='bible_download_form'>
+    <input type='hidden' name='pretty_print' id='bible_download_pretty_print' value='1' />
     <div style='float:left; width: 40%'>
         <h2>Select Bible(s)</h2>
         Some Bibles may not be available due to copyright restrictions. <br /><br />
 
         <table class='parameters' cellspacing="0">
             <tr>
-                <th>&nbsp;</th>
+                <th><input type='checkbox' id='bible_download_check_all' title='Check All'></th>
                 <th>Name</th>
                 <th>Language</th>
                 <?php if($verbose): ?><th>Year</th><?php endif; ?>

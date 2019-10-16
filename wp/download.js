@@ -13,9 +13,9 @@ if(!$) {
 }
 
 $( function() {
-
-    // $('#bible_download_submit').click(function(e) {
     $('#bible_download_form').submit(function(e) {
+        // return true;
+
         bibleRenderSelectedFormat = null;
 
         var hasBibles = false,
@@ -53,8 +53,12 @@ $( function() {
 
         if(bibleDownloadDirectSubmit) {
             console.log('direct submit');
+            $('#bible_download_pretty_print').val('1');
             bibleDownloadDirectSubmit = false;
             return true;
+        }
+        else {
+            $('#bible_download_pretty_print').val('0');
         }
 
         $.ajax({
@@ -107,6 +111,14 @@ $( function() {
         $('#bible_download_dialog').hide();
         bibleRenderQueueProcess = false;
         bibleRenderQueue = [];
+    });
+
+    $('#bible_download_check_all').click(function() {
+        var checked = ($(this).prop('checked')) ? true : false;
+
+        $('input[name="bible[]"]').each(function() {
+            $(this).prop('checked', checked);
+        });
     });
 });
 
@@ -193,7 +205,7 @@ function _bibleDownloadItemDone() {
 }
 
 function bibleDownloadProcessFinal() {
-    return;
+    // return;
 
     $('#bible_download_dialog').hide();
     bibleDownloadDirectSubmit = true;
