@@ -5,7 +5,7 @@
 <form action='<?php echo $url ?>/api/download' method='POST' id='bible_download_form'>
     <div style='float:left; width: 40%'>
         <h2>Select Bible(s)</h2>
-        Some Bibles are not available due to copyright restrictions. <br /><br />
+        Some Bibles may not be available due to copyright restrictions. <br /><br />
 
         <table class='parameters' cellspacing="0">
             <tr>
@@ -63,11 +63,11 @@
 </form>
 
 <div class='pseudo_dialog' id='bible_download_dialog'>
-    <div class='container' style='width:600px'>
-        <div class='contents' id='bible_download_dialog_content' style='height:200px'>
+    <div class='pseudo_dialog_container' style='width:600px'>
+        <div class='pseudo_dialog_contents' id='bible_download_dialog_content' style='height:200px'>
             
         </div>
-        <div class='buttons'>
+        <div class='pseudo_dialog_buttons'>
             <button id='render_cancel'>Cancel</button>
         </div>
     </div>

@@ -52,14 +52,27 @@ tr.download_disabled {
     display: none;
 }
 
-.pseudo_dialog .container {
+.pseudo_dialog_container {
     margin-left: auto;
     margin-right: auto;
     background-color: white; 
     opacity: 1;
     margin-top: calc(40vh);
+    padding: 15px;
 }
 
-.pseudo_dialog .container .contents {
+.pseudo_dialog_contents {
     overflow-y: auto;
+}
+
+.pseudo_dialog_contents span.float_left {
+    display: inline-block;
+    float: left;
+    font-family: Courier, Monospace;
+}
+
+.pseudo_dialog_contents span.float_right {
+    display: inline-block;
+    float: right;
+    font-family: Courier, Monospace;
 }

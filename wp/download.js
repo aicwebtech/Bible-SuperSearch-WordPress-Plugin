@@ -2,6 +2,7 @@ var bibleDownloadGo = false;
 var bibleRenderQueue = [];
 var bibleRenderQueueProcess = false;
 var bibleRenderSelectedFormat = null;
+var bibleDownloadDirectSubmit = false;
 
 if(!jQuery) {
     alert('jQuery is required!');
@@ -13,12 +14,13 @@ if(!$) {
 
 $( function() {
 
-    $('#bible_download_submit').click(function(e) {
-        console.log('hahaha');
+    // $('#bible_download_submit').click(function(e) {
+    $('#bible_download_form').submit(function(e) {
         bibleRenderSelectedFormat = null;
 
         var hasBibles = false,
-            hasFormat = false;
+            hasFormat = false,
+            err = '';
 
         $('input[name="bible[]"]').each(function() {
             if( ($(this).prop('checked') )) {
@@ -33,12 +35,9 @@ $( function() {
             }
         });
 
-        console.log(hasBibles, hasFormat);
-
-        var err = '';
+        // console.log(hasBibles, hasFormat);
 
         if(!hasBibles) {
-            // err += 'Please select at least one Bible. \n';
             err += 'Please select at least one Bible. <br>';
         }
 
@@ -47,27 +46,51 @@ $( function() {
         }
 
         if(!hasBibles || !hasFormat) {
-            // alert(err);
-            bibleDownloadAlert(err);
+            bibleDownloadAlert('<br>Please correct the following error(s):<br><br>' + err);
             e.preventDefault();
             return false;
         }
 
+        if(bibleDownloadDirectSubmit) {
+            console.log('direct submit');
+            bibleDownloadDirectSubmit = false;
+            return true;
+        }
+
         $.ajax({
-            url: BibleSuperSearchAPIURL + '/api/render',
+            url: BibleSuperSearchAPIURL + '/api/render_needed',
             data: $('#bible_download_form').serialize(),
             dataType: 'json',
             success: function(data, status, xhr) {
                 console.log('success', data);
-                $('#bible_download_form').submit();
 
+                if(data.results.success) {
+                    bibleDownloadDirectSubmit = true;
+                    $('#bible_download_form').submit();
+                }
+                else {
+                    if(data.results.separate_process_supported) {
+                        bibleDownloadAlert(response.errors.join('<br>'));
+                    }
+                    else {
+                        bibleDownloadInitProcess();
+                    }
+                }
             },
             error: function(xhr, status, error) {
-                console.log('error', xhr);
-                var response = JSON.parse(xhr.responseText);
-                console.log(response);
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                }
+                catch(error) {
+                    response = false;
+                }
                 
-                if(response.results.separate_process_supported) {
+                console.log('error', response);
+
+                if(!response) {
+                     bibleDownloadAlert('An unknown error has occurred');
+                }
+                else if(response.results.separate_process_supported) {
                     bibleDownloadAlert(response.errors.join('<br>'));
                 }
                 else {
@@ -76,13 +99,14 @@ $( function() {
             }
         });
 
-            e.preventDefault();
-            return false;
+        e.preventDefault();
+        return false;
     });
 
     $('#render_cancel').click(function() {
         $('#bible_download_dialog').hide();
         bibleRenderQueueProcess = false;
+        bibleRenderQueue = [];
     });
 });
 
@@ -97,26 +121,28 @@ function bibleDownloadAlert(text) {
 
 function bibleDownloadInitProcess() {
     bibleRenderQueueProcess = true;
-
     bibleRenderQueue = [];
 
     $('.bible_download_select:checkbox:checked').each(function(i) {
         bibleRenderQueue.push( $(this).val() );
     });
 
-    console.log(bibleRenderQueue);
+    bibleDownloadAlert('<h2>Rendering Bibles, this may take a while</h2>');
 
-    bibleDownloadAlert('<h2>Rendering Bibles, this may take a while</h2><br><br>');
-    bibleDownloadProcessNext();
+    if(bibleRenderQueue.length > 0) {
+        bibleDownloadProcessNext();
+    }
+    else {
+        $('#bible_download_dialog_content').append('Error: No Bible selected');
+    }
 }
 
 function bibleDownloadProcessNext() {
     if(bibleRenderQueueProcess) {
-        var bible = bibleRenderQueue.pop();
-
+        var bible = bibleRenderQueue.shift();
         var name = $('label[for="bible_download_' + bible +'"]').html();
-
-        var text = 'Rendering ' + name + ' ...';
+        var sep  = '-';
+        var text = '<span class="float_left">Rendering: <i>' + name + '</i> ' + sep.repeat(47 - name.length) + '</span>';
 
         $('#bible_download_dialog_content').append(text);
 
@@ -125,26 +151,51 @@ function bibleDownloadProcessNext() {
             data: {bible: bible, format: bibleRenderSelectedFormat},
             dataType: 'json',
             success: function(data, status, xhr) {
-                console.log('success', data);
-                $('#bible_download_dialog_content').append(' done<br>');
-
-                if(bibleRenderQueue.length == 0) {
-                    bibleDownloadProcessFinal();
-                }
-                else {
-                    bibleDownloadProcessNext();
-                }
+                // console.log('success', data);
+                _bibleDownloadItemDone();
             },
             error: function(xhr, status, error) {
-                console.log('error', xhr);
-                var response = JSON.parse(xhr.responseText);
-                console.log(response);
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                }
+                catch(error) {
+                    response = false;
+                }
                 
+                console.log('error', response);
+
+                if(!response) {
+                     bibleDownloadAlert('An unknown error has occurred');
+                }
+                else if(response.results.success) {
+                    _bibleDownloadItemDone();
+                }
+                else {
+                    $('#bible_download_dialog_content').append('<span class="float_left"> ERROR</span><br>');
+                    $('#bible_download_dialog_content').append('    ' + response.errors.join('<br>') );
+                    bibleRenderQueueProcess = false;
+                    return;
+                }
             }
         });
     }
 }
 
+function _bibleDownloadItemDone() {
+    $('#bible_download_dialog_content').append('<span class="float_left">- Done</span><br>');
+
+    if(bibleRenderQueue.length == 0) {
+        bibleDownloadProcessFinal();
+    }
+    else {
+        bibleDownloadProcessNext();
+    }
+}
+
 function bibleDownloadProcessFinal() {
-    alert('done');
+    return;
+
+    $('#bible_download_dialog').hide();
+    bibleDownloadDirectSubmit = true;
+    $('#bible_download_form').submit();
 }
