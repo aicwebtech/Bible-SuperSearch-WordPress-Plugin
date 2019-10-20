@@ -4,6 +4,8 @@ var bibleRenderQueueProcess = false;
 var bibleRenderSelectedFormat = null;
 var bibleDownloadDirectSubmit = false;
 
+// breaioeur it;
+
 if(!jQuery) {
     alert('jQuery is required!');
 }
@@ -13,6 +15,8 @@ if(!$) {
 }
 
 $( function() {
+    $('#bible_download_bypass_limit').val('0');
+
     $('#bible_download_form').submit(function(e) {
         // return true;
 

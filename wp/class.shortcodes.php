@@ -180,7 +180,6 @@ class BibleSuperSearch_Shortcodes {
         return $html;
     }
 
-
     static public function downloadPage($atts) {
         global $BibleSuperSearch_Options;
         $statics = $BibleSuperSearch_Options->getStatics();
@@ -193,16 +192,16 @@ class BibleSuperSearch_Shortcodes {
             return 'The download feature is not available from the selected Bible SuperSearch API server.';
         }
 
-        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download.css', __FILE__));
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download/download.css', __FILE__));
 
-        $formats = $statics['download_formats'];
-        $bibles  = $statics['bibles'];
-        $url     = $BibleSuperSearch_Options->getUrl();
-        $verbose = $a['verbose'];
+        $BibleSuperSearchDownloadFormats = $statics['download_formats'];
+        $BibleSuperSearchBibles          = $statics['bibles'];
+        $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
+        $BibleSuperSearchDownloadVerbose = $a['verbose'];
 
         ob_start();
-        include(dirname(__FILE__) . '/download.php');
+        include(dirname(__FILE__) . '/download/download.php');
         $html = ob_get_clean();
 
         return $html;
