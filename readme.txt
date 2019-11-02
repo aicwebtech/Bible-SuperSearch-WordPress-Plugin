@@ -94,6 +94,11 @@ Also, to make the software better match your WordPress theme, uncheck 'Override 
 = How do I get a custom skin (interface) developed? =
 Please contact us directly.  https://www.biblesupersearch.com/contact/
 
+= How do I run Bible SuperSearch entirely on my website? =
+You can accomplish this by installing our API on your webiste.  
+
+https://www.biblesupersearch.com/downloads/
+
 == Screenshots ==
 1. Expanding Search Form - Contracted
 1. Expanding Search Form - Expanded
