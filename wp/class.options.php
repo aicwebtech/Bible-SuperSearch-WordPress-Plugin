@@ -174,9 +174,9 @@ class BibleSuperSearch_Options {
             $input['apiUrl'] = $this->default_options['apiUrl'];
         }
 
-        if($current['apiUrl'] != $input['apiUrl']) {
+        // if($current['apiUrl'] != $input['apiUrl']) {
             $this->_setStaticsReset(); // Force Reload statics here if URL changed
-        }
+        // }
 
         // print_r($input);
         // die();
