@@ -80,6 +80,25 @@ This plugin is a wrapper around the official Bible SuperSearch client.  This cli
 1. Place `[biblesupersearch]` shortcode on any page or post 
 1. Navigate to the page / post and see it in action.
 
+##Shortcodes include:
+    [biblesupersearch] - displays the main Bible SuperSearch application
+        These attributes override the settings on this plugin.
+        * interface - the ID of the skin to be used on the application.  For a complete list, please visit https://www.biblesupersearch.com/client/
+        * destination_url - URL to page or post where form will redirect to when submitted.
+                            The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.
+                            Set to '' to force to current page and override the 'Default Destination Page'
+        * formatButtons - Which formatting buttons to use?  Options: default, Classic or Stylable
+        * navigationButtons - Which navigation buttons to use?  Options: default, Classic or Stylable
+        * pager - Which pager to use? Options: default, Classic, Clean
+
+    [biblesupersearch_bible_list] - Displays a list of all Bibles available
+        Attributes: 
+        * verbose - Displays some extra columns on the list of Bibles (true/false)
+
+    [biblesupersearch_downloads] - Displays the Bible downloads page
+        Attributes:
+        * verbose - Displays all Bibles, even if they are not downloadable. (true/false)
+
 
 == Frequently Asked Questions ==
 = How do I only enable certain Bibles? =
@@ -115,6 +134,9 @@ https://www.biblesupersearch.com/downloads/
 1. Advanced Options
 
 == Changelog ==
+
+= 4.1.0 =
+* Added [biblesupersearch_downloads] shortcode for displaying a page from which to download Bibles
 
 = 4.0.1 =
 * Bugfix: Selection of book language now based on primary Bible

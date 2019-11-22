@@ -56,6 +56,7 @@ class BibleSuperSearch_Shortcodes {
         }
         
         $a = shortcode_atts($defaults, $atts);
+        static::_validateAttributes($a);
 
         if($a['interface']) {
             $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
@@ -108,6 +109,8 @@ class BibleSuperSearch_Shortcodes {
             'selector_height' => '200px',
         ), $atts );
 
+        static::_validateAttributes($a);
+
         if(static::$instances > 0) {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.  (Demo shortcode will create another).</div>';
         }
@@ -145,6 +148,8 @@ class BibleSuperSearch_Shortcodes {
         $a = shortcode_atts( array(
             'verbose' => FALSE,
         ), $atts );
+
+        static::_validateAttributes($a);
 
         $html = '<table>';
         $html .= '<tr>';
@@ -188,6 +193,8 @@ class BibleSuperSearch_Shortcodes {
             'verbose' => FALSE,
         ), $atts );
 
+        static::_validateAttributes($a);
+
         if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
             return 'The download feature is not available from the selected Bible SuperSearch API server.';
         }
@@ -203,8 +210,16 @@ class BibleSuperSearch_Shortcodes {
         ob_start();
         include(dirname(__FILE__) . '/download/download.php');
         $html = ob_get_clean();
-
         return $html;
+    }
+
+    static protected function _validateAttributes(&$attr) {
+        foreach($attr as $key => &$value) {
+            if($value == 'false') {
+                $value = FALSE;
+            }
+            unset($value);
+        }
     }
 
 }
