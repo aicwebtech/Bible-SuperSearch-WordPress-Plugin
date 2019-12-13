@@ -137,6 +137,7 @@ https://www.biblesupersearch.com/downloads/
 
 = 4.1.0 =
 * Added [biblesupersearch_downloads] shortcode for displaying a page from which to download Bibles
+* Added more embedded shortcode documentation.
 
 = 4.0.1 =
 * Bugfix: Selection of book language now based on primary Bible
