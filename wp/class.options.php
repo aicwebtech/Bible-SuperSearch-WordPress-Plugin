@@ -107,6 +107,25 @@ class BibleSuperSearch_Options {
         return $options;
     }
 
+    public function getEnabledBibles($statics = array()) {
+        $options = $this->getOptions();
+        $statics = $statics ? $statics : $this->getStatics();
+
+        if($options['enableAllBibles'] || !is_array($options['enabledBibles']) || empty($options['enabledBibles']) ) {
+            return $statics['bibles'];
+        }
+
+        $enabled = array();
+
+        foreach($statics['bibles'] as $module => $bible) {
+            if(in_array($module, $options['enabledBibles'])) {
+                $enabled[$module] = $bible;
+            }
+        }
+
+        return $enabled;
+    }
+
     public function setDefaultOptions() {
         if ( ! is_array( get_option( $this->option_index ) ) ) {
             delete_option( $this->option_index ); // just in case

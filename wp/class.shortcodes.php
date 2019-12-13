@@ -21,6 +21,24 @@ class BibleSuperSearch_Shortcodes {
             'map'       => 'destinationUrl',
             'default'   => NULL,
         ),
+    );    
+
+    static public $downloadAttributes = array(
+        'verbose' => array(
+            'name'      => 'Verbose',
+            'desc'      => 'Displays all Bibles, even if they are not downloadable. (true/false)',
+            'map'       => 'verbose',
+            'default'   => NULL,
+        ),
+    );    
+
+    static public $biblesAttributes = array(
+        'verbose' => array(
+            'name'      => 'Verbose',
+            'desc'      => 'Displays some extra columns on the list of Bibles (true/false)',
+            'map'       => 'verbose',
+            'default'   => NULL,
+        ),
     );
     
     static public function display($atts) {
@@ -109,7 +127,7 @@ class BibleSuperSearch_Shortcodes {
             'selector_height' => '200px',
         ), $atts );
 
-        static::_validateAttributes($a);
+        // static::_validateAttributes($a);
 
         if(static::$instances > 0) {
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.  (Demo shortcode will create another).</div>';
@@ -143,13 +161,14 @@ class BibleSuperSearch_Shortcodes {
     // (Not just ones enabled in the plugin)
     static public function bibleList($atts) {
         global $BibleSuperSearch_Options;
-        $statics = $BibleSuperSearch_Options->getStatics();
+        // $statics = $BibleSuperSearch_Options->getStatics();
+        $bibles  = $BibleSuperSearch_Options->getEnabledBibles();
 
         $a = shortcode_atts( array(
             'verbose' => FALSE,
         ), $atts );
 
-        static::_validateAttributes($a);
+        static::_validateAttributes($a, array('verbose'));
 
         $html = '<table>';
         $html .= '<tr>';
@@ -165,7 +184,7 @@ class BibleSuperSearch_Shortcodes {
 
         $html .= '</tr>';
 
-        foreach($statics['bibles'] as $module => $bible) {
+        foreach($bibles as $module => $bible) {
             $html .= "<tr>";
             $html .= "<td>{$module}</td>";
             $html .= "<td>{$bible['lang']}</td>";
@@ -193,7 +212,7 @@ class BibleSuperSearch_Shortcodes {
             'verbose' => FALSE,
         ), $atts );
 
-        static::_validateAttributes($a);
+        static::_validateAttributes($a, array('verbose'));
 
         if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
             return 'The download feature is not available from the selected Bible SuperSearch API server.';
@@ -203,7 +222,8 @@ class BibleSuperSearch_Shortcodes {
         wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download/download.css', __FILE__));
 
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
-        $BibleSuperSearchBibles          = $statics['bibles'];
+        // $BibleSuperSearchBibles          = $statics['bibles'];
+        $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics);
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
 
@@ -213,12 +233,9 @@ class BibleSuperSearch_Shortcodes {
         return $html;
     }
 
-    static protected function _validateAttributes(&$attr) {
-        foreach($attr as $key => &$value) {
-            if($value == 'false') {
-                $value = FALSE;
-            }
-            unset($value);
+    static protected function _validateAttributes(&$attr, $bool = array()) {
+        foreach($bool as $idx) {
+            $attr[$idx] = (array_key_exists($idx, $attr) && $attr[$idx] && $attr[$idx] != 'false') ? TRUE : FALSE;
         }
     }
 

@@ -93,3 +93,8 @@ tr.download_disabled {
     margin-right: auto;
 }
 
+.pseudo_dialog .loading {
+    font-weight: bold;
+    font-size: 2em;
+}
+

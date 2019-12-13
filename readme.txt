@@ -91,7 +91,7 @@ This plugin is a wrapper around the official Bible SuperSearch client.  This cli
         * navigationButtons - Which navigation buttons to use?  Options: default, Classic or Stylable
         * pager - Which pager to use? Options: default, Classic, Clean
 
-    [biblesupersearch_bible_list] - Displays a list of all Bibles available
+    [biblesupersearch_bible_list] - Displays a list of all Bibles available (even if not enabled)
         Attributes: 
         * verbose - Displays some extra columns on the list of Bibles (true/false)
 
