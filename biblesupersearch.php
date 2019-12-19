@@ -3,8 +3,8 @@
 /*
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
-    Description: Easily add a powerful Bible search engine to your WordPress site.  Selectable interfaces allow it to appear as simple or complex as desired.  Option to install our API on your server and run completely on your website.
-    Version:     4.0.1
+    Description: Add a powerful Bible search engine.  Selectable interfaces allow it to appear as simple or complex as desired.  Also includes a Bible download page (as a separate feature).  Option to install our API on your server and run completely on your website.
+    Version:     4.1.0
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
     License:     GPLv3 or later

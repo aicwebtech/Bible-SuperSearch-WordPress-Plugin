@@ -99,7 +99,7 @@
     
                         <?php if(!empty($reccomended_plugins)): ?>
                             <div class='inside'>
-                                Bible SuperSearch Reccommends these plugins: <br /><br />
+                                Bible SuperSearch recommends these plugins: <br /><br />
                                 <ul>
                                     <?php foreach($reccomended_plugins as $p): ?>
                                         <li>
