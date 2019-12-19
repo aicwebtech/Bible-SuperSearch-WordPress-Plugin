@@ -531,11 +531,11 @@ s.isString(t)?this.bubble(e):t&&t.call(this.context||n,this)}})},{"./kind":"enyo
 var i=require("./kind"),s=require("./utils"),o=require("./Component"),r=require("./EventEmitter"),a=require("./Model"),l=require("./ModelList"),c=require("./StateSupport"),h=require("./Source"),u=require("./Store"),d=require("./States"),p=i({kind:o,mixins:[r,c]})
 t=e.exports=i({name:"enyo.Collection",kind:p,url:"",getUrl:null,model:a,models:null,status:d.READY,options:{merge:!0,silent:!1,purge:!1,parse:!1,create:!0,find:!0,sort:!1,commit:!1,destroy:!1,complete:!1,fetch:!1,modelEvents:!0},parse:function(e){return e},add:function(e,t){var n,i,o,r,l,c,h,u=this.models,d=this.length,p=this.model,f=this.options,m=p.prototype.primaryKey,g=d,y=0
 !isNaN(t)&&(g=t),arguments.length>2&&(t=arguments[2]),t=t?s.mixin({},[f,t]):f
-var b=t.merge,v=t.purge,w=t.silent,C=t.parse,_=t.find,x=t.sort,S=t.commit,k=t.create!==!1,B=t.modelOptions,P=t.index
+var b=t.merge,v=t.purge,w=t.silent,C=t.parse,_=t.find,x=t.sort,k=t.commit,S=t.create!==!1,B=t.modelOptions,P=t.index
 g=isNaN(P)?g:Math.max(0,Math.min(d,P)),x&&!("function"==typeof x)&&(x=this.comparator),C&&(e=this.parse(e)),!(e instanceof Array)&&(e=[e])
-for(var F=0,T=e.length;T>F;++F)r=e[F],l=null,(r||!isNaN(r))&&(r instanceof a||(l=r),"string"==typeof l||"number"==typeof l?(h=l,l={},l[m]=h):h=l?l[m]:r,_&&(c=u.has(h)),c?(c=u.resolve(h),b&&(l||(l=r.attributes),c.set(l,t)),v&&(i||(i={length:0}),i[c.euid]=r,i.length++)):l&&_&&(c=this.store.resolve(p,h))?(l||(l=r.attributes),C&&(l=c.parse(l)),n||(n=[]),n.push(c),this.prepareModel(c,t),b&&c.set(l,t)):l?k&&(r=this.prepareModel(l||r,B),n||(n=[]),n.push(r),v&&(i||(i={length:0}),i[r.euid]=r,i.length++)):(n||(n=[]),n.push(r),this.prepareModel(r)))
+for(var F=0,T=e.length;T>F;++F)r=e[F],l=null,(r||!isNaN(r))&&(r instanceof a||(l=r),"string"==typeof l||"number"==typeof l?(h=l,l={},l[m]=h):h=l?l[m]:r,_&&(c=u.has(h)),c?(c=u.resolve(h),b&&(l||(l=r.attributes),c.set(l,t)),v&&(i||(i={length:0}),i[c.euid]=r,i.length++)):l&&_&&(c=this.store.resolve(p,h))?(l||(l=r.attributes),C&&(l=c.parse(l)),n||(n=[]),n.push(c),this.prepareModel(c,t),b&&c.set(l,t)):l?S&&(r=this.prepareModel(l||r,B),n||(n=[]),n.push(r),v&&(i||(i={length:0}),i[r.euid]=r,i.length++)):(n||(n=[]),n.push(r),this.prepareModel(r)))
 if(v&&i&&i.length){for(o||(o=[]),i||(i={}),F=0;d>F;++F)i[(r=u[F]).euid]||(o.push(r),g>F&&y++)
-o.length&&this.remove(o,t),g-=y}return n&&(u.add(n,g),x&&this.sort(x,{silent:!0}),this.store.add(n)),this.length=u.length,w||(d!=this.length&&this.notify("length",d,this.length),n&&this.emit("add",{models:n,collection:this,index:g})),S&&n&&this.commit(t),n||[]},remove:function(e,t){var n,i,o=this.models,r=o.length,a=this.options
+o.length&&this.remove(o,t),g-=y}return n&&(u.add(n,g),x&&this.sort(x,{silent:!0}),this.store.add(n)),this.length=u.length,w||(d!=this.length&&this.notify("length",d,this.length),n&&this.emit("add",{models:n,collection:this,index:g})),k&&n&&this.commit(t),n||[]},remove:function(e,t){var n,i,o=this.models,r=o.length,a=this.options
 t=t?s.mixin({},[a,t]):a
 var l=t.silent,c=t.destroy,h=t.complete,u=t.commit
 if(!(e instanceof Array)&&(e=[e]),n=o.remove(e),n.length){t.batching=!0
@@ -1045,21 +1045,22 @@ i.moveToElementText(n),i.select()}else{var i=document.createRange()
 i.setStartBefore(n),i.setEndAfter(n),window.getSelection().removeAllRanges(),window.getSelection().addRange(i)}try{var s=document.execCommand("copy")
 s?alert("Copied to clipboard"):alert("Failed to copy")}catch(o){alert("Failed to copy")}}},appendText:function(e){var t=this.$.CopyText.get("content")||"",e=e||""
 this.$.CopyText.set("content",t+e)},clearText:function(){this.$.CopyText.set("content",null)}})}],"src/components/BibleSelect/SingleSelect":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("../Select")
-e.exports=s({name:"SingleSelect",kind:o,width:270,shortWidthThreshold:250,shortWidthWidth:160,isShort:!1,alwaysShort:!1,parallelNumber:0,classes:"biblesupersearch_bible_selector",handlers:{resize:"handleResize"},create:function(){this.inherited(arguments),this.isShort=this.shortWidthThreshold<=window.innerWidth?!1:!0,this.isShort=this.alwaysShort?!0:this.isShort
+e.exports=s({name:"SingleSelect",kind:o,width:270,shortWidthThreshold:250,shortWidthWidth:160,isShort:!1,alwaysShort:!1,parallelNumber:0,classes:"biblesupersearch_bible_selector",handlers:{resize:"handleResize"},create:function(){this.inherited(arguments)
 var e=this.app.get("statics"),t=e.bibles,n=this.app.get("configs"),s=n.enabledBibles,o="Select a Bible",r=this.isShort?this.shortWidthWidth:this.width
 if(this.parallelNumber&&0!=this.parallelNumber)var o="Paralell Bible #"+this.parallelNumber.toString()
 if(this.app.singleBibleEnabled()||this.createComponent({content:o,value:"0"}),Array.isArray(s)&&s.length)for(i in s)t[s[i]]&&this._addBibleHelper(t[s[i]])
 else for(i in t)this._addBibleHelper(t[i])
-r&&0!=r?this.addStyles("width:100%; max-width:"+this.width.toString()+"px"):this.addStyles("width:100%"),this.resetValue()},resetValue:function(){window.select=this,(0==this.parallelNumber||1==this.parallelNumber)&&this.setSelectedValue(this.app.configs.defaultBible)},applyDefaultValue:function(){var e=this.getValue()
+r&&0!=r?this.addStyles("width:100%; max-width:"+this.width.toString()+"px"):this.addStyles("width:100%"),this.checkShort(),this.resetValue()},resetValue:function(){window.select=this,(0==this.parallelNumber||1==this.parallelNumber)&&this.setSelectedValue(this.app.configs.defaultBible)},applyDefaultValue:function(){var e=this.getValue()
 this.app.debug&&this.log(e),e&&0!=e||this.resetValue()},_addBibleHelper:function(e){e.lang!=this._lastLang,this._lastLang=e.lang
 var t=this.isShort,n=e.shortname+" ("+e.lang+")",i=e.name+" ("+e.lang+")",s=t?n:i
 this.createComponent({content:s,value:e.module,contentShort:n,contentLong:i})},_lastLang:null,valueChanged:function(e,t){this.inherited(arguments)},setSelectedValue:function(e){var e=e||0
 if(controls=this.getClientControls(),this.setSelectedByValue)return void this.setSelectedByValue(e)
 for(i in controls)if(controls[i].get("value")==e){this.setSelected(i)
-break}},isShortChanged:function(e,t){var n=t?this.shortWidthWidth:this.width,i=this.getClientControls()
+break}},isShortChanged:function(e,t){this.log(e,t)
+var n=t?this.shortWidthWidth:this.width,i=this.getClientControls()
 i.forEach(function(e){var n=t?e.contentShort:e.contentLong
-n&&e.set("content",n)},this),n&&0!=n&&(this.log("applying max-width"),this.applyStyle("max-width",n.toString()+"px"),this.render())},handleResize:function(e,t){var n=this.shortWidthThreshold<=window.innerWidth?!1:!0
-n=this.alwaysShort?!0:n,this.set("isShort",n)}})},{"../Select":"src/components/Select"}],"src/components/SearchType":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("./Select")
+n&&e.set("content",n)},this),n&&0!=n&&(this.applyStyle("max-width",null),this.applyStyle("max-width",n.toString()+"px"),this.render())},checkShort:function(){var e=this.shortWidthThreshold<=window.innerWidth?!1:!0
+e=this.alwaysShort?!0:e,this.set("isShort",e)},handleResize:function(e,t){this.checkShort()}})},{"../Select":"src/components/Select"}],"src/components/SearchType":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("./Select")
 e.exports=s({name:"SearchType",kind:o,create:function(){this.inherited(arguments)
 var e=this.app.get("statics"),t=e.search_types
 this.app.get("configs")

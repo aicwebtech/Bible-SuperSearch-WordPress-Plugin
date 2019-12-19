@@ -93,7 +93,7 @@
                             </div>
                         <?php else: ?>
                             <div class='inside' style='font-weight: bold'>
-                                You are currently using a third party install of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
+                                Congratulations! &nbsp;You are successfully using this third party installation of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
                             </div>
                         <?php endif; ?>
     

@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.1.1 = 
+* Fixed bug preventing the Bible selector from rezizing responsivly 
+
 = 4.1.0 =
 * Added [biblesupersearch_downloads] shortcode for displaying a page from which to download Bibles
 * Added more embedded shortcode documentation.
