@@ -81,7 +81,8 @@ This plugin is a wrapper around the official Bible SuperSearch client.  This cli
 1. Place `[biblesupersearch]` shortcode on any page or post 
 1. Navigate to the page / post and see it in action.
 
-##Shortcodes include:
+Shortcodes include:
+
     [biblesupersearch] - displays the main Bible SuperSearch application
         These attributes override the settings on this plugin.
         * interface - the ID of the skin to be used on the application.  For a complete list, please visit https://www.biblesupersearch.com/client/
