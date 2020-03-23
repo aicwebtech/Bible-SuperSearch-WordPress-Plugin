@@ -28,6 +28,7 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     }
 
     wp_enqueue_script('biblesupersearch_main', plugins_url('app/biblesupersearch.js', __FILE__));
+    wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
     wp_enqueue_style('biblesupersearch_css',   plugins_url('app/biblesupersearch.css', __FILE__));
     
     if($includeCssOverride) {

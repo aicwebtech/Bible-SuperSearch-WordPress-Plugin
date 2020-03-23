@@ -67,6 +67,7 @@ class BibleSuperSearch_Shortcodes {
         
         $defaults = array(
             'container' => $container,
+            'contact-form-7-id' => NULL,
         );
 
         foreach($attr as $key => $info) {
@@ -75,6 +76,7 @@ class BibleSuperSearch_Shortcodes {
         
         $a = shortcode_atts($defaults, $atts);
         static::_validateAttributes($a);
+        $a['contact-form-7-id'] = (int) $a['contact-form-7-id'];
 
         if($a['interface']) {
             $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
@@ -106,7 +108,13 @@ class BibleSuperSearch_Shortcodes {
         // No longer needed?, but retaining for now.
         // $bss_dir        = plugins_url('app', dirname(__FILE__));
         // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
+        $html .= "var biblesupersearch_cf7id = {$a['contact-form-7-id']};\n";
         $html .= "</script>\n";
+
+        if($a['contact-form-7-id']) {
+            $html .= static::_displayContactForm7($a);
+        }
+
         $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
@@ -114,6 +122,14 @@ class BibleSuperSearch_Shortcodes {
         static::$instances ++;
         return $html;
     }    
+
+    static protected function _displayContactForm7($atts) {
+        $html = 'CF7 ';
+
+        $html .= do_shortcode('[contact-form-7 id="' . $atts['contact-form-7-id'] . '" title="Test Bible Form" do_not_store="true"]');
+
+        return $html;
+    }
 
     static public function demo($atts) {
         global $BibleSuperSearch_Options;

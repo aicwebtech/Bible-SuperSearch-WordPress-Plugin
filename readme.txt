@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.3.2
+Tested up to: 5.4
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -142,7 +142,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 == Changelog ==
 
 = 4.1.1 = 
-* Fixed bug preventing the Bible selector from rezizing responsivly 
+* Fixed bug preventing the Bible selector from resizing responsivly 
 
 = 4.1.0 =
 * Added [biblesupersearch_downloads] shortcode for displaying a page from which to download Bibles
