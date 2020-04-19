@@ -43,6 +43,16 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e( 'Bible List Grouping', 'biblesupersearch' ); ?></th>
+            <td>
+                <select name='biblesupersearch_options[bibleGrouping]'>
+                    <option value='none' <?php selected('', $options['bibleGrouping'] ); ?> >None</option>
+                    <option value='language' <?php selected('language', $options['bibleGrouping'] ); ?> >Language - Endonym</option>
+                    <option value='language_english' <?php selected('language_english', $options['bibleGrouping'] ); ?> >Language - English Name</option>
+                </select>
+            </td>
+        </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
 </div>

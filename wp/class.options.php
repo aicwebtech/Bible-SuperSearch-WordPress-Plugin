@@ -20,6 +20,7 @@ class BibleSuperSearch_Options {
         'pager'             => 'default',
         'formatButtons'     => 'default',
         'navigationButtons' => 'default',
+        'bibleGrouping'     => 'language',
         
         // WordPress specific
         'overrideCss'       => TRUE,
@@ -37,7 +38,7 @@ class BibleSuperSearch_Options {
         'bible'  => array(
             'name'          => 'Bibles',
             'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles'),
+            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
@@ -358,13 +359,17 @@ class BibleSuperSearch_Options {
         return $url;
     }
 
+    public function apiVersion() {
+        $statics = $this->getStatics();
+        return $statics['version'];
+    }
+
     public function getStatics($force = FALSE) {
         if($this->statics_loading == TRUE) {
             return FALSE;
         }
 
         $allow_url_fopen       = intval(ini_get('allow_url_fopen'));
-        $this->statics_loading = TRUE;
         $cached_statics        = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
 
@@ -372,10 +377,12 @@ class BibleSuperSearch_Options {
             return $cached_statics;
         }
 
+        $this->statics_loading = TRUE;
         $options    = $this->getOptions();
         $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
         $data       = array('language' => 'en');
         $result     = $this->_apiActionHelper('statics', $url, $data);
+        $this->statics_loading = FALSE;
         
         if ($result === FALSE) { 
             if($last_update_timestamp && !$force) {

@@ -1,6 +1,7 @@
 <?php
     // global $options, $bibles, $interfaces;
     global $BibleSuperSearch_Options;
+    $api_version = (float) $BibleSuperSearch_Options->apiVersion();
 ?>
 
 <div class="biblesupersearch-option-tabs wrap">
