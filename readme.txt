@@ -141,6 +141,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.2.0 =
+* Added ability to group Bibles by language, and added a config for this to this WP plugin
+* Added Bible SOS, Bible Start Guide dialogs
+* Changed Strongs Definition dialogs to stay open longer, allowing a user to copy and paste the Strong's text
+
 = 4.1.1 = 
 * Fixed bug preventing the Bible selector from resizing responsivly 
 
