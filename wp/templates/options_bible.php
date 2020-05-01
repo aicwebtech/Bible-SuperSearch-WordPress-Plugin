@@ -24,13 +24,19 @@
                 <br /><br />
                 <div class='biblesupersearch_enabled_bible' style='display:none'>
                     <div>
-                    <?php $old_lang = NULL ?>
+                    <?php $old_lang = NULL; $lang_count = 0; ?>
                     <?php foreach($bibles as $module => $bible): ?>
-                    <?php if($bible['lang'] != $old_lang): ?>
-                    </div>
-                    <div _style='clear:both'></div>
-                    <div class='bss_bible_lang' style=''>
-                        <b><?php echo $bible['lang']; ?></b><br />
+                        <?php if($bible['lang'] != $old_lang): ?>
+                        </div>
+
+                        <?php if($lang_count >= 4): ?>
+                            <?php $lang_count = 0;?>
+                            <div style='clear:both'></div>
+                        <?php endif; ?>
+                        <?php $lang_count ++ ?>
+
+                        <div class='bss_bible_lang' style=''>
+                            <b><?php echo $bible['lang']; ?></b><br />
                     <?php endif; ?>
                         <div class='bss_bible' style='' >
                             <input name='biblesupersearch_options[enabledBibles][]' type='checkbox' value='<?php echo $module; ?>' 

@@ -110,15 +110,15 @@ class BibleSuperSearch_Options {
 
     public function getEnabledBibles($statics = array()) {
         $options = $this->getOptions();
-        $statics = $statics ? $statics : $this->getStatics();
+        $bibles  = $this->getBibles(NULL, $statics);
 
         if($options['enableAllBibles'] || !is_array($options['enabledBibles']) || empty($options['enabledBibles']) ) {
-            return $statics['bibles'];
+            return $bibles;
         }
 
         $enabled = array();
 
-        foreach($statics['bibles'] as $module => $bible) {
+        foreach($bibles as $module => $bible) {
             if(in_array($module, $options['enabledBibles'])) {
                 $enabled[$module] = $bible;
             }
@@ -340,6 +340,60 @@ class BibleSuperSearch_Options {
         return $bibles;
     }
 
+    public function getBibles($sorting = NULL, $statics = NULL) {
+        $options = $this->getOptions();
+        $statics = $statics ? $statics : $this->getStatics();
+
+        // $sorting = 'year|name'; // Todo - actually apply sort options here
+        
+        if(!$sorting) {
+            $sorting = $options['bibleSorting'] ?: 'rank';
+
+            switch ($options['bibleGrouping']) {
+                case 'language':
+                    // $groupOrder = 'lang_native';
+                    $groupOrder = 'lang'; // Because current download page doesn't support toggling between Endonymn and English Exonymn
+                    break;            
+                case 'language_english':
+                    $groupOrder = 'lang';
+                    break;
+                case 'none':
+                default:
+                    $groupOrder = NULL;
+            }
+
+            if($groupOrder) {
+                $sorting = $groupOrder . '|' . $sorting;
+            }
+        }
+
+        $sorting  = explode('|', $sorting);
+        $sortable = array();
+
+        foreach($sorting as $k => $s) {
+            $sortable[] = array();
+            $sortable[] = SORT_REGULAR; // Todo, DESC, ect
+        }
+
+        if(is_array($statics['bibles'])) {        
+            foreach($statics['bibles'] as $module => &$bible) {
+
+                foreach($sorting as $k => $s) {
+                    $sortable[$k * 2][$module] = $bible[$s];
+                }
+
+                $bible['display'] = $bible['name'] . ' (' . $bible['lang'] . ')';
+                $bible['display_short'] = $bible['name'];
+            }
+            
+            $sortable[] = &$statics['bibles']; // Assign by reference needed
+            call_user_func_array('array_multisort', $sortable);
+            return $statics['bibles'];
+        }
+
+        return $this->getBible();
+    }
+
     protected function _setStaticsReset() {
         $statics               = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($statics) && array_key_exists('timestamp', $statics)) ? $statics['timestamp'] : 0;
@@ -380,7 +434,8 @@ class BibleSuperSearch_Options {
         $this->statics_loading = TRUE;
         $options    = $this->getOptions();
         $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
-        $data       = array('language' => 'en');
+        $data       = array('language'  => 'en',);
+        
         $result     = $this->_apiActionHelper('statics', $url, $data);
         $this->statics_loading = FALSE;
         
