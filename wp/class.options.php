@@ -347,9 +347,10 @@ class BibleSuperSearch_Options {
         // $sorting = 'year|name'; // Todo - actually apply sort options here
         
         if(!$sorting) {
-            $sorting = $options['bibleSorting'] ?: 'rank';
+            $sorting  = array_key_exists('bibleSorting', $options)  ? $options['bibleSorting'] : 'rank';
+            $grouping = array_key_exists('bibleGrouping', $options) ? $options['bibleGrouping'] : NULL;
 
-            switch ($options['bibleGrouping']) {
+            switch ($grouping) {
                 case 'language':
                     // $groupOrder = 'lang_native';
                     $groupOrder = 'lang'; // Because current download page doesn't support toggling between Endonymn and English Exonymn
