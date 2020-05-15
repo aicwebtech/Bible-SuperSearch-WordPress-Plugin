@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.2.1 =
+* Bugfix: Fixed issue discovering root URL in the client software, affecting websites hosted on WordPress.com
+
 = 4.2.0 =
 * Added ability to group Bibles by language, and added a config for this to this WP plugin
 * Added Bible SOS, Bible Start Guide dialogs
