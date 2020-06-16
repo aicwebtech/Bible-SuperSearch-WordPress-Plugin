@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
 
 
 function setUpContactForm7() {
-    if(!biblesupersearch_cf7id) {
+    if(typeof biblesupersearch_cf7id == 'undefined' || !biblesupersearch_cf7id) {
         return;
     }
     

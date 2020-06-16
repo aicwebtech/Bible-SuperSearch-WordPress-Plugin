@@ -48,6 +48,8 @@ class BibleSuperSearch_Shortcodes {
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
 
+        $first_instance = static::$instances == 0 ? TRUE : FALSE;
+
         unset($options['formStyles']); // Not using this config right now
 
         $destination_url = NULL;
@@ -103,12 +105,22 @@ class BibleSuperSearch_Shortcodes {
         }
 
         $html .= "<script>\n";
-        $html .= "var biblesupersearch_config_options = {$options_json};\n";
-        // Dynamically generate link to biblesupersearch_root_dir
-        // No longer needed?, but retaining for now.
-        // $bss_dir        = plugins_url('app', dirname(__FILE__));
-        // $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
-        $html .= "var biblesupersearch_cf7id = {$a['contact-form-7-id']};\n";
+        
+        if($first_instance) {
+            $html .= "var biblesupersearch_config_options = {$options_json};\n";
+
+            // Dynamically generate link to biblesupersearch_root_dir
+            // Confirmed needed (by WordPress.com websites)
+            $bss_dir        = plugins_url('app', dirname(__FILE__));
+            $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
+            $html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n";
+        }
+        else {
+            // $html .= "biblesupersearch_instances.{$container} = {$options_json};\n";
+        }
+
+        // $html .= "var biblesupersearch_cf7id = {$a['contact-form-7-id']};\n";
+
         $html .= "</script>\n";
 
         if($a['contact-form-7-id']) {

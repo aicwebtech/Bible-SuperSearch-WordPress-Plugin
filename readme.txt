@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.2.2 =
+* Bugfix: Fixed more issues with root URL affecting websites hosted on WordPress.com
+
 = 4.2.1 =
 * Bugfix: Fixed issue discovering root URL in the client software, affecting websites hosted on WordPress.com
 
