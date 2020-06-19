@@ -44,6 +44,7 @@ class BibleSuperSearch_Shortcodes {
     static public function display($atts) {
         global $BibleSuperSearch_Options;
         $options        = $BibleSuperSearch_Options->getOptions();
+        $statics        = $BibleSuperSearch_Options->getStatics();
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
@@ -97,6 +98,7 @@ class BibleSuperSearch_Shortcodes {
         }
         
         $options_json   = json_encode($options);
+        $statics_json   = json_encode($statics);
 
         $html  = '';
 
@@ -108,6 +110,7 @@ class BibleSuperSearch_Shortcodes {
         
         if($first_instance) {
             $html .= "var biblesupersearch_config_options = {$options_json};\n";
+            $html .= "var biblesupersearch_statics = {$statics_json};\n";
 
             // Dynamically generate link to biblesupersearch_root_dir
             // Confirmed needed (by WordPress.com websites)

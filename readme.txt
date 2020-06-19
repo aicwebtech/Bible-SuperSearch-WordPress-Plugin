@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Easily add a powerful Bible search engine to your WordPress site.
 
 == Description ==
-Adds a powerful Bible search engine to your WordPress website.
+Add powerful Bible tools to your website, including a Bible search engine with selectable interfaces that allow it to appear as simple or complex as desired, and a Bible download page.  Includes option to install our API on your server and run completely on your website.
 
 This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  Allows seamless use of the Bible SuperSearch client and API on any WordPress site.
 
@@ -140,6 +140,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Advanced Options
 
 == Changelog ==
+
+= 4.2.3 =
+* Bugfix / Improvement: Statics are now loaded from the local cache, eliminating an AJAX call at page load.
 
 = 4.2.2 =
 * Bugfix: Fixed more issues with root URL affecting websites hosted on WordPress.com
