@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.4
+Tested up to: 5.4.2
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -140,6 +140,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Advanced Options
 
 == Changelog ==
+
+= 4.2.5 = 
+* Bugfix: Force refresh of statics data if previous load failed.
 
 = 4.2.3 =
 * Bugfix / Improvement: Statics are now loaded from the local cache, eliminating an AJAX call at page load.

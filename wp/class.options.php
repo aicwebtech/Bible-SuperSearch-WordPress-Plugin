@@ -428,6 +428,10 @@ class BibleSuperSearch_Options {
         $cached_statics        = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
 
+        if(empty($cached_statics['bibles']) || empty($cached_statics['version'])) {
+            $force = TRUE; // Force statics load if last load failed
+        }
+
         if($last_update_timestamp > time() - 3600 && !$force) {
             return $cached_statics;
         }
