@@ -1,7 +1,7 @@
 <div class="inside">
     <table class="form-table">
         <tr><td colspan='2'><h2><?php esc_html_e( 'Bibles', 'biblesupersearch' ); ?></h2></td></tr>
-        <tr><td colspan='2'><?php submit_button(); ?></td></tr>
+        <tr><td colspan='2'><?php submit_button('Refresh Bible List (&amp; Save Changes)'); ?></td></tr>
         <tr>
             <th scope="row"><?php esc_html_e( 'Select Default Bible', 'biblesupersearch' ); ?></th>
             <td>

@@ -257,6 +257,7 @@ class BibleSuperSearch_Shortcodes {
         $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics);
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
+        $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;
 
         ob_start();
         include(dirname(__FILE__) . '/download/download.php');

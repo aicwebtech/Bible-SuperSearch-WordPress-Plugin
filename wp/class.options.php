@@ -159,12 +159,6 @@ class BibleSuperSearch_Options {
             $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
         }
 
-        // var_dump($incoming['tab']);
-        // var_dump($_REQUEST['tab']);
-        // print_r($tab_item);
-        // print_r($input);
-        // die();
-
         // if(!isset($input['enableAllBibles'])) {
         //     $input['enableAllBibles'] = FALSE;
         // }
@@ -194,12 +188,11 @@ class BibleSuperSearch_Options {
             $input['apiUrl'] = $this->default_options['apiUrl'];
         }
 
-        // if($current['apiUrl'] != $input['apiUrl']) {
-            $this->_setStaticsReset(); // Force Reload statics here if URL changed
-        // }
+        $this->_setStaticsReset(); // Always Force Reload statics when options saved
 
-        // print_r($input);
-        // die();
+        // if($current['apiUrl'] != $input['apiUrl']) {
+            // $this->_setStaticsReset(); // Force Reload statics here if URL changed
+        // }
 
         return $input;
     }

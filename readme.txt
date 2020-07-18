@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.2.6 =
+* Added download Bible limitation as a quick fix to download issues on shared hosting
+
 = 4.2.5 = 
 * Bugfix: Force refresh of statics data if previous load failed.
 
