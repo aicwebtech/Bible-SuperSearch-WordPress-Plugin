@@ -42,12 +42,19 @@ class BibleSuperSearch_Shortcodes {
     );
     
     static public function display($atts) {
-        global $BibleSuperSearch_Options;
+        global $BibleSuperSearch_Options, $wp_query;
         $options        = $BibleSuperSearch_Options->getOptions();
         $statics        = $BibleSuperSearch_Options->getStatics();
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
+
+        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : [];
+
+        if($query_string) {
+            var_dump($query_string);
+            // die();
+        }
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
