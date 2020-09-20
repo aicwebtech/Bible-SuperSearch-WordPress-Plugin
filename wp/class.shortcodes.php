@@ -121,7 +121,8 @@ class BibleSuperSearch_Shortcodes {
 
             // Dynamically generate link to biblesupersearch_root_dir
             // Confirmed needed (by WordPress.com websites)
-            $bss_dir        = plugins_url('app', dirname(__FILE__));
+            // $bss_dir        = plugins_url('app', dirname(__FILE__));
+            $bss_dir        = plugins_url('com_test/js/app', dirname(__FILE__));
             $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
             $html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n";
         }
