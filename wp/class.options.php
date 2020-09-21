@@ -235,7 +235,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         return;
     }
 
-    public function getLandingPageOptions($render_html = FALSE, $value = NULL) {
+    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None') {
         global $wpdb;
 
         $sql = "
@@ -250,7 +250,11 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             return $results;
         }
 
-        $html = "<option value='0'> None </option>";
+        $html = '';
+
+        if($zero_option) {
+            $html = "<option value='0'> {$zero_option} </option>";
+        }
 
         foreach($results as $res) {
             if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', ' ' . $res['post_content'])) {
@@ -266,23 +270,44 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         return $html;
     }
 
-    public function getLandingPage() {
+    public function hasLandingPageOptions() {
         global $wpdb;
 
+        $sql = "
+            SELECT ID FROM `{$wpdb->prefix}posts`
+            WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
+            AND post_type IN ('page','post') AND post_status = 'publish'
+            LIMIT 1
+        ";
+
+        $results = $wpdb->get_results($sql, ARRAY_A);
+        return empty($results) ? FALSE : TRUE;
+    }
+
+    public function getLandingPage() {
         $options = $this->getOptions();
 
         if(!$options['defaultDestinationPage']) {
             return FALSE;
         }
 
+        return $this->_getLandingPageHelper($options['defaultDestinationPage']);
+    }
+    
+    public function getLandingPageById($id) {
+        return $this->_getLandingPageHelper($id);
+    }
+
+    protected function _getLandingPageHelper($id) {
+        global $wpdb;
+
         $sql = "
             SELECT * FROM `{$wpdb->prefix}posts`
-            WHERE ID = {$options['defaultDestinationPage']}
+            WHERE ID = {$id}
             AND post_type IN ('page','post') AND post_status = 'publish'
         ";
 
         $results = $wpdb->get_results($sql, ARRAY_A);
-
         return $results ? $results[0] : FALSE;
     }
 
