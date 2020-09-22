@@ -21,28 +21,57 @@ class BibleSuperSearch_Widget extends WP_Widget {
     }
  
     public $args = array(
+        'before_widget' => '<div class="widget-wrap">',
+        'after_widget'  => '</div>',
         'before_title'  => '<h4 class="widgettitle">',
         'after_title'   => '</h4>',
-        'before_widget' => '<div class="widget-wrap">',
-        'after_widget'  => '</div></div>'
     );
  
     public function widget( $args, $instance ) {
- 
+        global $BibleSuperSearch_Options;
+
+        $form_action    = get_permalink($instance['landing_page']);
+        $query_vars     = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
+        $selected_bible = array_key_exists('bible', $query_vars) ? $query_vars['bible'] : NULL;
+
+        if(!$selected_bible) {
+            $options = $BibleSuperSearch_Options->getOPtions();
+            $selected_bible = $options['defaultBible'];
+        }
+
+        $request_style = $instance['show_bible_list'] ? 'width: 100%' : 'width: 80%; float:left';
+
         echo $args['before_widget'];
  
         if ( ! empty( $instance['title'] ) ) {
             echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
         }
- 
-        echo '<div class="textwidget">';
- 
-        echo esc_html__( $instance['text'], 'text_domain' );
- 
-        echo '</div>';
- 
+
+        ?>
+            <form action='<?php echo $form_action ?>' method='POST'>
+                <input name='biblesupersearch[request]' style='<?php echo $request_style ?>' placeholder= 'Verse(s) or Keyword(s)'/>
+
+                <?php if($instance['show_bible_list']): ?>
+                    <br />
+                    <select name='biblesupersearch[bible]' style='width: 80%; float: left'>
+                        <?php foreach($BibleSuperSearch_Options->getEnabledBibles() as $bible): ?>
+                            
+                            <?php
+                                $selected = ($bible['module'] == $selected_bible) ? "selected='selected'" : '';
+                                $display  = '(' . $bible['lang'] . ') ' . $bible['shortname'];
+                            ?>
+
+                            <option value='<?php echo $bible['module'] ?>' <?php echo $selected; ?> ><?php echo $display ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php endif; ?>
+
+                <input type='submit' value='Go' style='float:right' />
+                <div style='clear:both'></div>
+            </form>
+        <?php
+
         echo $args['after_widget'];
- 
     }
  
     public function form( $instance ) {

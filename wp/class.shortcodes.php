@@ -49,10 +49,12 @@ class BibleSuperSearch_Shortcodes {
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
 
+        $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
+
         $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : [];
 
         if($query_string) {
-            var_dump($query_string);
+            // var_dump($query_string);
             // die();
         }
 
@@ -125,6 +127,12 @@ class BibleSuperSearch_Shortcodes {
             $bss_dir        = plugins_url('com_test/js/app', dirname(__FILE__));
             $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
             $html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n";
+
+            if(!empty($query_vars)) {
+                $query_vars['redirected'] = TRUE;
+                $query_vars_json = json_encode($query_vars);
+                $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
+            }
         }
         else {
             // $html .= "biblesupersearch_instances.{$container} = {$options_json};\n";

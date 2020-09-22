@@ -1268,9 +1268,10 @@ case"r":return this._hashReference(t)
 case"s":return this._hashSearch(t)
 case"context":return this._hashContext(t)
 case"strongs":return this._hashSearch(t)
-case"f":return this._hashContext(t)}}else this.log("no hash"),this._hashLocalStorage()},_hashLocalStorage:function(){var e=localStorage.getItem("BibleSuperSearchFormData")
-if(e&&"string"==typeof e){var t=JSON.parse(e)
-t.redirected&&(this.preventRedirect=!0),localStorage.removeItem("BibleSuperSearchFormData"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto",submitAsManual:!0})}},_hashCache:function(e){var t=e[0]||null,n=e[1]||null
+case"f":return this._hashForm(t)}}else this.log("no hash"),this._hashLocalStorage()},_hashLocalStorage:function(){var e=localStorage.getItem("BibleSuperSearchFormData")
+if(e&&"string"==typeof e)var t=JSON.parse(e)
+else{if("object"!=typeof biblesupersearch_form_data)return
+var t=h.clone(biblesupersearch_form_data)}t.redirected&&(this.preventRedirect=!0),localStorage.removeItem("BibleSuperSearchFormData"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto",submitAsManual:!0})},_hashCache:function(e){var t=e[0]||null,n=e[1]||null
 this.waterfall("onCacheChange",{cacheHash:t,page:n})},_hashPassage:function(e){var t=this._explodeHashPassage(e),n=this._assembleHashPassage(t)
 this.waterfall("onHashRunForm",{formData:n,newTab:"auto"})},_hashStrongs:function(e){var t=e[0]||null,n={search:t}
 this.waterfall("onHashRunForm",{formData:n,newTab:"auto"})},_hashContext:function(e){var t=this._explodeHashPassage(e)
