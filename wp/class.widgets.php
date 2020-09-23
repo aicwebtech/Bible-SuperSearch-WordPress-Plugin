@@ -77,6 +77,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
     public function form( $instance ) {
         global $BibleSuperSearch_Options;
         $landing_page = array_key_exists('landing_page', $instance) ? (int) $instance['landing_page'] : 0;
+        $options = $BibleSuperSearch_Options->getOptions();
 
         if(!$landing_page) {
             $lp = $BibleSuperSearch_Options->getLandingPage();
@@ -93,6 +94,12 @@ class BibleSuperSearch_Widget extends WP_Widget {
 
         $sbl_field_id = $this->get_field_id( 'show_bible_list' );
         $sbl_field_name = $this->get_field_name( 'show_bible_list' );
+
+        // Todo
+        // Bible List Display: Select NONE, Full Name, Short Name
+        // Bible List Grouping: Select Global Default, <dynamic list>
+        // Placeholder: Text
+        // CSS classes
 
         ?>
         <p>

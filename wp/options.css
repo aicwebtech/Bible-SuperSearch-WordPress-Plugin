@@ -1,18 +1,26 @@
+.biblesupersearch_enabled_bible {
+    height: 300px;
+    width: 450px;
+    overflow-y: auto;
+}
+
 .bss_bible_lang {
     background-color: #DDD; 
-    float:left; 
-    display:inline-block; 
+/*    float:left; 
+    display:inline-block; */
     margin-bottom: 15px; 
     margin-right: 15px; 
     padding: 3px;
     border-radius: 3px;
+    width: 95%;
 }
 
 .bss_bible {
     /*loat:left;*/
     display: block; 
-    width: 250px; 
+    /*width: 250px; */
     padding-left: 10px;
+    font-size: 0.9em;
 }
 
 .form-table th {

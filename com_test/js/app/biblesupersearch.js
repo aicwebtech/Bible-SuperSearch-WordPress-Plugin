@@ -1020,14 +1020,7 @@ var n=this.$.CopyText.hasNode()
 if(this.log("node",n),n){if(document.selection){var i=document.body.createTextRange()
 i.moveToElementText(n),i.select()}else{var i=document.createRange()
 i.setStartBefore(n),i.setEndAfter(n),window.getSelection().removeAllRanges(),window.getSelection().addRange(i)}try{document.execCommand("copy")?alert("Copied to clipboard"):alert("Failed to copy")}catch(e){alert("Failed to copy")}}},appendText:function(e){var t=this.$.CopyText.get("content")||"",e=e||""
-this.$.CopyText.set("content",t+e)},clearText:function(){this.$.CopyText.set("content",null)}})}],"src/components/DownloadSelect":[function(e,t,n,require,request){var i=require("./Select"),s=require("enyo/kind")
-e.exports=s({name:"DownloadSelect",kind:i,create:function(){this.inherited(arguments)
-var e=this.app.get("statics"),t=e.download_formats,n=this.app.get("configs")
-n.enabledBibles,this.isShort?this.shortWidthWidth:this.width
-this.createComponent({content:"Select a Download Format",allowHtml:!0,value:"0"}),t.forEach(function(e){this.log(e)
-var t=(1==e?this.rangeUnit:this.rangeUnitPlural,e.name),n=this.createComponent({allowHtml:!0,tag:"optgroup",allowHtml:!0,attributes:{label:t}}),i="<b>"+t+"</b> - "
-e.formats.forEach(function(t){var s=e.renderers[t]
-this.log(s),n.createComponent({tag:"option",value:t,allowHtml:!0,content:i+s.name})},this)},this)}})},{"./Select":"src/components/Select"}],"src/components/BibleSelect/SingleSelect":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("../Select")
+this.$.CopyText.set("content",t+e)},clearText:function(){this.$.CopyText.set("content",null)}})}],"src/components/BibleSelect/SingleSelect":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("../Select")
 require("enyo.OptionGroup")
 e.exports=s({name:"SingleSelect",kind:o,width:270,shortWidthThreshold:250,shortWidthWidth:160,isShort:!1,alwaysShort:!1,parallelNumber:0,classes:"biblesupersearch_bible_selector",_currentGroup:null,downloadableOnly:!1,handlers:{resize:"handleResize"},create:function(){this.inherited(arguments)
 var e=this.app.get("statics"),t=e.bibles,n=this.app.get("configs"),s=n.enabledBibles,o="Select a Bible",r=this.isShort?this.shortWidthWidth:this.width
@@ -1039,6 +1032,10 @@ var t=this.isShort,n=null
 if(this.app.configs.bibleGrouping&&"none"!=this.app.configs.bibleGrouping){var i=""+e.shortname,s=""+e.name,o=t?i:s
 switch(this.app.configs.bibleGrouping){case"language":n=e.lang_short
 var r=e.lang_native||e.lang
+groupContent=r+" - ("+e.lang_short.toUpperCase()+")"
+break
+case"language_and_english":n=e.lang_short
+var r=e.lang_native&&e.lang_native!=e.lang?e.lang_native+" / "+e.lang:e.lang
 groupContent=r+" - ("+e.lang_short.toUpperCase()+")"
 break
 case"language_english":n=e.lang_short,groupContent=e.lang+" - ("+e.lang_short.toUpperCase()+")"
@@ -1056,7 +1053,14 @@ var n=t?this.shortWidthWidth:this.width,i=this.getClientControls()
 this._isShortChangedHelper(i,t),n&&0!=n&&(this.applyStyle("max-width",null),this.applyStyle("max-width",n.toString()+"px"),this.render())},_isShortChangedHelper:function(e,t){e.forEach(function(e){if("optgroup"==e.get("tag")){var n=e.getClientControls()
 return void this._isShortChangedHelper(n,t)}var i=t?e.contentShort:e.contentLong
 i&&e.set("content",i)},this)},checkShort:function(){var e=!(this.shortWidthThreshold<=window.innerWidth)
-e=!!this.alwaysShort||e,this.set("isShort",e)},handleResize:function(e,t){this.checkShort()}})},{"../Select":"src/components/Select","enyo.OptionGroup":"enyo"}],"src/components/SearchType":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("./Select")
+e=!!this.alwaysShort||e,this.set("isShort",e)},handleResize:function(e,t){this.checkShort()}})},{"../Select":"src/components/Select","enyo.OptionGroup":"enyo"}],"src/components/DownloadSelect":[function(e,t,n,require,request){var i=require("./Select"),s=require("enyo/kind")
+e.exports=s({name:"DownloadSelect",kind:i,create:function(){this.inherited(arguments)
+var e=this.app.get("statics"),t=e.download_formats,n=this.app.get("configs")
+n.enabledBibles,this.isShort?this.shortWidthWidth:this.width
+this.createComponent({content:"Select a Download Format",allowHtml:!0,value:"0"}),t.forEach(function(e){this.log(e)
+var t=(1==e?this.rangeUnit:this.rangeUnitPlural,e.name),n=this.createComponent({allowHtml:!0,tag:"optgroup",allowHtml:!0,attributes:{label:t}}),i="<b>"+t+"</b> - "
+e.formats.forEach(function(t){var s=e.renderers[t]
+this.log(s),n.createComponent({tag:"option",value:t,allowHtml:!0,content:i+s.name})},this)},this)}})},{"./Select":"src/components/Select"}],"src/components/SearchType":[function(e,t,n,require,request){var s=require("enyo/kind"),o=require("./Select")
 e.exports=s({name:"SearchType",kind:o,create:function(){this.inherited(arguments)
 var e=this.app.get("statics"),t=e.search_types
 this.app.get("configs")

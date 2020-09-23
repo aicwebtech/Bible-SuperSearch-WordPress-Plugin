@@ -56,6 +56,7 @@
                     <option value='none' <?php selected('', $options['bibleGrouping'] ); ?> >None</option>
                     <option value='language' <?php selected('language', $options['bibleGrouping'] ); ?> >Language - Endonym</option>
                     <option value='language_english' <?php selected('language_english', $options['bibleGrouping'] ); ?> >Language - English Name</option>
+                    <option value='language_and_english' <?php selected('language_and_english', $options['bibleGrouping'] ); ?> >Language - Endonym and English Name</option>
                 </select>
             </td>
         </tr>

@@ -21,6 +21,15 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bibleGrouping'     => 'language',
     );  
 
+    public static $selector_options = [
+        'bibleGrouping' => [
+            'none'                  => 'None',
+            'language'              => 'Language - Endonym',
+            'language_english'      => 'Language - English Name',
+            'language_and_english'  => 'Language - Endonym and English Name',
+        ],
+    ];
+
     protected $tabs = array(
         'general'  => array(
             'name'          => 'General',
@@ -52,6 +61,14 @@ abstract class BibleSuperSearch_Options_Abstract {
         // Do Something
     }
 
+    static public function getSelectorOptions($selector) {
+        if(array_key_exists($selector, static::$selector_options)) {
+            return static::$selector_options[$selector];
+        }
+
+        return FALSE;
+    }
+
     public function getOptions($dont_set_default = FALSE) {
         // todo - make this generic!
 
@@ -72,6 +89,14 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
 
         return $options;
+    }
+
+    public function getOptionsFiltered() {
+        $options = $this->getOptions();
+
+        if($options['enableAllBibles']) {
+            $options['enabledBibles'] = [];
+        }
     }
 
     protected function _getOptionsFromStorage() {

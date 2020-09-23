@@ -158,7 +158,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             }
         }
 
-        if($tab == 'general') {
+        if($tab == 'bible') {
             if($input['enableAllBibles']) {
                 $input['enabledBibles'] = [];
             }
