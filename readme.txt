@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.2.8 =
+* Fixed total breakage / no display on EZ-Copy
+
 = 4.2.7 = 
 * Fixed Bible selected breakaga on expanding form when contracting the form.
 
