@@ -40,7 +40,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             $selected_bible = $options['defaultBible'];
         }
 
-        $request_style = $instance['show_bible_list'] ? 'width: 100%' : 'width: 80%; float:left';
+        $request_style = $instance['bible_list_display'] != 'none' ? 'width: 100%' : 'width: 80%; float:left';
 
         if($instance['bible_list_grouping'] == 'global') {
             $instance['bible_list_grouping'] = $options['bibleGrouping'];

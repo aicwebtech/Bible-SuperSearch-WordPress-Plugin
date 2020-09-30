@@ -266,11 +266,11 @@ class BibleSuperSearch_Shortcodes {
         }
 
         wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download/download.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
 
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
         // $BibleSuperSearchBibles          = $statics['bibles'];
-        $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics);
+        $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics, 'name', 'language_english');
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
         $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;

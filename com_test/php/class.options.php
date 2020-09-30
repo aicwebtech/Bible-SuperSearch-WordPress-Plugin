@@ -103,25 +103,6 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     }
 
-    public function getEnabledBibles($statics = array()) {
-        $options = $this->getOptions();
-        $bibles  = $this->getBibles(NULL, $statics);
-
-        if($options['enableAllBibles'] || !is_array($options['enabledBibles']) || empty($options['enabledBibles']) ) {
-            return $bibles;
-        }
-
-        $enabled = array();
-
-        foreach($bibles as $module => $bible) {
-            if(in_array($module, $options['enabledBibles'])) {
-                $enabled[$module] = $bible;
-            }
-        }
-
-        return $enabled;
-    }
-
     // todo - make this generic!
     public function setDefaultOptions() {
 
@@ -326,31 +307,37 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $bibles;
     }
 
-    public function getBibles($sorting = NULL, $statics = NULL) {
+    public function getBibles($statics = NULL, $sorting = NULL, $grouping = NULL) {
         $options = $this->getOptions();
         $statics = $statics ? $statics : $this->getStatics();
+        
         // $sorting = 'year|name'; // Todo - actually apply sort options here
         
         if(!$sorting) {
             $sorting  = array_key_exists('bibleSorting', $options)  ? $options['bibleSorting'] : 'rank';
+        }
+        
+        if(!$grouping) {
             $grouping = array_key_exists('bibleGrouping', $options) ? $options['bibleGrouping'] : NULL;
+        }
 
-            switch ($grouping) {
-                case 'language':
-                    // $groupOrder = 'lang_native';
-                    $groupOrder = 'lang'; // Because current download page doesn't support toggling between Endonymn and English Exonymn
-                    break;            
-                case 'language_english':
-                    $groupOrder = 'lang';
-                    break;
-                case 'none':
-                default:
-                    $groupOrder = NULL;
-            }
+        switch ($grouping) {
+            case 'language':
+                $groupOrder = 'lang_native';
+                break;            
+            case 'language_english':
+                $groupOrder = 'lang';
+                break;            
+            case 'language_and_english':
+                $groupOrder = 'lang_native';
+                break;
+            case 'none':
+            default:
+                $groupOrder = NULL;
+        }
 
-            if($groupOrder) {
-                $sorting = $groupOrder . '|' . $sorting;
-            }
+        if($groupOrder) {
+            $sorting = $groupOrder . '|' . $sorting;
         }
 
         $sorting  = explode('|', $sorting);
@@ -364,11 +351,32 @@ abstract class BibleSuperSearch_Options_Abstract {
         if(is_array($statics['bibles'])) {        
             foreach($statics['bibles'] as $module => &$bible) {
 
+                switch($grouping) {
+                    case 'language': // Language: Endonym
+                        $bible['group_value'] = $bible['lang_short'];
+                        $n = $bible['lang_native'] ?: $bible['lang']; // Fall back to English name if needed
+                        $bible['group_name'] = $n . ' - (' . strtoupper($bible['lang_short']) . ')';
+                        break;                
+                    case 'language_and_english': // Language: Both Endonym and English name
+                        $bible['group_value'] = $bible['lang_short'];
+                        // If no Endonym, only display English name once
+                        $n = ($bible['lang_native'] && $bible['lang_native'] != $bible['lang']) ? $bible['lang_native'] . ' / ' . $bible['lang'] : $bible['lang'];
+                        $bible['group_name'] = $n . ' - (' . strtoupper($bible['lang_short']) . ')';
+                        break;
+                    case 'language_english': // Language: English name
+                        $bible['group_value'] = $bible['lang_short'];
+                        $bible['group_name'] = $bible['lang'] . ' - (' . strtoupper($bible['lang_short']) . ')';
+                        break;
+                    default:
+                        $bible['group_value'] = NULL;
+                        $bible['group_name']  = NULL;
+                        $bible['display'] = $bible['name'] . ' (' . $bible['lang'] . ')';
+                }
+
                 foreach($sorting as $k => $s) {
                     $sortable[$k * 2][$module] = $bible[$s];
                 }
 
-                $bible['display'] = $bible['name'] . ' (' . $bible['lang'] . ')';
                 $bible['display_short'] = $bible['name'];
             }
             
@@ -378,6 +386,25 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
 
         return $this->getBible();
+    }
+
+    public function getEnabledBibles($statics = array(), $sorting = NULL, $grouping = NULL) {
+        $options = $this->getOptions();
+        $bibles  = $this->getBibles($statics, $sorting, $grouping);
+
+        if($options['enableAllBibles'] || !is_array($options['enabledBibles']) || empty($options['enabledBibles']) ) {
+            return $bibles;
+        }
+
+        $enabled = array();
+
+        foreach($bibles as $module => $bible) {
+            if(in_array($module, $options['enabledBibles'])) {
+                $enabled[$module] = $bible;
+            }
+        }
+
+        return $enabled;
     }
 
     // TODO - make generic 

@@ -57,26 +57,26 @@ $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'biblesupersearch_add_settings_link' );
 
 
-    function biblesupersearch_custom_rewrite() {
-        global $BibleSuperSearch_Options;
+function biblesupersearch_custom_rewrite() {
+    global $BibleSuperSearch_Options;
 
-        $landing_page = $BibleSuperSearch_Options->getLandingPage();
+    $landing_page = $BibleSuperSearch_Options->getLandingPage();
 
-        if(!$landing_page) {
-            return;
-        }
-
-        // var_dump($landing_page);
-        // die();
-
-        $landing_page_link = 'bible';
-        $landing_page_id = 11;
-
-        $landing_page_link = $landing_page['post_name'];
-        $landing_page_id = (int) $landing_page['ID'];
-
-        add_rewrite_tag('%bible_query%', '([^&]+)');
-        add_rewrite_rule('^' . $landing_page_link  . '/(.*)/?','index.php?page_id=' . $landing_page_id . '&bible_query=$matches[1]','top');
+    if(!$landing_page) {
+        return;
     }
-    
-    add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
+
+    // var_dump($landing_page);
+    // die();
+
+    $landing_page_link = 'bible';
+    $landing_page_id = 11;
+
+    $landing_page_link = $landing_page['post_name'];
+    $landing_page_id = (int) $landing_page['ID'];
+
+    add_rewrite_tag('%bible_query%', '([^&]+)');
+    add_rewrite_rule('^' . $landing_page_link  . '/(.*)/?','index.php?page_id=' . $landing_page_id . '&bible_query=$matches[1]','top');
+}
+
+add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);

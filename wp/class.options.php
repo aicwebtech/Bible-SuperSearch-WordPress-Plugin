@@ -94,25 +94,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         return $options;
     }
 
-    public function getEnabledBibles($statics = array()) {
-        $options = $this->getOptions();
-        $bibles  = $this->getBibles(NULL, $statics);
-
-        if($options['enableAllBibles'] || !is_array($options['enabledBibles']) || empty($options['enabledBibles']) ) {
-            return $bibles;
-        }
-
-        $enabled = array();
-
-        foreach($bibles as $module => $bible) {
-            if(in_array($module, $options['enabledBibles'])) {
-                $enabled[$module] = $bible;
-            }
-        }
-
-        return $enabled;
-    }
-
     public function setDefaultOptions() {
         if ( ! is_array( get_option( $this->option_index ) ) ) {
             delete_option( $this->option_index ); // just in case
