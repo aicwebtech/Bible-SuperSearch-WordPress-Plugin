@@ -26,11 +26,13 @@ class BibleSuperSearch_Widget extends WP_Widget {
         'before_title'  => '<h4 class="widgettitle">',
         'after_title'   => '</h4>',
     );
+
+    protected $default_placeholder_text = 'Verse(s) or Keyword(s)';
  
     public function widget( $args, $instance ) {
         global $BibleSuperSearch_Options;
 
-        $options        = $BibleSuperSearch_Options->getOPtions();
+        $options        = $BibleSuperSearch_Options->getOptions();
         $form_action    = get_permalink($instance['landing_page']);
         $query_vars     = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
         $selected_bible = array_key_exists('bible', $query_vars) ? $query_vars['bible'] : NULL;
@@ -49,50 +51,20 @@ class BibleSuperSearch_Widget extends WP_Widget {
         if($instance['bible_list_display'] != 'none') {
             $group = NULL;
 
-            foreach($BibleSuperSearch_Options->getEnabledBibles() as $bible) {
-                $b = [
-                    'module' => $bible['module'],
-                ];
+            foreach($BibleSuperSearch_Options->getEnabledBibles(NULL, NULL, $instance['bible_list_grouping']) as $bible) {
 
                 switch($instance['bible_list_display']) {
                     case 'full_name':
-                        $b['name'] = $bible['name'];
+                        $bible['display_name'] = $bible['name'];
                         break;
                     case 'short_name':
                     default:
-                        $b['name'] = $bible['shortname'];
+                        $bible['display_name'] = $bible['shortname'];
                 }
 
-                switch($instance['bible_list_grouping']) {
-                    case 'language': // Language: Endonym
-                        $b['group_value'] = $bible['lang_short'];
-                        $n = $bible['lang_native'] ?: $bible['lang']; // Fall back to English name if needed
-                        $b['group_name'] = $n . ' - (' . strtoupper($bible['lang_short']) . ')';
-                        break;                
-                    case 'language_and_english': // Language: Both Endonym and English name
-                        $b['group_value'] = $bible['lang_short'];
-                        // If no Endonym, only display English name once
-                        $n = ($bible['lang_native'] && $bible['lang_native'] != $bible['lang']) ? $bible['lang_native'] . ' / ' . $bible['lang'] : $bible['lang'];
-                        $b['group_name'] = $n . ' - (' . strtoupper($bible['lang_short']) . ')';
-                        break;
-                    case 'language_english': // Language: English name
-                        $b['group_value'] = $bible['lang_short'];
-                        $b['group_name'] = $bible['lang'] . ' - (' . strtoupper($bible['lang_short']) . ')';
-                        break;
-                    default:
-                        $b['group_value'] = NULL;
-                        $b['group_name']  = NULL;
-                        $b['name'] .= ' (' . $bible['lang'] . ')';
-                }
-
-
-                $bible_list[] = $b;
+                $bible_list[] = $bible;
             }
         }
-
-        // echo('<pre>');
-        // print_r($bible_list);
-        // echo('</pre>');
 
         echo $args['before_widget'];
  
@@ -118,7 +90,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
 
                             <?php
                                 $selected = ($bible['module'] == $selected_bible) ? "selected='selected'" : '';
-                                $display  = $bible['name'];
+                                $display  = $bible['display_name'];
                             ?>
 
                             <option value='<?php echo $bible['module'] ?>' <?php echo $selected; ?> ><?php echo $display ?></option>
@@ -168,14 +140,11 @@ class BibleSuperSearch_Widget extends WP_Widget {
         $sbl_field_name = $this->get_field_name( 'show_bible_list' );
 
         // Todo
-        // Bible List Display: Select NONE, Full Name, Short Name
-        // Bible List Grouping: Select Global Default, <dynamic list>
         // Placeholder: Text
-        // CSS classes
 
         $bible_list_display_options = [
-            'none' => 'None',
-            'full_name' => 'Full Name',
+            'none'       => 'None',
+            'full_name'  => 'Full Name',
             'short_name' => 'Short Name'
         ]; 
 
@@ -189,6 +158,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'text_domain' ); ?></label>
             <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
         </p>
+        <!--
         <p>
             <label for="<?php echo esc_attr( $sbl_field_id ); ?>"><?php echo esc_html__( 'Show Bible List:', 'text_domain' ); ?></label>
             <label for="<?php echo esc_attr( $sbl_field_id ); ?>_1"><?php echo esc_html__( 'Yes', 'text_domain' ); ?></label>
@@ -197,6 +167,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             <label for="<?php echo esc_attr( $sbl_field_id ); ?>_0"><?php echo esc_html__( 'No', 'text_domain' ); ?></label>
             <input type='radio' id="<?php echo esc_attr( $sbl_field_id ); ?>_0" name="<?php echo esc_attr( $sbl_field_name ); ?>" value='0' <?php echo $sbl_sel0 ?> />
         </p>
+        -->
 
         <?php if(!$BibleSuperSearch_Options->hasLandingPageOptions()): ?> 
             <p style='color: red'>
