@@ -42,7 +42,8 @@ class BibleSuperSearch_Widget extends WP_Widget {
             $selected_bible = $options['defaultBible'];
         }
 
-        $request_style = $instance['bible_list_display'] != 'none' ? 'width: 100%' : 'width: 80%; float:left';
+        $go_neighbor_format = 'width: calc(100% - 50px); float:left';
+        $request_style = $instance['bible_list_display'] != 'none' ? 'width: 100%' : $go_neighbor_format;
 
         if($instance['bible_list_grouping'] == 'global') {
             $instance['bible_list_grouping'] = $options['bibleGrouping'];
@@ -78,7 +79,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
 
                 <?php if($instance['bible_list_display'] != 'none'): ?>
                     <br />
-                    <select name='biblesupersearch[bible]' style='width: 80%; float: left'>
+                    <select name='biblesupersearch[bible]' style='<?php echo $go_neighbor_format; ?>'>
                         <?php foreach($bible_list as $bible): ?>
                             <?php 
                                 if($bible['group_value'] && $bible['group_value'] != $group):
@@ -176,15 +177,15 @@ class BibleSuperSearch_Widget extends WP_Widget {
         <?php endif; ?>
 
         <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'landing_page' ) ); ?>"><?php echo esc_html__( 'Landing Page:', 'text_domain' ); ?></label>
-            <select name="<?php echo esc_attr( $this->get_field_name( 'landing_page' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'landing_page' ) ); ?>" >
+            <label for="<?php echo esc_attr( $this->get_field_id( 'landing_page' ) ); ?>"><?php echo esc_html__( 'Landing Page:', 'text_domain' ); ?></label><br />
+            <select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'landing_page' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'landing_page' ) ); ?>" >
                 <?php echo $landing_page_options; ?>
             </select>
         </p>        
 
         <p>
             <label for="<?php echo esc_attr( $this->get_field_id( 'bible_list_display' ) ); ?>"><?php echo esc_html__( 'Bible List Display:', 'text_domain' ); ?></label>
-            <select name="<?php echo esc_attr( $this->get_field_name( 'bible_list_display' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'bible_list_display' ) ); ?>" >
+            <select class='biblesupersearch_list_grouping' name="<?php echo esc_attr( $this->get_field_name( 'bible_list_display' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'bible_list_display' ) ); ?>" >
                 <?php foreach ($bible_list_display_options as $value => $option): ?>
                     <option value='<?php echo $value ?>' <?php if($value == $instance['bible_list_display']): echo "selected='selected'"; endif; ?> ><?php echo $option ?></option>
                 <?php endforeach; ?>
@@ -192,14 +193,53 @@ class BibleSuperSearch_Widget extends WP_Widget {
         </p>        
         <p>
             <label for="<?php echo esc_attr( $this->get_field_id( 'bible_list_grouping' ) ); ?>"><?php echo esc_html__( 'Bible List Grouping:', 'text_domain' ); ?></label>
-            <select name="<?php echo esc_attr( $this->get_field_name( 'bible_list_grouping' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'bible_list_grouping' ) ); ?>" >
+            <select class="widefat biblesupersearch_list_option" name="<?php echo esc_attr( $this->get_field_name( 'bible_list_grouping' ) ); ?>" 
+                id="<?php echo esc_attr( $this->get_field_id( 'bible_list_grouping' ) ); ?>" >
+                
                 <?php foreach ($bible_list_grouping_options as $value => $option): ?>
                     <option value='<?php echo $value ?>' <?php if($value == $instance['bible_list_grouping']): echo "selected='selected'"; endif; ?> ><?php echo $option ?></option>
                 <?php endforeach; ?>
             </select>
         </p>
+        
+        <script>
+
+        // if(typeof hasBibleSuperSearchWidget == 'undefined') {
+            jQuery(document).ready(function() {
+                jQuery('.biblesupersearch_list_grouping').change(function() {
+                    var id = jQuery(this).prop('id'),
+                        value = jQuery(this).val(),
+                        groupingId = id.replace('display', 'grouping'),
+                        enabled = (value == 'none' || value == '' || !value) ? false : true;
+                    
+                    console.log('change', id, groupingId);
+
+                    if(enabled) {
+                        jQuery('#' + groupingId).show();
+                        jQuery('label[for=\'' + groupingId + '\']').show();
+                    }
+                    else {
+                        jQuery('#' + groupingId).hide();
+                        jQuery('label[for=\'' + groupingId + '\']').hide();
+                    }
+
+
+                    // widget-biblesupersearch_widget-2-bible_list_display
+                    // widget-biblesupersearch_widget-2-bible_list_grouping
+                });
+
+                jQuery('.biblesupersearch_list_grouping').change();
+            });
+
+            hasBibleSuperSearchWidget = true;
+        // }
+
+
+        </script>
+
         <?php
- 
+        
+
     }
  
     public function update( $new_instance, $old_instance ) {

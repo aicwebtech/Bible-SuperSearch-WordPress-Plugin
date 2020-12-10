@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.3.0 =
+
+
 = 4.2.7 = 
 * Fixed Bible selected breakaga on expanding form when contracting the form.
 
