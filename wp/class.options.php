@@ -216,7 +216,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         return;
     }
 
-    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None') {
+    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
         global $wpdb;
 
         $sql = "
@@ -234,7 +234,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         $html = '';
 
         if($zero_option) {
-            $html = "<option value='0'> {$zero_option} </option>";
+            $sel  = (empty($value)) ? "selected = 'selected'" : '';
+
+            if($zero_option == 'Default' || $zero_default) {
+                $lp = $this->getLandingPage();
+                $zero_option = '(' . $zero_option . ') ' . $lp['title_fmt'];
+            }
+
+            $html = "<option value='0' {$sel}> {$zero_option} </option>";
         }
 
         foreach($results as $res) {
@@ -242,13 +249,18 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
                 continue; // Ignore example shortcodes ie [[biblesupersearch]]
             }
 
+            $this->_formatLandingPageOption($res);
             $sel  = ($res['ID'] == $value) ? "selected = 'selected'" : '';
-            $title = ($res['post_title']) ? $res['post_title'] : '(No Title, ID = ' . $res['ID'] . ')';
-            $type = ucfirst($res['post_type']);
-            $html .= "<option value='{$res['ID']}' {$sel}>{$type}: {$title}</option>";
+            $html .= "<option value='{$res['ID']}' {$sel}>{$res['title_fmt']}</option>";
         }
 
         return $html;
+    }
+
+    protected function _formatLandingPageOption(&$landing_page) {
+        $title = ($landing_page['post_title']) ? $landing_page['post_title'] : '(No Title, ID = ' . $landing_page['ID'] . ')';
+        $type = ucfirst($landing_page['post_type']);
+        $landing_page['title_fmt'] = $type . ': ' . $title;
     }
 
     public function hasLandingPageOptions() {
@@ -289,7 +301,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         ";
 
         $results = $wpdb->get_results($sql, ARRAY_A);
-        return $results ? $results[0] : FALSE;
+
+        if(!$results) {
+            return FALSE;
+        }
+
+        $landing_page = $results[0];
+        $this->_formatLandingPageOption($landing_page);
+        return $landing_page;
     }
 
     // TODO - make generic

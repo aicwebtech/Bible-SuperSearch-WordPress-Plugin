@@ -32,8 +32,15 @@ class BibleSuperSearch_Widget extends WP_Widget {
     public function widget( $args, $instance ) {
         global $BibleSuperSearch_Options;
 
+        $landing_page   = $instance['landing_page'];
+
+        if(!$landing_page) {
+            $lp = $BibleSuperSearch_Options->getLandingPage();
+            $landing_page = (int) $lp['ID'];
+        }
+
         $options        = $BibleSuperSearch_Options->getOptions();
-        $form_action    = get_permalink($instance['landing_page']);
+        $form_action    = get_permalink($landing_page);
         $query_vars     = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
         $selected_bible = array_key_exists('bible', $query_vars) ? $query_vars['bible'] : NULL;
         $bible_list = [];
@@ -74,6 +81,12 @@ class BibleSuperSearch_Widget extends WP_Widget {
         }
 
         ?>
+            <?php if(empty($landing_page)): ?>
+                <p style='color: red'>
+                    ERROR: No landing page found. &nbsp;The Bible SuperSearch widget will not work without a landing page. &nbsp;Please select a landing page in the widget settings.
+                </p>
+            <?php endif; ?>
+
             <form action='<?php echo $form_action ?>' method='POST'>
                 <input name='biblesupersearch[request]' style='<?php echo $request_style ?>' placeholder= 'Verse(s) or Keyword(s)'/>
 
@@ -124,12 +137,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             }
         }
 
-        if(!$landing_page) {
-            $lp = $BibleSuperSearch_Options->getLandingPage();
-            $landing_page = (int) $lp['ID'];
-        }
-
-        $landing_page_options = $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $landing_page, FALSE);
+        $landing_page_options = $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $landing_page, 'Default');
 
         $title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'text_domain' );
         $show_bible_list = ! empty( $instance['show_bible_list'] ) ? $instance['show_bible_list'] : 0;
@@ -222,10 +230,6 @@ class BibleSuperSearch_Widget extends WP_Widget {
                         jQuery('#' + groupingId).hide();
                         jQuery('label[for=\'' + groupingId + '\']').hide();
                     }
-
-
-                    // widget-biblesupersearch_widget-2-bible_list_display
-                    // widget-biblesupersearch_widget-2-bible_list_grouping
                 });
 
                 jQuery('.biblesupersearch_list_grouping').change();

@@ -225,7 +225,7 @@ abstract class BibleSuperSearch_Options_Abstract {
     }
 
     // todo - make this generic! 
-    public function getLandingPageOptions($render_html = FALSE, $value = NULL) {
+    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
         global $wpdb;
 
         $sql = "
