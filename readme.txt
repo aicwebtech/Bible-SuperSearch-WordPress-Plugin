@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -38,7 +38,7 @@ You also have the option to install our API on your server.
 1. Selectable skins (interfaces)
 1. Small footprint.  Uses our API - Doesn't take up your web hosting space!
 1. Works in PHP 7+
-1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats (as a separate feature)
+1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats
 
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
 
@@ -72,7 +72,7 @@ This plugin is a wrapper around the official Bible SuperSearch client.  This cli
 ### Directories
 
 * wp - code specific to this WordPress plugin
-* app - Bible SuperSearch client (minified)
+* com_test - Bible SuperSearch client (minified)
 
 == Installation ==
 1. Click 'Install Now' on the plugin through the WordPress plugins screen, OR Unzip the plugin .zip file, then upload the `biblesupersearch` directory to the `/wp-content/plugins/` directory.

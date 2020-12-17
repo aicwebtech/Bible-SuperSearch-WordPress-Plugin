@@ -11,7 +11,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             'biblesupersearch_widget',  // Base ID
             'Bible SuperSearch',   // Name
             [
-                'description' => __('Small Bible search form that links back to your main Bible SuperSearch page.'),
+                'description' => __('Small Bible search form.'),
             ]
         );
  
@@ -58,20 +58,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
 
         if($instance['bible_list_display'] != 'none') {
             $group = NULL;
-
-            foreach($BibleSuperSearch_Options->getEnabledBibles(NULL, NULL, $instance['bible_list_grouping']) as $bible) {
-
-                switch($instance['bible_list_display']) {
-                    case 'full_name':
-                        $bible['display_name'] = $bible['name'];
-                        break;
-                    case 'short_name':
-                    default:
-                        $bible['display_name'] = $bible['shortname'];
-                }
-
-                $bible_list[] = $bible;
-            }
+            $bible_list = $this->_getBibleList($instance['bible_list_display'], $instance['bible_list_grouping']);
         }
 
         echo $args['before_widget'];
@@ -256,6 +243,28 @@ class BibleSuperSearch_Widget extends WP_Widget {
         $instance['bible_list_grouping'] = ( !empty( $new_instance['bible_list_grouping'] ) ) ? $new_instance['bible_list_grouping'] : 'global';
         
         return $instance;
+    }
+
+    private function _getBibleList($bible_list_display = NULL, $bible_list_grouping = NULL) {
+        global $BibleSuperSearch_Options;
+
+        $bible_list = [];
+
+        foreach($BibleSuperSearch_Options->getEnabledBibles(NULL, NULL, $bible_list_grouping) as $bible) {
+
+            switch($bible_list_display) {
+                case 'full_name':
+                    $bible['display_name'] = $bible['name'];
+                    break;
+                case 'short_name':
+                default:
+                    $bible['display_name'] = $bible['shortname'];
+            }
+
+            $bible_list[] = $bible;
+        }
+
+        return $bible_list;
     }
 }
 
