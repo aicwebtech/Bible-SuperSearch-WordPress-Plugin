@@ -142,7 +142,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 == Changelog ==
 
 = 4.3.0 =
-
+* Added widget
+* Added dialog for downloading Bibles
+* Added Escape (ESC) to all dialogs
+* Bugfix: Fixed Bible sort mapping
 
 = 4.2.7 = 
 * Fixed Bible selected breakaga on expanding form when contracting the form.
