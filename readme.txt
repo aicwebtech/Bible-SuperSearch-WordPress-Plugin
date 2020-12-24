@@ -141,6 +141,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.3.1 =
+* Bugfix: New download dialog breaks when requesting two or more Bibles, but leaving the last Bible selector empty.
+
 = 4.3.0 =
 * Added widget
 * Added dialog for downloading Bibles
