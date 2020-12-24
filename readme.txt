@@ -147,8 +147,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Added Escape (ESC) to all dialogs
 * Bugfix: Fixed Bible sort mapping
 
+= 4.2.8 =
+* Fixed total breakage / no display on EZ-Copy
+
 = 4.2.7 = 
-* Fixed Bible selected breakaga on expanding form when contracting the form.
+* Fixed Bible selected breakage on expanding form when contracting the form.
 
 = 4.2.6 =
 * Added download Bible limitation as a quick fix to download issues on shared hosting
