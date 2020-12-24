@@ -1185,7 +1185,9 @@ if(n&&n.results&&n.results.render_needed)return void this.initRenderProcess()
 n&&n.errors&&(i=n.errors.join("\n")),alert(i)},handleRenderNeeded:function(e,t){return this.app.set("ajaxLoadingDelay",!1),t.results.success?this.sendFiles():this.initRenderProcess()},sendFiles:function(){this.$.DownloadPending.set("showing",!0),this.set("requestPending",!1)
 var e=JSON.stringify(this.formData.bible),t=this.app.configs.apiUrl+"/download?format="+this.formData.format+"&bible="+e
 this.$.DownloadLink.set("href",t),this.app.debug&&this.log("download url",t),window.location=t},initRenderProcess:function(){this.set("requestPending",!0),this.bibleQueue=l.clone(this.formData.bible),this.$.RenderStatusContainer.destroyClientControls(),this.$.Status.set("showing",!0),this.$.Spinner.set("showing",!0),this.renderNextBible()},renderNextBible:function(){if(this.get("requestPending")){if(0==this.bibleQueue.length)return this.$.RenderingComplete.set("showing",!0),this.$.Status.set("showing",!1),this.sendFiles()
-var e=this.bibleQueue.shift(),t=this.app.statics.bibles[e],n={bible:e,format:this.formData.format},i=this.$.RenderStatusContainer.createComponent({classes:"render_item",components:[{tag:"span",_name:"Label",classes:"name",content:t.name},{tag:"span",_name:"Status",classes:"status",content:"Rendering ..."},{classes:"clear_both"}]}).render(),s=this.$.Body.hasNode()
+var e=this.bibleQueue.shift(),t=this.app.statics.bibles[e]||null
+if(!t)return this.renderNextBible()
+var n={bible:e,format:this.formData.format},i=this.$.RenderStatusContainer.createComponent({classes:"render_item",components:[{tag:"span",_name:"Label",classes:"name",content:t.name},{tag:"span",_name:"Status",classes:"status",content:"Rendering ..."},{classes:"clear_both"}]}).render(),s=this.$.Body.hasNode()
 s.scrollTop=s.scrollHeight
 var o=new h({url:this.app.configs.apiUrl+"/render",method:"GET"}),r=i.controls[1]
 this.set("requestPending",!0),o.go(n),o.response(this,function(e,t){if(t.results.success){r.set("content","Success"),r.addClass("success")}else{r.set("content","Error"),r.addClass("error"),this.hasErrors=!0}this.renderNextBible()}),o.error(this,function(e,t){this.hasErrors=!0
