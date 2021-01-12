@@ -42,12 +42,21 @@ class BibleSuperSearch_Shortcodes {
     );
     
     static public function display($atts) {
-        global $BibleSuperSearch_Options;
+        global $BibleSuperSearch_Options, $wp_query;
         $options        = $BibleSuperSearch_Options->getOptions();
         $statics        = $BibleSuperSearch_Options->getStatics();
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
         $attr = static::$displayAttributes;
+
+        $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
+
+        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : [];
+
+        if($query_string) {
+            // var_dump($query_string);
+            // die();
+        }
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
@@ -114,9 +123,16 @@ class BibleSuperSearch_Shortcodes {
 
             // Dynamically generate link to biblesupersearch_root_dir
             // Confirmed needed (by WordPress.com websites)
-            $bss_dir        = plugins_url('app', dirname(__FILE__));
+            // $bss_dir        = plugins_url('app', dirname(__FILE__));
+            $bss_dir        = plugins_url('com_test/js/app', dirname(__FILE__));
             $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
             $html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n";
+
+            if(!empty($query_vars)) {
+                $query_vars['redirected'] = TRUE;
+                $query_vars_json = json_encode($query_vars);
+                $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
+            }
         }
         else {
             // $html .= "biblesupersearch_instances.{$container} = {$options_json};\n";
@@ -250,11 +266,11 @@ class BibleSuperSearch_Shortcodes {
         }
 
         wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css',   plugins_url('download/download.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
 
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
         // $BibleSuperSearchBibles          = $statics['bibles'];
-        $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics);
+        $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics, 'name', 'language_english');
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
         $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;

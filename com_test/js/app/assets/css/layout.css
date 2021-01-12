@@ -383,6 +383,11 @@ div.biblesupersearch_dialog {
     margin-top: 20px;
 }
 
+.dialog .buttons span.spacer {
+    display: inline-block;
+    width: 40px;
+} 
+
 .help_dialog {
     padding-top: 5px;
 }
@@ -465,7 +470,56 @@ div.biblesupersearch_dialog {
     font-size: 0.9em;
 }
 
-.clear-both {
+.bible_download h4 {
+    margin-top: 0;
+}
+.bible_download h5 {
+    margin-bottom: 0;
+}
+
+.bible_download .content {
+    height: 290px;
+    overflow-y: auto;
+    padding: 0 15px 15px;
+}
+
+.bible_download .buttons {
+    padding-top: 8px;
+}
+
+.bible_download .render_list {
+    text-align: left;
+}
+
+.bible_download .render_list .name {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    width: 75%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.bible_download .render_list .status {
+    display: inline-block;
+    float: right;
+    text-align: right;
+}
+
+.bible_download .render_list .status .success {
+    color: green;
+}
+
+.bible_download .render_list .status .error {
+    color: red;
+}
+
+.bible_download .render_list .render_item:nth-child(odd) {
+    background-color: #ddd;
+}
+
+.clear-both, .clear_both {
     clear: both;
 }
 

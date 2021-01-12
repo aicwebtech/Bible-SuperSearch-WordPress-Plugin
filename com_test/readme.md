@@ -1,0 +1,1 @@
+## Helper Library for Bible SuperSearch PHP-based clients
