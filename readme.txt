@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Powerful Bible search engine plus a Bible download tool.  Option to install our API on your server for complete independence.
 
 == Description ==
-Add powerful Bible tools to your website, including a Bible search engine with selectable interfaces, and a Bible download page.  
+Add powerful Bible tools to your website, including a Bible search engine, and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired.
 
 Keep your users on your website!   Unlike similar plugins, Bible SuperSearch displays the Bible text directly on your website; your web users will not be redirected to a 3rd party website to view the text.
 
@@ -38,6 +38,7 @@ This plugin pulls data from our API transparently.  You also have the option to 
     * Switch between verse mode and paragraph mode
     * Advanced search
 1. Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
+1. Widget providing a small Bible search form. 
 1. Small footprint.  Uses our API - Doesn't take up your web hosting space!
 1. Works in PHP 7+
 1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats
@@ -142,6 +143,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Advanced Options
 
 == Changelog ==
+
+= 4.3.2 =
+* Bugfix: Fixed breakage in the 'limit search to' presets.  When one of the preset values were selected, it would revert to 'Passage(s) Listed Below (or above), with the passage set to 'value'
+* Improved plugin description
 
 = 4.3.1 =
 * Bugfix: New download dialog breaks when requesting two or more Bibles, but leaving the last Bible selector empty.
