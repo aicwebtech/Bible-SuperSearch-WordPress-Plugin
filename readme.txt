@@ -9,14 +9,16 @@ Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Easily add a powerful Bible search engine to your WordPress site.
+Powerful Bible search engine plus a Bible download tool.  Option to install our API on your server for complete independence.
 
 == Description ==
-Add powerful Bible tools to your website, including a Bible search engine with selectable interfaces that allow it to appear as simple or complex as desired, and a Bible download page.  Includes option to install our API on your server and run completely on your website.
+Add powerful Bible tools to your website, including a Bible search engine with selectable interfaces, and a Bible download page.  
 
-This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  Allows seamless use of the Bible SuperSearch client and API on any WordPress site.
+Keep your users on your website!   Unlike similar plugins, Bible SuperSearch displays the Bible text directly on your website; your web users will not be redirected to a 3rd party website to view the text.
 
-You also have the option to install our API on your server. 
+This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  It allows for seamless use of the Bible SuperSearch client and API on any WordPress site.
+
+This plugin pulls data from our API transparently.  You also have the option to install our API on your server for complete autonomy.
 
 # Core Features
 
@@ -35,7 +37,7 @@ You also have the option to install our API on your server.
     * Copy text with easy copy mode
     * Switch between verse mode and paragraph mode
     * Advanced search
-1. Selectable skins (interfaces)
+1. Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
 1. Small footprint.  Uses our API - Doesn't take up your web hosting space!
 1. Works in PHP 7+
 1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats
