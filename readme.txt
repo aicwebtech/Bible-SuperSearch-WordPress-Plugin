@@ -144,6 +144,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.3.3 =
+* Bugfix: Fixed issues with responsiveness on the Bible SOS, Start, and Download dialogs
+* Bugfix: Fixed display issues with Download button
+
 = 4.3.2 =
 * Bugfix: Fixed breakage in the 'limit search to' presets.  When one of the preset values were selected, it would revert to 'Passage(s) Listed Below (or above), with the passage set to 'value'
 * Improved plugin description
