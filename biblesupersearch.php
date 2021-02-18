@@ -69,11 +69,19 @@ function biblesupersearch_custom_rewrite() {
     // var_dump($landing_page);
     // die();
 
-    $landing_page_link = 'bible';
-    $landing_page_id = 11;
+    // $landing_page_link = 'bible';
+    // $landing_page_id = 11;
+
+    // todo - need to get WHOLE landing page link (relative to domain)
+    // this only works for top level pages / posts
 
     $landing_page_link = $landing_page['post_name'];
     $landing_page_id = (int) $landing_page['ID'];
+    $landing_page_url = get_permalink($landing_page_id);
+    $url_parsed = parse_url($landing_page_url);
+    $landing_page_link = $url_parsed['path'];
+
+    // die($landing_page_link);
 
     add_rewrite_tag('%bible_query%', '([^&]+)');
     add_rewrite_rule('^' . $landing_page_link  . '/(.*)/?','index.php?page_id=' . $landing_page_id . '&bible_query=$matches[1]','top');

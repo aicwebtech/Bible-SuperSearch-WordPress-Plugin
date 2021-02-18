@@ -51,7 +51,8 @@ class BibleSuperSearch_Shortcodes {
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
 
-        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : [];
+        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
+        $options['query_string'] = $query_string;
 
         if($query_string) {
             // var_dump($query_string);
@@ -104,6 +105,10 @@ class BibleSuperSearch_Shortcodes {
             if(!empty($a[$att_key])) {
                 $options[ $info['map'] ] = $a[$att_key];
             }
+        }
+
+        if($options['destinationUrl'] == get_permalink()) {
+            $options['destinationUrl'] = NULL;
         }
         
         $options_json   = json_encode($options);
