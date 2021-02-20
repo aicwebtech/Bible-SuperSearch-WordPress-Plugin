@@ -51,13 +51,9 @@ class BibleSuperSearch_Shortcodes {
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
 
-        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
-        $options['query_string'] = $query_string;
-
-        if($query_string) {
-            // var_dump($query_string);
-            // die();
-        }
+        // Beginning of shareable, SEO-friendly linkage
+        // $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
+        // $options['query_string'] = $query_string;
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
@@ -75,6 +71,7 @@ class BibleSuperSearch_Shortcodes {
         }        
 
         if(static::$instances > 0) {
+            // Limitations of the Enyo app don't allow it to be rendered more than once on a page
             return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
         }
         
@@ -139,14 +136,12 @@ class BibleSuperSearch_Shortcodes {
                 $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
             }
         }
-        else {
-            // $html .= "biblesupersearch_instances.{$container} = {$options_json};\n";
-        }
 
         // $html .= "var biblesupersearch_cf7id = {$a['contact-form-7-id']};\n";
 
         $html .= "</script>\n";
 
+        // Experimental: Using a Contact Form 7 form for the Bible search form.
         if($a['contact-form-7-id']) {
             $html .= static::_displayContactForm7($a);
         }
@@ -161,9 +156,7 @@ class BibleSuperSearch_Shortcodes {
 
     static protected function _displayContactForm7($atts) {
         $html = 'CF7 ';
-
         $html .= do_shortcode('[contact-form-7 id="' . $atts['contact-form-7-id'] . '" title="Test Bible Form" do_not_store="true"]');
-
         return $html;
     }
 

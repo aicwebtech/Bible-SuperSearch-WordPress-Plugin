@@ -40,7 +40,7 @@
         <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
         <tr>
-            <th scope="row"><?php esc_html_e( 'Select Default Skin', 'biblesupersearch' ); ?></th>
+            <th scope="row" style='width: 220px'><?php esc_html_e( 'Select Default Skin', 'biblesupersearch' ); ?></th>
             <td>
                 <select name='biblesupersearch_options[interface]'>
                     <?php foreach($interfaces as $module => $int) :?>
@@ -63,7 +63,15 @@
             </tr>
         <?php endforeach; ?>
         <tr>
-            <th scope="row"><label for='biblesupersearch_override_csss'><?php esc_html_e( 'Override Styles', 'biblesupersearch' ); ?></label></th>
+            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Auto-Hide Formatting Buttons', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_toggle_format_buttons' type='checkbox' name='biblesupersearch_options[formatButtonsToggle]' value='1' 
+                    <?php if($options['formatButtonsToggle'] ) : echo "checked='checked'"; endif; ?>  />
+                Formatting buttons will only show when a search is active.
+            </td>
+        </tr>                                
+        <tr>
+            <th scope="row"><label for='biblesupersearch_override_css'><?php esc_html_e( 'Override Styles', 'biblesupersearch' ); ?></label></th>
             <td>
                 <input id='biblesupersearch_override_csss' type='checkbox' name='biblesupersearch_options[overrideCss]' value='1' 
                     <?php if($options['overrideCss'] ) : echo "checked='checked'"; endif; ?>  />
@@ -78,14 +86,6 @@
                 Adds a button to toggle an 'advanced search' form
             </td>
         </tr>             
-        <tr>
-            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Auto-Hide Formatting Buttons', 'biblesupersearch' ); ?></label></th>
-            <td>
-                <input id='biblesupersearch_toggle_format_buttons' type='checkbox' name='biblesupersearch_options[formatButtonsToggle]' value='1' 
-                    <?php if($options['formatButtonsToggle'] ) : echo "checked='checked'"; endif; ?>  />
-                Buttons below search form will only show when a search is active.
-            </td>
-        </tr>                                
         <tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_default_landing'><?php esc_html_e( 'Default Destination Page', 'biblesupersearch' ); ?></label></th>
             <td>

@@ -5,20 +5,21 @@ abstract class BibleSuperSearch_Options_Abstract {
     protected $option_index = 'biblesupersearch_options';
 
     protected $default_options = array(
-        'defaultBible'      => 'kjv',
-        'apiUrl'            => 'https://api.biblesupersearch.com',
-        'useJSONP'          => FALSE,
-        'defaultLanguage'   => 'en',
-        'enabledBibles'     => array(),
-        'enableAllBibles'   => TRUE,
-        'interface'         => 'Classic',  // 'Expanding'
-        'toggleAdvanced'    => TRUE,
-        'formatButtonsToggle'    => FALSE,
-        'defaultDestinationPage' => 0,
-        'pager'             => 'default',
-        'formatButtons'     => 'default',
-        'navigationButtons' => 'default',
-        'bibleGrouping'     => 'language',
+        'defaultBible'              => 'kjv',
+        'apiUrl'                    => 'https://api.biblesupersearch.com',
+        'useJSONP'                  => FALSE,
+        'defaultLanguage'           => 'en',
+        'enabledBibles'             => array(),
+        'enableAllBibles'           => TRUE,
+        'interface'                 => 'Classic',  // 'Expanding'
+        'toggleAdvanced'            => TRUE,
+        'formatButtonsToggle'       => FALSE,
+        'defaultDestinationPage'    => 0,
+        "extraButtonsSeparate"      => 'default',
+        'pager'                     => 'default',
+        'formatButtons'             => 'default',
+        'navigationButtons'         => 'default',
+        'bibleGrouping'             => 'language',
     );  
 
     public static $selector_options = [
@@ -613,6 +614,10 @@ abstract class BibleSuperSearch_Options_Abstract {
             'MinimalWithShortBible' => array(
                 'name'  => 'Minimal with Short Bible', 
                 'class' => 'minimal'
+            ),              
+            'MinimalWithParallelBible' => array(
+                'name'  => 'Minimal with Parallel Bible', 
+                'class' => 'minimal'
             ),               
             'MinimalGoRandom' => array(
                 'name'  => 'Minimal Go Random', 
@@ -632,19 +637,24 @@ abstract class BibleSuperSearch_Options_Abstract {
     public function getSelectableItems() {
         return array(
             'pager' => array(
-                'name' => 'Paginator',
-                'desc' => 'Used to browse through multiple pages of search results.',
+                'name'  => 'Paginator',
+                'desc'  => 'Used to browse through multiple pages of search results.',
                 'items' => $this->getPagers(),
             ),
             'navigationButtons' => array(
-                'name' => 'Navigation Buttons',
-                'desc' => 'Used to browse between chapters and books.',
+                'name'  => 'Navigation Buttons',
+                'desc'  => 'Used to browse between chapters and books.',
                 'items' => $this->getNavigationButtons(),
             ),
             'formatButtons' => array(
-                'name' => 'Formatting Buttons',
-                'desc'  => 'Appears below form.',
+                'name'  => 'Formatting Buttons',
+                'desc'  => 'The formatting buttons appear below the form, and include size, font, and copy options.',
                 'items' => $this->getFormatButtons(),
+            ),            
+            'extraButtonsSeparate' => array(
+                'name'  => 'Display Other Buttons Separately',
+                'desc'  => 'These include help and download dialog buttons, and are otherwise included with the format buttons. &nbsp;Some skins do not support this.',
+                'items' => $this->getExtraButtons(),
             ),
         );
     }
@@ -687,6 +697,20 @@ abstract class BibleSuperSearch_Options_Abstract {
             ),            
             'Stylable' => array(
                 'name'  => 'Stylable',
+            ),
+        );
+    }   
+
+    public function getExtraButtons() {
+        return array(
+            'default' => array(
+                'name' => $this->_getDefaultItemText(),
+            ),
+            'true' => array(
+                'name'  => 'Yes',
+            ),            
+            'false' => array(
+                'name'  => 'No',
             ),
         );
     }

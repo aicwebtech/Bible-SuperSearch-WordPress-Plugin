@@ -11,7 +11,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons'),
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'extraButtonsSeparate', 'navigationButtons'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
