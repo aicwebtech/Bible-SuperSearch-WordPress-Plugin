@@ -11,7 +11,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'extraButtonsSeparate', 'navigationButtons'),
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'extraButtonsSeparate', 'navigationButtons', 'language'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
@@ -207,6 +207,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
         $selectables = $this->getSelectableItems();
+        $languages = static::getSelectorOptions('language');
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 

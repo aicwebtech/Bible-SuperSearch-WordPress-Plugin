@@ -48,6 +48,21 @@
                     <?php endforeach; ?>
                 </select>
             </td>
+        </tr>            
+        <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
+        <tr><td colspan='2'><?php submit_button(); ?></td></tr>
+        <tr>
+            <th scope="row" style='width: 220px'><?php esc_html_e( 'Display Language', 'biblesupersearch' ); ?></th>
+            <td>
+                <select name='biblesupersearch_options[language]'>
+                    <?php foreach($languages as $key => $label) :?>
+                    <option value='<?php echo $key; ?>' <?php selected($key, $options['language'] ); ?> >
+                        <?php echo $label . ' (' . strtoupper($key) . ')'?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+                &nbsp; Sets the language seen on the [biblesupersearch] shortcode
+            </td>
         </tr>        
         <?php foreach($selectables as $field => $prop): ?>
             <tr>

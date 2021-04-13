@@ -12,6 +12,10 @@ div.biblesupersearch_main {
     overflow-x: hidden;
 }
 
+div.biblesupersearch_main.rtl {
+    direction: rtl;
+}
+
 .biblesupersearch_render_table, .biblesupersearch_render_table td table {
     font-size: inherit !important;
 }
@@ -147,6 +151,10 @@ table.biblesupersearch_render_table {
 
 .biblesupersearch_render_table td.txt {
     text-align: justify;
+}
+
+.biblesupersearch_render_table td.ltr, p.ltr {
+    direction: ltr;
 }
 
 .biblesupersearch_render_table td.rtl, p.rtl {
@@ -397,7 +405,7 @@ div.biblesupersearch_dialog {
 }
 
 .help_dialog .buttons {
-    height: 30px;
+    min-height: 30px;
 }
 
 .help_dialog .list {
@@ -425,6 +433,44 @@ div.biblesupersearch_dialog {
     padding-top: 2px;
 }
 
+.help_dialog.help .content {
+/*    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 10px;*/
+}
+
+.help_dialog.help table {
+    border: 1px solid #333;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.help_dialog.help .content .link {
+    margin-bottom: 10px;
+}
+
+.help_dialog.help .content .col div {
+    font-size: 0.9em;
+}
+
+.help_dialog.help table tr td {
+    font-size: .9em;
+    border: 1px solid #333;
+}
+
+.help_dialog.help table tr td {
+    font-size: .8em;
+    border: 1px solid #333;
+}
+
+.help_dialog.help table tr td.op {
+    text-align: right;
+}
+
+.help_dialog.help table tr td.desc {
+    text-align: left;
+}
+
 .bible_sos .sos_item .label {
     float: left;
     /*background-color: yellow;*/
@@ -432,6 +478,15 @@ div.biblesupersearch_dialog {
     font-weight: bold;
     text-align: left;
     font-size: 0.9em;
+}
+
+.share_dialog .link_share_container {
+    padding: 5px;
+}
+
+.share_dialog textarea.link_share {
+    width: 99%;
+    height: 200px;
 }
 
 .bible_sos .sos_item .verses {

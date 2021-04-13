@@ -31,14 +31,14 @@
 .format_buttons_html .item.size_plus {
     /*font-size: 1.1em;*/
     /*font-weight: bold;*/
-    width: 20px;
+    /*width: 20px;*/
     font-size: 18px;
 }
 
 .format_buttons_html .item.size_reg {
 /*    font-weight: bold;
     text-decoration: underline overline;*/
-    width: 20px;
+    /*width: 20px;*/
     /*font-size: 18px;*/
 
 }
@@ -52,7 +52,7 @@
 .format_buttons_html .item.size_minus {
     /*font-size: 0.9em;*/
     /*font-weight: bold;*/
-    width: 20px;
+    /*width: 20px;*/
     font-size: 18px;
 }
 
@@ -114,7 +114,11 @@
 
 .format_buttons_html .item.download {
     text-align: center;
-    width: 76px;
+    /*width: 76px;*/
+}
+
+.format_buttons_html .item.text_only {
+    line-height: 18px;
 }
 
 .format_buttons_html .block_enabled, .format_buttons_html .block_disabled {

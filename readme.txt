@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -110,6 +110,10 @@ Shortcodes include:
 Go to the Settings page, and uncheck 'Enable All Bibles'
 You will be given a list of Bibles to enable or disable individually.
 
+= How do I add more Bibles? =
+First, you will need to install our API on your server.
+Then, use the Bible importer within the API to add the desired Bibles.
+
 = How do I change the appearance of Bible SuperSearch? =
 You can select a different skin (interface) in the settings.
 
@@ -144,11 +148,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
-= 4.4.0 = (tentative)
+= 4.4.0 =
+* Added UI language option
 * Added ability to display help / download dialog buttons separately from formatting buttons.
 * Added 'Minimal with Parallel Bible' skin
 * Added print button
-
 
 = 4.3.3 =
 * Bugfix: Fixed issues with responsiveness on the Bible SOS, Start, and Download dialogs

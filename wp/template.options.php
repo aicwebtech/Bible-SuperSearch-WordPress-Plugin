@@ -9,27 +9,49 @@
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
 
     <div class="metabox-holder has-right-sidebar">
-        <!--<div class="inner-sidebar">
+        <div class="inner-sidebar" style='margin-top: 44px'>
+
+            <?php if($using_main_api): ?>
+                <div class="postbox sm-box">
+                    <h3>Install our API</h3>
+                        <div class='inside'>
+                        <ul>
+                            <li>- Run Bible SuperSearch entirely on your website.</li>
+                            <li>- Independant and decentralized.</li>
+                            <li>- Import additional Bibles from third party sources.</li>
+                            <li>- No usage limits.</li>
+                            <li>- Build a mobile Bible app.</li>
+                            <li>- Free and Open Source.</li>
+                        </ul>
+                        <div style="text-align:center">
+                            <a href="https://www.biblesupersearch.com/api"
+                               target="_blank"
+                               class="button-primary"><?php esc_html_e( 'More Info', 'biblesupersearch' ); ?></a>
+                        </div>
+
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <div class="postbox sm-box">
                 <h3><span><?php esc_html_e( 'Need Some Help?', 'biblesupersearch' ); ?></span>
                 </h3>
                 <div class="inside">
-                    <p style="text-align:justify"><?php echo wp_sprintf( esc_html__( 'Did you know you can get expert support for only $49 per year! %s today and get support from the developers who are building the Bible SuperSearch.', 'biblesupersearch' ), '<a href="https://biblesupersearch.com/wordpress-plugins/biblesupersearch/?utm_source=biblesupersearch&utm_medium=wordpress" target="_blank">' . esc_html__( 'Sign up', 'biblesupersearch' ) . '</a>' ); ?></p>
+                    <p style="text-align:justify"><?php echo wp_sprintf( esc_html__( '%s today and get support from the developers who are building Bible SuperSearch.', 'biblesupersearch' ), '<a href="https://www.biblesupersearch.com/downloads" target="_blank">' . esc_html__( 'Sign up', 'biblesupersearch' ) . '</a>' ); ?></p>
                     <div style="text-align:center">
-                        <a href="https://wordpress.org/support/plugin/biblesupersearch"
+                        <a href="https://www.biblesupersearch.com/contact"
                            target="_blank"
                            class="button-secondary"><?php esc_html_e( 'Free&nbsp;Support', 'biblesupersearch' ); ?></a>&nbsp;
-                        <a href="https://biblesupersearch.com/my/clientarea.php"
+                        <a href="https://www.biblesupersearch.com/downloads"
                            class="button-primary"><?php esc_html_e( 'Priority&nbsp;Support', 'biblesupersearch' ); ?></a>
                     </div>
                     <div style="text-align:center;font-size:0.85em;padding:0.7rem 0 0">
-                        <span><?php esc_html_e( 'We offer limited free support via WordPress.org', 'biblesupersearch' ); ?></span>
+                        <span><?php esc_html_e( 'Note: Free support is limited', 'biblesupersearch' ); ?></span>
                     </div>
                 </div>
             </div>
 
-            <div class="postbox sm-box">
+<!--             <div class="postbox sm-box">
                 <h3>
                     <span><?php esc_html_e( 'Frequently Asked Questions', 'biblesupersearch' ); ?></span>
                 </h3>
@@ -51,16 +73,16 @@
                         <span><?php echo wp_sprintf( esc_html__( 'Find out more in our %s', 'biblesupersearch' ), '<a href="https://www.biblesupersearch.com/my/knowledgebase.php" title="Knowledgebase" target="_blank">' . esc_html__( 'knowledge base', 'biblesupersearch' ) . '</a>' ); ?></span>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="postbox sm-box">
                 <h3>
-                    <span><?php esc_html_e( 'Lets Make It Even Better!', 'biblesupersearch' ); ?></span>
+                    <span><?php esc_html_e( 'Help Us Make Bible SuperSearch Even Better!', 'biblesupersearch' ); ?></span>
                 </h3>
                 <div class="inside">
-                    <p style="text-align:justify"><?php esc_html_e( 'If you have ideas on how to make Bible SuperSearch or any of our products better, let us know!', 'biblesupersearch' ); ?></p>
+                    <p style="text-align:justify"><?php esc_html_e( 'If you have any ideas on how to improve Bible SuperSearch, please let us know!', 'biblesupersearch' ); ?></p>
                     <div style="text-align:center">
-                        <a href="https://feedback.userreport.com/05ff651b-670e-4eb7-a734-9a201cd22906/"
+                        <a href="https://www.biblesupersearch.com/feature-request/"
                            target="_blank"
                            class="button-secondary"><?php esc_html_e( 'Submit&nbsp;Your&nbsp;Idea', 'biblesupersearch' ); ?></a>
                     </div>

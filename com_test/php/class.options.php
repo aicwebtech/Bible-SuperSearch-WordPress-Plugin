@@ -20,6 +20,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
+        'language'                  => 'en',
     );  
 
     public static $selector_options = [
@@ -29,6 +30,13 @@ abstract class BibleSuperSearch_Options_Abstract {
             'language_english'      => 'Language - English Name',
             'language_and_english'  => 'Language - Endonym and English Name',
         ],
+        'language' => [
+            'en'                    => 'English',
+            'en_pirate'             => 'English - Pirate', // (for debugging purposes)
+            'ar'                    => 'العربية  / Arabic',
+            'fr'                    => 'Français / French',
+            'es'                    => 'Español / Spanish',
+        ],
     ];
 
     protected $tabs = array(
@@ -36,7 +44,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons'),
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons', 'language'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
