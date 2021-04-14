@@ -32,8 +32,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         ],
         'language' => [
             'en'                    => 'English',
-            'en_pirate'             => 'English - Pirate', // (for debugging purposes)
-            'ar'                    => 'العربية  / Arabic',
+            // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
+            // 'ar'                    => 'العربية  / Arabic',
             'fr'                    => 'Français / French',
             'es'                    => 'Español / Spanish',
         ],

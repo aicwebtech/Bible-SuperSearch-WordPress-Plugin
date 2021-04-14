@@ -12,16 +12,16 @@
         <div class="inner-sidebar" style='margin-top: 44px'>
 
             <?php if($using_main_api): ?>
-                <div class="postbox sm-box">
-                    <h3>Install our API</h3>
+                <div class="postbox sm-box" style='background-color: #fffc52;'>
+                    <h3 style='color: #eb1c09'>Recommended Action: Install our API</h3>
                         <div class='inside'>
                         <ul>
-                            <li>- Run Bible SuperSearch entirely on your website.</li>
+                            <li>- Run Bible SuperSearch entirely on your website!</li>
                             <li>- Independant and decentralized.</li>
                             <li>- Import additional Bibles from third party sources.</li>
                             <li>- No usage limits.</li>
-                            <li>- Build a mobile Bible app.</li>
-                            <li>- Free and Open Source.</li>
+                            <!-- <li>- Build a mobile Bible app.</li> -->
+                            <li>- <b>FREE</b> and Open Source.</li>
                         </ul>
                         <div style="text-align:center">
                             <a href="https://www.biblesupersearch.com/api"
@@ -58,14 +58,13 @@
                 <div class="inside">
                     <ul>
                         <li>- <a
-                                    href="https://www.biblesupersearch.com/my/knowledgebase/72/Getting-Started-with-biblesupersearch.html"
+                                    href="https://www.biblesupersearch.com/Getting-Started-with-biblesupersearch"
                                     title="" target="_blank">Getting Started with Bible SuperSearch</a></li>
                         <li>- <a
-                                    href="https://www.biblesupersearch.com/my/knowledgebase/75/biblesupersearch-Shortcodes.html"
-                                    title="Bible SuperSearch Shortcodes" target="_blank">Bible SuperSearch
-                                Shortcodes</a></li>
+                                    href="https://www.biblesupersearch.com/biblesupersearch-Shortcodes"
+                                    title="Bible SuperSearch Shortcodes" target="_blank">Bible SuperSearch Shortcodes</a></li>
                         <li>- <a
-                                    href="https://www.biblesupersearch.com/my/knowledgebase/67/Troubleshooting-biblesupersearch.html"
+                                    href="https://www.biblesupersearch.com/Troubleshooting-biblesupersearch"
                                     title="Troubleshooting Bible SuperSearch" target="_blank">Troubleshooting
                                 Bible SuperSearch</a></li>
                     </ul>
@@ -74,6 +73,32 @@
                     </div>
                 </div>
             </div> -->
+
+            <div class="postbox sm-box">
+                <h3>
+                    <span><?php esc_html_e( 'Like our Software?  Please leave us a review and follow us!', 'biblesupersearch' ); ?></span>
+                </h3>
+                <div class="inside">
+                    <div style="text-align:center">
+                        <a href="https://www.facebook.com/bible.super.search/"
+                           target="_blank"
+                           class="button-secondary"><?php esc_html_e( 'Facebook', 'biblesupersearch' ); ?></a>
+
+                        <a href="https://twitter.com/bibsupsearch"
+                           target="_blank"
+                           class="button-secondary"><?php esc_html_e( 'Twitter', 'biblesupersearch' ); ?></a>
+                    </div>   
+                    <br />                 
+                    <div style="text-align:center">
+                        <a href="https://wordpress.org/plugins/biblesupersearch/"
+                           target="_blank"
+                           class="button-secondary"><?php esc_html_e( 'WordPress', 'biblesupersearch' ); ?></a>
+                        <a href="https://sourceforge.net/projects/biblesuper/reviews"
+                           target="_blank"
+                           class="button-secondary"><?php esc_html_e( 'SourceForge', 'biblesupersearch' ); ?></a>
+                    </div>
+                </div>
+            </div>            
 
             <div class="postbox sm-box">
                 <h3>

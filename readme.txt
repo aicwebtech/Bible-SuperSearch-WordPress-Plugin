@@ -110,6 +110,11 @@ Shortcodes include:
 Go to the Settings page, and uncheck 'Enable All Bibles'
 You will be given a list of Bibles to enable or disable individually.
 
+= Please add the (ABC) Bible =
+We only offer 'Shareable' Bibles.  These are Bibles that anyone can legally copy and redistribute, for non-commercial purposes, without needing permission from the publisher.
+If you would like to use a proprietary Bible with Bible SuperSearch, you will need to install our API on your server, then properly license the text from the publisher.
+Request the text in an Excel file, and our importer can import it for you.
+
 = How do I add more Bibles? =
 First, you will need to install our API on your server.
 Then, use the Bible importer within the API to add the desired Bibles.

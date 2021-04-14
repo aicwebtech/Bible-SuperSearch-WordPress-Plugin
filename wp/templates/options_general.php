@@ -61,7 +61,7 @@
                     </option>
                     <?php endforeach; ?>
                 </select>
-                &nbsp; Sets the language seen on the [biblesupersearch] shortcode
+                &nbsp; Sets the language seen on the [biblesupersearch] shortcode.
             </td>
         </tr>        
         <?php foreach($selectables as $field => $prop): ?>
