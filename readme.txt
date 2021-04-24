@@ -153,6 +153,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.4.1 =
+* Fixed breakage when advanced toggle disabled
+
 = 4.4.0 =
 * Added UI language option
 * Added ability to display help / download dialog buttons separately from formatting buttons.
