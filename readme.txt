@@ -37,10 +37,10 @@ This plugin pulls data from our API transparently.  You also have the option to 
     * Copy text with easy copy mode
     * Switch between verse mode and paragraph mode
     * Advanced search
+    * Bible help and getting started dialogs
+    * Bible downloads dialog and shortcode
 1. Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
 1. Widget providing a small Bible search form. 
-1. Small footprint.  Uses our API - Doesn't take up your web hosting space!
-1. Works in PHP 7+
 1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats
 
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
@@ -113,7 +113,7 @@ You will be given a list of Bibles to enable or disable individually.
 = Please add the (ABC) Bible =
 We only offer 'Shareable' Bibles.  These are Bibles that anyone can legally copy and redistribute, for non-commercial purposes, without needing permission from the publisher.
 If you would like to use a proprietary Bible with Bible SuperSearch, you will need to install our API on your server, then properly license the text from the publisher.
-Request the text in an Excel file, and our importer can import it for you.
+Request the text in an Excel file, and the importer within the API can import it for you.
 
 = How do I add more Bibles? =
 First, you will need to install our API on your server.
@@ -158,6 +158,8 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Added ability to display help / download dialog buttons separately from formatting buttons.
 * Added 'Minimal with Parallel Bible' skin
 * Added print button
+* Added new Basic help dialog
+* Added new share link dialog
 
 = 4.3.3 =
 * Bugfix: Fixed issues with responsiveness on the Bible SOS, Start, and Download dialogs
