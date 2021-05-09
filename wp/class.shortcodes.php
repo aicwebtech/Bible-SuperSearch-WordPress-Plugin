@@ -2,6 +2,9 @@
 
 defined( 'ABSPATH' ) or die; // exit if accessed directly
 
+        // * formatButtons - Which formatting buttons to use?  Options: default, Classic or Stylable
+        // * navigationButtons - Which navigation buttons to use?  Options: default, Classic or Stylable
+        // * pager - Which pager to use? Options: default, Classic, Clean
 
 class BibleSuperSearch_Shortcodes {
     static protected $instances = 0;
@@ -9,7 +12,9 @@ class BibleSuperSearch_Shortcodes {
     static public $displayAttributes = array(
         'interface' => array(
             'name'      => 'Skin',
-            'desc'      => 'Name of the skin to be used, see list below',
+            'desc'      => "Name or ID of the skin to be used, &nbsp; To see and preview the complete list of skins, please visit<br />
+                                <a href='https://www.biblesupersearch.com/client/' target='_NEW'>https://www.biblesupersearch.com/client/</a><br /><br />
+                                Example: [biblesupersearch interface='Classic - Parallel 2']",
             'map'       => 'interface',
             'default'   => NULL,
         ),
@@ -17,8 +22,36 @@ class BibleSuperSearch_Shortcodes {
             'name'      => 'Destination URL',
             'desc'      => 'URL to page or post where form will redirect to when submitted.<br />
                             The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.<br />
-                            Set to \'\' to force to current page and override \'Default Destination Page\'',
+                            Set to \'\' to force to current page and override \'Default Destination Page\' <br /><br />
+                            Example: [biblesupersearch destination_url=\'https://example.com/bible\']',
             'map'       => 'destinationUrl',
+            'default'   => NULL,
+        ),        
+        // NOT WORKING!!!
+        'formatButtons' => array(
+            'name'      => 'Which formatting buttons to use?',
+            'desc'      => 'Options: default, Classic or Stylable <br />
+                            (Default selects the defalt for the selected skin) <br /><br />
+                            Example: [biblesupersearch formatButtons=\'Stylable\']',
+            'map'       => 'formatButtons',
+            'default'   => NULL,
+        ),        
+        // NOT WORKING!!
+        'navigationButtons' => array(
+            'name'      => 'Which navigation buttons to use?',
+            'desc'      => 'Options: default, Classic or Stylable <br />
+                            (Default selects the defalt for the selected skin) <br /><br />
+                            Example: [biblesupersearch navigationButtons=\'Stylable\']',
+            'map'       => 'navigationButtons',
+            'default'   => NULL,
+        ),        
+        // IS WORKING
+        'pager' => array(
+            'name'      => 'Which pager to use?',
+            'desc'      => 'Options: default, Classic or Clean <br />
+                            (Default selects the defalt for the selected skin) <br /><br />
+                            Example: [biblesupersearch pager=\'Clean\']',
+            'map'       => 'pager',
             'default'   => NULL,
         ),
     );    
@@ -26,7 +59,8 @@ class BibleSuperSearch_Shortcodes {
     static public $downloadAttributes = array(
         'verbose' => array(
             'name'      => 'Verbose',
-            'desc'      => 'Displays all Bibles, even if they are not downloadable. (true/false)',
+            'desc'      => 'Displays all Bibles, even if they are not downloadable. (true/false)<br /><br />
+                            Example: [biblesupersearch_downloads verbose=\'false\']',
             'map'       => 'verbose',
             'default'   => NULL,
         ),
@@ -35,7 +69,8 @@ class BibleSuperSearch_Shortcodes {
     static public $biblesAttributes = array(
         'verbose' => array(
             'name'      => 'Verbose',
-            'desc'      => 'Displays some extra columns on the list of Bibles (true/false)',
+            'desc'      => 'Displays some extra columns on the list of Bibles (true/false)<br /><br />
+                            Example: [biblesupersearch_bible_list verbose=\'true\']',
             'map'       => 'verbose',
             'default'   => NULL,
         ),

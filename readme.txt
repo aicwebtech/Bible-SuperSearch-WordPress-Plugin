@@ -88,7 +88,8 @@ Shortcodes include:
 
     [biblesupersearch] - displays the main Bible SuperSearch application
         These attributes override the settings on this plugin.
-        * interface - the ID of the skin to be used on the application.  For a complete list, please visit https://www.biblesupersearch.com/client/
+        * interface - the name or ID of the skin to be used on the application.  
+            For a complete list, and to see them in action, please visit https://www.biblesupersearch.com/client/
         * destination_url - URL to page or post where form will redirect to when submitted.
                             The destionation will need to have the <cod>[biblesupersearch]</code> shortcode.
                             Set to '' to force to current page and override the 'Default Destination Page'

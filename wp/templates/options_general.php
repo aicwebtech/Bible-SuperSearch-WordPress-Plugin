@@ -47,6 +47,7 @@
                     <option value='<?php echo $module; ?>' <?php selected($module, $options['interface'] ); ?> ><?php echo $int['name']?></option>
                     <?php endforeach; ?>
                 </select>
+                &nbsp; To preview skins, please visit <a href='https://www.biblesupersearch.com/client/' target='_NEW'>https://www.biblesupersearch.com/client/</a>
             </td>
         </tr>            
         <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
