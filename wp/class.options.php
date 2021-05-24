@@ -31,6 +31,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             'selects'       => array(),
             'checkboxes'    => array(),
         ),
+        'docs' => array(
+            'name'          => 'Documentation',
+            'texts'         => array(),
+            'selects'       => array(),
+            'checkboxes'    => array(),
+        ),
     );
     
     public function __construct() {

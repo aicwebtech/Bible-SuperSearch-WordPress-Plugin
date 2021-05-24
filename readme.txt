@@ -154,6 +154,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.4.2 = 
+* Fixed issues with RTL detection on Bibles
+* Fixed poor documentation of plugin shortcodeds
+* Fixed broken shortcode attributes
+
 = 4.4.1 =
 * Fixed breakage when advanced toggle disabled
 

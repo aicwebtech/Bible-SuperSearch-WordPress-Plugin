@@ -10,6 +10,7 @@ class BibleSuperSearch_Shortcodes {
     static protected $instances = 0;
 
     static public $displayAttributes = array(
+        // Attributes must be in underscore_case
         'interface' => array(
             'name'      => 'Skin',
             'desc'      => "Name or ID of the skin to be used, &nbsp; To see and preview the complete list of skins, please visit<br />
@@ -27,25 +28,22 @@ class BibleSuperSearch_Shortcodes {
             'map'       => 'destinationUrl',
             'default'   => NULL,
         ),        
-        // NOT WORKING!!!
-        'formatButtons' => array(
+        'format_buttons' => array(
             'name'      => 'Which formatting buttons to use?',
             'desc'      => 'Options: default, Classic or Stylable <br />
                             (Default selects the defalt for the selected skin) <br /><br />
-                            Example: [biblesupersearch formatButtons=\'Stylable\']',
+                            Example: [biblesupersearch format_buttons=\'Stylable\']',
             'map'       => 'formatButtons',
             'default'   => NULL,
         ),        
-        // NOT WORKING!!
-        'navigationButtons' => array(
+        'navigation_buttons' => array(
             'name'      => 'Which navigation buttons to use?',
             'desc'      => 'Options: default, Classic or Stylable <br />
                             (Default selects the defalt for the selected skin) <br /><br />
-                            Example: [biblesupersearch navigationButtons=\'Stylable\']',
+                            Example: [biblesupersearch navigation_buttons=\'Stylable\']',
             'map'       => 'navigationButtons',
             'default'   => NULL,
         ),        
-        // IS WORKING
         'pager' => array(
             'name'      => 'Which pager to use?',
             'desc'      => 'Options: default, Classic or Clean <br />
@@ -121,6 +119,7 @@ class BibleSuperSearch_Shortcodes {
         
         $a = shortcode_atts($defaults, $atts);
         static::_validateAttributes($a);
+
         $a['contact-form-7-id'] = (int) $a['contact-form-7-id'];
 
         if($a['interface']) {
