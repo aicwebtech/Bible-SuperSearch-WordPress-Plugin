@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible search engine, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -153,6 +153,16 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Advanced Options
 
 == Changelog ==
+
+= 4.4.3 =
+* Improvement: Share text format: put URL and title at the bottom.
+* Fixed responsive issues on expanding form
+* Fixed off-centered checkbox on the toggle buttons
+* Fixed misc cross-browser issues
+* Fixed issues when sending a request from a form/widget with a single request field to a form with both reference and search fields.
+* Fixed clean URLs now working when using the expanding form.
+* Bump WordPress support to 5.8.
+* Confirmed working in PHP 8.0.
 
 = 4.4.2 = 
 * Fixed issues with RTL detection on Bibles
