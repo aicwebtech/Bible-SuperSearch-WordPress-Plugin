@@ -1,6 +1,6 @@
 === Bible SuperSearch ===
 Contributors: aicwebtech
-Tags: Bible search, Bible search engine, Bible, Strong's numbers
+Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
 Tested up to: 5.8
@@ -9,7 +9,7 @@ Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Powerful Bible search engine plus a Bible download tool.  Option to install our API on your server for complete independence.
+Add powerful Bible tools to your website, including a search engine, and a Bible download page.  Keeps your visitors on your website!
 
 == Description ==
 Add powerful Bible tools to your website, including a Bible search engine, and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired.

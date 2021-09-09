@@ -99,9 +99,9 @@ class BibleSuperSearch_Shortcodes {
             $attr['destination_url']['default'] = $destination_url;
         }
 
-        if(static::$instances > 0) {
-            $container .= '_' . static::$instances;
-        }        
+        // if(static::$instances > 0) {
+        //     $container .= '_' . static::$instances;
+        // }        
 
         if(static::$instances > 0) {
             // Limitations of the Enyo app don't allow it to be rendered more than once on a page
