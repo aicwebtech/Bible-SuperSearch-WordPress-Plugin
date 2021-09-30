@@ -36,6 +36,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             // 'ar'                    => 'العربية  / Arabic',
             'fr'                    => 'Français / French',
             'es'                    => 'Español / Spanish',
+            'ro'                    => 'Română / Romanian',
         ],
     ];
 
