@@ -105,7 +105,12 @@ class BibleSuperSearch_Shortcodes {
 
         if(static::$instances > 0) {
             // Limitations of the Enyo app don't allow it to be rendered more than once on a page
-            return '<div>Error: You can only have one [biblesupersearch] shortcode per page.</div>';
+            $msg  = '<div>';
+            $msg .= 'Error: You can only have one [biblesupersearch] shortcode per page. ';
+            $msg .= 'If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode.';
+            $msg .= '</div>';
+
+            return $msg;
         }
         
         $defaults = array(

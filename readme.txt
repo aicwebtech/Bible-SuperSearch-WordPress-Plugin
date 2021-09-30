@@ -22,7 +22,7 @@ This plugin pulls data from our API transparently.  You also have the option to 
 
 # Core Features
 
-1. FULL functionality of the Bible search engine as seen on [BibleSuperSearch.com](https://www.BibleSuperSearch.com)
+1. Bible search engine
     * Many Bible translations (enable only the ones you want)
     * Look up multiple passages
     * Random Chapter and Verse
@@ -34,14 +34,14 @@ This plugin pulls data from our API transparently.  You also have the option to 
     * Strong's number searches and Strong's definition hover dialogs (on Strong's enabled Bibles)
     * Increase or decrease text size
     * Changable text style
-    * Copy text with easy copy mode
+    * Ability to copy, print and share Bible text
     * Switch between verse mode and paragraph mode
     * Advanced search
     * Bible help and getting started dialogs
     * Bible downloads dialog and shortcode
-1. Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
+    * Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
 1. Widget providing a small Bible search form. 
-1. Bible downloads - ability to download public domain or non-commercial use only Bibles in several formats
+1. Bible downloads  - ability to download public domain or non-commercial use only Bibles in several formats
 
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
 
@@ -59,12 +59,12 @@ However, you have the option to install our API on your server, and run Bible Su
 This plugin communicates with the Bible SuperSearch API to retrieve data it needs to function.   
 
 This data includes:
-* Results for all Bible search queries
-* List of available Bible translations
-* List of available search types
-* List of available shortcuts
-* List of Bible books
-* API Version
+    * Results for all Bible search queries
+    * List of available Bible translations
+    * List of available search types
+    * List of available shortcuts
+    * List of Bible books
+    * API Version
 
 By installing and using this plugin, you agree to the [API Terms of Service](https://api.biblesupersearch.com/documentation#tab_tos).
 Also see the [API Privacy Policy]((https://api.biblesupersearch.com/documentation#tab_privacy)) and [API full documentation](https://api.biblesupersearch.com/documentation)
@@ -111,14 +111,19 @@ Shortcodes include:
 Go to the Settings page, and uncheck 'Enable All Bibles'
 You will be given a list of Bibles to enable or disable individually.
 
-= Please add the (ABC) Bible =
+= Please include the (ABC) Bible =
 We only offer 'Shareable' Bibles.  These are Bibles that anyone can legally copy and redistribute, for non-commercial purposes, without needing permission from the publisher.
 If you would like to use a proprietary Bible with Bible SuperSearch, you will need to install our API on your server, then properly license the text from the publisher.
 Request the text in an Excel file, and the importer within the API can import it for you.
 
 = How do I add more Bibles? =
 First, you will need to install our API on your server.
+Please see instructions below for details.
 Then, use the Bible importer within the API to add the desired Bibles.
+
+= How do I translate the user interface into my language? =
+If you are able to provide us with a fluent translation, we will include it for FREE.
+Please contact us for details. 
 
 = How do I change the appearance of Bible SuperSearch? =
 You can select a different skin (interface) in the settings.
@@ -130,6 +135,11 @@ Please contact us directly.  https://www.biblesupersearch.com/contact/
 
 = How do I run Bible SuperSearch entirely on my website? =
 You can accomplish this by installing our API on your webiste.
+
+Please see below for details.
+
+= How do I install the Bible SuperSearch API? =
+Install our API and run Bible SuperSearch entirely on your website.
 The API can be downloaded here:
 
 https://www.biblesupersearch.com/downloads/
