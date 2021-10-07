@@ -164,6 +164,18 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.5.0 =
+* (soft release, these features will be part of a future 5.0 release)
+* Added format options for the copying text.
+* Added Romanian UI translation
+* Improvement: Added ability to toggle keyword highlighting.
+* Improvement: Added 'Clear Form' button.
+* Improvement: Displaying short name of Bibles with long name when in parallel mode.
+* Improvement: Added clean URL for many search queries.
+* Replaced paragraph toggle with paragraph / passage / verse selector (Stylable format buttons only).
+* Bug fix: Replaced unicode icons with ones that display on mobile devices.
+* Bug fix: Fixed ASV display issue {{selah
+
 = 4.4.3 =
 * Improvement: Share text format: put URL and title at the bottom.
 * Fixed responsive issues on expanding form
