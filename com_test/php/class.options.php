@@ -139,7 +139,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         }          
 
         foreach($tab_item['selects'] as $field) {
-            if(array_key_exists($field, $incoming) && !empty($incoming[$field])) {
+            // if(array_key_exists($field, $incoming) && !empty($incoming[$field])) {
+            if(array_key_exists($field, $incoming)) {
                 $input[$field] = $incoming[$field];
             }
         }       
