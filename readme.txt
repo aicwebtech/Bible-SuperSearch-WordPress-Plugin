@@ -175,6 +175,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Replaced paragraph toggle with paragraph / passage / verse selector (Stylable format buttons only).
 * Bug fix: Replaced unicode icons with ones that display on mobile devices.
 * Bug fix: Fixed ASV display issue {{selah
+* Bug fix: Landing page wasn't saving when selecting NONE
 
 = 4.4.3 =
 * Improvement: Share text format: put URL and title at the bottom.
