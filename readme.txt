@@ -164,6 +164,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.5.1 =
+* Fixed some class naming issues likely to cause conflict with WP themes
+
 = 4.5.0 =
 * (soft release, these features will be part of a future 5.0 release)
 * Added format options for the copying text.
