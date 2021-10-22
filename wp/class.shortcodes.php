@@ -51,6 +51,16 @@ class BibleSuperSearch_Shortcodes {
                             Example: [biblesupersearch pager=\'Clean\']',
             'map'       => 'pager',
             'default'   => NULL,
+        ),        
+        'suppress_instance_error' => array(
+            'name'      => 'Suppress Instance Error',
+            'desc'      => 'The framework that Bible SuperSearch uses won\'t allow multiple instances of it to exist on a page.<br />
+                            However, some 3rd party plugins will duplicate the shortcode, resulting in an error message and no Bible Search.<br />
+                            This config turns off the error message and attempts to display the Bible search anyway.<br />
+                            Note: The Bible search will still only display once on the page.<br /><br />
+                            [biblesupersearch suppress_instance_error=\'true\']',
+            'map'       => 'suppress_instance_error',
+            'default'   => FALSE,
         ),
     );    
 
@@ -99,19 +109,6 @@ class BibleSuperSearch_Shortcodes {
             $attr['destination_url']['default'] = $destination_url;
         }
 
-        // if(static::$instances > 0) {
-        //     $container .= '_' . static::$instances;
-        // }        
-
-        if(static::$instances > 0) {
-            // Limitations of the Enyo app don't allow it to be rendered more than once on a page
-            $msg  = '<div>';
-            $msg .= 'Error: You can only have one [biblesupersearch] shortcode per page. ';
-            $msg .= 'If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode.';
-            $msg .= '</div>';
-
-            return $msg;
-        }
         
         $defaults = array(
             'container' => $container,
@@ -125,6 +122,22 @@ class BibleSuperSearch_Shortcodes {
         $a = shortcode_atts($defaults, $atts);
         static::_validateAttributes($a);
 
+        if(static::$instances > 0) {
+            // $container .= '_' . static::$instances;
+        }        
+
+        if(static::$instances > 0 && !$a['suppress_instance_error']) {
+            // Limitations of the Enyo app don't allow it to be rendered more than once on a page
+            $msg  = '<div>';
+            $msg .= 'Error: You can only have one [biblesupersearch] shortcode per page. ';
+            $msg .= 'If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode. <br />';
+            $msg .= 'If you believe you have received this message in error, you may attempt to suppress it and attempt to display the Bible search anyway, <br />';
+            $msg .= 'by setting suppress_instance_error=\'true\' on the shortcode. &nbsp;(However, this is not a guaranteed fix.)';
+            $msg .= '</div>';
+
+            return $msg;
+        }
+        
         $a['contact-form-7-id'] = (int) $a['contact-form-7-id'];
 
         if($a['interface']) {
@@ -152,13 +165,15 @@ class BibleSuperSearch_Shortcodes {
 
         $html  = '';
 
+        // $html .= '<p>Container: ' . $container . '</p>';
+
         if(!empty($options['extraCss'])) {
             $html .= '<style>' . $options['extraCss'] . '</style>';
         }
 
         $html .= "<script>\n";
         
-        if($first_instance) {
+        // if($first_instance) {
             $html .= "var biblesupersearch_config_options = {$options_json};\n";
             $html .= "var biblesupersearch_statics = {$statics_json};\n";
 
@@ -174,7 +189,7 @@ class BibleSuperSearch_Shortcodes {
                 $query_vars_json = json_encode($query_vars);
                 $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
             }
-        }
+        // }
 
         // $html .= "var biblesupersearch_cf7id = {$a['contact-form-7-id']};\n";
 
