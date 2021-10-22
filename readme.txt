@@ -164,6 +164,12 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 4.5.2 =
+* Workaround to duplicate shortcode issue.
+* Bugfix: Using modern clipboard API when available.
+* Bugfix: Start menu links doing search instead of pulling passage.
+* Bugfix: Fixed missing config variable issue when initializing localization.
+
 = 4.5.1 =
 * Fixed some class naming issues likely to cause conflict with WP themes
 
