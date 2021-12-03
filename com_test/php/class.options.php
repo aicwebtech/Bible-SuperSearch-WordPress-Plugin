@@ -703,10 +703,16 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'name' => $this->_getDefaultItemText(),
             ),
             'Classic' => array(
-                'name'  => 'Classic',
+                'name'  => 'Classic (Old icons from v2 - deprecated)',
             ),            
             'Stylable' => array(
-                'name'  => 'Stylable',
+                'name'  => 'Stylable - Wide',
+            ),            
+            'StylableNarrow' => array(
+                'name'  => 'Stylable - Narrow',
+            ),           
+            'StylableMinimal' => array(
+                'name'  => 'Stylable - Minimal buttons, with settings dialog.',
             ),
         );
     }   

@@ -164,17 +164,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.0.0 =
+* Added new format button options
+
 = 4.5.2 =
-* Workaround to duplicate shortcode issue.
-* Bugfix: Using modern clipboard API when available.
-* Bugfix: Start menu links doing search instead of pulling passage.
-* Bugfix: Fixed missing config variable issue when initializing localization.
-
-= 4.5.1 =
-* Fixed some class naming issues likely to cause conflict with WP themes
-
-= 4.5.0 =
-* (soft release, these features will be part of a future 5.0 release)
 * Added format options for the copying text.
 * Added Romanian UI translation
 * Improvement: Added ability to toggle keyword highlighting.
@@ -185,6 +178,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Bug fix: Replaced unicode icons with ones that display on mobile devices.
 * Bug fix: Fixed ASV display issue {{selah
 * Bug fix: Landing page wasn't saving when selecting NONE
+* Bug fix: fixed some class naming issues likely to cause conflict with WP themes
+* Bugfix: Using modern clipboard API when available.
+* Bugfix: Start menu links doing search instead of pulling passage.
+* Bugfix: Fixed missing config variable issue when initializing localization.
+* Workaround to duplicate shortcode issue.
 
 = 4.4.3 =
 * Improvement: Share text format: put URL and title at the bottom.
