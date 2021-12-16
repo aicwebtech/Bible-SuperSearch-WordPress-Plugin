@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
     });
 
     $('#biblesupersearch_url').change(function(e) {
-        var url = $(this).val(),
+        var url = $(this).val().replace(/\/+$/, ''),
             that = this,
             orig = e.currentTarget.defaultValue;
 
@@ -14,7 +14,6 @@ jQuery(document).ready(function($) {
             return;
         }
 
-        // console.log('url', url, orig, e);
         $(that).css('background-color', 'transparent');
         $('.button-primary').prop('disabled', true);
 
@@ -23,13 +22,14 @@ jQuery(document).ready(function($) {
             url: url + '/api/version',
             method: 'POST',
             success: function(data) {
-                if(!data.results || !data.results.name || data.results.name != 'Bible SuperSearch API') {
+                if(!data.results || !data.results.name || !data.results.version || data.error_level != 0 || !Array.isArray(data.errors)) {
                     alert('Error:\nURL \'' + url + '\' does not appear to be an instance of \nthe Bible SuperSearch API, reverting to original.');
                     $(that).val(orig);
                     $('.button-primary').prop('disabled', false);
                 }
                 else {
                     $(that).css('background-color', '#8be088');
+                    $(that).val(url);
                     $('.button-primary').prop('disabled', false);
                 }
             },

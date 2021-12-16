@@ -13,8 +13,8 @@
 
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffc52;'>
-                    <h3 style='color: #eb1c09'>Recommended Action: Install our API</h3>
-                        <div class='inside'>
+                    <h3 style='color: red'>Recommended Action: Install our API</h3>
+                    <div class='inside'>
                         <ul>
                             <li>- Run Bible SuperSearch entirely on your website!</li>
                             <li>- Independant and decentralized.</li>
@@ -27,6 +27,30 @@
                             <a href="https://www.biblesupersearch.com/api"
                                target="_blank"
                                class="button-primary"><?php esc_html_e( 'More Info', 'biblesupersearch' ); ?></a>
+                        </div>
+
+                    </div>
+                </div>
+            <?php endif; ?>            
+
+            <?php if(!$using_main_api && !$download_enabled): ?>
+                <div class="postbox sm-box" style='background-color: #fffb17;'>
+                    <h3 style='color: red'>Please Enable Bible Downloads in Your Bible SuperSearch API Options.</h3>
+                    <div class='inside'>
+                        You are using a third-party instance of the Bible SuperSearch API. &nbsp; However, Bible downloads is not enabled in the API. <br /><br />
+
+                        Please enable Bible downloads in the API options.<br /><br />
+
+                        Without downloads enabled, the following features will not work:
+
+                        <ul>
+                            <li>- Downloads page via the [biblesupersearch_downloads] short tag. </li>
+                            <li>- Bible downloads dialog within the main Bible SuperSearch app (via [biblesupersearch] shortcode). </li>
+                        </ul>
+                        <div style="text-align:center">
+                            <a href="<?php echo $options['apiUrl']; ?>/login"
+                               target="_blank"
+                               class="button-primary"><?php esc_html_e( 'Log In to API', 'biblesupersearch' ); ?></a>
                         </div>
 
                     </div>

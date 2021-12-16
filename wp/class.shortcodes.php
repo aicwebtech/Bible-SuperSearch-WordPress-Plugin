@@ -313,19 +313,27 @@ class BibleSuperSearch_Shortcodes {
 
         static::_validateAttributes($a, array('verbose'));
 
-        if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
-            return 'The download feature is not available from the selected Bible SuperSearch API server.';
-        }
-
-        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
-
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
         // $BibleSuperSearchBibles          = $statics['bibles'];
         $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics, 'name', 'language_english');
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
         $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;
+
+        if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
+            $msg = "<div style='background-color: yellow; font-weight: bold'>";
+            $msg .= 'NOTICE TO WEBMASTER, RE: [biblesupersearch_downloads] shortcode.<br \><br \>';
+            $msg .= 'The Bible downloads feature is not enabled on the Bible SuperSearch API located at the selected API URL of ' . $BibleSuperSearchAPIURL . ' <br />';
+            $msg .= 'This will need to be enabled in order for the [biblesupersearch_downloads] shortcode to work.<br /><br />';
+            $msg .= 'If you manage this instance of the Bible SuperSearch API, please enable Bible downloads in the API options. &nbsp;Please log in for details.<br />';
+            $msg .= 'Once done, you will need to save the Bible SuperSearch plugin configs (without making any changes) to refresh the settings from the API.';
+            $msg .= "</div>";
+
+            return $msg;
+        }
+
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
 
         ob_start();
         include(dirname(__FILE__) . '/download/download.php');

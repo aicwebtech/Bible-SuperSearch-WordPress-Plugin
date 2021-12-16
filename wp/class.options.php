@@ -217,6 +217,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
+        $statics = $this->getStatics();
+
+        // print_r($statics);
+
+        $download_enabled = (bool) $statics['download_enabled'];
+
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
         require( dirname(__FILE__) . '/template.options.php');

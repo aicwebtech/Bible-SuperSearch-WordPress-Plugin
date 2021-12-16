@@ -3,7 +3,7 @@
 /*
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
-    Description: Add powerful Bible tools to your website, including a search engine, and a Bible download page.  Keeps your visitors on your website!
+    Description: Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
     Version:     4.5.1
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
