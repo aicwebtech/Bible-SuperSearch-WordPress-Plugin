@@ -22,7 +22,22 @@ jQuery(document).ready(function($) {
             url: url + '/api/version',
             method: 'POST',
             success: function(data) {
+                var valid = true,
+                    version = false;
+
                 if(!data.results || !data.results.name || !data.results.version || data.error_level != 0 || !Array.isArray(data.errors)) {
+                    valid = false;
+                }
+                else {
+                    version = parseFloat(data.results.version);
+
+                    // Perhaps there is a better way
+                    if(version >= 5 && data.results.hash != 'fd9f996adfe0beb419a5a40b2adaf573baf55464f7c2c9101b4d7ce6e42310cf') {
+                        valid = false;
+                    }
+                }
+
+                if(!valid) {
                     alert('Error:\nURL \'' + url + '\' does not appear to be an instance of \nthe Bible SuperSearch API, reverting to original.');
                     $(that).val(orig);
                     $('.button-primary').prop('disabled', false);

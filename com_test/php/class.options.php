@@ -448,6 +448,8 @@ abstract class BibleSuperSearch_Options_Abstract {
             return FALSE;
         }
 
+        $options    = $this->getOptions();
+        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
         $allow_url_fopen       = intval(ini_get('allow_url_fopen'));
         $cached_statics        = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
@@ -456,14 +458,19 @@ abstract class BibleSuperSearch_Options_Abstract {
             $force = TRUE; // Force statics load if last load failed
         }
 
+        // Do we really need to pull statics fresh once an hour??
         if($last_update_timestamp > time() - 3600 && !$force) {
-            return $cached_statics;
+            // Check to see if statics have changed.
+            $result = $this->_apiActionHelper('statics_changed', $url, []);
+
+            // If statics have NOT changed (or no results), send cached.
+            if($result === NULL || $result && $result['results']['updated'] <= $last_update_timestamp) {
+                return $cached_statics;
+            }
         }
 
         $this->statics_loading = TRUE;
-        $options    = $this->getOptions();
-        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
-        $data       = array('language'  => 'en',);
+        $data       = array('language'  => 'en');
         
         $result     = $this->_apiActionHelper('statics', $url, $data);
         $this->statics_loading = FALSE;
@@ -512,7 +519,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $url = $api_url . $url_action;
 
         $result = FALSE;
-        $allow_url_fopen = intval(ini_get('allow_url_fopen'));
+        $allow_url_fopen = (int) ini_get('allow_url_fopen');
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
 

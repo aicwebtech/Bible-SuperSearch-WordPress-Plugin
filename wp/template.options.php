@@ -12,7 +12,7 @@
         <div class="inner-sidebar" style='margin-top: 44px'>
 
             <?php if($using_main_api): ?>
-                <div class="postbox sm-box" style='background-color: #fffc52;'>
+                <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
                     <div class='inside'>
                         <ul>
