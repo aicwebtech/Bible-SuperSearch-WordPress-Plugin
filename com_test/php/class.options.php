@@ -20,6 +20,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
+        'bibleSorting'              => 'language_english|name',
         'language'                  => 'en',
     );  
 
@@ -29,6 +30,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             'language'              => 'Language - Endonym',
             'language_english'      => 'Language - English Name',
             'language_and_english'  => 'Language - Endonym and English Name',
+        ],        
+        'bibleSorting' => [
+            'language_english|name'         => 'Language - English Name / Full Name',
+            'language_english|shortname'    => 'Language - English Name / Short Name',
+            'language_english|rank|name'    => 'Language - English Name / Rank / Full Name',
         ],
         'language' => [
             'en'                    => 'English',
@@ -51,7 +57,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bible'  => array(
             'name'          => 'Bibles',
             'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping'),
+            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
@@ -146,7 +152,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         }       
 
         foreach($tab_item['checkboxes'] as $field) {
-            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
+            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field]));
         }
 
         // if(!isset($input['enableAllBibles'])) {
@@ -162,7 +168,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             }
         }
 
-        if($tab == 'general') {
+        if($tab == 'bible') {
             if($input['enableAllBibles']) {
                 $input['enabledBibles'] = [];
             }

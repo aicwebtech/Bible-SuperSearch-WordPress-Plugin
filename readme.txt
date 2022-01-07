@@ -166,6 +166,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 = 5.0.0 =
 * Added new format button options
+* Added copy link dialog
+* Added selector for Bible list sorting
+* Updated Spanish UI tranlation
+* Bug fix: Share copy now using same alert dialog as EZ copy
 
 = 4.5.2 =
 * Added format options for the copying text.
@@ -179,9 +183,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Bug fix: Fixed ASV display issue {{selah
 * Bug fix: Landing page wasn't saving when selecting NONE
 * Bug fix: fixed some class naming issues likely to cause conflict with WP themes
-* Bugfix: Using modern clipboard API when available.
-* Bugfix: Start menu links doing search instead of pulling passage.
-* Bugfix: Fixed missing config variable issue when initializing localization.
+* Bug fix: Using modern clipboard API when available.
+* Bug fix: Start menu links doing search instead of pulling passage.
+* Bug fix: Fixed missing config variable issue when initializing localization.
 * Workaround to duplicate shortcode issue.
 
 = 4.4.3 =

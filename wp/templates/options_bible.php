@@ -59,6 +59,26 @@
                     <option value='language_and_english' <?php selected('language_and_english', $options['bibleGrouping'] ); ?> >Language - Endonym and English Name</option>
                 </select>
             </td>
+        </tr>        
+        <tr>
+            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Bible List Sorting', 'biblesupersearch' ); ?></th>
+            <td>
+                <select name='biblesupersearch_options[bibleSorting]'>
+                    <option value='language_english|name' <?php selected('language_english|name', $options['bibleSorting'] ); ?> >Language - English Name / Full Name</option>
+                    <option value='language_english|shortname' <?php selected('language_english|shortname', $options['bibleSorting'] ); ?> >Language - English Name / Short Name</option>
+                    <option value='language_english|rank|name' <?php selected('language_english|rank|name', $options['bibleSorting'] ); ?> >Language - English Name / Rank / Full Name</option>
+                    <option value='language_english|rank|shortname' <?php selected('language_english|rank|shortname', $options['bibleSorting'] ); ?> >
+                        Language - English Name / Rank / Short Name
+                    </option>
+                    <option value='language_english|rank' <?php selected('language_english|rank', $options['bibleSorting'] ); ?> >Language - English Name / Rank</option>
+                    <option value='rank' <?php selected('rank', $options['bibleSorting'] ); ?> >Rank</option>
+                    <option value='name' <?php selected('name', $options['bibleSorting'] ); ?> >Full Name</option>
+                    <option value='shortname' <?php selected('shortname', $options['bibleSorting'] ); ?> >Short Name</option>
+                </select>
+
+                <p><small>Note: This ONLY controls the Bible sorting in the Bible list; it doesn't affect the labels on the options.</small></p>
+                <p><small>Note: Rank is a user-defined sort order that is defined on the API.</small></p>
+            </td>
         </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>

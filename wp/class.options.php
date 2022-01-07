@@ -17,7 +17,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         'bible'  => array(
             'name'          => 'Bibles',
             'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping'),
+            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
