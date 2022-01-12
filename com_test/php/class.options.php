@@ -391,6 +391,15 @@ abstract class BibleSuperSearch_Options_Abstract {
                 }
 
                 foreach($sorting as $k => $s) {
+                    switch($s) {
+                        case 'language_english':
+                            $s = 'lang';
+                            break;                        
+                        case 'language':
+                            $s = 'lang_native';
+                            break;
+                    }
+
                     $sortable[$k * 2][$module] = $bible[$s];
                 }
 
