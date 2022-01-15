@@ -4,7 +4,9 @@ if(typeof $ == 'undefined') {
 
 
 jQuery(document).ready(function() {
-    setUpContactForm7();
+    // setUpContactForm7();
+
+    //jQuery('.biblesupersearch_dup_shortcode').show();
 })
 
 

@@ -170,6 +170,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Added selector for Bible list sorting
 * Updated Spanish UI tranlation
 * Bug fix: Share copy now using same alert dialog as EZ copy
+* Bug fix: Better fix for the only one [biblesupersearch] shortcode error.
 
 = 4.5.2 =
 * Added format options for the copying text.
