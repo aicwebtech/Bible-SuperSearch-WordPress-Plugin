@@ -614,6 +614,10 @@ abstract class BibleSuperSearch_Options_Abstract {
             'Expanding' => array(
                 'name'  => 'Expanding', 
                 'class' => 'expanding',
+            ),
+            'ExpandingLargeInput' => array(
+                'name'  => 'Expanding - Large Input', 
+                'class' => 'expanding',
             ),              
             'ClassicUserFriendly1' => array(
                 'name'  => 'Classic - User Friendly 1', 
