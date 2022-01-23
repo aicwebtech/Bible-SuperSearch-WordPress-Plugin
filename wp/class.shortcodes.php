@@ -145,7 +145,7 @@ class BibleSuperSearch_Shortcodes {
             }
         }
 
-        if($options['destinationUrl'] == get_permalink()) {
+        if(array_key_exists('destinationUrl', $options) && $options['destinationUrl'] == get_permalink()) {
             $options['destinationUrl'] = NULL;
         }
         
@@ -228,10 +228,6 @@ class BibleSuperSearch_Shortcodes {
         ), $atts );
 
         // static::_validateAttributes($a);
-
-        if(static::$instances > 0) {
-            return '<div>Error: You can only have one [biblesupersearch] shortcode per page.  (Demo shortcode will create another).</div>';
-        }
 
         $html = '';
         $html .= "<div style='height: {$a['selector_height']}; overflow-y:auto'>";

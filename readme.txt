@@ -151,16 +151,33 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Expanding Search Form - Contracted
 1. Expanding Search Form - Expanded
 1. Classic Search Form - User Friendly 2
-1. Reference Look Up
 1. Search Results
+1. Reference Look Up
 1. Parallel Bibles
 1. Strong's Numbers with Hover Definitions
-1. Easy Copy
-1. Paragraph View
+1. Strong's Number Search
+1. Easy Text Copying, with Preset and Custom Options
+1. Paragraph Display
+1. Passage Display
+1. Verse Display
+1. Dialog: Emergency Bible Help (SOS)
+1. Dialog: Getting Started with the Bible
+1. Dialog: BSS Quick Start Guide
+1. Dialog: Link to a Search
+1. Dialog: Share Results
+1. Dialog: Settings
+1. Changing the Language
+1. Dialog: Bible Downloads
+1. Matching Options
+1. Match All Words
+1. Match Any Word
+1. Match Words within 5 Verses (Verse Proximity)
 1. Boolean Search
-1. Plugin Configs
-1. Enabling Bible Translations
-1. Advanced Options
+1. Boolean Search with Verse Proximity
+1. Plugin Configs: General
+1. Plugin Configs: Bibles
+1. Plugin Configs: Advanced
+1. Plugin Configs: Widgets
 
 == Changelog ==
 
