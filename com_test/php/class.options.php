@@ -755,6 +755,9 @@ abstract class BibleSuperSearch_Options_Abstract {
             ),           
             'StylableMinimal' => array(
                 'name'  => 'Stylable - Minimal buttons, with settings dialog.',
+            ),            
+            'none' => array(
+                'name'  => 'None',
             ),
         );
     }   
