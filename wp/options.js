@@ -4,6 +4,14 @@ jQuery(document).ready(function($) {
         changeAllBibles();
     });
 
+    $('#biblesupersearch_check_all_bibles').click(function() {
+        $('.bss_bible input[type=checkbox]').prop('checked', true);
+    });    
+
+    $('#biblesupersearch_uncheck_all_bibles').click(function() {
+        $('.bss_bible input[type=checkbox]').prop('checked', false);
+    });
+
     $('#biblesupersearch_url').change(function(e) {
         var url = $(this).val().replace(/\/+$/, ''),
             that = this,
@@ -61,10 +69,10 @@ jQuery(document).ready(function($) {
         var value = $('#biblesupersearch_all_bibles').prop('checked');
 
         if(value) {
-            $('.biblesupersearch_enabled_bible').hide();
+            $('.biblesupersearch_toggled_bible').hide();
         }
         else {
-            $('.biblesupersearch_enabled_bible').show();
+            $('.biblesupersearch_toggled_bible').show();
         }
     }
 

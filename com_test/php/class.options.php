@@ -538,6 +538,9 @@ abstract class BibleSuperSearch_Options_Abstract {
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
 
+        // echo('<pre>');
+        // var_dump($url);
+
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
             $options = array(
@@ -558,12 +561,25 @@ abstract class BibleSuperSearch_Options_Abstract {
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             $result = curl_exec($ch);
+            $curl_info = curl_getinfo($ch);
             curl_close($ch);
         }
 
         error_reporting($err);
+
+        if($action == 'statics') {
+            // var_dump($api_url);
+            // var_dump($url);
+            // var_dump($curl_info);
+            // var_dump($data);
+            // var_dump($action);
+            // var_dump($result);
+            // die();
+        }
+
         return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
     }
 

@@ -20,9 +20,13 @@
                         <?php if($options['enableAllBibles'] ) : echo "checked='checked'"; endif; ?>  />
                     <label for='biblesupersearch_all_bibles'>Enable ALL Bibles</label> &nbsp;
                     <!-- (This will also automatically enable any Bibles added in the future.) -->
+                    <span class='biblesupersearch_toggled_bible' style='display:none'>
+                        <a href='javascript:void(0)' id='biblesupersearch_check_all_bibles'>Check all Bibles</a>&nbsp; &nbsp;
+                        <a href='javascript:void(0)' id='biblesupersearch_uncheck_all_bibles'>Uncheck all Bibles</a><br />
+                    </span>
                 </div>
                 <br /><br />
-                <div class='biblesupersearch_enabled_bible' style='display:none'>
+                <div class='biblesupersearch_enabled_bible biblesupersearch_toggled_bible' style='display:none'>
                     <div>
                     <?php $old_lang = NULL; $lang_count = 0; ?>
                     <?php foreach($bibles as $module => $bible): ?>

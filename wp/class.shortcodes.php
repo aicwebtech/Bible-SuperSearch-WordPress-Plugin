@@ -194,8 +194,9 @@ class BibleSuperSearch_Shortcodes {
         if(!$a['suppress_instance_error']) {
             // Limitations of the Enyo app don't allow it to be rendered more than once on a page
             $html .= "   <!--\n";
-            $html .= '       ERROR: You can only have one [biblesupersearch] shortcode per page.' . "\n";
-            $html .= '       If you are seeing this HTML comment, that means that you have multiple [biblesupersearch] shortcodes on this page.' . "\n";
+            $html .= '       NOTE: You can only have one [biblesupersearch] shortcode per page.' . "\n";
+            $html .= '       If you are seeing this HTML comment (and are not using CTRL-U view source),' . "\n";
+            $html .= '       you may have multiple [biblesupersearch] shortcodes on this page.' . "\n";
             $html .= '       If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode.' . "\n";
             $html .= '       If you believe you have received this message in error, you may attempt to suppress it and attempt to display the Bible search anyway, ' . "\n";
             $html .= '       by setting suppress_instance_error=\'true\' on the shortcode.  (However, this is not a guaranteed fix.)' . "\n";
