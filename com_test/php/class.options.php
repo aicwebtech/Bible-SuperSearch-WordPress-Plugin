@@ -20,6 +20,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
+        'bibleSorting'              => 'language_english|name',
         'language'                  => 'en',
     );  
 
@@ -29,6 +30,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             'language'              => 'Language - Endonym',
             'language_english'      => 'Language - English Name',
             'language_and_english'  => 'Language - Endonym and English Name',
+        ],        
+        'bibleSorting' => [
+            'language_english|name'         => 'Language - English Name / Full Name',
+            'language_english|shortname'    => 'Language - English Name / Short Name',
+            'language_english|rank|name'    => 'Language - English Name / Rank / Full Name',
         ],
         'language' => [
             'en'                    => 'English',
@@ -51,7 +57,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bible'  => array(
             'name'          => 'Bibles',
             'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping'),
+            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
@@ -146,7 +152,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         }       
 
         foreach($tab_item['checkboxes'] as $field) {
-            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
+            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field]));
         }
 
         // if(!isset($input['enableAllBibles'])) {
@@ -162,7 +168,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             }
         }
 
-        if($tab == 'general') {
+        if($tab == 'bible') {
             if($input['enableAllBibles']) {
                 $input['enabledBibles'] = [];
             }
@@ -385,6 +391,15 @@ abstract class BibleSuperSearch_Options_Abstract {
                 }
 
                 foreach($sorting as $k => $s) {
+                    switch($s) {
+                        case 'language_english':
+                            $s = 'lang';
+                            break;                        
+                        case 'language':
+                            $s = 'lang_native';
+                            break;
+                    }
+
                     $sortable[$k * 2][$module] = $bible[$s];
                 }
 
@@ -448,6 +463,8 @@ abstract class BibleSuperSearch_Options_Abstract {
             return FALSE;
         }
 
+        $options    = $this->getOptions();
+        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
         $allow_url_fopen       = intval(ini_get('allow_url_fopen'));
         $cached_statics        = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
@@ -456,14 +473,19 @@ abstract class BibleSuperSearch_Options_Abstract {
             $force = TRUE; // Force statics load if last load failed
         }
 
+        // Do we really need to pull statics fresh once an hour??
         if($last_update_timestamp > time() - 3600 && !$force) {
-            return $cached_statics;
+            // Check to see if statics have changed.
+            $result = $this->_apiActionHelper('statics_changed', $url, []);
+
+            // If statics have NOT changed (or no results), send cached.
+            if($result === NULL || $result && $result['results']['updated'] <= $last_update_timestamp) {
+                return $cached_statics;
+            }
         }
 
         $this->statics_loading = TRUE;
-        $options    = $this->getOptions();
-        $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
-        $data       = array('language'  => 'en',);
+        $data       = array('language'  => 'en');
         
         $result     = $this->_apiActionHelper('statics', $url, $data);
         $this->statics_loading = FALSE;
@@ -512,9 +534,12 @@ abstract class BibleSuperSearch_Options_Abstract {
         $url = $api_url . $url_action;
 
         $result = FALSE;
-        $allow_url_fopen = intval(ini_get('allow_url_fopen'));
+        $allow_url_fopen = (int) ini_get('allow_url_fopen');
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
+
+        // echo('<pre>');
+        // var_dump($url);
 
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
@@ -536,12 +561,25 @@ abstract class BibleSuperSearch_Options_Abstract {
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             $result = curl_exec($ch);
+            $curl_info = curl_getinfo($ch);
             curl_close($ch);
         }
 
         error_reporting($err);
+
+        if($action == 'statics') {
+            // var_dump($api_url);
+            // var_dump($url);
+            // var_dump($curl_info);
+            // var_dump($data);
+            // var_dump($action);
+            // var_dump($result);
+            // die();
+        }
+
         return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
     }
 
@@ -591,6 +629,10 @@ abstract class BibleSuperSearch_Options_Abstract {
             // ),
             'Expanding' => array(
                 'name'  => 'Expanding', 
+                'class' => 'expanding',
+            ),
+            'ExpandingLargeInput' => array(
+                'name'  => 'Expanding - Large Input', 
                 'class' => 'expanding',
             ),              
             'ClassicUserFriendly1' => array(
@@ -703,10 +745,19 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'name' => $this->_getDefaultItemText(),
             ),
             'Classic' => array(
-                'name'  => 'Classic',
+                'name'  => 'Classic (Old icons from v2 - deprecated)',
             ),            
             'Stylable' => array(
-                'name'  => 'Stylable',
+                'name'  => 'Stylable - Wide',
+            ),            
+            'StylableNarrow' => array(
+                'name'  => 'Stylable - Narrow',
+            ),           
+            'StylableMinimal' => array(
+                'name'  => 'Stylable - Minimal buttons, with settings dialog.',
+            ),            
+            'none' => array(
+                'name'  => 'None',
             ),
         );
     }   

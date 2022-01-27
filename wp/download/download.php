@@ -13,6 +13,10 @@
     }
 
     $show_check_all = (!$BibleSuperSearchDownloadLimit || $BibleSuperSearchDownloadLimit >= $downloadable_bibles) ? TRUE : FALSE;
+
+    if(!isset($BibleSuperSearchIsAdmin)) {
+        $BibleSuperSearchIsAdmin = FALSE;
+    }
 ?>
 
 <form action='<?php echo $BibleSuperSearchAPIURL ?>/api/download' method='POST' id='bible_download_form'>
@@ -21,7 +25,12 @@
 
     <div class='container bible_container'>
         <h2>Select Bible(s)</h2>
-        Some Bibles may not be available due to copyright restrictions. <br /><br />
+
+        <?php if($BibleSuperSearchIsAdmin): ?>
+            <b>NOTE: You are logged in as ADMIN - all Bibles are downloadable regardless of copyright status!</b><br /><br />
+        <?php else: ?>
+            Some Bibles may not be available due to copyright restrictions. <br /><br />
+        <?php endif; ?>
 
         <table class='parameters' cellspacing="0">
             <tr>
@@ -40,6 +49,8 @@
             </tr>
 
             <?php foreach($BibleSuperSearchBibles as $bible) : ?>
+                <?php if($BibleSuperSearchIsAdmin) {$bible['downloadable'] = TRUE;} ?>
+
                 <?php if(!$BibleSuperSearchDownloadVerbose && !$bible['downloadable']) { continue; } ?>
 
                 <tr class='<?php if(!$bible['downloadable']) { echo 'download_disabled'; }?>'>

@@ -3,8 +3,8 @@
 /*
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
-    Description: Add powerful Bible tools to your website, including a search engine, and a Bible download page.  Keeps your visitors on your website!
-    Version:     4.5.1
+    Description: Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
+    Version:     5.0.0
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
     License:     GPLv3 or later
@@ -33,12 +33,13 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     wp_enqueue_script('biblesupersearch_main', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
     wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
     wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));    
+    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/style.css', __FILE__));    
     // wp_enqueue_script('biblesupersearch_main', plugins_url('app/biblesupersearch.js', __FILE__));
     // wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
     // wp_enqueue_style('biblesupersearch_css',   plugins_url('app/biblesupersearch.css', __FILE__));
     
     if($includeCssOverride) {
-        wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/additional.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/additional.css', __FILE__));
     }
 }
 

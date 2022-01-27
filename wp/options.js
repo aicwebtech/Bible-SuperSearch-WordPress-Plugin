@@ -4,8 +4,16 @@ jQuery(document).ready(function($) {
         changeAllBibles();
     });
 
+    $('#biblesupersearch_check_all_bibles').click(function() {
+        $('.bss_bible input[type=checkbox]').prop('checked', true);
+    });    
+
+    $('#biblesupersearch_uncheck_all_bibles').click(function() {
+        $('.bss_bible input[type=checkbox]').prop('checked', false);
+    });
+
     $('#biblesupersearch_url').change(function(e) {
-        var url = $(this).val(),
+        var url = $(this).val().replace(/\/+$/, ''),
             that = this,
             orig = e.currentTarget.defaultValue;
 
@@ -14,7 +22,6 @@ jQuery(document).ready(function($) {
             return;
         }
 
-        // console.log('url', url, orig, e);
         $(that).css('background-color', 'transparent');
         $('.button-primary').prop('disabled', true);
 
@@ -23,13 +30,29 @@ jQuery(document).ready(function($) {
             url: url + '/api/version',
             method: 'POST',
             success: function(data) {
-                if(!data.results || !data.results.name || data.results.name != 'Bible SuperSearch API') {
+                var valid = true,
+                    version = false;
+
+                if(!data.results || !data.results.name || !data.results.version || data.error_level != 0 || !Array.isArray(data.errors)) {
+                    valid = false;
+                }
+                else {
+                    version = parseFloat(data.results.version);
+
+                    // Perhaps there is a better way
+                    if(version >= 5 && data.results.hash != 'fd9f996adfe0beb419a5a40b2adaf573baf55464f7c2c9101b4d7ce6e42310cf') {
+                        valid = false;
+                    }
+                }
+
+                if(!valid) {
                     alert('Error:\nURL \'' + url + '\' does not appear to be an instance of \nthe Bible SuperSearch API, reverting to original.');
                     $(that).val(orig);
                     $('.button-primary').prop('disabled', false);
                 }
                 else {
                     $(that).css('background-color', '#8be088');
+                    $(that).val(url);
                     $('.button-primary').prop('disabled', false);
                 }
             },
@@ -46,10 +69,10 @@ jQuery(document).ready(function($) {
         var value = $('#biblesupersearch_all_bibles').prop('checked');
 
         if(value) {
-            $('.biblesupersearch_enabled_bible').hide();
+            $('.biblesupersearch_toggled_bible').hide();
         }
         else {
-            $('.biblesupersearch_enabled_bible').show();
+            $('.biblesupersearch_toggled_bible').show();
         }
     }
 

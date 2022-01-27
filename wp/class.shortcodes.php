@@ -84,7 +84,7 @@ class BibleSuperSearch_Shortcodes {
         ),
     );
     
-    static public function display($atts) {
+    static public function display($atts, $thing, $it) {
         global $BibleSuperSearch_Options, $wp_query;
         $options        = $BibleSuperSearch_Options->getOptions();
         $statics        = $BibleSuperSearch_Options->getStatics();
@@ -108,7 +108,6 @@ class BibleSuperSearch_Shortcodes {
             $destination_url = get_permalink($options['defaultDestinationPage']);
             $attr['destination_url']['default'] = $destination_url;
         }
-
         
         $defaults = array(
             'container' => $container,
@@ -122,21 +121,7 @@ class BibleSuperSearch_Shortcodes {
         $a = shortcode_atts($defaults, $atts);
         static::_validateAttributes($a);
 
-        if(static::$instances > 0) {
-            // $container .= '_' . static::$instances;
-        }        
-
-        if(static::$instances > 0 && !$a['suppress_instance_error']) {
-            // Limitations of the Enyo app don't allow it to be rendered more than once on a page
-            $msg  = '<div>';
-            $msg .= 'Error: You can only have one [biblesupersearch] shortcode per page. ';
-            $msg .= 'If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode. <br />';
-            $msg .= 'If you believe you have received this message in error, you may attempt to suppress it and attempt to display the Bible search anyway, <br />';
-            $msg .= 'by setting suppress_instance_error=\'true\' on the shortcode. &nbsp;(However, this is not a guaranteed fix.)';
-            $msg .= '</div>';
-
-            return $msg;
-        }
+        $options['target'] = $a['container'];
         
         $a['contact-form-7-id'] = (int) $a['contact-form-7-id'];
 
@@ -156,7 +141,7 @@ class BibleSuperSearch_Shortcodes {
             }
         }
 
-        if($options['destinationUrl'] == get_permalink()) {
+        if(array_key_exists('destinationUrl', $options) && $options['destinationUrl'] == get_permalink()) {
             $options['destinationUrl'] = NULL;
         }
         
@@ -196,11 +181,24 @@ class BibleSuperSearch_Shortcodes {
         $html .= "</script>\n";
 
         // Experimental: Using a Contact Form 7 form for the Bible search form.
-        if($a['contact-form-7-id']) {
-            $html .= static::_displayContactForm7($a);
-        }
+        // if($a['contact-form-7-id']) {
+        //     $html .= static::_displayContactForm7($a);
+        // }
 
         $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
+        
+        if(!$a['suppress_instance_error']) {
+            // Limitations of the Enyo app don't allow it to be rendered more than once on a page
+            $html .= "   <!--\n";
+            $html .= '       NOTE: You can only have one [biblesupersearch] shortcode per page.' . "\n";
+            $html .= '       If you are seeing this HTML comment (and are not using CTRL-U view source),' . "\n";
+            $html .= '       you may have multiple [biblesupersearch] shortcodes on this page.' . "\n";
+            $html .= '       If you are using a SEO plugin, please make sure it isn\'t duplicating the shortcode.' . "\n";
+            $html .= '       If you believe you have received this message in error, you may attempt to suppress it and attempt to display the Bible search anyway, ' . "\n";
+            $html .= '       by setting suppress_instance_error=\'true\' on the shortcode.  (However, this is not a guaranteed fix.)' . "\n";
+            $html .= '   -->' . "\n";
+        }
+
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
 
@@ -227,10 +225,6 @@ class BibleSuperSearch_Shortcodes {
         ), $atts );
 
         // static::_validateAttributes($a);
-
-        if(static::$instances > 0) {
-            return '<div>Error: You can only have one [biblesupersearch] shortcode per page.  (Demo shortcode will create another).</div>';
-        }
 
         $html = '';
         $html .= "<div style='height: {$a['selector_height']}; overflow-y:auto'>";
@@ -313,19 +307,27 @@ class BibleSuperSearch_Shortcodes {
 
         static::_validateAttributes($a, array('verbose'));
 
-        if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
-            return 'The download feature is not available from the selected Bible SuperSearch API server.';
-        }
-
-        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
-
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
         // $BibleSuperSearchBibles          = $statics['bibles'];
         $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics, 'name', 'language_english');
         $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
         $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;
+
+        if(!array_key_exists('download_enabled', $statics) || !$statics['download_enabled']) {
+            $msg = "<div style='background-color: yellow; font-weight: bold'>";
+            $msg .= 'NOTICE TO WEBMASTER, RE: [biblesupersearch_downloads] shortcode.<br \><br \>';
+            $msg .= 'The Bible downloads feature is not enabled on the Bible SuperSearch API located at the selected API URL of ' . $BibleSuperSearchAPIURL . ' <br />';
+            $msg .= 'This will need to be enabled in order for the [biblesupersearch_downloads] shortcode to work.<br /><br />';
+            $msg .= 'If you manage this instance of the Bible SuperSearch API, please enable Bible downloads in the API options. &nbsp;Please log in for details.<br />';
+            $msg .= 'Once done, you will need to save the Bible SuperSearch plugin configs (without making any changes) to refresh the settings from the API.';
+            $msg .= "</div>";
+
+            return $msg;
+        }
+
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
 
         ob_start();
         include(dirname(__FILE__) . '/download/download.php');

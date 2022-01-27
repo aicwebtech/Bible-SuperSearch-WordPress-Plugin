@@ -3,13 +3,13 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 5.8
-Requires PHP: 5.3
+Tested up to: 5.9
+Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Add powerful Bible tools to your website, including a search engine, and a Bible download page.  Keeps your visitors on your website!
+Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
 
 == Description ==
 Add powerful Bible tools to your website, including a Bible search engine, and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired.
@@ -151,30 +151,45 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Expanding Search Form - Contracted
 1. Expanding Search Form - Expanded
 1. Classic Search Form - User Friendly 2
-1. Reference Look Up
 1. Search Results
+1. Reference Look Up
 1. Parallel Bibles
 1. Strong's Numbers with Hover Definitions
-1. Easy Copy
-1. Paragraph View
+1. Strong's Number Search
+1. Easy Text Copying, with Preset and Custom Options
+1. Paragraph Display
+1. Passage Display
+1. Verse Display
+1. Dialog: Emergency Bible Help (SOS)
+1. Dialog: Getting Started with the Bible
+1. Dialog: BSS Quick Start Guide
+1. Dialog: Link to a Search
+1. Dialog: Share Results
+1. Dialog: Settings
+1. Changing the Language
+1. Dialog: Bible Downloads
+1. Matching Options
+1. Match All Words
+1. Match Any Word
+1. Match Words within 5 Verses (Verse Proximity)
 1. Boolean Search
-1. Plugin Configs
-1. Enabling Bible Translations
-1. Advanced Options
+1. Boolean Search with Verse Proximity
+1. Plugin Configs: General
+1. Plugin Configs: Bibles
+1. Plugin Configs: Advanced
+1. Plugin Configs: Widgets
 
 == Changelog ==
 
+= 5.0.0 =
+* Added new format button options
+* Added copy link dialog
+* Added selector for Bible list sorting
+* Updated Spanish UI tranlation
+* Bug fix: Share copy now using same alert dialog as EZ copy
+* Bug fix: Better fix for the only one [biblesupersearch] shortcode error.
+
 = 4.5.2 =
-* Workaround to duplicate shortcode issue.
-* Bugfix: Using modern clipboard API when available.
-* Bugfix: Start menu links doing search instead of pulling passage.
-* Bugfix: Fixed missing config variable issue when initializing localization.
-
-= 4.5.1 =
-* Fixed some class naming issues likely to cause conflict with WP themes
-
-= 4.5.0 =
-* (soft release, these features will be part of a future 5.0 release)
 * Added format options for the copying text.
 * Added Romanian UI translation
 * Improvement: Added ability to toggle keyword highlighting.
@@ -185,6 +200,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Bug fix: Replaced unicode icons with ones that display on mobile devices.
 * Bug fix: Fixed ASV display issue {{selah
 * Bug fix: Landing page wasn't saving when selecting NONE
+* Bug fix: fixed some class naming issues likely to cause conflict with WP themes
+* Bug fix: Using modern clipboard API when available.
+* Bug fix: Start menu links doing search instead of pulling passage.
+* Bug fix: Fixed missing config variable issue when initializing localization.
+* Workaround to duplicate shortcode issue.
 
 = 4.4.3 =
 * Improvement: Share text format: put URL and title at the bottom.

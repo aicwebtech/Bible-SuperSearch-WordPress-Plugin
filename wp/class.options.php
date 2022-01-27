@@ -17,7 +17,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         'bible'  => array(
             'name'          => 'Bibles',
             'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping'),
+            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
         // 'style'  => array(
@@ -216,6 +216,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         $languages = static::getSelectorOptions('language');
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
+
+        $statics = $this->getStatics();
+
+        // print_r($statics);
+
+        $download_enabled = (bool) $statics['download_enabled'];
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
