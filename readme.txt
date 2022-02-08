@@ -184,6 +184,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 = 5.0.0 =
 * Added new format button options
 * Added copy link dialog
+* Added (instant) copy button
 * Added selector for Bible list sorting
 * Updated Spanish UI tranlation
 * Bug fix: Share copy now using same alert dialog as EZ copy
