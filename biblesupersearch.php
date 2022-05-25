@@ -4,7 +4,7 @@
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
     Description: Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
-    Version:     5.0.0
+    Version:     5.0.1
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
     License:     GPLv3 or later
@@ -57,9 +57,14 @@ function biblesupersearch_add_settings_link( $links ) {
 $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'biblesupersearch_add_settings_link' );
 
-
+// Note this currently causes breakage on some hosts ($BibleSuperSearch_Options is null)
+// disabled for now
 function biblesupersearch_custom_rewrite() {
     global $BibleSuperSearch_Options;
+
+    if(!$BibleSuperSearch_Options) {
+        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
+    }
 
     $landing_page = $BibleSuperSearch_Options->getLandingPage();
 
@@ -88,4 +93,4 @@ function biblesupersearch_custom_rewrite() {
     add_rewrite_rule('^' . $landing_page_link  . '/(.*)/?','index.php?page_id=' . $landing_page_id . '&bible_query=$matches[1]','top');
 }
 
-add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
+//add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
