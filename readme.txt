@@ -181,6 +181,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.0.2 =
+* Improved error handling when AJAX calls fail
+* Fixed bugs with the Advanced search
+
 = 5.0.1 =
 * Suppressed some experimental, unpublished functionality that was causing fatal errors on some webhosts
 * Confirmed WordPress 6.0 support
