@@ -52,6 +52,7 @@
         <?php else: ?>
             Some Bibles may not be available due to copyright restrictions. <br /><br />
         <?php endif; ?>
+        <?php $lang_colspan = $BibleSuperSearchDownloadVerbose ? 5 : 3; ?>
 
         <div class='scrollable'>
 
@@ -65,11 +66,7 @@
                         <?php endif; ?>
                     </th>
                     <th colspan='2'>
-                        <?php if($show_check_all): ?>
-                            <label type='checkbox' for='bible_download_check_all'>Check All</label>
-                        <?php else: ?>
                             &nbsp;
-                        <?php endif; ?>
                     </th>
                     <?php if($BibleSuperSearchDownloadVerbose): ?><th>Year</th><?php endif; ?>
                     <?php if($BibleSuperSearchDownloadVerbose): ?><th>Downloadable</th><?php endif; ?>
@@ -90,7 +87,7 @@
                                 <input type='checkbox' id='bible_download_check_all_<?php echo $bible['lang_short']?>' 
                                     class='bible_download_check_all_lang' title='Check All <?php echo $current_language; ?>'>
                             </th>
-                            <th colspan='3'>
+                            <th colspan='<?php echo $lang_colspan; ?>'>
                                 <label for='bible_download_check_all_<?php echo $bible['lang_short']?>'>
                                     <?php echo $current_language; ?>
                                 </label>

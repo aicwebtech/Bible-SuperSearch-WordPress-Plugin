@@ -155,7 +155,7 @@ tr.download_disabled {
 }
 
 .bible_container .language_header {
-    border-bottom: 2px solid black;
+    /*border-bottom: 2px solid black;*/
 }
 
 .bible_download_select {

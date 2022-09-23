@@ -232,6 +232,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
         $selectables = $this->getSelectableItems();
+        $statics = $this->getStatics();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 

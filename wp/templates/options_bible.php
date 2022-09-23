@@ -1,3 +1,9 @@
+<?php
+    $research_desc = array_key_exists('research_desc', $statics) ? $statics['research_desc'] : 'Intended for research purposes only.  
+        These Bibles are not based on the Textus Receptus and/or are not Formal Equivalence 
+        translations, and are therefore not recommended for other uses.';
+?>
+
 <div class="inside">
     <table class="form-table">
         <tr><td colspan='2'><h2><?php esc_html_e( 'Bibles', 'biblesupersearch' ); ?></h2></td></tr>
@@ -45,11 +51,13 @@
                         <div class='bss_bible' style='' >
                             <input name='biblesupersearch_options[enabledBibles][]' type='checkbox' value='<?php echo $module; ?>' 
                                 id='enabled_<?php echo $module; ?>' <?php if(in_array($module, $options['enabledBibles'] ) ) : echo "checked='checked'"; endif; ?> />
+                            <?php echo $bible['research'] == 1 ? '* ' : ''; ?>
                             <label for='enabled_<?php echo $module; ?>'><?php echo $bible['display_short']; ?></label><br />
                         </div>
                     <?php $old_lang = $bible['lang']; ?>
                     <?php endforeach; ?>
                     </div>
+                    <small>* <?php echo $research_desc; ?></small>
                 </div>
             </td>
         </tr>
