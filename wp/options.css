@@ -70,3 +70,8 @@
 .shortcode-options-table td.desc {
     width: 58%;
 }
+
+.shortcode-options-table.bss td.desc div {
+    height: 300px;
+    overflow-y: auto;
+}

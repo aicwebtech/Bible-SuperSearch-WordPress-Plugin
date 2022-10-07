@@ -210,6 +210,28 @@ class BibleSuperSearch_Shortcodes {
         return $html;
     }    
 
+    static public function getDisplayAttributes()
+    {
+        global $BibleSuperSearch_Options, $interfaces;
+
+        if(!isset($interfaces) || empty($interfaces)) {
+            $interfaces = $BibleSuperSearch_Options->getInterfaces(); 
+        } 
+
+        $attr = self::$displayAttributes;
+
+        $attr['interface']['desc'] = "Name or ID of the skin to be used, &nbsp; To preview the complete list of skins, please visit<br />
+                                <a href='https://www.biblesupersearch.com/screenshots/#interfaces' target='_NEW'>https://www.biblesupersearch.com/screenshots/#interfaces</a><br />
+                                <a href='https://www.biblesupersearch.com/client/' target='_NEW'>https://www.biblesupersearch.com/client/</a><br /><br />
+                                <b>How to use this shortcode property for each interface option:</b><br /><br />";
+
+        foreach($interfaces as $key => $int) {
+            $attr['interface']['desc'] .= $int['name'] . ':<br />[biblesupersearch interface=\'' . $key . '\']<br /><br />';
+        }
+
+        return $attr;
+    }
+
     static protected function _displayContactForm7($atts) {
         $html = 'CF7 ';
         $html .= do_shortcode('[contact-form-7 id="' . $atts['contact-form-7-id'] . '" title="Test Bible Form" do_not_store="true"]');
