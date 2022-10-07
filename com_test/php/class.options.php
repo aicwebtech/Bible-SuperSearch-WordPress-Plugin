@@ -43,6 +43,8 @@ abstract class BibleSuperSearch_Options_Abstract {
             'fr'                    => 'Français / French',
             'es'                    => 'Español / Spanish',
             'ro'                    => 'Română / Romanian',
+            'zh_TW'                 => '繁體中文 / Chinese - Traditional',
+            'zh_CN'                 => '简体中文 / Chinese - Simplified',
         ],
     ];
 
@@ -232,6 +234,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
         $selectables = $this->getSelectableItems();
+        $statics = $this->getStatics();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
@@ -634,13 +637,25 @@ abstract class BibleSuperSearch_Options_Abstract {
             'ExpandingLargeInput' => array(
                 'name'  => 'Expanding - Large Input', 
                 'class' => 'expanding',
+            ),                          
+            'BrowsingBookSelector' => array(
+                'name'  => 'Browsing with Book Selector', 
+                'class' => 'browsing',
             ),              
+            'BrowsingBookSelectorHorizontal' => array(
+                'name'  => 'Browsing with Book Selector, Horizontal Form', 
+                'class' => 'browsing',
+            ),              
+            'Classic' => array(
+                'name'  => 'Classic (alias of Classic - User Friendly 2)',  // alias ClassicUserFriendly2
+                'class' => 'classic',
+            ),            
             'ClassicUserFriendly1' => array(
                 'name'  => 'Classic - User Friendly 1', 
                 'class' => 'classic',
-            ),            
-            'Classic' => array(
-                'name'  => 'Classic - User Friendly 2',  // alias ClassicUserFriendly2
+            ),                  
+            'ClassicUserFriendly2' => array(
+                'name'  => 'Classic - User Friendly 2', 
                 'class' => 'classic',
             ),            
             'ClassicParallel2' => array(

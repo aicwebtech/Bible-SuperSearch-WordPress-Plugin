@@ -181,6 +181,13 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.1.0 =
+* Improved Bible download page.
+* Admin - now indicating which Bibles are intended for research only.
+* New Interface: Browsing with Book Selector
+* New Interface: Browsing with Book Selector, Horizontal Form
+* Added UI language support: Chinese (Traditional and Simplifed)
+
 = 5.0.2 =
 * Improved error handling when AJAX calls fail
 * Fixed bugs with the Advanced search
