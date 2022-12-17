@@ -15,8 +15,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'toggleAdvanced'            => TRUE,
         'formatButtonsToggle'       => FALSE,
         'defaultDestinationPage'    => 0,
-        "extraButtonsDisplay"       => 'separate',
-        "extraButtonsSeparate"      => 'default', // depricated
+        "extraButtonsSeparate"      => 'default',
         'pager'                     => 'default',
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
@@ -54,7 +53,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsDisplay'),
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons', 'language'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
@@ -719,16 +718,11 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'desc'  => 'The formatting buttons appear below the form, and include size, font, and copy options.',
                 'items' => $this->getFormatButtons(),
             ),            
-            // 'extraButtonsSeparate' => array(
-            //     'name'  => 'Display Other Buttons Separately',
-            //     'desc'  => 'These include help and download dialog buttons, and are otherwise included with the format buttons. &nbsp;Some skins do not support this.',
-            //     'items' => $this->getExtraButtons(),
-            // ),            
-            'extraButtonsDisplay' => array(
+            'extraButtonsSeparate' => array(
                 'name'  => 'How to Display Extra Buttons',
                 'desc'  => 'These include help and download dialog buttons. &nbsp; * Some skins do not support this option.',
-                'items' => $this->getExtraButtonsDisplay(),
-            ),
+                'items' => $this->getExtraButtons(),
+            ),            
         );
     }
 
@@ -788,31 +782,17 @@ abstract class BibleSuperSearch_Options_Abstract {
             'default' => array(
                 'name' => $this->_getDefaultItemText(),
             ),
-            'true' => array(
-                'name'  => 'Yes',
-            ),            
             'false' => array(
-                'name'  => 'No',
-            ),
-        );
-    }    
-
-    public function getExtraButtonsDisplay() {
-        return array(
-            'default' => array(
-                'name' => $this->_getDefaultItemText(),
-            ),
-            'format' => array(
                 'name'  => 'With Formatting Buttons',
-            ),            
-            'separate' => array(
+            ),
+            'true' => array(
                 'name'  => 'Separate from Formatting Buttons *',
             ),            
             'none' => array(
                 'name'  => 'None - Do not display',
             ),
         );
-    }
+    }        
 
     protected function _getDefaultItemText() {
         return 'Default for Selected Skin';
