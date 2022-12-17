@@ -719,10 +719,10 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'items' => $this->getFormatButtons(),
             ),            
             'extraButtonsSeparate' => array(
-                'name'  => 'Display Other Buttons Separately',
-                'desc'  => 'These include help and download dialog buttons, and are otherwise included with the format buttons. &nbsp;Some skins do not support this.',
+                'name'  => 'How to Display Extra Buttons',
+                'desc'  => 'These include help and download dialog buttons. &nbsp; * Some skins do not support this option.',
                 'items' => $this->getExtraButtons(),
-            ),
+            ),            
         );
     }
 
@@ -782,14 +782,17 @@ abstract class BibleSuperSearch_Options_Abstract {
             'default' => array(
                 'name' => $this->_getDefaultItemText(),
             ),
-            'true' => array(
-                'name'  => 'Yes',
-            ),            
             'false' => array(
-                'name'  => 'No',
+                'name'  => 'With Formatting Buttons',
+            ),
+            'true' => array(
+                'name'  => 'Separate from Formatting Buttons *',
+            ),            
+            'none' => array(
+                'name'  => 'None - Do not display',
             ),
         );
-    }
+    }        
 
     protected function _getDefaultItemText() {
         return 'Default for Selected Skin';
