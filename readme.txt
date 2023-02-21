@@ -183,6 +183,8 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 = 5.1.1 =
 * Updated "How to Display Extra Buttons" config to completely hide these buttons.
+* Adding new custom interface
+* Adding landing passage config
 
 = 5.1.0 =
 * Improved Bible download page.

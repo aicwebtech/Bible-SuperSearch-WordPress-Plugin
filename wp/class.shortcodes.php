@@ -28,6 +28,14 @@ class BibleSuperSearch_Shortcodes {
             'map'       => 'destinationUrl',
             'default'   => NULL,
         ),        
+        'landing_passage' => array(
+            'name'      => 'Landing Passage(s)',
+            'desc'      => 'When app is first loaded, these reference(s) will automatically be retrieved. <br />
+                            Takes any valid Bible reference, ie \'John 3:16; Romans 3:23; Genesis 1\' <br /><br />
+                            Example: [biblesupersearch landing_passage=\'Genesis 1\']',
+            'map'       => 'landingReference',
+            'default'   => NULL,
+        ),             
         'format_buttons' => array(
             'name'      => 'Which formatting buttons to use?',
             'desc'      => 'Options: default, Classic or Stylable <br />

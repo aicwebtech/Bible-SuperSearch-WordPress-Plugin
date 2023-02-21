@@ -22,6 +22,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bibleGrouping'             => 'language',
         'bibleSorting'              => 'language_english|name',
         'language'                  => 'en',
+        'landingReference'          => '',
     );  
 
     public static $selector_options = [
@@ -58,7 +59,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         ),        
         'bible'  => array(
             'name'          => 'Bibles',
-            'texts'         => array(),
+            'texts'         => array('landingReference'),
             'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
             'checkboxes'    => array('enableAllBibles'),
         ),        
@@ -69,7 +70,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         // ),
         'advanced' => array(
             'name'          => 'Advanced',
-            'texts'         => array('extraCss', 'apiUrl'),
+            'texts'         => array('apiUrl'),
             'selects'       => array(),
             'checkboxes'    => array(),
         ),
@@ -156,6 +157,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         foreach($tab_item['checkboxes'] as $field) {
             $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field]));
         }
+
+        print_r($incoming);
+        print_r($input);
+        die();
 
         // if(!isset($input['enableAllBibles'])) {
         //     $input['enableAllBibles'] = FALSE;
@@ -698,6 +703,10 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'name'  => 'Minimal Go Random with Parallel Bible', 
                 'class' => 'minimal'
             ),
+            'CustomUserFriendly2BookSel' => array(
+                'name'  => 'Custom - User Friendly 2 with Book Selector', 
+                'class' => 'classic',
+            ),   
         );
     }
 
