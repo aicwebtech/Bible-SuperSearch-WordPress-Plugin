@@ -5,47 +5,24 @@ defined( 'ABSPATH' ) or die; // exit if accessed directly
 class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
     
     protected $option_index = 'biblesupersearch_options';
-
-    protected $tabs = array(
-        'general'  => array(
-            'name'          => 'General',
-            // need list of fields for each tab.  IF field is not in list, it won't save!
-            'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'extraButtonsSeparate', 'navigationButtons', 'language'),
-            'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
-        ),        
-        'bible'  => array(
-            'name'          => 'Bibles',
-            'texts'         => array(),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
-            'checkboxes'    => array('enableAllBibles'),
-        ),        
-        // 'style'  => array(
-        //     'name'          => 'Appearance',
-        //     'fields'        => array(), // 'formStyles'),
-        //     'checkboxes'    => array('overrideCss'),
-        // ),
-        'advanced' => array(
-            'name'          => 'Advanced',
-            'texts'         => array('extraCss', 'apiUrl'),
-            'selects'       => array(),
-            'checkboxes'    => array(),
-        ),
-        'docs' => array(
-            'name'          => 'Documentation',
-            'texts'         => array(),
-            'selects'       => array(),
-            'checkboxes'    => array(),
-        ),
-    );
     
     public function __construct() {
         parent::__construct();
 
-        // Add some WordPress-specific options
+        // Add some WordPress-specific options and tabs
 
         $this->default_options['overrideCss'] = TRUE;
         $this->default_options['extraCss'] = '';
+
+        $this->tabs['general']['checkboxes'][] = 'overrideCss';
+        $this->tabs['advanced']['texts'][] = 'extraCss';
+
+        $this->tabs['docs'] = [
+            'name'          => 'Documentation',
+            'texts'         => [],
+            'selects'       => [],
+            'checkboxes'    => [],
+        ];
 
         // Register some stuff with WordPress
         

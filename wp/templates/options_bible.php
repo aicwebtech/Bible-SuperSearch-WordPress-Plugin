@@ -91,6 +91,15 @@
                 <p><small>Note: This ONLY controls the Bible sorting in the Bible list; it doesn't affect the labels on the options.</small></p>
                 <p><small>Note: Rank is a user-defined sort order that is defined on the API.</small></p>
             </td>
+        </tr>        
+        <tr>
+            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Landing Passage(s)', 'biblesupersearch' ); ?></th>
+            <td>
+                <input name='biblesupersearch_options[landingReference]' value='<?php echo $options['landingReference']?>' style='width:50%' />
+
+                <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
+                <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
+            </td>
         </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
