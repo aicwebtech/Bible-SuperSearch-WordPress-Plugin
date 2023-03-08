@@ -76,6 +76,15 @@ jQuery(document).ready(function($) {
         }
     }
 
+    $('#biblesupersearch_def_bible_add').click(function(e) {
+        console.log('here');
+        e.preventDefault();
+        addDefaultBible();
+        return true;
+    });
+
+
+
     changeAllBibles();
 });
 
@@ -153,3 +162,18 @@ jQuery(function($){
 
 });
 
+
+function addDefaultBible(e) {
+    e && e.preventDefault();  
+    pb = jQuery('#defaultBibleContainer select').length + 1;
+    innerHtml = jQuery('#default_bible_0').html();
+    innerHtml = innerHtml.replace('selected="selected"','');
+    innerHtml = innerHtml.replace("selected='selected'",'');
+    innerHtml = "<option value='0'>Parallel Bible " + pb + " - None</option>" + innerHtml;
+
+    html = "<select name='biblesupersearch_options[defaultBible][]'>" + innerHtml + "</select>";
+
+    jQuery('#defaultBibleContainer').append(html);
+
+    return true;
+}

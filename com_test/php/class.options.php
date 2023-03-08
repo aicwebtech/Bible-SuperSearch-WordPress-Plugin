@@ -6,6 +6,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected $default_options = array(
         'defaultBible'              => 'kjv',
+        'defaultBibles'             => ['kjv'],
         'apiUrl'                    => 'https://api.biblesupersearch.com',
         'useJSONP'                  => FALSE,
         'defaultLanguage'           => 'en',
@@ -105,6 +106,12 @@ abstract class BibleSuperSearch_Options_Abstract {
                 $options[$key] = $val;
             }
         }
+
+        if(is_string($options['defaultBible'])) {
+            $options['defaultBible'] = explode(',', $options['defaultBible']);
+        }
+
+        $options['defaultBible'] = array_filter($options['defaultBible']);
 
         return $options;
     }
@@ -513,8 +520,8 @@ abstract class BibleSuperSearch_Options_Abstract {
 
                     $options['apiUrl'] = $this->default_options['apiUrl'];
                     update_option($this->option_index, $options);
-                    wp_die($msg);
-                    // echo($msg);
+                    //wp_die($msg);
+                    echo($msg);
                 }
                 else {
                     wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );

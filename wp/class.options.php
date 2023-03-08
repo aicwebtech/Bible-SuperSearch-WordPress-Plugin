@@ -97,6 +97,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             }
         }
 
+
+        if(is_string($options['defaultBible'])) {
+            $options['defaultBible'] = explode(',', $options['defaultBible']);
+        }
+
+        $options['defaultBible'] = array_filter($options['defaultBible']);
+        $options['defaultBible'] = array_values($options['defaultBible']);
+
         return $options;
     }
 
