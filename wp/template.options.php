@@ -7,6 +7,12 @@
 <div class="biblesupersearch-option-tabs wrap">
     <div class="icon32" id="icon-options-general"><br></div>
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
+    <script>
+        <?php
+            echo "var bss_options=" . json_encode($options) . ";\n";
+            echo "var bss_tab='" . $tab . "';\n";
+        ?>
+    </script>
 
     <div class="metabox-holder has-right-sidebar">
         <div class="inner-sidebar" style='margin-top: 44px'>

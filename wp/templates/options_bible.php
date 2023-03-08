@@ -9,13 +9,33 @@
         <tr><td colspan='2'><h2><?php esc_html_e( 'Bibles', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button('Refresh Bible List (&amp; Save Changes)'); ?></td></tr>
         <tr>
-            <th scope="row"><?php esc_html_e( 'Select Default Bible', 'biblesupersearch' ); ?></th>
-            <td>
-                <select name='biblesupersearch_options[defaultBible]'>
-                    <?php foreach($bibles as $module => $bible) :?>
-                    <option value='<?php echo $module; ?>' <?php selected($module, $options['defaultBible'] ); ?> ><?php echo $bible['display']; ?></option>
+            <th scope="row" style='vertical-align:top'>
+                <?php esc_html_e( 'Select Default Bible(s)', 'biblesupersearch' ); ?>
+            </th>
+            <td >
+                <div id='defaultBibleContainer'>
+                    <?php foreach($options['defaultBible'] as $key => $def_bible): ?>
+
+                        <select name='biblesupersearch_options[defaultBible][]' id='default_bible_<?php echo $key; ?>'>
+                            <?php if($key > 0) {
+                                $pb = $key + 1;
+                                echo "<option value='0'>Parallel Bible {$pb} - None</option>";
+                            }
+                            ?>
+
+                            <?php foreach($bibles as $module => $bible) :?>
+                            <option value='<?php echo $module; ?>' <?php selected($module, $def_bible); ?> ><?php echo $bible['display']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
                     <?php endforeach; ?>
-                </select>
+                </div>
+                <div>
+                    <button id='biblesupersearch_def_bible_add'>Add Bible</button>
+                </div>
+
+                <p><small>Note: The number of multiple default Bibles is limited by the parallel Bible limit on the selected skin.</small></p>
+                <p><small>Bible selections beyond the limit will be ignored.</small></p>
             </td>
         </tr>
         <tr>
