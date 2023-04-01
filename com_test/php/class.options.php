@@ -42,8 +42,10 @@ abstract class BibleSuperSearch_Options_Abstract {
             // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
             // 'ar'                    => 'العربية  / Arabic',
             'fr'                    => 'Français / French',
+            'lv'                    => 'Latviešu / Latvian',
             'es'                    => 'Español / Spanish',
             'ro'                    => 'Română / Romanian',
+            'ru'                    => 'Русский / Russian',
             'zh_TW'                 => '繁體中文 / Chinese - Traditional',
             'zh_CN'                 => '简体中文 / Chinese - Simplified',
         ],
