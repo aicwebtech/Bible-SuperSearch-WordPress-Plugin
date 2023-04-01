@@ -77,13 +77,20 @@ jQuery(document).ready(function($) {
     }
 
     $('#biblesupersearch_def_bible_add').click(function(e) {
-        console.log('here');
         e.preventDefault();
         addDefaultBible();
         return true;
+    });    
+
+    $('#biblesupersearch_def_bible_rem').click(function(e) {
+        e.preventDefault();
+        removeDefaultBible();
+        return true;
     });
 
-
+    if(bss_options.defaultBible.length < 2) {
+        jQuery('#biblesupersearch_def_bible_rem').hide();
+    }
 
     changeAllBibles();
 });
@@ -172,8 +179,25 @@ function addDefaultBible(e) {
     innerHtml = "<option value='0'>Parallel Bible " + pb + " - None</option>" + innerHtml;
 
     html = "<select name='biblesupersearch_options[defaultBible][]'>" + innerHtml + "</select>";
+    jQuery('#biblesupersearch_def_bible_rem').show();
 
     jQuery('#defaultBibleContainer').append(html);
 
     return true;
+}
+
+function removeDefaultBible(e) {
+    e && e.preventDefault();  
+    pbs = jQuery('#defaultBibleContainer select');
+
+    if(pbs.length < 3) {
+        jQuery('#biblesupersearch_def_bible_rem').hide();
+    }
+
+    if(pbs.length == 1) {
+        return;
+    }
+
+    pb = pbs.last();
+    pb.remove();
 }

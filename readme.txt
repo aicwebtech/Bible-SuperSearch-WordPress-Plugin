@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
@@ -180,6 +180,25 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Plugin Configs: Widgets
 
 == Changelog ==
+
+= 5.2.0 
+* Added "Remove Bible" to paralell Bible selector
+* Added ability to have multiple default Bibles
+* Added descripive text for Strongs, Red Letter, Highlight and Italics
+* Added UI language support: Latvian, Russian
+* Bug fix: Capitalizing first letter in language name on UI.
+* Bug fix: Clearing out certain form fields when using random chapter or verse.
+* Misc bug other fixes.
+
+= 5.1.2
+* Fixed setting default Bible with single Bible selector when clearing form
+* Added ability to specify Bible book list as part of locale translation file.
+* Config to select Bible Book list langauge source - defaults to selected UI language
+
+= 5.1.1 
+* Adding ability to competely hide extra buttons
+* Adding new custom interface
+* Adding landing reference config
 
 = 5.1.1 =
 * Updated "How to Display Extra Buttons" config to completely hide these buttons.

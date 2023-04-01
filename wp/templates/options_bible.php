@@ -31,7 +31,8 @@
                     <?php endforeach; ?>
                 </div>
                 <div>
-                    <button id='biblesupersearch_def_bible_add'>Add Bible</button>
+                    <button id='biblesupersearch_def_bible_add'>Add Bible</button>&nbsp; &nbsp;
+                    <button id='biblesupersearch_def_bible_rem'>Remove Bible</button>
                 </div>
 
                 <p><small>Note: The number of multiple default Bibles is limited by the parallel Bible limit on the selected skin.</small></p>
