@@ -18,6 +18,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'defaultDestinationPage'    => 0,
         "extraButtonsSeparate"      => 'default',
         'pager'                     => 'default',
+        'pageScroll'                => 'instant',
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
@@ -57,7 +58,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons', 'language'),
+            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'pageScroll', 'formatButtons', 'navigationButtons', 'language'),
             'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
         ),        
         'bible'  => array(
@@ -725,6 +726,11 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'name'  => 'Paginator',
                 'desc'  => 'Used to browse through multiple pages of search results.',
                 'items' => $this->getPagers(),
+            ),            
+            'pageScroll' => array(
+                'name'  => 'Page Scrolling',
+                'desc'  => 'When the page loads or query executes, how to scroll the page up to top of the results.',
+                'items' => $this->getPageScrolls(),
             ),
             'navigationButtons' => array(
                 'name'  => 'Navigation Buttons',
@@ -754,6 +760,20 @@ abstract class BibleSuperSearch_Options_Abstract {
             ),            
             'Clean' => array(
                 'name'  => 'Clean',
+            ),
+        );
+    }        
+
+    public function getPageScrolls() {
+        return array(
+            'instant' => array(
+                'name' => 'Instant',
+            ),
+            'smooth' => array(
+                'name'  => 'Smooth',
+            ),            
+            'none' => array(
+                'name'  => 'None - No scrolling',
             ),
         );
     }    
