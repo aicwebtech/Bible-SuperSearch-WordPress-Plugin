@@ -181,6 +181,12 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.2.1
+* Added custom select menus (these only appear in one custom interface)
+* Fixed scrolling to scroll down to results when using paging/browsing buttons
+* Fixed a bug in the navigation / hash parsing where having a . in a 
+        book name was causing the book to not be found.
+
 = 5.2.0 
 * Added "Remove Bible" to paralell Bible selector
 * Added ability to have multiple default Bibles

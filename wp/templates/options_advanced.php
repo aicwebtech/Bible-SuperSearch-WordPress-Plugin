@@ -4,16 +4,16 @@
         <tr><td colspan='2'><h2><?php esc_html_e( 'Advanced Settings', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><span><?php esc_html_e( 'Do not change these unless you know what you\'re doing.', 'biblesupersearch' ); ?></span></td></tr>
         <tr valign="top">
-            <th scope="row"><?php esc_html_e( 'API URL', 'biblesupersearch' ); ?></th>
+            <th scope="row" style='vertical-align: top;'><?php esc_html_e( 'API URL', 'biblesupersearch' ); ?></th>
             <td>
                 <input type="text" size="40" name="biblesupersearch_options[apiUrl]" id='biblesupersearch_url'
                        value="<?php echo empty( $options['apiUrl'] ) ? '' : $options['apiUrl']; ?>"/>
 
-                <span style="color:#666666;margin-left:2px;">
+                <div style="color:#666666;margin-left:2px;">
                     <?php echo wp_sprintf( esc_html__( 'Leave blank for default of %1$s.', 'biblesupersearch' ),
                         '<code>' . $this->default_options['apiUrl'] . '</code>'); ?>
                     <br />
-                </span>
+                </div>
             </td>
         </tr>                                
         <tr valign="top">
