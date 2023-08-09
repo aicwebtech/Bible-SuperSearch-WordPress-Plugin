@@ -15,6 +15,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'interface'                 => 'Classic',  // 'Expanding'
         'toggleAdvanced'            => TRUE,
         'formatButtonsToggle'       => FALSE,
+        'includeTestament'          => false,
         'defaultDestinationPage'    => 0,
         "extraButtonsSeparate"      => 'default',
         'pager'                     => 'default',
@@ -59,7 +60,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             // need list of fields for each tab.  IF field is not in list, it won't save!
             'texts'         => array(), // input and textarea
             'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'pageScroll', 'formatButtons', 'navigationButtons', 'language'),
-            'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
+            'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle', 'includeTestament'),
         ),        
         'bible'  => array(
             'name'          => 'Bibles',

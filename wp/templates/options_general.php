@@ -17,9 +17,7 @@
                 </select>
                 <br />To preview skins, please visit <a href='https://www.biblesupersearch.com/client/' target='_NEW'>https://www.biblesupersearch.com/client/</a>
             </td>
-        </tr>            
-        <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
-        <tr><td colspan='2'><?php submit_button(); ?></td></tr>
+        </tr>
         <tr>
             <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Display Language', 'biblesupersearch' ); ?></th>
             <td>
@@ -52,6 +50,14 @@
                 <input id='biblesupersearch_toggle_format_buttons' type='checkbox' name='biblesupersearch_options[formatButtonsToggle]' value='1' 
                     <?php if($options['formatButtonsToggle'] ) : echo "checked='checked'"; endif; ?>  />
                 Formatting buttons will only show when a search is active.
+            </td>
+        </tr>                  
+        <tr>
+            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Include Testament', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_include_testament' type='checkbox' name='biblesupersearch_options[includeTestament]' value='1' 
+                    <?php if($options['includeTestament'] ) : echo "checked='checked'"; endif; ?>  />
+                Includes "Old Testament" or "New Testament" verbiage in some references.
             </td>
         </tr>                                
         <tr>
