@@ -20,12 +20,14 @@ abstract class BibleSuperSearch_Options_Abstract {
         "extraButtonsSeparate"      => 'default',
         'pager'                     => 'default',
         'pageScroll'                => 'instant',
+        'pageScrollTopPadding'      => 0,
         'formatButtons'             => 'default',
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
         'bibleSorting'              => 'language_english|name',
         'language'                  => 'en',
         'landingReference'          => '',
+        'debug'                     => false,
     );  
 
     public static $selector_options = [
@@ -75,9 +77,9 @@ abstract class BibleSuperSearch_Options_Abstract {
         // ),
         'advanced' => array(
             'name'          => 'Advanced',
-            'texts'         => array('apiUrl'),
+            'texts'         => array('apiUrl', 'pageScrollTopPadding'),
             'selects'       => array(),
-            'checkboxes'    => array(),
+            'checkboxes'    => array('debug'),
         ),
     );
     
