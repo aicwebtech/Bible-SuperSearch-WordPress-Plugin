@@ -181,11 +181,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
-= 5.2.3
+= 5.2.4
 * Added advanced configs Scroll Top Padding and Debug
 * WP 6.3 support
-
-= 5.2.1
 * Added custom select menus (these only appear in one custom interface)
 * Fixed scrolling to scroll down to results when using paging/browsing buttons
 * Fixed a bug in the navigation / hash parsing where having a . in a 
