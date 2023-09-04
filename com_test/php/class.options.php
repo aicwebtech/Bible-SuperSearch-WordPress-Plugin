@@ -25,6 +25,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'navigationButtons'         => 'default',
         'bibleGrouping'             => 'language',
         'bibleSorting'              => 'language_english|name',
+        'bibleDefaultLanguageTop'   => false,
         'language'                  => 'en',
         'landingReference'          => '',
         'debug'                     => false,
@@ -68,7 +69,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'name'          => 'Bibles',
             'texts'         => array('landingReference'),
             'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
-            'checkboxes'    => array('enableAllBibles'),
+            'checkboxes'    => array('enableAllBibles', 'bibleDefaultLanguageTop'),
         ),        
         // 'style'  => array(
         //     'name'          => 'Appearance',

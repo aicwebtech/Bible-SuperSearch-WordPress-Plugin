@@ -5,7 +5,7 @@
 ?>
 
 <div class="inside">
-    <table class="form-table">
+    <table class="form-table bss_opt" id='bss_opt_bible'>
         <tr><td colspan='2'><h2><?php esc_html_e( 'Bibles', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button('Refresh Bible List (&amp; Save Changes)'); ?></td></tr>
         <tr>
@@ -112,7 +112,15 @@
                 <p><small>Note: This ONLY controls the Bible sorting in the Bible list; it doesn't affect the labels on the options.</small></p>
                 <p><small>Note: Rank is a user-defined sort order that is defined on the API.</small></p>
             </td>
-        </tr>        
+        </tr>       
+        <tr>
+            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Bible List Default Language', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_bibleDefaultLanguageTop' type='checkbox' name='biblesupersearch_options[bibleDefaultLanguageTop]' value='1' 
+                    <?php if($options['bibleDefaultLanguageTop'] ) : echo "checked='checked'"; endif; ?>  />
+                Places the default language at the TOP of the Bible list. &nbsp;(Default language is currently <b><?php echo $languages[$options['language']] ;?></b><b>.)
+            </td>
+        </tr>      
         <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Landing Passage(s)', 'biblesupersearch' ); ?></th>
             <td>

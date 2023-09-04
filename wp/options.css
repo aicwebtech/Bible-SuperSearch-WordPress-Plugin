@@ -76,6 +76,6 @@
     overflow-y: auto;
 }
 
-#bss_opt_general select {
+.bss_opt select {
     width: 400px;
 }

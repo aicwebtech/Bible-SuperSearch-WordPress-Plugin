@@ -1,5 +1,5 @@
 <div class="inside">
-    <table class="form-table" id='bss_opt_general'>
+    <table class="form-table bss_opt" id='bss_opt_general'>
         <tr><td colspan='2'><h2><?php esc_html_e( 'Installation', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'>
             To use, simply add the shortcode <code>[biblesupersearch]</code> to any page or post.<br />Please see the 
@@ -8,18 +8,19 @@
         <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
         <tr>
-            <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Select Default Skin', 'biblesupersearch' ); ?></th>
+            <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Default Skin', 'biblesupersearch' ); ?></th>
             <td>
                 <select name='biblesupersearch_options[interface]'>
                     <?php foreach($interfaces as $module => $int) :?>
                     <option value='<?php echo $module; ?>' <?php selected($module, $options['interface'] ); ?> ><?php echo $int['name']?></option>
                     <?php endforeach; ?>
                 </select>
+                <br />Sets the default skin seen on the [biblesupersearch] shortcode.
                 <br />To preview skins, please visit <a href='https://www.biblesupersearch.com/client/' target='_NEW'>https://www.biblesupersearch.com/client/</a>
             </td>
         </tr>
         <tr>
-            <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Display Language', 'biblesupersearch' ); ?></th>
+            <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Default Language', 'biblesupersearch' ); ?></th>
             <td>
                 <select name='biblesupersearch_options[language]'>
                     <?php foreach($languages as $key => $label) :?>
@@ -28,7 +29,7 @@
                     </option>
                     <?php endforeach; ?>
                 </select>
-                <br />Sets the language seen on the [biblesupersearch] shortcode.
+                <br />Sets the default display language seen on the [biblesupersearch] shortcode.
             </td>
         </tr>        
         <?php foreach($selectables as $field => $prop): ?>
