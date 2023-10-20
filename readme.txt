@@ -181,6 +181,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.2.6
+* Added default text display option
+* Added more debugging in attempt to fix misc bug
+
 = 5.2.4
 * Added advanced configs Scroll Top Padding and Debug
 * WP 6.3 support

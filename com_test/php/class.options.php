@@ -573,6 +573,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $allow_url_fopen = (int) ini_get('allow_url_fopen');
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
+        $bss_options = $this->getOptions();
 
         // echo('<pre>');
         // var_dump($url);
@@ -605,15 +606,25 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
 
         error_reporting($err);
+        
+        $eol = '<br />';
 
-        if($action == 'statics') {
-            // var_dump($api_url);
-            // var_dump($url);
-            // var_dump($curl_info);
-            // var_dump($data);
-            // var_dump($action);
-            // var_dump($result);
-            // die();
+        if($bss_options['debug']) {
+            echo 'Bible SuperSearch API Call Log' . $eol;
+            echo 'Action: ' . $action . $eol;
+            echo 'URL: ' . $url . $eol;
+            echo 'Data: ' . print_r($data, true) . $eol;
+            echo 'Succees: ' . ($result === false ? 'No' : 'Yes') . $eol;
+            echo $eol;
+        }
+
+        if($result === FALSE && $allow_url_fopen != 1 && !function_exists('curl_init')) {
+            echo 'ERROR: Unable to connect to Bible SuperSearch API due to server settings.' . $eol;
+            echo 'Please have your system administrator set allow_url_fopen=1 in your php.ini and/or enable cURL.' . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
+        } else if(empty($result)) {
+            echo 'ERROR: Bible SuperSearch API returned empty results.' . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
         }
 
         return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
