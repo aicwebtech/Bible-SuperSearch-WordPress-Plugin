@@ -118,7 +118,16 @@
             <td>
                 <input id='biblesupersearch_bibleDefaultLanguageTop' type='checkbox' name='biblesupersearch_options[bibleDefaultLanguageTop]' value='1' 
                     <?php if($options['bibleDefaultLanguageTop'] ) : echo "checked='checked'"; endif; ?>  />
-                Places the default language at the TOP of the Bible list. &nbsp;(Default language is currently <b><?php echo $languages[$options['language']] ;?></b><b>.)
+                Places the default language at the TOP of the Bible list. &nbsp;(Default language is currently <b><?php echo $languages[$options['language']] ;?></b>.)
+            </td>
+        </tr>              
+        <tr>
+            <th scope="row"><label for='biblesupersearch_bibleChangeUpdateNavigation'><?php esc_html_e( 'Bible Change Updates Navigation', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_bibleChangeUpdateNavigation' type='checkbox' name='biblesupersearch_options[bibleChangeUpdateNavigation]' value='1' 
+                    <?php if($options['bibleChangeUpdateNavigation'] ) : echo "checked='checked'"; endif; ?>  />
+
+                Whether to update navigation (ie paging and browsing buttons) immediately when the selected Bible(s) are changed to reflect the new Bible selections. &nbsp;Otherwise, the navigation will not update until the search or look up is performed..
             </td>
         </tr>      
         <tr>
