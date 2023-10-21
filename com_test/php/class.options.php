@@ -606,6 +606,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
 
         error_reporting($err);
+
+        $result_decoded = ($result === false) ? false : json_decode($result, true);
         
         $eol = '<br />';
 
@@ -625,9 +627,55 @@ abstract class BibleSuperSearch_Options_Abstract {
         } else if(empty($result)) {
             echo 'ERROR: Bible SuperSearch API returned empty results.' . $eol;
             echo 'API action: ' . $action . $eol . $eol;
+        } else if(!$this->_validateApiResults($action, $result_decoded, $bss_options['debug'])) {
+            echo 'ERROR: Bible SuperSearch API returned invalid results.' . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
         }
 
-        return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
+        return $result_decoded;
+    }
+
+    protected function _validateApiResults($action, $results, $verbose = false) {
+        $valid = true;
+        $eol = '<br />';
+        $every = ['results', 'errors', 'error_level'];
+
+        foreach($every as $k) {
+            if(!array_key_exists($k, $results)) {
+                if($verbose) {
+                    echo 'Results missing array key: ' . $k . $eol;
+                }
+                
+                $valid = false;
+            }
+        }
+
+        if(!is_array($results['results'])) {
+            return false;
+        }
+
+        //print_r(array_keys($results['results']));
+
+        switch($action) {
+            case 'statics':
+                $reskeys = ['bibles', 'books', 'search_types', 'version', 'shortcuts', 'name', 'environment'];
+                break;
+            default:
+                $reskeys = [];
+        }
+
+        foreach($reskeys as $k) {
+            if(!array_key_exists($k, $results['results'])) {
+                if($verbose) {
+                    echo 'Results[results] missing array key: ' . $k . $eol;
+                }
+
+                $valid = false;
+            }
+        }
+
+
+        return $valid;
     }
 
     public function renderDownloadPage() {
