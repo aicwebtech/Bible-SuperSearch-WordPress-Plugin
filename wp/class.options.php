@@ -117,6 +117,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
         }
 
+        if(is_array($tab_item['json'])) {
+            foreach($tab_item['json'] as $field) {
+                $input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]';
+            }
+        }
+
         // if(!isset($input['enableAllBibles'])) {
         //     $input['enableAllBibles'] = FALSE;
         // }

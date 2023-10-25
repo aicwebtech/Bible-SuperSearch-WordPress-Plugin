@@ -31,6 +31,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'language'                      => 'en',
         'landingReference'              => '',
         'debug'                         => false,
+        'parallelBibleLimitByWidth'     => '[]',
     ];  
 
     public static $selector_options = [
@@ -84,6 +85,7 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'bibleDefaultLanguageTop', 
                 'bibleChangeUpdateNavigation'
             ],
+            'json' => ['parallelBibleLimitByWidth'],
         ],        
         // 'style'  => array(
         //     'name'          => 'Appearance',

@@ -138,6 +138,33 @@
                 <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
                 <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
             </td>
+        </tr>        
+        <tr>
+            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Parallel Bible Limit by Width', 'biblesupersearch' ); ?></th>
+            <td>
+                <!-- <textarea name='biblesupersearch_options[parallelBibleLimitByWidth]' value='<?php echo $options['landingReference']?>' style='width:50%' /> -->
+                <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
+                <script>
+                    var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']?>;
+                </script>
+
+
+                <div id='parallelBibleLimitByWidthContainer' style='display:none'>
+                    <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
+                    <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
+                    <table border='1' id='parallelBibleLimitByWidthTable' class='bss-subform-table'>
+                        <tr>
+                            <th>Minimum Width (in pixels)</th>
+                            <th>Maximum # of Bibles</th>
+                            <th>Minimum # of Parallel Bibles</th>
+                            <th># of Parallel Bibles on Page Load</th>
+                        </tr>
+                    </table>
+                    <button id='parallelBibleLimitByWidthAdd'>Add</button> <button id='parallelBibleLimitByWidthRemove'>Remove</button> 
+                </div>
+
+
+            </td>
         </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>

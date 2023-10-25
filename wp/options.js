@@ -93,6 +93,25 @@ jQuery(document).ready(function($) {
     }
 
     changeAllBibles();
+
+    $('#parallelBibleLimitByWidthAdd').click(function(e) {
+        parallelBibleLimitAdd(e);
+    });    
+
+    $('#parallelBibleLimitByWidthRemove').click(function(e) {
+        parallelBibleLimitRemove(e);
+    });
+
+    $('#parallelBibleLimitByWidthEnable').click(function(e) {
+
+        if($(this).prop('checked')) {
+            $('#parallelBibleLimitByWidthContainer').show();
+        } else if(confirm('Are you sure?  This will delete all of the parallel limit settings!')) {
+            $('#parallelBibleLimitByWidthContainer').hide();
+        }
+    });
+
+    parallelBibleLimitInit();
 });
 
 jQuery(function($){
@@ -200,4 +219,57 @@ function removeDefaultBible(e) {
 
     pb = pbs.last();
     pb.remove();
+}
+
+function parallelBibleLimitInit() {
+    //e && e.preventDefault();  
+
+    console.log('bssParBibleLimit', bssParBibleLimit);
+
+    var dec = JSON.parse(bssParBibleLimit);
+
+    console.log('bssParBibleLimit decoded', dec);
+
+    if(dec.length > 0) {
+        jQuery('#parallelBibleLimitByWidthEnable').prop('checked', true);
+        jQuery('#parallelBibleLimitByWidthContainer').show();
+
+        dec.forEach(function(item) {
+            parallelBibleLimitAdd(null, item);
+        })
+    }
+}
+
+function parallelBibleLimitAdd(e, rowData) {
+    e && e.preventDefault();  
+
+    var count = parallelBibleLimitNumberShowing();
+    var rPre = "<td><input name='biblesupersearch_options[parallelBibleLimitByWidth][";
+    var rPost = "]'></td>";
+
+    var minWidth = rowData && rowData.minWidth ? rowData.minWidth : '';
+    var maxBibles = rowData && rowData.maxBibles ? rowData.maxBibles : '';
+    var minBibles = rowData && rowData.minBibles ? rowData.minBibles : '';
+    var startBibles = rowData && rowData.startBibles ? rowData.startBibles : '';
+
+    var html = "<tr>";
+        html += rPre + count + "][minWidth]' value='" + minWidth + "'></td>";
+        html += rPre + count + "][maxBibles]' value='" + maxBibles + "'></td>";
+        html += rPre + count + "][minBibles]' value='" + minBibles + "'></td>";
+        html += rPre + count + "][startBibles]' value='" + startBibles + "'></td>";
+        html += "</tr>";
+
+    jQuery('#parallelBibleLimitByWidthTable').append(html);
+}
+
+function parallelBibleLimitRemove(e) {
+    e && e.preventDefault(); 
+
+    if(parallelBibleLimitNumberShowing() > 0) {
+        jQuery('#parallelBibleLimitByWidthTable tr').last().remove();
+    }
+}
+
+function parallelBibleLimitNumberShowing() {
+    return jQuery('#parallelBibleLimitByWidthTable tr').length - 1;
 }
