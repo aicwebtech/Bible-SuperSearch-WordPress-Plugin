@@ -140,27 +140,51 @@
             </td>
         </tr>        
         <tr>
-            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Parallel Bible Limit by Width', 'biblesupersearch' ); ?></th>
+            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>
                 <!-- <textarea name='biblesupersearch_options[parallelBibleLimitByWidth]' value='<?php echo $options['landingReference']?>' style='width:50%' /> -->
-                <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
                 <script>
                     var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']?>;
                 </script>
+                
+                <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
+                Whether to limit the number of parallel Bibles allowed based on page width.  Check this box to configure this option.
 
 
                 <div id='parallelBibleLimitByWidthContainer' style='display:none'>
-                    <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
-                    <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
-                    <table border='1' id='parallelBibleLimitByWidthTable' class='bss-subform-table'>
-                        <tr>
-                            <th>Minimum Width (in pixels)</th>
-                            <th>Maximum # of Bibles</th>
-                            <th>Minimum # of Parallel Bibles</th>
-                            <th># of Parallel Bibles on Page Load</th>
-                        </tr>
-                    </table>
-                    <button id='parallelBibleLimitByWidthAdd'>Add</button> <button id='parallelBibleLimitByWidthRemove'>Remove</button> 
+                    <br />
+
+                    <p><small>Please configure the desired limits below.  You can add as many threshold rows as desired.</small></p>
+                    <p><small>Note: All values must be positive integers, with the excaption of minimum width on the first row, which is always 0.</small></p>
+
+                    <br /><br />
+                    <div class='center' style='width: 90%'>
+                        <button class='parallelBibleLimitByWidthAdd'>Add</button>&nbsp; &nbsp;
+                        <button class='parallelBibleLimitByWidthRemove'>Remove</button> 
+                        <br /><br />
+
+                        <table border='0' id='parallelBibleLimitByWidthTable' class='bss-subform-table'>
+                            <tr>
+                                <th>Minimum Width (in pixels)</th>
+                                <th>Maximum Width (in pixels)</th>
+                                <th>Maximum Bibles</th>
+                                <th>Minimum Bibles</th>
+                                <th>Initial Number of Parallel Bibles</th>
+                            </tr>
+                            <tr>
+                                <td>Minimum page width.&nbsp; Must start with 0 and be in ascending order.</td>
+                                <td>Maximum page width.&nbsp; Automatically calculated.</td>
+                                <td>Maximum allowable parallel Bibles at this width.</td>
+                                <td>Minimum number of parallel Bible selectors displayed at this width.</td>
+                                <td>Number of parallel Bible selectors to iniitally display when the app loads.</td>
+                            </tr>
+                            <tbody id='parallelBibleLimitByWidthTbody'></tbody>
+                        </table>
+
+                        <br />
+                        <button class='parallelBibleLimitByWidthAdd'>Add</button>&nbsp; &nbsp;
+                        <button class='parallelBibleLimitByWidthRemove'>Remove</button> 
+                    </div>
                 </div>
 
 

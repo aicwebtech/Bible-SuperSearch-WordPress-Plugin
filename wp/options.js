@@ -94,24 +94,40 @@ jQuery(document).ready(function($) {
 
     changeAllBibles();
 
-    $('#parallelBibleLimitByWidthAdd').click(function(e) {
-        parallelBibleLimitAdd(e);
-    });    
+    if(bss_tab == 'bible') {
+        $('.parallelBibleLimitByWidthAdd').click(function(e) {
+            parallelBibleLimitAdd(e);
+        });    
 
-    $('#parallelBibleLimitByWidthRemove').click(function(e) {
-        parallelBibleLimitRemove(e);
-    });
+        $('.parallelBibleLimitByWidthRemove').click(function(e) {
+            parallelBibleLimitRemove(e);
+        });
 
-    $('#parallelBibleLimitByWidthEnable').click(function(e) {
+        $('#parallelBibleLimitByWidthEnable').click(function(e) {
 
-        if($(this).prop('checked')) {
-            $('#parallelBibleLimitByWidthContainer').show();
-        } else if(confirm('Are you sure?  This will delete all of the parallel limit settings!')) {
-            $('#parallelBibleLimitByWidthContainer').hide();
+            if($(this).prop('checked')) {
+                $('#parallelBibleLimitByWidthContainer').show();
+                parallelBibleLimitAdd(null, null);
+            } else if(confirm('Are you sure?  This will delete all of the parallel limit settings!')) {
+                $('#parallelBibleLimitByWidthContainer').hide();
+                parallelBibleLimitClear();
+            }
+        });
+
+        parallelBibleLimitInit();
+    }
+
+    $('input[type=submit]').click(function(e) {
+        var errors = false;
+
+        if(bss_tab == 'bible') {
+            if(!parallelBibleLimitValidate()) {
+                errors = true;
+            }
         }
-    });
 
-    parallelBibleLimitInit();
+        errors && e.preventDefault();
+    });
 });
 
 jQuery(function($){
@@ -236,8 +252,10 @@ function parallelBibleLimitInit() {
 
         dec.forEach(function(item) {
             parallelBibleLimitAdd(null, item);
-        })
+        });
     }
+
+    parallelBibleLimitValidate(3);
 }
 
 function parallelBibleLimitAdd(e, rowData) {
@@ -247,29 +265,150 @@ function parallelBibleLimitAdd(e, rowData) {
     var rPre = "<td><input name='biblesupersearch_options[parallelBibleLimitByWidth][";
     var rPost = "]'></td>";
 
+    var maxBiblesDefault = count == 0 ? 1 : '';
+
     var minWidth = rowData && rowData.minWidth ? rowData.minWidth : '';
-    var maxBibles = rowData && rowData.maxBibles ? rowData.maxBibles : '';
-    var minBibles = rowData && rowData.minBibles ? rowData.minBibles : '';
-    var startBibles = rowData && rowData.startBibles ? rowData.startBibles : '';
+    var maxWidth = rowData && rowData.maxWidth ? rowData.maxWidth : '(infinite)';
+    var maxBibles = rowData && rowData.maxBibles ? rowData.maxBibles : maxBiblesDefault;
+    var minBibles = rowData && rowData.minBibles ? rowData.minBibles : 1;
+    var startBibles = rowData && rowData.startBibles ? rowData.startBibles : 1;
 
     var html = "<tr>";
+        
+    if(count == 0) {
+        html += rPre + count + "][minWidth]' value='0' readonly='readonly'></td>";
+    } else {
         html += rPre + count + "][minWidth]' value='" + minWidth + "'></td>";
-        html += rPre + count + "][maxBibles]' value='" + maxBibles + "'></td>";
-        html += rPre + count + "][minBibles]' value='" + minBibles + "'></td>";
-        html += rPre + count + "][startBibles]' value='" + startBibles + "'></td>";
-        html += "</tr>";
+    }
 
-    jQuery('#parallelBibleLimitByWidthTable').append(html);
+    html += rPre + count + "][maxWidth]' value='" + maxWidth + "' readonly='readonly'></td>";
+    html += rPre + count + "][maxBibles]' value='" + maxBibles + "'></td>";
+    html += rPre + count + "][minBibles]' value='" + minBibles + "'></td>";
+    html += rPre + count + "][startBibles]' value='" + startBibles + "'></td>";
+    html += "</tr>";
+
+    var lastRowInputs = jQuery('#parallelBibleLimitByWidthTbody tr').last().find('input'); 
+    jQuery(lastRowInputs[1]).val('');
+    jQuery('#parallelBibleLimitByWidthTbody').append(html);
 }
 
 function parallelBibleLimitRemove(e) {
     e && e.preventDefault(); 
 
     if(parallelBibleLimitNumberShowing() > 0) {
-        jQuery('#parallelBibleLimitByWidthTable tr').last().remove();
+        jQuery('#parallelBibleLimitByWidthTbody tr').last().remove();
+        var lastRowInputs = jQuery('#parallelBibleLimitByWidthTbody tr').last().find('input'); 
+        jQuery(lastRowInputs[1]).val('(infinite)');
     }
 }
 
 function parallelBibleLimitNumberShowing() {
-    return jQuery('#parallelBibleLimitByWidthTable tr').length - 1;
+    return jQuery('#parallelBibleLimitByWidthTbody tr').length;
+}
+
+function parallelBibleLimitClear() {
+    jQuery('#parallelBibleLimitByWidthTbody').html('');
+}
+
+function parallelBibleLimitValidate(level) {
+    var count = 0,
+        curMinWidth = 0,
+        valid = true,
+        errors = [],
+        // 1=all validation, 2=lazy validation, 3=maximum width ONLY
+
+        level = typeof level == 'undefind' ? 1 : level,
+        lazy = level > 1,
+        lastRow = null;
+
+        errorsByName = {
+            minWidthAsc: false,
+            maxBiblesPosInt: false,
+            minBiblesPosInt: false,
+            startBiblesPosInt: false,
+        };
+
+    jQuery('#parallelBibleLimitByWidthTbody tr').each(function(row) {
+        var inputs = jQuery(this).find('input');        
+        var minWidth = parseInt(jQuery(inputs[0]).val(), 10);
+        var maxBibles = parseInt(jQuery(inputs[2]).val(), 10);
+        var minBibles = parseInt(jQuery(inputs[3]).val(), 10);
+        var startBibles = parseInt(jQuery(inputs[4]).val(), 10);
+
+        jQuery(inputs).removeClass('error');
+
+        minWidth = !minWidth || minWidth == NaN ? 0 : minWidth;
+        maxBibles = !maxBibles || maxBibles == NaN ? 0 : maxBibles;
+        minBibles = !minBibles || minBibles == NaN ? 0 : minBibles;
+        startBibles = !startBibles || startBibles == NaN ? 0 : startBibles;
+
+        if(count > 0) {
+            if(minWidth <= curMinWidth ) {
+                if(level < 3) {
+                    errorsByName.minWidthAsc = true;
+                    valid = false;
+                    jQuery(inputs[0]).addClass('error');
+                }
+            } else {
+                jQuery(inputs[0]).val(minWidth);
+
+                if(lastRow) {
+                    jQuery(lastRow[1]).val(minWidth - 1);
+                }
+            }
+
+            curMinWidth = minWidth;
+        }
+
+        if(level < 3) {        
+            if(maxBibles < 1) {
+                valid = false;
+                errorsByName.maxBiblesPosInt = true;
+                jQuery(inputs[2]).addClass('error');
+            } else {
+                jQuery(inputs[2]).val(maxBibles);
+            }        
+
+            if(minBibles < 1) {
+                valid = false;
+                errorsByName.minBiblesPosInt = true;
+                jQuery(inputs[3]).addClass('error');
+            } else {
+                jQuery(inputs[3]).val(minBibles);
+            }
+            
+            if(startBibles < 1) {
+                valid = false;
+                errorsByName.startBiblesPosInt = true;
+                jQuery(inputs[4]).addClass('error');
+            } else {
+                jQuery(inputs[4]).val(startBibles);
+            }
+        }
+
+        count ++;
+        lastRow = inputs;
+    });
+
+    if(!valid && !lazy) {
+        if(errorsByName.minWidthAsc) {
+            errors.push('Parallel Limit: Minimum width must be in ascending order.');
+        }
+
+        if(errorsByName.maxBiblesPosInt) {
+            errors.push('Parallel Limit: Maximum Bibles must be a positive integer');
+        }        
+
+        if(errorsByName.minBiblesPosInt) {
+            errors.push('Parallel Limit: Minimum Bibles must be a positive integer');
+        }        
+
+        if(errorsByName.startBiblesPosInt) {
+            errors.push('Parallel Limit: Page Load Bibles must be a positive integer');
+        }
+
+        alert(errors.join('\n'));
+    }
+
+    return valid;
 }

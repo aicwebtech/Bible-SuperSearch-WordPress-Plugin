@@ -86,3 +86,31 @@
 .bss_opt select {
     width: 400px;
 }
+
+input.error {
+    background-color: #f56e64;
+    color: white;
+/*    font-weight: bold;*/
+}
+
+.center {
+    text-align: center;
+}
+
+#parallelBibleLimitByWidthTbody input {
+    width: 100%;
+    max-width: 60px;
+}
+
+#parallelBibleLimitByWidthTable {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+#parallelBibleLimitByWidthTable th, #parallelBibleLimitByWidthTable td {
+    border: 1px solid black;
+}
+
+#parallelBibleLimitByWidthTable th, #parallelBibleLimitByWidthTbody tr:nth-child(odd) {
+    background-color: #ddd;
+}
