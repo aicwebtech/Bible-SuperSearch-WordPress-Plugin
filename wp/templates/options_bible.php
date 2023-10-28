@@ -140,6 +140,16 @@
             </td>
         </tr>        
         <tr>
+            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 
+                    <?php if($options['parallelBibleCleanUpForce'] ) : echo "checked='checked'"; endif; ?>  />
+
+                <p><small>If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)</small></p>
+                <p><small>should we remove Bible selections above the new limit?  Otherwise, the selections will remain.</small></p>
+            </td>
+        </tr>  
+        <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>
                 <!-- <textarea name='biblesupersearch_options[parallelBibleLimitByWidth]' value='<?php echo $options['landingReference']?>' style='width:50%' /> -->
