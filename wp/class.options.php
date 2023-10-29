@@ -5,6 +5,8 @@ defined( 'ABSPATH' ) or die; // exit if accessed directly
 class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
     
     protected $option_index = 'biblesupersearch_options';
+
+    protected $debug_count = 0;
     
     public function __construct() {
         parent::__construct();
@@ -119,7 +121,21 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
 
         if(is_array($tab_item['json'])) {
             foreach($tab_item['json'] as $field) {
+                // if(array_key_exists($field, $incoming)) {
+                //     $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
+                // }
+
+                $this->debug_count ++;
+
+                // var_dump($incoming[$field]); //die();
+                // var_dump($current[$field]);
+
+                // if($this->debug_count == 1) {
+                //     die();
+                // }
+
                 $input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]';
+                // $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : '[]';
             }
         }
 

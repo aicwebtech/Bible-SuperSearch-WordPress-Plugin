@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
         var errors = false;
 
         if(bss_tab == 'bible') {
-            if(!parallelBibleLimitValidate()) {
+            if(!parallelBibleLimitValidate(1)) {
                 errors = true;
             }
         }
@@ -278,10 +278,10 @@ function parallelBibleLimitAdd(e, rowData) {
     if(count == 0) {
         html += rPre + count + "][minWidth]' value='0' readonly='readonly'></td>";
     } else {
-        html += rPre + count + "][minWidth]' value='" + minWidth + "'></td>";
+        html += rPre + count + "][minWidth]' value='" + minWidth + "' class='bssMinWidth'></td>";
     }
 
-    html += rPre + count + "][maxWidth]' value='" + maxWidth + "' readonly='readonly'></td>";
+    html += "<td><input value='" + maxWidth + "' readonly='readonly'></td>";
     html += rPre + count + "][maxBibles]' value='" + maxBibles + "'></td>";
     html += rPre + count + "][minBibles]' value='" + minBibles + "'></td>";
     html += rPre + count + "][startBibles]' value='" + startBibles + "'></td>";
@@ -290,6 +290,10 @@ function parallelBibleLimitAdd(e, rowData) {
     var lastRowInputs = jQuery('#parallelBibleLimitByWidthTbody tr').last().find('input'); 
     jQuery(lastRowInputs[1]).val('');
     jQuery('#parallelBibleLimitByWidthTbody').append(html);
+
+    jQuery('.bssMinWidth').change(function() {
+        parallelBibleLimitValidate(3);
+    })
 }
 
 function parallelBibleLimitRemove(e) {

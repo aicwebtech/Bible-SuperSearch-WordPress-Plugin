@@ -154,7 +154,7 @@
             <td>
                 <!-- <textarea name='biblesupersearch_options[parallelBibleLimitByWidth]' value='<?php echo $options['landingReference']?>' style='width:50%' /> -->
                 <script>
-                    var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']?>;
+                    var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']; ?>;
                 </script>
                 
                 <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
