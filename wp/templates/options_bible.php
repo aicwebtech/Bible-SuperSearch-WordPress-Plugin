@@ -139,7 +139,7 @@
                 <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
             </td>
         </tr>        
-        <tr>
+        <!--<tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
             <td>
                 <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 
@@ -152,7 +152,6 @@
         <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>
-                <!-- <textarea name='biblesupersearch_options[parallelBibleLimitByWidth]' value='<?php echo $options['landingReference']?>' style='width:50%' /> -->
                 <script>
                     var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']; ?>;
                 </script>
@@ -199,7 +198,7 @@
 
 
             </td>
-        </tr>
+        </tr>-->
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
 </div>

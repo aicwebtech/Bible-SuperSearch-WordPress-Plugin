@@ -615,13 +615,40 @@ abstract class BibleSuperSearch_Options_Abstract {
         
         $eol = '<br />';
 
+        $enable_debug = ($bss_options['debug']) ? '' : ' Webmaster: please enable debug mode for details';
+
         if($bss_options['debug']) {
             echo 'Bible SuperSearch API Call Log' . $eol;
             echo 'Action: ' . $action . $eol;
             echo 'URL: ' . $url . $eol;
             echo 'Data: ' . print_r($data, true) . $eol;
-            echo 'Succees: ' . ($result === false ? 'No' : 'Yes') . $eol;
+            echo 'Has Results: ' . ($result === false ? 'No' : 'Yes') . $eol;
             echo $eol;
+
+            echo 'API errors:';
+
+            if(is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
+                echo $eol;
+
+                foreach($result_decoded['errors'] as $e) {
+                    echo '&nbsp; &nbsp; * ' . $e . $eol;
+                }
+
+            } else {
+                echo '(NONE)';
+            }    
+
+            echo $eol . $eol;
+
+            echo 'API error level: ';
+
+            if(isset($result_decoded['error_level'])) {
+                echo $result_decoded['error_level'];
+            } else {
+                echo '(NONE)';
+            }
+
+            echo $eol . $eol;
         }
 
         if($result === FALSE && $allow_url_fopen != 1 && !function_exists('curl_init')) {
@@ -629,10 +656,10 @@ abstract class BibleSuperSearch_Options_Abstract {
             echo 'Please have your system administrator set allow_url_fopen=1 in your php.ini and/or enable cURL.' . $eol;
             echo 'API action: ' . $action . $eol . $eol;
         } else if(empty($result)) {
-            echo 'ERROR: Bible SuperSearch API returned empty results.' . $eol;
+            echo 'ERROR: Bible SuperSearch API returned empty results.' . $enable_debug . $eol;
             echo 'API action: ' . $action . $eol . $eol;
         } else if(!$this->_validateApiResults($action, $result_decoded, $bss_options['debug'])) {
-            echo 'ERROR: Bible SuperSearch API returned invalid results.' . $eol;
+            echo 'ERROR: Bible SuperSearch API returned invalid results.' . $enable_debug . $eol;
             echo 'API action: ' . $action . $eol . $eol;
         }
 
