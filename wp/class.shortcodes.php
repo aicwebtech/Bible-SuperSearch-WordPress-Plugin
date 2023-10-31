@@ -110,7 +110,9 @@ class BibleSuperSearch_Shortcodes {
 
         unset($options['formStyles']); // Not using this config right now
 
-        $options['parallelBibleLimitByWidth'] = json_decode( json_decode($options['parallelBibleLimitByWidth']) );
+        // while(is_string($options['parallelBibleLimitByWidth'])) {
+        //     $options['parallelBibleLimitByWidth'] = json_decode($options['parallelBibleLimitByWidth']);
+        // }
 
         $destination_url = NULL;
 

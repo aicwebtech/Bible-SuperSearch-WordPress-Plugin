@@ -181,6 +181,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.2.9
+* Fixed total breakage
+
 = 5.2.6
 * Added default text display option
 * Added more debugging in attempt to fix misc bug
