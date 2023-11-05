@@ -139,7 +139,7 @@
                 <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
             </td>
         </tr>        
-        <!--<tr>
+        <tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
             <td>
                 <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 
@@ -148,7 +148,7 @@
                 <p><small>If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)</small></p>
                 <p><small>should we remove Bible selections above the new limit?  Otherwise, the selections will remain.</small></p>
             </td>
-        </tr>  
+        </tr>          
         <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>
@@ -157,10 +157,21 @@
                 </script>
                 
                 <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
-                Whether to limit the number of parallel Bibles allowed based on page width.  Check this box to configure this option.
+                Whether to limit the number of parallel Bibles allowed based on page width.  <!-- Check this box to configure this option. -->
 
+                <br /><br />
 
                 <div id='parallelBibleLimitByWidthContainer' style='display:none'>
+                    
+                    <input id='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles' type='checkbox' name='biblesupersearch_options[parallelBibleStartSuperceedsDefaultBibles]' value='1' 
+                        <?php if($options['parallelBibleStartSuperceedsDefaultBibles'] ) : echo "checked='checked'"; endif; ?>  />
+                    <label for='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles'>
+                        <?php esc_html_e( '"Initial Number of Parallel Bibles" Superceeds Default Bibles', 'biblesupersearch' ); ?>        
+                    </label>
+
+                    <p><small>Forces the number of parallel Bible selectors displayed initially to always equal the "Initial Number of Parallel Bibles,"</small></p>
+                    <p><small>regardless to the number of Bibles selected as default.</small></p>
+
                     <br />
 
                     <p><small>Please configure the desired limits below.  You can add as many threshold rows as desired.</small></p>
@@ -198,7 +209,7 @@
 
 
             </td>
-        </tr>-->
+        </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
 </div>

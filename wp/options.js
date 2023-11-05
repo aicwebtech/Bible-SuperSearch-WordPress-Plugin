@@ -330,6 +330,7 @@ function parallelBibleLimitValidate(level) {
             maxBiblesPosInt: false,
             minBiblesPosInt: false,
             startBiblesPosInt: false,
+            startBiblesGEMinBibles: false,
         };
 
     jQuery('#parallelBibleLimitByWidthTbody tr').each(function(row) {
@@ -381,13 +382,17 @@ function parallelBibleLimitValidate(level) {
                 jQuery(inputs[3]).val(minBibles);
             }
             
-            if(startBibles < 1) {
+            if(startBibles < minBibles) {
+                valid = false;
+                errorsByName.startBiblesGEMinBibles = true;
+                jQuery(inputs[4]).addClass('error');
+            } else if(startBibles < 1) {
                 valid = false;
                 errorsByName.startBiblesPosInt = true;
                 jQuery(inputs[4]).addClass('error');
             } else {
                 jQuery(inputs[4]).val(startBibles);
-            }
+            } 
         }
 
         count ++;
@@ -409,6 +414,10 @@ function parallelBibleLimitValidate(level) {
 
         if(errorsByName.startBiblesPosInt) {
             errors.push('Parallel Limit: Page Load Bibles must be a positive integer');
+        }        
+
+        if(errorsByName.startBiblesGEMinBibles) {
+            errors.push('Parallel Limit: Page Load Bibles must be greater or equal to Minimum Bibles');
         }
 
         alert(errors.join('\n'));
