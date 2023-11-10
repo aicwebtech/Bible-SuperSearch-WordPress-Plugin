@@ -242,7 +242,8 @@ function parallelBibleLimitInit() {
 
     console.log('bssParBibleLimit', bssParBibleLimit);
 
-    var dec = JSON.parse(bssParBibleLimit);
+    var dec = (typeof bssParBibleLimit == 'string') ? JSON.parse(bssParBibleLimit) : bssParBibleLimit;
+    // var dec = JSON.parse(bssParBibleLimit);
 
     console.log('bssParBibleLimit decoded', dec);
 

@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
@@ -180,6 +180,12 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Plugin Configs: Widgets
 
 == Changelog ==
+
+= 5.3.0
+* Added config to control maximum parallel Bibles based on screen width
+* Added new 'Verse as Passage' display
+* Hindi UI translation
+* WP 6.4 support
 
 = 5.2.9
 * Fixed total breakage

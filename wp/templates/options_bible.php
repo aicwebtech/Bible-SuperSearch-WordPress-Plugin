@@ -153,7 +153,7 @@
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>
                 <script>
-                    var bssParBibleLimit = <?php echo $options['parallelBibleLimitByWidth']; ?>;
+                    var bssParBibleLimit = <?php echo json_encode($options['parallelBibleLimitByWidth']); ?>;
                 </script>
                 
                 <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
@@ -162,17 +162,6 @@
                 <br /><br />
 
                 <div id='parallelBibleLimitByWidthContainer' style='display:none'>
-                    
-                    <input id='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles' type='checkbox' name='biblesupersearch_options[parallelBibleStartSuperceedsDefaultBibles]' value='1' 
-                        <?php if($options['parallelBibleStartSuperceedsDefaultBibles'] ) : echo "checked='checked'"; endif; ?>  />
-                    <label for='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles'>
-                        <?php esc_html_e( '"Initial Number of Parallel Bibles" Superceeds Default Bibles', 'biblesupersearch' ); ?>        
-                    </label>
-
-                    <p><small>Forces the number of parallel Bible selectors displayed initially to always equal the "Initial Number of Parallel Bibles,"</small></p>
-                    <p><small>regardless to the number of Bibles selected as default.</small></p>
-
-                    <br />
 
                     <p><small>Please configure the desired limits below.  You can add as many threshold rows as desired.</small></p>
                     <p><small>Note: All values must be positive integers, with the excaption of minimum width on the first row, which is always 0.</small></p>
@@ -205,6 +194,16 @@
                         <button class='parallelBibleLimitByWidthAdd'>Add</button>&nbsp; &nbsp;
                         <button class='parallelBibleLimitByWidthRemove'>Remove</button> 
                     </div>
+
+                    <br /><br />
+                    <input id='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles' type='checkbox' name='biblesupersearch_options[parallelBibleStartSuperceedsDefaultBibles]' value='1' 
+                        <?php if($options['parallelBibleStartSuperceedsDefaultBibles'] ) : echo "checked='checked'"; endif; ?>  />
+                    <label for='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles'>
+                        <?php esc_html_e( '"Initial Number of Parallel Bibles" Superceeds Default Bibles', 'biblesupersearch' ); ?>        
+                    </label>
+
+                    <p><small>Forces the number of parallel Bible selectors displayed initially to always equal the "Initial Number of Parallel Bibles,"</small></p>
+                    <p><small>regardless to the number of Bibles selected as default.</small></p>
                 </div>
 
 

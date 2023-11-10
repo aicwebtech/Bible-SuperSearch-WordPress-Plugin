@@ -121,20 +121,24 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
 
         if(is_array($tab_item['json'])) {
             foreach($tab_item['json'] as $field) {
-                // if(array_key_exists($field, $incoming)) {
-                //     $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
-                // }
+                if(array_key_exists($field, $incoming)) {
+                    if(is_string($incoming[$field])) {
+                        $input[$field] = json_decode($incoming[$field], true);
+                    } elseif(is_array($incoming[$field])) {
+                        $input[$field] = $incoming[$field];
+                    } else {
+                        $input[$field] = [];
+                    }
 
-                $this->debug_count ++;
 
-                // var_dump($incoming[$field]); //die();
-                // var_dump($current[$field]);
+                    $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
+                }
 
-                // if($this->debug_count == 1) {
-                //     die();
-                // }
+                $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
 
-                $input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]';
+                //$input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]'; // ?? works?
+                
+
                 // $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : '[]';
             }
         }

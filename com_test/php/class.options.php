@@ -31,7 +31,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'language'                                  => 'en',
         'landingReference'                          => '',
         'debug'                                     => false,
-        'parallelBibleLimitByWidth'                 => '[]',
+        'parallelBibleLimitByWidth'                 => [],
         'parallelBibleCleanUpForce'                 => false,
         'parallelBibleStartSuperceedsDefaultBibles' => false,
     ];  
@@ -53,6 +53,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
             // 'ar'                    => 'العربية  / Arabic',
             'fr'                    => 'Français / French',
+            'hi'                    => 'हिन्दी, हिंदी / Hindi',
             'lv'                    => 'Latviešu / Latvian',
             'es'                    => 'Español / Spanish',
             'ro'                    => 'Română / Romanian',
