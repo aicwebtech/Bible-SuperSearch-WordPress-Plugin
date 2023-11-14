@@ -332,6 +332,8 @@ function parallelBibleLimitValidate(level) {
             minBiblesPosInt: false,
             startBiblesPosInt: false,
             startBiblesGEMinBibles: false,
+            startBiblesLEMaxBibles: false,
+            minBiblesLEMaxBibles: false,
         };
 
     jQuery('#parallelBibleLimitByWidthTbody tr').each(function(row) {
@@ -379,13 +381,24 @@ function parallelBibleLimitValidate(level) {
                 valid = false;
                 errorsByName.minBiblesPosInt = true;
                 jQuery(inputs[3]).addClass('error');
+            } else if (minBibles > maxBibles) {
+                valid = false;
+                errorsByName.minBiblesLEMaxBibles = true;
+                jQuery(inputs[3]).addClass('error');
             } else {
                 jQuery(inputs[3]).val(minBibles);
             }
             
-            if(startBibles < minBibles) {
+            if(startBibles < minBibles || startBibles > maxBibles) {
+                if(startBibles < minBibles) {
+                    errorsByName.startBiblesGEMinBibles = true;
+                }
+
+                if(startBibles > maxBibles) {
+                    errorsByName.startBiblesLEMaxBibles = true;
+                }
+
                 valid = false;
-                errorsByName.startBiblesGEMinBibles = true;
                 jQuery(inputs[4]).addClass('error');
             } else if(startBibles < 1) {
                 valid = false;
@@ -411,6 +424,10 @@ function parallelBibleLimitValidate(level) {
 
         if(errorsByName.minBiblesPosInt) {
             errors.push('Parallel Limit: Minimum Bibles must be a positive integer');
+        }             
+
+        if(errorsByName.minBiblesLEMaxBibles) {
+            errors.push('Parallel Limit: Minimum Bibles must be less than or equal to maximum Bibles');
         }        
 
         if(errorsByName.startBiblesPosInt) {
@@ -419,6 +436,10 @@ function parallelBibleLimitValidate(level) {
 
         if(errorsByName.startBiblesGEMinBibles) {
             errors.push('Parallel Limit: Page Load Bibles must be greater or equal to Minimum Bibles');
+        }
+        
+        if(errorsByName.startBiblesLEMaxBibles) {
+            errors.push('Parallel Limit: Page Load Bibles must be less than or equal to Maximum Bibles');
         }
 
         alert(errors.join('\n'));
