@@ -4,6 +4,10 @@ jQuery(document).ready(function($) {
         changeAllBibles();
     });
 
+    $('#biblesupersearch_autocompleteEnable').click(function() {
+        toggleBssAutocomplete();
+    });
+
     $('#biblesupersearch_check_all_bibles').click(function() {
         $('.bss_bible input[type=checkbox]').prop('checked', true);
     });    
@@ -65,6 +69,17 @@ jQuery(document).ready(function($) {
 
     // $('input[type=color]').wpColorPicker();
 
+    function toggleBssAutocomplete() {
+        var value = $('#biblesupersearch_autocompleteEnable').prop('checked');
+
+        if(value) {
+            $('.autocomplete_toggle').show();
+        }
+        else {
+            $('.autocomplete_toggle').hide();
+        }
+    }
+
     function changeAllBibles() {
         var value = $('#biblesupersearch_all_bibles').prop('checked');
 
@@ -93,6 +108,7 @@ jQuery(document).ready(function($) {
     }
 
     changeAllBibles();
+    toggleBssAutocomplete();
 
     if(bss_tab == 'bible') {
         $('.parallelBibleLimitByWidthAdd').click(function(e) {

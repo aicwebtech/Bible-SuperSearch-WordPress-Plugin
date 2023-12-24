@@ -76,7 +76,8 @@
                     <?php if($options['toggleAdvanced'] ) : echo "checked='checked'"; endif; ?>  />
                 Adds a button to toggle an 'advanced search' form
             </td>
-        </tr>             
+        </tr>            
+        <?php $BibleSuperSearch_Options->renderOptions('general'); ?> 
         <tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_default_landing'><?php esc_html_e( 'Default Destination Page', 'biblesupersearch' ); ?></label></th>
             <td>

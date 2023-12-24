@@ -36,6 +36,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         'parallelBibleStartSuperceedsDefaultBibles' => false,
     ];  
 
+    protected $options = [];
+
     public static $selector_options = [
         'bibleGrouping' => [
             'none'                  => 'None',
@@ -67,6 +69,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'general'  => [
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
+            'options'       => [], // modern, predefined fields
             'texts'         => [], // input and textarea
             'selects'       => [
                 'defaultDestinationPage', 'interface', 'pager', 'textDisplayDefault',
@@ -81,6 +84,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         ],             
         'bible'  => [
             'name'          => 'Bibles',
+            'options'       => [], // modern, predefined fields
             'texts'         => ['landingReference'],
             'selects'       => ['defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'],
             'checkboxes'    => [
@@ -99,14 +103,72 @@ abstract class BibleSuperSearch_Options_Abstract {
         // ),
         'advanced' => [
             'name'          => 'Advanced',
+            'options'       => [], // modern, predefined fields
             'texts'         => ['apiUrl', 'pageScrollTopPadding'],
             'selects'       => [],
             'checkboxes'    => ['debug'],
         ],
     ];
     
-    public function __construct() {
-        // Do Something
+    public function __construct() 
+    {
+        $this->initOptions();
+    }
+
+    protected function initOptions()
+    {
+        $options = $this->loadOptions();
+
+        foreach($options as $opt => &$settings) {
+            $settings['field'] = $opt;
+        }
+        unset($settings);
+
+        $defaults = array_column($options, 'default', 'field');
+
+        $this->default_options = array_replace($this->default_options, $defaults);
+        $this->options_list = $options;
+
+        $tabs = array_column($options, 'tab', 'field');
+
+        foreach($tabs as $f => $tab) {
+            if(!in_array($f, $this->tabs[$tab]['options'])) {
+                $this->tabs[$tab]['options'][] = $f;
+            }
+        }
+    }
+
+    // Override to add/change/remove options
+    protected function loadOptions()
+    {
+        return require(dirname(__FILE__) . '/options_list.php');
+    }
+
+    protected function makeOptionClass($settings)
+    {
+
+    }
+
+    public function renderOptions($tab, $option_list = [])
+    {
+        if(!isset($this->tabs[$tab])) {
+            return false;
+        }
+
+        if(!$option_list) {
+            $option_list = $this->tabs[$tab]['options'];
+        }
+
+        $list = $this->options_list;
+
+        foreach($option_list as $field) {
+            if(!isset($list[$field])) {
+                continue;
+            }
+
+            // todo - get class info, have class render field
+            // $class = $this->makeOptionClass($list[$field]);
+        }
     }
 
     static public function getSelectorOptions($selector) {
