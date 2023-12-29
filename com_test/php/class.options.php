@@ -58,6 +58,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'hi'                    => 'हिन्दी, हिंदी / Hindi',
             'lv'                    => 'Latviešu / Latvian',
             'es'                    => 'Español / Spanish',
+            'et'                    => 'Eesti / Estonian',
             'ro'                    => 'Română / Romanian',
             'ru'                    => 'Русский / Russian',
             'zh_TW'                 => '繁體中文 / Chinese - Traditional',
@@ -73,7 +74,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'texts'         => [], // input and textarea
             'selects'       => [
                 'defaultDestinationPage', 'interface', 'pager', 'textDisplayDefault',
-                'pageScroll', 'formatButtons', 'navigationButtons', 'language'
+                'pageScroll', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsSeparate'
             ],
             'checkboxes'    => [
                 'overrideCss', 
@@ -643,6 +644,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
         $bss_options = $this->getOptions();
+        
+        $data['domain'] = static::parseDomain(site_url());
+
+        // var_dump($data['domain']); die();
 
         // echo('<pre>');
         // var_dump($url);
@@ -772,6 +777,41 @@ abstract class BibleSuperSearch_Options_Abstract {
 
 
         return $valid;
+    }
+
+    static public function parseDomain($host) 
+    {
+        if(empty($host)) {
+            return null;
+        }
+
+        $host = str_replace(array('http:','https:'), '', $host);
+        $host = trim($host);
+        $host = trim($host, '/');
+        $pieces = explode('/', $host);
+        $domain = $pieces[0];
+
+        if(strpos($domain, 'www.') === 0) {
+            $domain = substr($domain, 4);
+        }
+
+        $col_pos = strpos($domain, ':');
+
+        if($col_pos !== FALSE) {
+            $domain = substr($domain, 0, $col_pos);
+        }
+
+        $hash_pos = strpos($domain, '#');
+
+        if($hash_pos !== FALSE) {
+            $domain = substr($domain, 0, $hash_pos);
+        }
+
+        if($domain == 'localhost') {
+            return null;
+        }
+
+        return $domain;
     }
 
     public function renderDownloadPage() {

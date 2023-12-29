@@ -1,12 +1,18 @@
 <?php
 
 return [
-
+    'legacyManual' => [
+        'label'         => 'Legacy User\'s Manual',
+        'desc'          => 'Whether to include a link to the legacy User\'s Manual (English only) on the quick start dialog.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
+    ],
 
     // Autocomplete Settings
     'autocompleteEnable' => [
         'label'         => 'Autocomplete Enable',
-        'desc'          => 'Whether to enable autocomplete on reference fields',
+        'desc'          => 'Whether to enable autocomplete on reference fields.',
         'type'          => 'checkbox',
         'default'       => true,
         'tab'           => 'general',
@@ -20,7 +26,7 @@ return [
         'row_classes'   => 'autocomplete_toggle',
     ],
     'autocompleteMatchAnywhere' => [
-        'label'         => 'Match Anywhere',
+        'label'         => 'Autocomplete Match Anywhere',
         'desc'          => 'Whether to match anywhere in the given option / Book name.  &nbsp;Otherwise, we only match at the beginning of the name.',
         'type'          => 'checkbox',
         'default'       => false,
@@ -28,7 +34,7 @@ return [
         'row_classes'   => 'autocomplete_toggle',
     ],
     'autocompleteMaximumOptions'    => [
-        'label'         => 'Maximum Options',
+        'label'         => 'Autocomplete Maximum Options',
         'desc'          => 'Maximum number of autocomplete options to show at once.',
         'type'          => 'integer',
         'default'       => 10,
