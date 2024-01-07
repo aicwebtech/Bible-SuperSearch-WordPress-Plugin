@@ -181,6 +181,17 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.4.0
+* Dialog improvements and better responsiveness
+* Using native share dialog on mobile devices
+* New history dialog
+* Strong's hover tooltip improvements 
+** Option to open via clicking
+** Hover intent delay with configurable threshold
+* Passage autocomplete  
+* Touchscreen swipe to navigate between chapters and search 
+* Arrow keys to navigate between chapters and search 
+
 = 5.3.0
 * Added config to control maximum parallel Bibles based on screen width
 * Added new 'Verse as Passage' display

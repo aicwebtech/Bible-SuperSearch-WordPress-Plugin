@@ -7,6 +7,21 @@ return [
         'type'          => 'checkbox',
         'default'       => false,
         'tab'           => 'general',
+    ],    
+
+    'swipePageChapter' => [
+        'label'         => 'Touchscreen Swipe Navigation',
+        'desc'          => 'Enables changing chapter and search page via horizontal touchscreen swipe gesture.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
+    ],    
+    'arrowKeysPageChapter' => [
+        'label'         => 'Arrow Keys Navigation',
+        'desc'          => 'Enables changing chapter and search page via left and right arrow keys.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
     ],
 
     // Autocomplete Settings
