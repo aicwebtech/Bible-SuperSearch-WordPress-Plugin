@@ -9,10 +9,10 @@ Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
+Bible tool having multiple versions, keyword search, reference retrival, Bible downloader, and more.  Keeps your visitors on your website!
 
 == Description ==
-Add powerful Bible tools to your website, including a Bible search engine, and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired.
+Add the Bible to your website with a Bible search engine and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired. The Bible downloads is included in the main application, but is also available as a separate shortcode for a separate page.  
 
 Keep your users on your website!   Unlike similar plugins, Bible SuperSearch displays the Bible text directly on your website; your web users will not be redirected to a 3rd party website to view the text.
 
@@ -38,7 +38,7 @@ This plugin pulls data from our API transparently.  You also have the option to 
     * Switch between verse mode and paragraph mode
     * Advanced search
     * Bible help and getting started dialogs
-    * Bible downloads dialog and shortcode
+    * Bible downloads dialog and shortcode allows downloading Bible text in various formats.  The shortcode allows having downloads separate from the main Bible app.
     * Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
 1. Widget providing a small Bible search form. 
 1. Bible downloads  - ability to download public domain or non-commercial use only Bibles in several formats
@@ -190,7 +190,6 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 ** Hover intent delay with configurable threshold
 * Passage autocomplete  
 * Touchscreen swipe to navigate between chapters and search 
-* Arrow keys to navigate between chapters and search 
 
 = 5.3.0
 * Added config to control maximum parallel Bibles based on screen width
