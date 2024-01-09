@@ -1034,9 +1034,9 @@ else for(var n=this._getBookById(t),s=parseInt(n.chapters,10),i=1;i<=s;i++)this.
 this.bookId=t,this.$.Chapter.initOptions()}e&&this.$.Chapter.setSelectedByValue(e)},valueChanged:function(e,t){this.app.debug&&this.log(e,t),this._internalSet||this._populateFromValueHelper(t)},_populateFromValueHelper:function(e){if(this.app.debug&&this.log("value",e),!e||""==e)return this._initDefault(),void this.render()
 var t=this.Passage.explodeReferences(e,!0)
 if(t){var n=t.shift()
-this.$.Book.setSelectedByContent(n.book)
+if(n){n.book&&this.$.Book.setSelectedByContent(n.book)
 var s=n.chapter_verse.split(":"),i=s[0]
-this._createChapterList(i),this.$.Chapter.renderOptionComponents(),this.$.Chapter.setSelectedByValue(i)}},handleBookChange:function(e,t){var n=e.get("value")
+this._createChapterList(i),this.$.Chapter.renderOptionComponents(),this.$.Chapter.setSelectedByValue(i)}}},handleBookChange:function(e,t){var n=e.get("value")
 if(n&&"0"!=n){var s=this._getBookById(n)
 this._internalSet=!0,this.set("value",s.name+" 1"),this._internalSet=!1,this._createChapterList(),this.$.Chapter.renderOptionComponents(),this.$.Chapter.setSelectedByValue("1")}else this._internalSet=!0,this.set("value",""),this._internalSet=!1,this._createChapterList(),this.$.Chapter.renderOptionComponents()},handleChapterChange:function(e,t){var n=this.$.Book.get("value"),s=this._getBookById(n)
 this._internalSet=!0,this.set("value",s.name+" "+e.get("value")),this._internalSet=!1},clear:function(){this._initDefault()},_getBookList:function(){var e=this.app.get("locale")
@@ -1119,7 +1119,7 @@ if(38==n||40==n){t.preventDefault()
 var i=38==n?-1:1
 this.moveSelection(i)}else if(13==n){t.preventDefault()
 var o=this.$.Toggle.getClientControls(),a=this.get("keyboardSelected")
-return a&&o[a]&&this.set("value",o[a].get("value")),this.cursorAtEnd(),this.bubble("onchange"),this.set("toggled",!1),setTimeout(function(){s.$.Input.set("enterSubmitPrevent",!1)},500),!0}}},moveSelection:function(e){if(this.get("toggled")){var t=this.$.Toggle.getClientControls(),n=this.get("keyboardSelected")
+return o[a]&&this.set("value",o[a].get("value")),this.cursorAtEnd(),this.bubble("onchange"),this.set("toggled",!1),setTimeout(function(){s.$.Input.set("enterSubmitPrevent",!1)},500),!0}}},moveSelection:function(e){if(this.get("toggled")){var t=this.$.Toggle.getClientControls(),n=this.get("keyboardSelected")
 n=null==n?-1:n
 var s=n+e
 t[s]&&!t[s].hasClass("bss_pseudo_option")&&(s+=e),s=s>=0?s:-1,this.setKeyboardSelected(s)}},setKeyboardSelected:function(e){this._clearKeyboardSelected(),this.keyboardSelected=e,controls=this.$.Toggle.getClientControls(),controls&&controls[e]?(controls[e].set("keyboardSelected",!0),this.$.Input.set("enterSubmitPrevent",!0)):this.$.Input.set("enterSubmitPrevent",!1)},_clearKeyboardSelected:function(){this.keyboardSelected=null,this.waterfall("onClearKeyboardSelections")},valueChanged:function(e,t){},resetValue:function(){this.set("value",null)},toggledChanged:function(e,t){if(this.addRemoveClass("bss_pseudo_option_show",!!this.toggled),this.$.Toggle.set("showing",!!this.toggled),this.waterfall("onToggleChanged",{toggled:this.toggled}),this.toggled){this.$.Toggle.getClientControls(),this.app.get("client")
@@ -1261,9 +1261,9 @@ this.$.Chapter.destroyClientControls()
 for(var i=1;i<=s;i++)this.$.Chapter.createComponent({content:i+"",value:i+""})}this.bookId=t}e?this.$.Chapter.setSelectedByValue(e):this.$.Chapter.setSelected(0)},valueChanged:function(e,t){this.app.debug&&this.log(e,t),this._internalSet||this._populateFromValueHelper(t)},_populateFromValueHelper:function(e){if(this.app.debug&&this.log("value",e),!e||""==e)return this._initDefault(),void this.render()
 var t=this.Passage.explodeReferences(e,!0)
 if(t){var n=t.shift()
-this.$.Book.setSelectedByContent(n.book)
+if(n){n.book&&this.$.Book.setSelectedByContent(n.book)
 var s=n.chapter_verse.split(":"),i=s[0]
-this._createChapterList(i),this.$.Chapter.render(),this.$.Chapter.setSelectedByValue(i)}},handleBookChange:function(e,t){var n=e.get("value")
+this._createChapterList(i),this.$.Chapter.render(),this.$.Chapter.setSelectedByValue(i)}}},handleBookChange:function(e,t){var n=e.get("value")
 if(n&&"0"!=n){var s=this._getBookById(n)
 this._internalSet=!0,this.set("value",s.name+" 1"),this._internalSet=!1,this._createChapterList(),this.$.Chapter.render(),this.$.Chapter.setSelectedByValue("1")}else this._internalSet=!0,this.set("value",""),this._internalSet=!1,this._createChapterList(),this.$.Chapter.render()},handleChapterChange:function(e,t){var n=this.$.Book.get("value"),s=this._getBookById(n)
 this._internalSet=!0,this.set("value",s.name+" "+e.get("value")),this._internalSet=!1},clear:function(){this._initDefault()},_getBookList:function(){var e=this.app.get("locale")
