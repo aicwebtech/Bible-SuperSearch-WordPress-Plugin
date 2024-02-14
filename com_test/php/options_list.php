@@ -9,16 +9,36 @@ return [
         'tab'           => 'general',
     ],    
 
+    'navigation'        => [
+        'label'         => 'Navigation',
+        'type'          => 'section',
+        'tab'           => 'general',
+    ],
+
     'swipePageChapter' => [
-        'label'         => 'Touchscreen Swipe Navigation',
+        'label'         => 'Touchscreen Swipe',
         'desc'          => 'Enables changing chapter and search page via horizontal touchscreen swipe gesture.',
         'type'          => 'checkbox',
         'default'       => false,
         'tab'           => 'general',
     ],    
     'arrowKeysPageChapter' => [
-        'label'         => 'Arrow Keys Navigation',
+        'label'         => 'Arrow Keys',
         'desc'          => 'Enables changing chapter and search page via left and right arrow keys.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
+    ],
+    'sideSwipePageChapter' => [
+        'label'         => 'Side Buttons',
+        'desc'          => 'Enables changing chapter and search page via fade-in side buttons.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
+    ],    
+    'sideSwipeHideWithNavigationButtons' => [
+        'label'         => 'Side Buttons Hide With Navigation Buttons',
+        'desc'          => 'Hide side buttons when navigation buttons are showing.',
         'type'          => 'checkbox',
         'default'       => false,
         'tab'           => 'general',

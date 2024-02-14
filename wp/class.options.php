@@ -130,6 +130,9 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             <?php
 
             switch($o['type']) {
+                case 'section':
+                    // do nothing more
+                    break;
                 case 'checkbox':
                     ?>
                         <td>

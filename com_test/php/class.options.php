@@ -121,7 +121,14 @@ abstract class BibleSuperSearch_Options_Abstract {
         $options = $this->loadOptions();
 
         foreach($options as $opt => &$settings) {
+            // if(in_array($settings['type'], ['section'])) {
+            //     // Not actually an option, skip
+            //     // unset($options[$opt]);
+            //     continue;
+            // }
+
             $settings['field'] = $opt;
+            $options[$opt] = $settings;
         }
         unset($settings);
 
