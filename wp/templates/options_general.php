@@ -31,6 +31,28 @@
                 </select>
                 <br />Sets the default display language seen on the [biblesupersearch] shortcode.
             </td>
+        </tr>            
+        <tr>
+            <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Display Language(s)', 'biblesupersearch' ); ?></th>
+            <td>
+                <input id='biblesupersearch_all_languages' type='checkbox' name='biblesupersearch_options[enableAllLanguages]' value='1' 
+                        <?php if($options['enableAllLanguages'] ) : echo "checked='checked'"; endif; ?>  />
+                <label for='biblesupersearch_all_languages'>Enable ALL Languages</label><br /><br />
+
+                <div class='biblesupersearch_language_list biblesupersearch_toggled_language'>
+                    <?php foreach($languages as $key => $label) :?>
+                        <?php 
+                            $checked = is_array($options['languageList']) && in_array($key, $options['languageList']) ? "checked='checked'" : '';
+                            $id = 'langlist_' . $key;
+                        ?>
+
+                        <input type='checkbox' id='<?php echo $id; ?>' value='<?php echo $key ?>' 
+                            name='biblesupersearch_options[languageList][]' <?php echo $checked; ?> />
+                        <label for='<?php echo $id; ?>'><?php echo $label . ' (' . strtoupper($key) . ')'; ?></label><br />
+                    <?php endforeach; ?>
+                </div>
+                <br />Sets the display language(s) that can be selected by the user.
+            </td>
         </tr>        
         <?php foreach($selectables as $field => $prop): ?>
             <tr>

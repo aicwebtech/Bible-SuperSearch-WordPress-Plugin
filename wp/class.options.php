@@ -278,11 +278,23 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         if($tab == 'bible') {
             if($input['enableAllBibles']) {
                 $input['enabledBibles'] = [];
-            }
+            }            
             else {
                 // Make sure default Bible is in list of selected Bibles
                 if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
                     $input['enabledBibles'][] = $input['defaultBible'];
+                }
+            }
+        }
+
+        if($tab == 'general') {
+            if($input['enableAllLanguages']) {
+                $input['languageList'] = [];
+            }
+            else {
+                // Make sure default language is in list of selected languages
+                if(!in_array($input['language'], $input['languageList'])) {
+                    $input['languageList'][] = $input['language'];
                 }
             }
         }

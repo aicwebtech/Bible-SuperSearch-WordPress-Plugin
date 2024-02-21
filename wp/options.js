@@ -2,6 +2,10 @@ jQuery(document).ready(function($) {
 
     $('#biblesupersearch_all_bibles').click(function() {
         changeAllBibles();
+    });    
+
+    $('#biblesupersearch_all_languages').click(function() {
+        changeAllLanguages();
     });
 
     $('#biblesupersearch_autocompleteEnable').click(function() {
@@ -89,6 +93,18 @@ jQuery(document).ready(function($) {
         else {
             $('.biblesupersearch_toggled_bible').show();
         }
+    }    
+
+    function changeAllLanguages() {
+        var value = $('#biblesupersearch_all_languages').prop('checked');
+        console.log('changeallLang', value);
+
+        if(value) {
+            $('.biblesupersearch_toggled_language').hide();
+        }
+        else {
+            $('.biblesupersearch_toggled_language').show();
+        }
     }
 
     $('#biblesupersearch_def_bible_add').click(function(e) {
@@ -108,6 +124,7 @@ jQuery(document).ready(function($) {
     }
 
     changeAllBibles();
+    changeAllLanguages();
     toggleBssAutocomplete();
 
     if(bss_tab == 'bible') {

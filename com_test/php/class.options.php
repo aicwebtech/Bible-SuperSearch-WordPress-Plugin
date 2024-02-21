@@ -29,6 +29,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bibleDefaultLanguageTop'                   => false,
         'bibleChangeUpdateNavigation'               => false,
         'language'                                  => 'en',
+        'languageList'                              => [],
+        'enableAllLanguages'                        => true,
         'landingReference'                          => '',
         'debug'                                     => false,
         'parallelBibleLimitByWidth'                 => [],
@@ -74,13 +76,14 @@ abstract class BibleSuperSearch_Options_Abstract {
             'texts'         => [], // input and textarea
             'selects'       => [
                 'defaultDestinationPage', 'interface', 'pager', 'textDisplayDefault',
-                'pageScroll', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsSeparate'
+                'pageScroll', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsSeparate', 'languageList',
             ],
             'checkboxes'    => [
                 'overrideCss', 
                 'toggleAdvanced', 
                 'formatButtonsToggle', 
-                'includeTestament'
+                'includeTestament',
+                'enableAllLanguages', 
             ],
         ],             
         'bible'  => [
@@ -220,6 +223,10 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         if($options['enableAllBibles']) {
             $options['enabledBibles'] = [];
+        }        
+
+        if($options['enableAllLanguages']) {
+            $options['languageList'] = [];
         }
     }
 
