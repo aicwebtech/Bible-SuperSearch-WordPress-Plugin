@@ -20,6 +20,9 @@ This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugi
 
 This plugin pulls data from our API transparently.  You also have the option to install our API on your server for complete autonomy.
 
+NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of this plugin will be set to equal WordPress's minimum PHP version (Currently 7.0).
+
+
 # Core Features
 
 1. Bible search engine

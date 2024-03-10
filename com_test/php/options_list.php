@@ -42,6 +42,14 @@ return [
         'type'          => 'checkbox',
         'default'       => false,
         'tab'           => 'general',
+    ],    
+
+    'shortcutsShowHidden' => [
+        'label'         => 'Show Hidden Shortcuts',
+        'desc'          => '(IE: Last Days Prophecy)',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
     ],
 
     // Autocomplete Settings
