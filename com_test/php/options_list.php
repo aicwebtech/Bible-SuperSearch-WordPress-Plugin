@@ -50,6 +50,27 @@ return [
         'type'          => 'checkbox',
         'default'       => false,
         'tab'           => 'general',
+    ],    
+    'bookmarksEnable' => [
+        'label'         => 'Enable Bookmarks',
+        'desc'          => '',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'general',
+    ],    
+    'bookmarkLimit' => [
+        'label'         => 'Bookmark Limit',
+        'desc'          => 'Maximum number of bookmarks a user can have.',
+        'type'          => 'integer',
+        'default'       => 20,
+        'tab'           => 'general',
+    ],    
+    'historyLimit' => [
+        'label'         => 'History Limit',
+        'desc'          => 'Maximum number of items in history;  older items will be deleted. ',
+        'type'          => 'integer',
+        'default'       => 50,
+        'tab'           => 'general',
     ],
 
     // Autocomplete Settings
