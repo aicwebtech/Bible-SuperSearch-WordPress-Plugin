@@ -184,6 +184,14 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.5.0
+* Added bookmarks dialog
+* History items now persist between page loads
+* Config settings to control what languages show in language list
+* Random chapter / Verse now repopulates URL/page title to returned item
+* Shortcut aliases are now included (and translated) in the quick start dialog
+* Side browsing buttons and configs
+
 = 5.4.0
 * Dialog improvements and better responsiveness
 * Using native share dialog on mobile devices

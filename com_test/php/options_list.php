@@ -133,4 +133,21 @@ return [
         'default'       => true,
         'tab'           => 'general',
     ],
+
+    'sideSwipeNavHideThresholdTop' => [
+        'label'         => 'Side Buttons Navigation Hide Threshold: Top',
+        'desc'          => 'When Side Buttons Hide With Navigation Buttons is enabled, this pixel value adjusts when the buttons dissappear.',
+        'type'          => 'integer',
+        'default'       => 0,
+        'units'         => 'pixels',
+        'tab'           => 'advanced',
+    ],    
+    'sideSwipeNavHideThresholdBottom' => [
+        'label'         => 'Side Buttons Navigation Hide Threshold: Bottom',
+        'desc'          => 'When Side Buttons Hide With Navigation Buttons is enabled, this pixel value adjusts when the buttons dissappear.',
+        'type'          => 'integer',
+        'default'       => 0,
+        'units'         => 'pixels',
+        'tab'           => 'advanced',
+    ],
 ];

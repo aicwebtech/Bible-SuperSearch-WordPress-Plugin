@@ -755,6 +755,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         $eol = '<br />';
         $every = ['results', 'errors', 'error_level'];
 
+        if(!is_array($results)) {
+            return false;
+        }
+
         foreach($every as $k) {
             if(!array_key_exists($k, $results)) {
                 if($verbose) {

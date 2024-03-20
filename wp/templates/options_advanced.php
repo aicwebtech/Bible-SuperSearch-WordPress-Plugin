@@ -27,6 +27,7 @@
                 </div>
             </td>
         </tr>     
+        <?php $BibleSuperSearch_Options->renderOptions('advanced'); ?> 
         <tr>
             <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Debug Mode', 'biblesupersearch' ); ?></label></th>
             <td>
