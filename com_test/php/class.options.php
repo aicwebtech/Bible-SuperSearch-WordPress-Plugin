@@ -59,6 +59,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'fr'                    => 'Français / French',
             'hi'                    => 'हिन्दी, हिंदी / Hindi',
             'lv'                    => 'Latviešu / Latvian',
+            'lt'                    => 'Lietuvių Kalba / Lithuanian',
             'es'                    => 'Español / Spanish',
             'et'                    => 'Eesti / Estonian',
             'ro'                    => 'Română / Romanian',
