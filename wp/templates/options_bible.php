@@ -140,6 +140,15 @@
             </td>
         </tr>        
         <tr>
+            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_landingReferenceDefault'><?php esc_html_e( 'Use Landing Passage(s) as Default', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_landingReferenceDefault' type='checkbox' name='biblesupersearch_options[landingReferenceDefault]' value='1' 
+                    <?php if($options['landingReferenceDefault'] ) : echo "checked='checked'"; endif; ?>  />
+
+                <p><small>If a search is executed with no search keywords or references, should we load the landing passage?</small></p>
+            </td>
+        </tr>             
+        <tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
             <td>
                 <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 

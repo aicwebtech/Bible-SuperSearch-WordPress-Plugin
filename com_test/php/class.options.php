@@ -36,6 +36,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'parallelBibleLimitByWidth'                 => [],
         'parallelBibleCleanUpForce'                 => false,
         'parallelBibleStartSuperceedsDefaultBibles' => false,
+        'landingReferenceDefault'                   => false,
     ];  
 
     protected $options = [];
@@ -98,6 +99,7 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'bibleChangeUpdateNavigation',
                 'parallelBibleCleanUpForce',
                 'parallelBibleStartSuperceedsDefaultBibles',
+                'landingReferenceDefault',
             ],
             'json' => ['parallelBibleLimitByWidth'],
         ],        
