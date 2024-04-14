@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
@@ -191,6 +191,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Random chapter / Verse now repopulates URL/page title to returned item
 * Shortcut aliases are now included (and translated) in the quick start dialog
 * Side browsing buttons and configs
+* Config to default search to landing reference if blank.
+* New User Interface translations:
+    * Portuguese
+    * German
+    * Thai
 
 = 5.4.0
 * Dialog improvements and better responsiveness
