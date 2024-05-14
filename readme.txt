@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.5.1
+* Emergency fix for Linux and other misc OS.
+
 = 5.5.0
 * Added bookmarks dialog
 * History items now persist between page loads
