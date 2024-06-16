@@ -184,6 +184,13 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.0.pre4
+* Added languages
+    ** Albanian
+    ** Korean
+    ** Hebrew
+    ** Persian
+
 = 5.6.0 pre3
 * Implemented RTL support for UI languages (we already supported this for Bibles)
 * Added languages
