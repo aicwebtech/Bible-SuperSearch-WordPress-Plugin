@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
@@ -20,7 +20,7 @@ This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugi
 
 This plugin pulls data from our API transparently.  You also have the option to install our API on your server for complete autonomy.
 
-NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of this plugin will be set to equal WordPress's minimum PHP version (Currently 7.0).
+NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of this plugin will be set to equal WordPress's minimum PHP version (Currently 7.2).
 
 
 # Core Features
@@ -184,23 +184,42 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
-= 5.6.0.pre4
-* Added languages
-    ** Albanian
-    ** Korean
-    ** Hebrew
-    ** Persian
+= 5.6.0
+* Added Languages:
+** Albanian
+** Arabic
+** Bengali
+** Burmese
+** Dutch/Flemish
+** Hausa
+** Hebrew (Modern)
+** Indonesian
+** Gujarti
+** Kannada
+** Korean
+** Marathi
+** Nepali
+** Persian
+** Polish
+** Punjabi
+** Somali
+** Swahili
+** Tagalog
+** Tajiki / Tajik (Bible only)
+** Tamil (Bible only)
+** Telugu (Bible only)
+** Tibetan
+** Turkish
+** Urdu
+** Uyghur
+** Vietnamese
+** Wolof
 
-= 5.6.0 pre3
+* Quick start links now reflect what form fields appear on the given skin.
+    ** On Minimal forms, “Romans, searched for faith no longer appears under Basic Searches.
+    ** On Browsing with Book Selector forms, only the Passage Retrieval and Formatting sections appear.
+
 * Implemented RTL support for UI languages (we already supported this for Bibles)
-* Added languages
-    ** Swahili
-    ** Indonesian
-    ** Polish
-    ** Tagalog
-    ** Vietnamese
-    ** Dutch/Flemish
-    ** Arabic
 
 = 5.5.1
 * Emergency fix for Linux and other misc OS.
