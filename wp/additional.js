@@ -1,6 +1,6 @@
-if(typeof $ == 'undefined') {
-    var $ = jQuery;
-}
+// if(typeof $ == 'undefined') {
+//     var $ = jQuery; // causing breakage and not being used, commenting out for now
+// }
 
 
 jQuery(document).ready(function() {

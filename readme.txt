@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.1
+** Updating Arabic with fluent translation.
+
 = 5.6.0
 * Added Languages:
 ** Albanian
