@@ -197,6 +197,8 @@ class BibleSuperSearch_Shortcodes {
         //     $html .= static::_displayContactForm7($a);
         // }
 
+        // $html .= 'Locale: '. get_locale();
+
         $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
         
         if(!$a['suppress_instance_error']) {

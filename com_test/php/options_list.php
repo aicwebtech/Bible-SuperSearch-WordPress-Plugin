@@ -150,4 +150,16 @@ return [
         'units'         => 'pixels',
         'tab'           => 'advanced',
     ],
+    'useNavigationShare' => [
+        'label'         => 'Share Dialog',
+        'desc'          => 'When sharing, whether to use the system share dialog (if available) or our generic share dialog.',
+        'type'          => 'select',
+        'default'       => 'never',
+        'tab'           => 'general',
+        'options'   => [
+            'never'     => 'Always use generic share dialog',
+            'mobile'    => 'Use system share dialog on mobile ONLY, use generic share dialog on desktop',
+            'always'    => 'Always use system share dialog (if available), otherwise use generic share dialog (Experimental)',
+        ],
+    ],
 ];
