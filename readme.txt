@@ -184,6 +184,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.7.0
+* Added language option to use selected WP Site Language as the UI language, made this option the default language option.
+* Added tabs to config page and organized config options better
+
 = 5.6.1
 ** Updating Arabic with fluent translation.
 

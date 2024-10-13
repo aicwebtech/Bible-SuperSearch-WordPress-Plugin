@@ -1,12 +1,51 @@
 <?php
 
 return [
+    'formatButtonsToggle' => [
+        'label'         => 'Auto-Hide Formatting Buttons',
+        'desc'          => 'Formatting buttons will only show when a search is active.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'display',
+    ],        
+    'includeTestament' => [
+        'label'         => 'Include Testament',
+        'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'display',
+    ],        
+    'overrideCss' => [
+        'label'         => 'Override Styles',
+        'desc'          => 'Attempts to override some CSS styles from WordPress to make Bible SuperSearch look as was originally designed.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'display',
+    ],    
+
+    'toggleAdvanced' => [
+        'label'         => 'Advanced Search Toggle',
+        'desc'          => 'Adds a button to toggle an \'advanced search\' form',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'features',
+    ],  
+
+    'limitSearchManual' => [
+        'label'         => 'Manual Search Limitation',
+        'desc'          => 'Limit Search to Reference only if \'Limit Search To\' has been manually selected.' 
+                        . '  Otherwise, search will automatically be limited by reference if a reference has been provided.',
+        'type'          => 'checkbox',
+        'default'       => false,
+        'tab'           => 'features',
+    ],      
+
     'legacyManual' => [
         'label'         => 'Legacy User\'s Manual',
         'desc'          => 'Whether to include a link to the legacy User\'s Manual (English only) on the quick start dialog.',
         'type'          => 'checkbox',
         'default'       => false,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],    
 
     'navigation'        => [
@@ -14,7 +53,6 @@ return [
         'type'          => 'section',
         'tab'           => 'general',
     ],
-
     'swipePageChapter' => [
         'label'         => 'Touchscreen Swipe',
         'desc'          => 'Enables changing chapter and search page via horizontal touchscreen swipe gesture.',
@@ -49,28 +87,29 @@ return [
         'desc'          => '(IE: Last Days Prophecy)',
         'type'          => 'checkbox',
         'default'       => false,
-        'tab'           => 'general',
+        'tab'           => 'advanced',
     ],    
+
     'bookmarksEnable' => [
         'label'         => 'Enable Bookmarks',
         'desc'          => '',
         'type'          => 'checkbox',
         'default'       => false,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],    
     'bookmarkLimit' => [
         'label'         => 'Bookmark Limit',
         'desc'          => 'Maximum number of bookmarks a user can have.',
         'type'          => 'integer',
         'default'       => 20,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],    
     'historyLimit' => [
         'label'         => 'History Limit',
         'desc'          => 'Maximum number of items in history;  older items will be deleted. ',
         'type'          => 'integer',
         'default'       => 50,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],
 
     // Autocomplete Settings
@@ -79,14 +118,14 @@ return [
         'desc'          => 'Whether to enable autocomplete on reference fields.',
         'type'          => 'checkbox',
         'default'       => true,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],
     'autocompleteThreshold' => [
         'label'         => 'Autocomplete Threshold',
         'desc'          => 'Minimum number of characters before autocomplete is triggered.',
         'type'          => 'integer',
         'default'       => 2,
-        'tab'           => 'general',
+        'tab'           => 'features',
         'row_classes'   => 'autocomplete_toggle',
     ],
     'autocompleteMatchAnywhere' => [
@@ -94,7 +133,7 @@ return [
         'desc'          => 'Whether to match anywhere in the given option / Book name.  &nbsp;Otherwise, we only match at the beginning of the name.',
         'type'          => 'checkbox',
         'default'       => false,
-        'tab'           => 'general',
+        'tab'           => 'features',
         'row_classes'   => 'autocomplete_toggle',
     ],
     'autocompleteMaximumOptions'    => [
@@ -102,7 +141,7 @@ return [
         'desc'          => 'Maximum number of autocomplete options to show at once.',
         'type'          => 'integer',
         'default'       => 10,
-        'tab'           => 'general',
+        'tab'           => 'features',
         'row_classes'   => 'autocomplete_toggle',
     ],
 
@@ -112,14 +151,14 @@ return [
         'desc'          => 'Time, in milliseconds, to wait after hovering before opening a hover dialog (ie Strongs)',
         'type'          => 'integer',
         'default'       => 500,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],
     'strongsOpenClick' => [
         'label'         => 'Strong\'s Dialog Open by Click',
         'desc'          => 'Whether clicking on Strong\'s number will open the dialog, otherwise clicking the link will search for the Strong\'s number.',
         'type'          => 'select',
         'default'       => 'mobile',
-        'tab'           => 'general',
+        'tab'           => 'features',
         'options'   => [
             'none'      => 'Clicking link always searches',
             'mobile'    => 'Clicking link opens dialog for mobile devices only',
@@ -131,7 +170,7 @@ return [
         'desc'          => 'When clicking the Strong\'s # opens the dialog, should we show a button to access the original search by Strong\'s # link?',
         'type'          => 'checkbox',
         'default'       => true,
-        'tab'           => 'general',
+        'tab'           => 'features',
     ],
 
     'sideSwipeNavHideThresholdTop' => [
@@ -155,7 +194,7 @@ return [
         'desc'          => 'When sharing, whether to use the system share dialog (if available) or our generic share dialog.',
         'type'          => 'select',
         'default'       => 'never',
-        'tab'           => 'general',
+        'tab'           => 'features',
         'options'   => [
             'never'     => 'Always use generic share dialog',
             'mobile'    => 'Use system share dialog on mobile ONLY, use generic share dialog on desktop',

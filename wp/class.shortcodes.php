@@ -156,6 +156,11 @@ class BibleSuperSearch_Shortcodes {
         if(array_key_exists('destinationUrl', $options) && $options['destinationUrl'] == get_permalink()) {
             $options['destinationUrl'] = NULL;
         }
+
+        if($options['language'] == 'global_default') {
+            list($lang, $locale) = explode('_', get_locale());
+            $options['language'] = strtolower($lang);
+        }
         
         $options_json   = json_encode($options);
         $statics_json   = json_encode($statics);
@@ -196,8 +201,6 @@ class BibleSuperSearch_Shortcodes {
         // if($a['contact-form-7-id']) {
         //     $html .= static::_displayContactForm7($a);
         // }
-
-        // $html .= 'Locale: '. get_locale();
 
         $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
         

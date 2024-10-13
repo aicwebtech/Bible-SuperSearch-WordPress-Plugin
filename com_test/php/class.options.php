@@ -28,7 +28,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'bibleSorting'                              => 'language_english|name',
         'bibleDefaultLanguageTop'                   => false,
         'bibleChangeUpdateNavigation'               => false,
-        'language'                                  => 'en',
+        'language'                                  => 'global_default',
         'languageList'                              => [],
         'enableAllLanguages'                        => true,
         'landingReference'                          => '',
@@ -112,7 +112,24 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'includeTestament',
                 'enableAllLanguages', 
             ],
-        ],             
+        ],
+        'display' => [
+            'name' => 'Display',
+            'options' => [],
+            'texts' => [],
+            'selects'       => [
+                'pager', 'textDisplayDefault',
+                'pageScroll', 'formatButtons', 'navigationButtons', 'extraButtonsSeparate',
+            ],
+            'checkboxes' => [],
+        ],         
+        'features' => [
+            'name' => 'Features',
+            'options' => [],
+            'texts' => [],
+            'selects' => [],
+            'checkboxes' => [],
+        ],         
         'bible'  => [
             'name'          => 'Bibles',
             'options'       => [], // modern, predefined fields
@@ -170,9 +187,13 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         $tabs = array_column($options, 'tab', 'field');
 
-        foreach($tabs as $f => $tab) {
-            if(!in_array($f, $this->tabs[$tab]['options'])) {
-                $this->tabs[$tab]['options'][] = $f;
+        foreach($tabs as $f => $ftabs) {
+            $tabs = explode(',', $ftabs);
+
+            foreach($tabs as $tab) {                
+                if(!in_array($f, $this->tabs[$tab]['options'])) {
+                    $this->tabs[$tab]['options'][] = $f;
+                }
             }
         }
     }
