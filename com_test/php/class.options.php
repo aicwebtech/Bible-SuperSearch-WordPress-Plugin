@@ -115,16 +115,18 @@ abstract class BibleSuperSearch_Options_Abstract {
         ],
         'display' => [
             'name' => 'Display',
+            'fully_dynamic' => true,
             'options' => [],
             'texts' => [],
             'selects'       => [
-                'pager', 'textDisplayDefault',
-                'pageScroll', 'formatButtons', 'navigationButtons', 'extraButtonsSeparate',
+                // 'pager', 'textDisplayDefault',
+                // 'pageScroll', 'formatButtons', 'navigationButtons', 'extraButtonsSeparate',
             ],
             'checkboxes' => [],
         ],         
         'features' => [
             'name' => 'Features',
+            'fully_dynamic' => true,
             'options' => [],
             'texts' => [],
             'selects' => [],
@@ -152,10 +154,11 @@ abstract class BibleSuperSearch_Options_Abstract {
         // ),
         'advanced' => [
             'name'          => 'Advanced',
+            'fully_dynamic' => true,
             'options'       => [], // modern, predefined fields
-            'texts'         => ['apiUrl', 'pageScrollTopPadding'],
+            'texts'         => [], //'apiUrl', 'pageScrollTopPadding'],
             'selects'       => [],
-            'checkboxes'    => ['debug'],
+            'checkboxes'    => [], //['debug'],
         ],
     ];
     
@@ -167,35 +170,94 @@ abstract class BibleSuperSearch_Options_Abstract {
     protected function initOptions()
     {
         $options = $this->loadOptions();
+        $defaults = [];
 
-        foreach($options as $opt => &$settings) {
-            // if(in_array($settings['type'], ['section'])) {
-            //     // Not actually an option, skip
-            //     // unset($options[$opt]);
-            //     continue;
-            // }
+        // echo('<pre>');
+        // print_r($options['display']); //die();
 
-            $settings['field'] = $opt;
-            $options[$opt] = $settings;
+        foreach($options as $tab => &$tab_options) {
+            foreach($tab_options as $opt => &$settings) {
+
+                // var_dump($tab);
+                // var_dump($opt);
+                // var_dump($settings);
+                // die();
+
+                // if(in_array($settings['type'], ['section'])) {
+                //     // Not actually an option, skip
+                //     // unset($options[$opt]);
+                //     continue;
+                // }
+
+                $settings['field'] = $opt;
+                // $options[$opt] = $settings;
+
+                if(!in_array($opt, $this->tabs[$tab]['options'])) {
+                    $this->tabs[$tab]['options'][] = $opt;
+                }
+
+                if(isset($settings['items'])) {
+                    $items = $settings['items'];
+
+                    if(is_string($items)) {
+                        if(isset(static::$selector_options[$items])) {
+                            $items = static::$selector_options[$items];
+                        } else if(is_callable([$this, $items])) {
+                            $items = call_user_func([$this, $items]);
+                        } else {
+                            $items = [];
+                        }
+                    } else if(!is_array($items)) {
+                        $items = [];
+                    }
+
+                    // Handle varying item array formats
+                    if($items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
+                        $settings['items'] = [];
+
+                        foreach($items as $value => $label) {
+                            $label = is_array($label) ? $label['name'] : $label;
+
+                            $settings['items'][] = [
+                                'value' => $value,
+                                'label' => $label,
+                            ];
+                        }
+                    } else {
+                        $settings['items'] = $items;
+                    }
+
+                    // print_r($settings['items']); die();
+                }
+
+                if(array_key_exists('default', $settings)) {
+                    $defaults[$opt] = $settings['default'];
+                }
+            }
+
+            unset($settings);
+            // print_r($this->tabs[$tab]['options']); 
         }
-        unset($settings);
+        unset($tab_options);
 
-        $defaults = array_column($options, 'default', 'field');
+        // die();
+
+        // $defaults = array_column($options, 'default', 'field');
 
         $this->default_options = array_replace($this->default_options, $defaults);
         $this->options_list = $options;
 
-        $tabs = array_column($options, 'tab', 'field');
+        // $tabs = array_column($options, 'tab', 'field');
 
-        foreach($tabs as $f => $ftabs) {
-            $tabs = explode(',', $ftabs);
+        // foreach($tabs as $f => $ftabs) {
+        //     $tabs = explode(',', $ftabs);
 
-            foreach($tabs as $tab) {                
-                if(!in_array($f, $this->tabs[$tab]['options'])) {
-                    $this->tabs[$tab]['options'][] = $f;
-                }
-            }
-        }
+        //     foreach($tabs as $tab) {                
+        //         if(!in_array($f, $this->tabs[$tab]['options'])) {
+        //             $this->tabs[$tab]['options'][] = $f;
+        //         }
+        //     }
+        // }
     }
 
     // Override to add/change/remove options
@@ -219,7 +281,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             $option_list = $this->tabs[$tab]['options'];
         }
 
-        $list = $this->options_list;
+        $list = is_array($this->options_list[$tab]) ? $this->options_list[$tab] : [];
 
         foreach($option_list as $field) {
             if(!isset($list[$field])) {
@@ -399,7 +461,6 @@ abstract class BibleSuperSearch_Options_Abstract {
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
-        $selectables = $this->getSelectableItems();
         $statics = $this->getStatics();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
@@ -698,7 +759,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         // Persist to DB!
     }
 
-    protected function _apiActionHelper($action, $api_url, $data) {
+    protected function _apiActionHelper($action, $api_url, $data) 
+    {
         $url_action = ($action == 'query') ? '/api' : '/api/' . $action;
         $url = $api_url . $url_action;
 
@@ -709,11 +771,6 @@ abstract class BibleSuperSearch_Options_Abstract {
         $bss_options = $this->getOptions();
         
         $data['domain'] = static::parseDomain(site_url());
-
-        // var_dump($data['domain']); die();
-
-        // echo('<pre>');
-        // var_dump($url);
 
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
@@ -997,41 +1054,6 @@ abstract class BibleSuperSearch_Options_Abstract {
                 'name'  => 'Custom - User Friendly 2 with Book Selector', 
                 'class' => 'classic',
             ),   
-        );
-    }
-
-    public function getSelectableItems() {
-        return array(
-            'textDisplayDefault' => array(
-                'name'  => 'Default Text Display',
-                'desc'  => 'How to display Bible text by default.  The text display can be changed by the user.',
-                'items' => $this->getTextDisplays(),
-            ),               
-            'pager' => array(
-                'name'  => 'Paginator',
-                'desc'  => 'Used to browse through multiple pages of search results.',
-                'items' => $this->getPagers(),
-            ),            
-            'pageScroll' => array(
-                'name'  => 'Page Scrolling',
-                'desc'  => 'When the page loads or query executes, how to scroll the page up to top of the results.',
-                'items' => $this->getPageScrolls(),
-            ),
-            'navigationButtons' => array(
-                'name'  => 'Navigation Buttons',
-                'desc'  => 'Used to browse between chapters and books.',
-                'items' => $this->getNavigationButtons(),
-            ),
-            'formatButtons' => array(
-                'name'  => 'Formatting Buttons',
-                'desc'  => 'The formatting buttons appear below the form, and include size, font, and copy options.',
-                'items' => $this->getFormatButtons(),
-            ),            
-            'extraButtonsSeparate' => array(
-                'name'  => 'How to Display Extra Buttons',
-                'desc'  => 'These include help and download dialog buttons. &nbsp; * Some skins do not support this option.',
-                'items' => $this->getExtraButtons(),
-            ),            
         );
     }
 
