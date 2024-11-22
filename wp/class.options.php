@@ -87,7 +87,102 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         // flush_rewrite_rules( true );
     }
 
+<<<<<<< Updated upstream
     public function validateOptions( $incoming ) {
+=======
+    public function renderOptions($tab, $option_list = [])
+    {
+        if(!isset($this->tabs[$tab])) {
+            return false;
+        }
+
+        if(!$option_list) {
+            $option_list = $this->tabs[$tab]['options'];
+        }
+
+        $list = $this->options_list[$tab];
+        $options = $this->getOptions();
+
+        foreach($option_list as $f) {
+            if(!isset($list[$f])) {
+                continue;
+            }
+
+            $o = $list[$f];
+
+            // todo - get class info, have class render field
+            // $class = $this->makeOptionClass($list[$field]);
+
+            $row_classes = isset($o['row_classes']) ? "class='" . $o['row_classes'] . "'" : '';
+
+            ?>
+                <tr <?php echo $row_classes; ?> >
+                    <th scope="row" style='vertical-align: top;'>
+                        <label for='biblesupersearch_<?php echo $f ?>'><?php esc_html_e( $o['label'], 'biblesupersearch' ); ?></label>
+                    </th>
+            <?php
+
+            switch($o['type']) {
+                case 'section':
+                    // do nothing more
+                    break;
+                case 'checkbox':
+                    ?>
+                        <td>
+                            <input id='biblesupersearch_<?php echo $f; ?>' type='checkbox' name='biblesupersearch_options[<?php echo $f; ?>]' value='1' 
+                                <?php if($options[$f] ) : echo "checked='checked'"; endif; ?>  /> 
+                            <small>
+                                <?php echo $o['desc']?>
+                            </small>
+                        </td>
+                    <?php
+
+                    break;
+                case 'text':
+                case 'integer':
+                case 'int':
+                    ?>
+                        <td>
+                            <input name='biblesupersearch_options[<?php echo $f; ?>]' value='<?php echo $options[$f]?>' style='width:50%' />
+                            <p>
+                                <small>
+                                    <?php echo $o['desc']?>
+                                </small>
+                            </p>
+                        </td>
+                    <?php
+
+                    break;
+                case 'select':
+                    ?>
+                        <td>
+                            <select name='biblesupersearch_options[<?php echo $f; ?>]' id='biblesupersearch_options[<?php echo $f; ?>]'>
+                                <?php foreach($o['options'] as $key => $opt): ?>
+                                    <option value='<?php echo $key; ?>' <?php if($options[$f] == $key): echo "selected=selected"; endif; ?> >
+                                        <?php echo $opt; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <p>
+                                <small>
+                                    <?php echo $o['desc']?>
+                                </small>
+                            </p>
+                        </td>
+                    <?php
+
+                    break;
+            }
+
+            ?>
+                </tr>
+            <?php
+        }
+    }
+
+    public function validateOptions( $incoming ) 
+    {
+>>>>>>> Stashed changes
         $current = $input = $this->getOptions(TRUE);
         
         $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
