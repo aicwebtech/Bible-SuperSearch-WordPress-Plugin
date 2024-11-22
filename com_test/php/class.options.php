@@ -4,26 +4,42 @@
 abstract class BibleSuperSearch_Options_Abstract {
     protected $option_index = 'biblesupersearch_options';
 
-    protected $default_options = array(
-        'defaultBible'              => 'kjv',
-        'apiUrl'                    => 'https://api.biblesupersearch.com',
-        'useJSONP'                  => FALSE,
-        'defaultLanguage'           => 'en',
-        'enabledBibles'             => array(),
-        'enableAllBibles'           => TRUE,
-        'interface'                 => 'Classic',  // 'Expanding'
-        'toggleAdvanced'            => TRUE,
-        'formatButtonsToggle'       => FALSE,
-        'defaultDestinationPage'    => 0,
-        "extraButtonsSeparate"      => 'default',
-        'pager'                     => 'default',
-        'formatButtons'             => 'default',
-        'navigationButtons'         => 'default',
-        'bibleGrouping'             => 'language',
-        'bibleSorting'              => 'language_english|name',
-        'language'                  => 'en',
-        'landingReference'          => '',
-    );  
+    protected $default_options = [
+        'defaultBible'                              => 'kjv',
+        'defaultBibles'                             => ['kjv'],
+        'apiUrl'                                    => 'https://api.biblesupersearch.com',
+        'useJSONP'                                  => FALSE,
+        'defaultLanguage'                           => 'en',
+        'enabledBibles'                             => [],
+        'enableAllBibles'                           => TRUE,
+        'textDisplayDefault'                        => 'passage',
+        'interface'                                 => 'Classic',  // 'Expanding'
+        'toggleAdvanced'                            => TRUE,
+        'formatButtonsToggle'                       => FALSE,
+        'includeTestament'                          => false,
+        'defaultDestinationPage'                    => 0,
+        "extraButtonsSeparate"                      => 'default',
+        'pager'                                     => 'default',
+        'pageScroll'                                => 'instant',
+        'pageScrollTopPadding'                      => 0,
+        'formatButtons'                             => 'default',
+        'navigationButtons'                         => 'default',
+        'bibleGrouping'                             => 'language',
+        'bibleSorting'                              => 'language_english|name',
+        'bibleDefaultLanguageTop'                   => false,
+        'bibleChangeUpdateNavigation'               => false,
+        'language'                                  => 'global_default',
+        'languageList'                              => [],
+        'enableAllLanguages'                        => true,
+        'landingReference'                          => '',
+        'debug'                                     => false,
+        'parallelBibleLimitByWidth'                 => [],
+        'parallelBibleCleanUpForce'                 => false,
+        'parallelBibleStartSuperceedsDefaultBibles' => false,
+        'landingReferenceDefault'                   => false,
+    ];  
+
+    protected $options = [];
 
     public static $selector_options = [
         'bibleGrouping' => [
@@ -38,46 +54,181 @@ abstract class BibleSuperSearch_Options_Abstract {
             'language_english|rank|name'    => 'Language - English Name / Rank / Full Name',
         ],
         'language' => [
-            'en'                    => 'English',
+
             // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
-            // 'ar'                    => 'العربية  / Arabic',
-            'fr'                    => 'Français / French',
+            'ar'                    => 'العربية  / Arabic',
+            'de'                    => 'Deutsch / German',
+            'en'                    => 'English',
             'es'                    => 'Español / Spanish',
+            'et'                    => 'Eesti / Estonian',
+            'fa'                    => 'فارسی  / Persian',
+            'fr'                    => 'Français / French',
+            'gu'                    => 'ગુજરાતી / Gujarati',
+            'ha'                    => '(Hausa) هَوُسَ',
+            'he'                    => 'עברית  / Hebrew',
+            'hi'                    => 'हिन्दी, हिंदी / Hindi',
+            'hu'                    => 'Magyar / Hungarian',
+            'id'                    => 'Bahasa Indonesia / Indonesian',
+            'it'                    => 'Italiano / Italian',
+            'ja'                    => '日本語 (にほんご) / Japanese',
+            'kn'                    => 'ಕನ್ನಡ / Kannada',
+            'ko'                    => '한국어 / Korean',
+            'lv'                    => 'Latviešu / Latvian',
+            'mi'                    => 'te reo Māori / Maori',
+            'lt'                    => 'Lietuvių Kalba / Lithuanian',
+            'nl'                    => 'Nederlands, Vlaams / Dutch, Flemish',
+            'ne'                    => 'नेपाली / Nepali',
+            'pa'                    => 'ਪੰਜਾਬੀ / Punjabi, Panjabi',
+            'pl'                    => 'Polski / Polish',
+            'pt'                    => 'Português / Portuguese',
             'ro'                    => 'Română / Romanian',
+            'ru'                    => 'Русский / Russian',
+            'sq'                    => 'Shqip / Albanian',
+            'sw'                    => 'Kiswahili / Swahili',
+            'vi'                    => 'Tiếng Việt / Vietnamese',
+            'tr'                    => 'Türkçe / Turkish',
+            'ur'                    => 'اردو / Urdu',
+            'th'                    => 'ไทย / Thai',
+            'tl'                    => 'Wikang Tagalog / Tagalog',
             'zh_TW'                 => '繁體中文 / Chinese - Traditional',
             'zh_CN'                 => '简体中文 / Chinese - Simplified',
         ],
     ];
 
-    protected $tabs = array(
-        'general'  => array(
+    protected $tabs = [
+        'general'  => [
             'name'          => 'General',
             // need list of fields for each tab.  IF field is not in list, it won't save!
-            'texts'         => array(), // input and textarea
-            'selects'       => array('defaultDestinationPage', 'interface', 'pager', 'formatButtons', 'navigationButtons', 'language'),
-            'checkboxes'    => array('overrideCss', 'toggleAdvanced', 'formatButtonsToggle'),
-        ),        
-        'bible'  => array(
+            'options'       => [], // modern, predefined fields
+            'texts'         => [], // input and textarea
+            'selects'       => [
+                'defaultDestinationPage', 'interface', 'pager', 'textDisplayDefault',
+                'pageScroll', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsSeparate', 'languageList',
+            ],
+            'checkboxes'    => [
+                'overrideCss', 
+                'toggleAdvanced', 
+                'formatButtonsToggle', 
+                'includeTestament',
+                'enableAllLanguages', 
+            ],
+        ],
+        'display' => [
+            'name' => 'Display',
+            'options' => [],
+            'texts' => [],
+            'selects'       => [
+                'pager', 'textDisplayDefault',
+                'pageScroll', 'formatButtons', 'navigationButtons', 'extraButtonsSeparate',
+            ],
+            'checkboxes' => [],
+        ],         
+        'features' => [
+            'name' => 'Features',
+            'options' => [],
+            'texts' => [],
+            'selects' => [],
+            'checkboxes' => [],
+        ],         
+        'bible'  => [
             'name'          => 'Bibles',
-            'texts'         => array('landingReference'),
-            'selects'       => array('defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'),
-            'checkboxes'    => array('enableAllBibles'),
-        ),        
+            'options'       => [], // modern, predefined fields
+            'texts'         => ['landingReference'],
+            'selects'       => ['defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'],
+            'checkboxes'    => [
+                'enableAllBibles', 
+                'bibleDefaultLanguageTop', 
+                'bibleChangeUpdateNavigation',
+                'parallelBibleCleanUpForce',
+                'parallelBibleStartSuperceedsDefaultBibles',
+                'landingReferenceDefault',
+            ],
+            'json' => ['parallelBibleLimitByWidth'],
+        ],        
         // 'style'  => array(
         //     'name'          => 'Appearance',
-        //     'fields'        => array(), // 'formStyles'),
+        //     'fields'        => [], // 'formStyles'),
         //     'checkboxes'    => array('overrideCss'),
         // ),
-        'advanced' => array(
+        'advanced' => [
             'name'          => 'Advanced',
-            'texts'         => array('apiUrl'),
-            'selects'       => array(),
-            'checkboxes'    => array(),
-        ),
-    );
+            'options'       => [], // modern, predefined fields
+            'texts'         => ['apiUrl', 'pageScrollTopPadding'],
+            'selects'       => [],
+            'checkboxes'    => ['debug'],
+        ],
+    ];
     
-    public function __construct() {
-        // Do Something
+    public function __construct() 
+    {
+        $this->initOptions();
+    }
+
+    protected function initOptions()
+    {
+        $options = $this->loadOptions();
+
+        foreach($options as $opt => &$settings) {
+            // if(in_array($settings['type'], ['section'])) {
+            //     // Not actually an option, skip
+            //     // unset($options[$opt]);
+            //     continue;
+            // }
+
+            $settings['field'] = $opt;
+            $options[$opt] = $settings;
+        }
+        unset($settings);
+
+        $defaults = array_column($options, 'default', 'field');
+
+        $this->default_options = array_replace($this->default_options, $defaults);
+        $this->options_list = $options;
+
+        $tabs = array_column($options, 'tab', 'field');
+
+        foreach($tabs as $f => $ftabs) {
+            $tabs = explode(',', $ftabs);
+
+            foreach($tabs as $tab) {                
+                if(!in_array($f, $this->tabs[$tab]['options'])) {
+                    $this->tabs[$tab]['options'][] = $f;
+                }
+            }
+        }
+    }
+
+    // Override to add/change/remove options
+    protected function loadOptions()
+    {
+        return require(dirname(__FILE__) . '/options_list.php');
+    }
+
+    protected function makeOptionClass($settings)
+    {
+
+    }
+
+    public function renderOptions($tab, $option_list = [])
+    {
+        if(!isset($this->tabs[$tab])) {
+            return false;
+        }
+
+        if(!$option_list) {
+            $option_list = $this->tabs[$tab]['options'];
+        }
+
+        $list = $this->options_list;
+
+        foreach($option_list as $field) {
+            if(!isset($list[$field])) {
+                continue;
+            }
+
+            // todo - get class info, have class render field
+            // $class = $this->makeOptionClass($list[$field]);
+        }
     }
 
     static public function getSelectorOptions($selector) {
@@ -107,6 +258,12 @@ abstract class BibleSuperSearch_Options_Abstract {
             }
         }
 
+        if(is_string($options['defaultBible'])) {
+            $options['defaultBible'] = explode(',', $options['defaultBible']);
+        }
+
+        $options['defaultBible'] = array_filter($options['defaultBible']);
+
         return $options;
     }
 
@@ -115,6 +272,10 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         if($options['enableAllBibles']) {
             $options['enabledBibles'] = [];
+        }        
+
+        if($options['enableAllLanguages']) {
+            $options['languageList'] = [];
         }
     }
 
@@ -283,7 +444,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     public function getBible($module = NULL) {
         $statics = $this->getStatics();
-        $lang = array();
+        $lang = [];
 
         if(is_array($statics['bibles'])) {        
             foreach($statics['bibles'] as $module => &$bible) {
@@ -366,10 +527,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
 
         $sorting  = explode('|', $sorting);
-        $sortable = array();
+        $sortable = [];
 
         foreach($sorting as $k => $s) {
-            $sortable[] = array();
+            $sortable[] = [];
             $sortable[] = SORT_REGULAR; // Todo, DESC, ect
         }
 
@@ -422,7 +583,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $this->getBible();
     }
 
-    public function getEnabledBibles($statics = array(), $sorting = NULL, $grouping = NULL) {
+    public function getEnabledBibles($statics = [], $sorting = NULL, $grouping = NULL) {
         $options = $this->getOptions();
         $bibles  = $this->getBibles($statics, $sorting, $grouping);
 
@@ -430,7 +591,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             return $bibles;
         }
 
-        $enabled = array();
+        $enabled = [];
 
         foreach($bibles as $module => $bible) {
             if(in_array($module, $options['enabledBibles'])) {
@@ -518,8 +679,8 @@ abstract class BibleSuperSearch_Options_Abstract {
 
                     $options['apiUrl'] = $this->default_options['apiUrl'];
                     update_option($this->option_index, $options);
-                    wp_die($msg);
-                    // echo($msg);
+                    //wp_die($msg);
+                    echo($msg);
                 }
                 else {
                     wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
@@ -545,6 +706,11 @@ abstract class BibleSuperSearch_Options_Abstract {
         $allow_url_fopen = (int) ini_get('allow_url_fopen');
         $err = error_reporting();
         error_reporting(E_ERROR | E_PARSE);
+        $bss_options = $this->getOptions();
+        
+        $data['domain'] = static::parseDomain(site_url());
+
+        // var_dump($data['domain']); die();
 
         // echo('<pre>');
         // var_dump($url);
@@ -578,17 +744,141 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         error_reporting($err);
 
-        if($action == 'statics') {
-            // var_dump($api_url);
-            // var_dump($url);
-            // var_dump($curl_info);
-            // var_dump($data);
-            // var_dump($action);
-            // var_dump($result);
-            // die();
+        $result_decoded = ($result === false) ? false : json_decode($result, true);
+        
+        $eol = '<br />';
+
+        $enable_debug = ($bss_options['debug']) ? '' : ' Webmaster: please enable debug mode for details';
+
+        if($bss_options['debug']) {
+            echo 'Bible SuperSearch API Call Log' . $eol;
+            echo 'Action: ' . $action . $eol;
+            echo 'URL: ' . $url . $eol;
+            echo 'Data: ' . print_r($data, true) . $eol;
+            echo 'Has Results: ' . ($result === false ? 'No' : 'Yes') . $eol;
+            echo $eol;
+
+            echo 'API errors:';
+
+            if(is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
+                echo $eol;
+
+                foreach($result_decoded['errors'] as $e) {
+                    echo '&nbsp; &nbsp; * ' . $e . $eol;
+                }
+
+            } else {
+                echo '(NONE)';
+            }    
+
+            echo $eol . $eol;
+
+            echo 'API error level: ';
+
+            if(isset($result_decoded['error_level'])) {
+                echo $result_decoded['error_level'];
+            } else {
+                echo '(NONE)';
+            }
+
+            echo $eol . $eol;
         }
 
-        return ($result === FALSE) ? FALSE : json_decode($result, TRUE);
+        if($result === FALSE && $allow_url_fopen != 1 && !function_exists('curl_init')) {
+            echo 'ERROR: Unable to connect to Bible SuperSearch API due to server settings.' . $eol;
+            echo 'Please have your system administrator set allow_url_fopen=1 in your php.ini and/or enable cURL.' . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
+        } else if(empty($result)) {
+            echo 'ERROR: Bible SuperSearch API returned empty results.' . $enable_debug . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
+        } else if(!$this->_validateApiResults($action, $result_decoded, $bss_options['debug'])) {
+            echo 'ERROR: Bible SuperSearch API returned invalid results.' . $enable_debug . $eol;
+            echo 'API action: ' . $action . $eol . $eol;
+        }
+
+        return $result_decoded;
+    }
+
+    protected function _validateApiResults($action, $results, $verbose = false) {
+        $valid = true;
+        $eol = '<br />';
+        $every = ['results', 'errors', 'error_level'];
+
+        if(!is_array($results)) {
+            return false;
+        }
+
+        foreach($every as $k) {
+            if(!array_key_exists($k, $results)) {
+                if($verbose) {
+                    echo 'Results missing array key: ' . $k . $eol;
+                }
+                
+                $valid = false;
+            }
+        }
+
+        if(!is_array($results['results'])) {
+            return false;
+        }
+
+        //print_r(array_keys($results['results']));
+
+        switch($action) {
+            case 'statics':
+                $reskeys = ['bibles', 'books', 'search_types', 'version', 'shortcuts', 'name', 'environment'];
+                break;
+            default:
+                $reskeys = [];
+        }
+
+        foreach($reskeys as $k) {
+            if(!array_key_exists($k, $results['results'])) {
+                if($verbose) {
+                    echo 'Results[results] missing array key: ' . $k . $eol;
+                }
+
+                $valid = false;
+            }
+        }
+
+
+        return $valid;
+    }
+
+    static public function parseDomain($host) 
+    {
+        if(empty($host)) {
+            return null;
+        }
+
+        $host = str_replace(array('http:','https:'), '', $host);
+        $host = trim($host);
+        $host = trim($host, '/');
+        $pieces = explode('/', $host);
+        $domain = $pieces[0];
+
+        if(strpos($domain, 'www.') === 0) {
+            $domain = substr($domain, 4);
+        }
+
+        $col_pos = strpos($domain, ':');
+
+        if($col_pos !== FALSE) {
+            $domain = substr($domain, 0, $col_pos);
+        }
+
+        $hash_pos = strpos($domain, '#');
+
+        if($hash_pos !== FALSE) {
+            $domain = substr($domain, 0, $hash_pos);
+        }
+
+        if($domain == 'localhost') {
+            return null;
+        }
+
+        return $domain;
     }
 
     public function renderDownloadPage() {
@@ -712,10 +1002,20 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     public function getSelectableItems() {
         return array(
+            'textDisplayDefault' => array(
+                'name'  => 'Default Text Display',
+                'desc'  => 'How to display Bible text by default.  The text display can be changed by the user.',
+                'items' => $this->getTextDisplays(),
+            ),               
             'pager' => array(
                 'name'  => 'Paginator',
                 'desc'  => 'Used to browse through multiple pages of search results.',
                 'items' => $this->getPagers(),
+            ),            
+            'pageScroll' => array(
+                'name'  => 'Page Scrolling',
+                'desc'  => 'When the page loads or query executes, how to scroll the page up to top of the results.',
+                'items' => $this->getPageScrolls(),
             ),
             'navigationButtons' => array(
                 'name'  => 'Navigation Buttons',
@@ -735,6 +1035,15 @@ abstract class BibleSuperSearch_Options_Abstract {
         );
     }
 
+    public function getTextDisplays() {
+        return [
+            'paragraph'         => ['name' => 'Paragraph'],
+            'passage'           => ['name' => 'Passage'],
+            'verse'             => ['name' => 'Verse'],
+            'verse_passage'     => ['name' => 'Verse as Passage Display'],
+        ];
+    }
+
     public function getPagers() {
         return array(
             'default' => array(
@@ -745,6 +1054,20 @@ abstract class BibleSuperSearch_Options_Abstract {
             ),            
             'Clean' => array(
                 'name'  => 'Clean',
+            ),
+        );
+    }        
+
+    public function getPageScrolls() {
+        return array(
+            'instant' => array(
+                'name' => 'Instant',
+            ),
+            'smooth' => array(
+                'name'  => 'Smooth',
+            ),            
+            'none' => array(
+                'name'  => 'None - No scrolling',
             ),
         );
     }    

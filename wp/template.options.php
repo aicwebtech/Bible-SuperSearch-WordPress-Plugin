@@ -2,15 +2,39 @@
     // global $options, $bibles, $interfaces;
     global $BibleSuperSearch_Options;
     $api_version = (float) $BibleSuperSearch_Options->apiVersion();
+    $statics = $BibleSuperSearch_Options->getStatics();
+
+    if(!isset($statics['access'])) {
+        $access_limit = '(unknown)';
+        $access_hits = '(unknown)';
+    } else {        
+        $access_hits = (int)$statics['access']['hits'];
+
+        if($statics['access']['limit'] == 0) {
+            $access_limit = '(unlimited)';
+            $access_rem = '(unlimited)';
+        } else if($statics['access']['limit'] < 0) {
+            $access_limit = '(!!NONE!!)';
+            $access_rem = '(!!NONE!!)';
+        } else { 
+            $access_limit = (int)$statics['access']['limit'];
+            $access_rem = $access_limit - $access_hits;
+        }
+    }
 ?>
 
 <div class="biblesupersearch-option-tabs wrap">
     <div class="icon32" id="icon-options-general"><br></div>
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
+    <script>
+        <?php
+            echo "var bss_options=" . json_encode($options) . ";\n";
+            echo "var bss_tab='" . $tab . "';\n";
+        ?>
+    </script>
 
     <div class="metabox-holder has-right-sidebar">
         <div class="inner-sidebar" style='margin-top: 44px'>
-
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
@@ -154,6 +178,14 @@
                     <input type='hidden' name='tab' value='<?php echo $tab ?>' />
 
                     <div class="postbox tab-content">
+                        <div class='inside'>
+                            <table>
+                                <tr><th colspan="2">Today's Bible SuperSearch API Usage</th></tr>
+                                <tr><th>Daily hits</th><td><?php echo $access_hits; ?></td></tr>
+                                <tr><th>Limit</th><td><?php echo $access_limit; ?></td></tr>
+                                <tr><th>Remaining </th><td><?php echo $access_rem; ?></td></tr>
+                            </table>
+                        </div>
 
                         <?php if($using_main_api): ?>
                             <div class='inside' style='font-weight: bold'>

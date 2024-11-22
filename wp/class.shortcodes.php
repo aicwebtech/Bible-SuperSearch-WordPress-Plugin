@@ -110,16 +110,16 @@ class BibleSuperSearch_Shortcodes {
 
         unset($options['formStyles']); // Not using this config right now
 
+        while(is_string($options['parallelBibleLimitByWidth'])) {
+            $options['parallelBibleLimitByWidth'] = json_decode($options['parallelBibleLimitByWidth']);
+        }
+
         $destination_url = NULL;
 
         if(isset($options['defaultDestinationPage'])) {
             $destination_url = get_permalink($options['defaultDestinationPage']);
             $attr['destination_url']['default'] = $destination_url;
         }
-
-        // if(static::$instances > 0) {
-        //     $container .= '_' . static::$instances;
-        // }        
         
         $defaults = array(
             'container' => $container,
@@ -155,6 +155,11 @@ class BibleSuperSearch_Shortcodes {
 
         if(array_key_exists('destinationUrl', $options) && $options['destinationUrl'] == get_permalink()) {
             $options['destinationUrl'] = NULL;
+        }
+
+        if($options['language'] == 'global_default') {
+            list($lang, $locale) = explode('_', get_locale());
+            $options['language'] = strtolower($lang);
         }
         
         $options_json   = json_encode($options);

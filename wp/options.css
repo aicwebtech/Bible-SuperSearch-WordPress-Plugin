@@ -30,6 +30,13 @@
     vertical-align: middle;
 }
 
+.bss-subform-table tr th {
+    margin-bottom: 2px;
+    padding: 5px 10px;
+    line-height: 1.3;
+    vertical-align: middle;
+}
+
 .bss-menu-item {
     text-decoration: none;
     display: inline-block;
@@ -74,4 +81,36 @@
 .shortcode-options-table.bss td.desc div {
     height: 300px;
     overflow-y: auto;
+}
+
+.bss_opt select {
+    width: 400px;
+}
+
+input.error {
+    background-color: #f56e64;
+    color: white;
+/*    font-weight: bold;*/
+}
+
+.center {
+    text-align: center;
+}
+
+#parallelBibleLimitByWidthTbody input {
+    width: 100%;
+    max-width: 60px;
+}
+
+#parallelBibleLimitByWidthTable {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+#parallelBibleLimitByWidthTable th, #parallelBibleLimitByWidthTable td {
+    border: 1px solid black;
+}
+
+#parallelBibleLimitByWidthTable th, #parallelBibleLimitByWidthTbody tr:nth-child(odd) {
+    background-color: #ddd;
 }

@@ -3,22 +3,25 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.1
+Tested up to: 6.6
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Keeps your visitors on your website with powerful Bible tools, including a search engine and a Bible download page.
+Bible tool having multiple versions, keyword search, reference retrival, Bible downloader, and more.  Keeps your visitors on your website!
 
 == Description ==
-Add powerful Bible tools to your website, including a Bible search engine, and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired.
+Add the Bible to your website with a Bible search engine and a Bible download page. Our Bible search engine includes multiple selectable interfaces, allowing you to make it appear as simple or as complex as desired. The Bible downloads is included in the main application, but is also available as a separate shortcode for a separate page.  
 
 Keep your users on your website!   Unlike similar plugins, Bible SuperSearch displays the Bible text directly on your website; your web users will not be redirected to a 3rd party website to view the text.
 
 This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  It allows for seamless use of the Bible SuperSearch client and API on any WordPress site.
 
 This plugin pulls data from our API transparently.  You also have the option to install our API on your server for complete autonomy.
+
+NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of this plugin will be set to equal WordPress's minimum PHP version (Currently 7.2).
+
 
 # Core Features
 
@@ -38,7 +41,7 @@ This plugin pulls data from our API transparently.  You also have the option to 
     * Switch between verse mode and paragraph mode
     * Advanced search
     * Bible help and getting started dialogs
-    * Bible downloads dialog and shortcode
+    * Bible downloads dialog and shortcode allows downloading Bible text in various formats.  The shortcode allows having downloads separate from the main Bible app.
     * Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
 1. Widget providing a small Bible search form. 
 1. Bible downloads  - ability to download public domain or non-commercial use only Bibles in several formats
@@ -180,6 +183,119 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Plugin Configs: Widgets
 
 == Changelog ==
+
+= 5.7.0
+* Added language option to use selected WP Site Language as the UI language, made this option the default language option.
+* Added tabs to config page and organized config options better.
+
+= 5.6.2
+* Fixed default Bible on widget
+
+= 5.6.1
+** Updating Arabic with fluent translation.
+
+= 5.6.0
+* Added Languages:
+** Albanian
+** Arabic
+** Bengali
+** Burmese
+** Dutch/Flemish
+** Hausa
+** Hebrew (Modern)
+** Indonesian
+** Gujarti
+** Kannada
+** Korean
+** Marathi
+** Nepali
+** Persian
+** Polish
+** Punjabi
+** Somali
+** Swahili
+** Tagalog
+** Tajiki / Tajik (Bible only)
+** Tamil (Bible only)
+** Telugu (Bible only)
+** Tibetan
+** Turkish
+** Urdu
+** Uyghur
+** Vietnamese
+** Wolof
+
+* Quick start links now reflect what form fields appear on the given skin.
+    ** On Minimal forms, “Romans, searched for faith no longer appears under Basic Searches.
+    ** On Browsing with Book Selector forms, only the Passage Retrieval and Formatting sections appear.
+
+* Implemented RTL support for UI languages (we already supported this for Bibles)
+
+= 5.5.1
+* Emergency fix for Linux and other misc OS.
+
+= 5.5.0
+* Added bookmarks dialog
+* History items now persist between page loads
+* Config settings to control what languages show in language list
+* Random chapter / Verse now repopulates URL/page title to returned item
+* Shortcut aliases are now included (and translated) in the quick start dialog
+* Side browsing buttons and configs
+* Config to default search to landing reference if blank.
+* New User Interface translations:
+    * Portuguese
+    * German
+    * Thai
+
+= 5.4.0
+* Dialog improvements and better responsiveness
+* Using native share dialog on mobile devices
+* New history dialog
+* Strong's hover tooltip improvements 
+** Option to open via clicking
+** Hover intent delay with configurable threshold
+* Passage autocomplete  
+* Touchscreen swipe to navigate between chapters and search 
+
+= 5.3.0
+* Added config to control maximum parallel Bibles based on screen width
+* Added new 'Verse as Passage' display
+* Hindi UI translation
+* WP 6.4 support
+
+= 5.2.9
+* Fixed total breakage
+
+= 5.2.6
+* Added default text display option
+* Added more debugging in attempt to fix misc bug
+
+= 5.2.4
+* Added advanced configs Scroll Top Padding and Debug
+* WP 6.3 support
+* Added custom select menus (these only appear in one custom interface)
+* Fixed scrolling to scroll down to results when using paging/browsing buttons
+* Fixed a bug in the navigation / hash parsing where having a . in a 
+        book name was causing the book to not be found.
+
+= 5.2.0 
+* Added "Remove Bible" to paralell Bible selector
+* Added ability to have multiple default Bibles
+* Added descripive text for Strongs, Red Letter, Highlight and Italics
+* Added UI language support: Latvian, Russian
+* Bug fix: Capitalizing first letter in language name on UI.
+* Bug fix: Clearing out certain form fields when using random chapter or verse.
+* Misc bug other fixes.
+
+= 5.1.2
+* Fixed setting default Bible with single Bible selector when clearing form
+* Added ability to specify Bible book list as part of locale translation file.
+* Config to select Bible Book list langauge source - defaults to selected UI language
+
+= 5.1.1 
+* Adding ability to competely hide extra buttons
+* Adding new custom interface
+* Adding landing reference config
 
 = 5.1.1 =
 * Updated "How to Display Extra Buttons" config to completely hide these buttons.

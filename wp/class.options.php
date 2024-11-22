@@ -5,6 +5,8 @@ defined( 'ABSPATH' ) or die; // exit if accessed directly
 class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
     
     protected $option_index = 'biblesupersearch_options';
+
+    protected $debug_count = 0;
     
     public function __construct() {
         parent::__construct();
@@ -74,6 +76,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
             }
         }
 
+
+        if(is_string($options['defaultBible'])) {
+            $options['defaultBible'] = explode(',', $options['defaultBible']);
+        }
+
+        $options['defaultBible'] = array_filter($options['defaultBible']);
+        $options['defaultBible'] = array_values($options['defaultBible']);
+
         return $options;
     }
 
@@ -87,11 +97,130 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         // flush_rewrite_rules( true );
     }
 
-    public function validateOptions( $incoming ) {
+    public function renderOptions($tab, $option_list = [])
+    {
+        if(!isset($this->tabs[$tab])) {
+            return false;
+        }
+
+        if(!$option_list) {
+            $option_list = $this->tabs[$tab]['options'];
+        }
+
+        $list = $this->options_list;
+        $options = $this->getOptions();
+
+        foreach($option_list as $f) {
+            if(!isset($list[$f])) {
+                continue;
+            }
+
+            $o = $list[$f];
+
+            // todo - get class info, have class render field
+            // $class = $this->makeOptionClass($list[$field]);
+
+            $row_classes = isset($o['row_classes']) ? "class='" . $o['row_classes'] . "'" : '';
+
+            ?>
+                <tr <?php echo $row_classes; ?> >
+                    <th scope="row" style='vertical-align: top;'>
+                        <label for='biblesupersearch_<?php echo $f ?>'><?php esc_html_e( $o['label'], 'biblesupersearch' ); ?></label>
+                    </th>
+            <?php
+
+            switch($o['type']) {
+                case 'section':
+                    // do nothing more
+                    break;
+                case 'checkbox':
+                    ?>
+                        <td>
+                            <input id='biblesupersearch_<?php echo $f; ?>' type='checkbox' name='biblesupersearch_options[<?php echo $f; ?>]' value='1' 
+                                <?php if($options[$f] ) : echo "checked='checked'"; endif; ?>  /> 
+                            <small>
+                                <?php echo $o['desc']?>
+                            </small>
+                        </td>
+                    <?php
+
+                    break;
+                case 'text':
+                case 'integer':
+                case 'int':
+                    ?>
+                        <td>
+                            <input name='biblesupersearch_options[<?php echo $f; ?>]' value='<?php echo $options[$f]?>' style='width:50%' />
+                            <p>
+                                <small>
+                                    <?php echo $o['desc']?>
+                                </small>
+                            </p>
+                        </td>
+                    <?php
+
+                    break;
+                case 'select':
+                    ?>
+                        <td>
+                            <select name='biblesupersearch_options[<?php echo $f; ?>]' id='biblesupersearch_options[<?php echo $f; ?>]'>
+                                <?php foreach($o['options'] as $key => $opt): ?>
+                                    <option value='<?php echo $key; ?>' <?php if($options[$f] == $key): echo "selected=selected"; endif; ?> >
+                                        <?php echo $opt; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <p>
+                                <small>
+                                    <?php echo $o['desc']?>
+                                </small>
+                            </p>
+                        </td>
+                    <?php
+
+                    break;
+            }
+
+            ?>
+                </tr>
+            <?php
+        }
+    }
+
+    public function validateOptions( $incoming ) 
+    {
         $current = $input = $this->getOptions(TRUE);
         
         $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
         $tab_item = $this->tabs[ $tab ];
+        $list = $this->options_list;
+
+        foreach($tab_item['options'] as $field) {
+            if(!isset($list[$field])) {
+                continue;
+            }
+
+            switch($list[$field]['type']) {
+                case 'checkbox':
+                    $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? true : false;
+                    break;
+                case 'text':
+                case 'select':
+                    if(array_key_exists($field, $incoming)) {
+                        $input[$field] = $incoming[$field];
+                    }
+
+                    break;
+
+                case 'integer':
+                case 'int':
+                    if(array_key_exists($field, $incoming)) {
+                        $input[$field] = (int)$incoming[$field];
+                    }
+
+                    break;
+            }
+        }
 
         foreach($tab_item['texts'] as $field) {
             if(array_key_exists($field, $incoming)) {
@@ -107,6 +236,30 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
 
         foreach($tab_item['checkboxes'] as $field) {
             $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
+        }
+
+        if(is_array($tab_item['json'])) {
+            foreach($tab_item['json'] as $field) {
+                if(array_key_exists($field, $incoming)) {
+                    if(is_string($incoming[$field])) {
+                        $input[$field] = json_decode($incoming[$field], true);
+                    } elseif(is_array($incoming[$field])) {
+                        $input[$field] = $incoming[$field];
+                    } else {
+                        $input[$field] = [];
+                    }
+
+
+                    $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
+                }
+
+                $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
+
+                //$input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]'; // ?? works?
+                
+
+                // $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : '[]';
+            }
         }
 
         // if(!isset($input['enableAllBibles'])) {
@@ -125,11 +278,23 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract {
         if($tab == 'bible') {
             if($input['enableAllBibles']) {
                 $input['enabledBibles'] = [];
-            }
+            }            
             else {
                 // Make sure default Bible is in list of selected Bibles
                 if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
                     $input['enabledBibles'][] = $input['defaultBible'];
+                }
+            }
+        }
+
+        if($tab == 'general') {
+            if($input['enableAllLanguages']) {
+                $input['languageList'] = [];
+            }
+            else {
+                // Make sure default language is in list of selected languages
+                if(!in_array($input['language'], $input['languageList'])) {
+                    $input['languageList'][] = $input['language'];
                 }
             }
         }

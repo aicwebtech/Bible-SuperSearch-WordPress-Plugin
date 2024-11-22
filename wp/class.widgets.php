@@ -46,7 +46,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
         $bible_list = [];
 
         if(!$selected_bible) {
-            $selected_bible = $options['defaultBible'];
+            $selected_bible = $options['defaultBible'][0];
         }
 
         $go_neighbor_format = 'width: calc(100% - 50px); float:left';

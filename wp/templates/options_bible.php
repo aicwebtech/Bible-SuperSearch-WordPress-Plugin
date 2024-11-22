@@ -5,17 +5,38 @@
 ?>
 
 <div class="inside">
-    <table class="form-table">
+    <table class="form-table bss_opt" id='bss_opt_bible'>
         <tr><td colspan='2'><h2><?php esc_html_e( 'Bibles', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button('Refresh Bible List (&amp; Save Changes)'); ?></td></tr>
         <tr>
-            <th scope="row"><?php esc_html_e( 'Select Default Bible', 'biblesupersearch' ); ?></th>
-            <td>
-                <select name='biblesupersearch_options[defaultBible]'>
-                    <?php foreach($bibles as $module => $bible) :?>
-                    <option value='<?php echo $module; ?>' <?php selected($module, $options['defaultBible'] ); ?> ><?php echo $bible['display']; ?></option>
+            <th scope="row" style='vertical-align:top'>
+                <?php esc_html_e( 'Select Default Bible(s)', 'biblesupersearch' ); ?>
+            </th>
+            <td >
+                <div id='defaultBibleContainer'>
+                    <?php foreach($options['defaultBible'] as $key => $def_bible): ?>
+
+                        <select name='biblesupersearch_options[defaultBible][]' id='default_bible_<?php echo $key; ?>'>
+                            <?php if($key > 0) {
+                                $pb = $key + 1;
+                                echo "<option value='0'>Parallel Bible {$pb} - None</option>";
+                            }
+                            ?>
+
+                            <?php foreach($bibles as $module => $bible) :?>
+                            <option value='<?php echo $module; ?>' <?php selected($module, $def_bible); ?> ><?php echo $bible['display']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
                     <?php endforeach; ?>
-                </select>
+                </div>
+                <div>
+                    <button id='biblesupersearch_def_bible_add'>Add Bible</button>&nbsp; &nbsp;
+                    <button id='biblesupersearch_def_bible_rem'>Remove Bible</button>
+                </div>
+
+                <p><small>Note: The number of multiple default Bibles is limited by the parallel Bible limit on the selected skin.</small></p>
+                <p><small>Bible selections beyond the limit will be ignored.</small></p>
             </td>
         </tr>
         <tr>
@@ -91,7 +112,24 @@
                 <p><small>Note: This ONLY controls the Bible sorting in the Bible list; it doesn't affect the labels on the options.</small></p>
                 <p><small>Note: Rank is a user-defined sort order that is defined on the API.</small></p>
             </td>
-        </tr>        
+        </tr>       
+        <tr>
+            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Bible List Default Language', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_bibleDefaultLanguageTop' type='checkbox' name='biblesupersearch_options[bibleDefaultLanguageTop]' value='1' 
+                    <?php if($options['bibleDefaultLanguageTop'] ) : echo "checked='checked'"; endif; ?>  />
+                Places the default language at the TOP of the Bible list. &nbsp;(Default language is currently <b><?php echo $languages[$options['language']] ;?></b>.)
+            </td>
+        </tr>              
+        <tr>
+            <th scope="row"><label for='biblesupersearch_bibleChangeUpdateNavigation'><?php esc_html_e( 'Bible Change Updates Navigation', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_bibleChangeUpdateNavigation' type='checkbox' name='biblesupersearch_options[bibleChangeUpdateNavigation]' value='1' 
+                    <?php if($options['bibleChangeUpdateNavigation'] ) : echo "checked='checked'"; endif; ?>  />
+
+                Whether to update navigation (ie paging and browsing buttons) immediately when the selected Bible(s) are changed to reflect the new Bible selections. &nbsp;Otherwise, the navigation will not update until the search or look up is performed..
+            </td>
+        </tr>      
         <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Landing Passage(s)', 'biblesupersearch' ); ?></th>
             <td>
@@ -99,6 +137,85 @@
 
                 <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
                 <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
+            </td>
+        </tr>        
+        <tr>
+            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_landingReferenceDefault'><?php esc_html_e( 'Use Landing Passage(s) as Default', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_landingReferenceDefault' type='checkbox' name='biblesupersearch_options[landingReferenceDefault]' value='1' 
+                    <?php if($options['landingReferenceDefault'] ) : echo "checked='checked'"; endif; ?>  />
+
+                <p><small>If a search is executed with no search keywords or references, should we load the landing passage?</small></p>
+            </td>
+        </tr>             
+        <tr>
+            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
+            <td>
+                <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 
+                    <?php if($options['parallelBibleCleanUpForce'] ) : echo "checked='checked'"; endif; ?>  />
+
+                <p><small>If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)</small></p>
+                <p><small>should we remove Bible selections above the new limit?  Otherwise, the selections will remain.</small></p>
+            </td>
+        </tr>          
+        <tr>
+            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
+            <td>
+                <script>
+                    var bssParBibleLimit = <?php echo json_encode($options['parallelBibleLimitByWidth']); ?>;
+                </script>
+                
+                <input type='checkbox' id='parallelBibleLimitByWidthEnable' />
+                Whether to limit the number of parallel Bibles allowed based on page width.  <!-- Check this box to configure this option. -->
+
+                <br /><br />
+
+                <div id='parallelBibleLimitByWidthContainer' style='display:none'>
+
+                    <p><small>Please configure the desired limits below.  You can add as many threshold rows as desired.</small></p>
+                    <p><small>Note: All values must be positive integers, with the excaption of minimum width on the first row, which is always 0.</small></p>
+
+                    <br /><br />
+                    <div class='center' style='width: 90%'>
+                        <button class='parallelBibleLimitByWidthAdd'>Add</button>&nbsp; &nbsp;
+                        <button class='parallelBibleLimitByWidthRemove'>Remove</button> 
+                        <br /><br />
+
+                        <table border='0' id='parallelBibleLimitByWidthTable' class='bss-subform-table'>
+                            <tr>
+                                <th>Minimum Width (in pixels)</th>
+                                <th>Maximum Width (in pixels)</th>
+                                <th>Maximum Bibles</th>
+                                <th>Minimum Bibles</th>
+                                <th>Initial Number of Parallel Bibles</th>
+                            </tr>
+                            <tr>
+                                <td>Minimum page width.&nbsp; Must start with 0 and be in ascending order.</td>
+                                <td>Maximum page width.&nbsp; Automatically calculated.</td>
+                                <td>Maximum allowable parallel Bibles at this width.</td>
+                                <td>Minimum number of parallel Bible selectors displayed at this width.</td>
+                                <td>Number of parallel Bible selectors to iniitally display when the app loads.</td>
+                            </tr>
+                            <tbody id='parallelBibleLimitByWidthTbody'></tbody>
+                        </table>
+
+                        <br />
+                        <button class='parallelBibleLimitByWidthAdd'>Add</button>&nbsp; &nbsp;
+                        <button class='parallelBibleLimitByWidthRemove'>Remove</button> 
+                    </div>
+
+                    <br /><br />
+                    <input id='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles' type='checkbox' name='biblesupersearch_options[parallelBibleStartSuperceedsDefaultBibles]' value='1' 
+                        <?php if($options['parallelBibleStartSuperceedsDefaultBibles'] ) : echo "checked='checked'"; endif; ?>  />
+                    <label for='biblesupersearch_parallelBibleStartSuperceedsDefaultBibles'>
+                        <?php esc_html_e( '"Initial Number of Parallel Bibles" Superceeds Default Bibles', 'biblesupersearch' ); ?>        
+                    </label>
+
+                    <p><small>Forces the number of parallel Bible selectors displayed initially to always equal the "Initial Number of Parallel Bibles,"</small></p>
+                    <p><small>regardless to the number of Bibles selected as default.</small></p>
+                </div>
+
+
             </td>
         </tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
