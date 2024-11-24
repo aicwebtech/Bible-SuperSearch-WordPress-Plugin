@@ -82,82 +82,9 @@
                 </div>
             </td>
         </tr>
-        <tr>
-            <th scope="row"><?php esc_html_e( 'Bible List Grouping', 'biblesupersearch' ); ?></th>
-            <td>
-                <select name='biblesupersearch_options[bibleGrouping]'>
-                    <option value='none' <?php selected('', $options['bibleGrouping'] ); ?> >None</option>
-                    <option value='language' <?php selected('language', $options['bibleGrouping'] ); ?> >Language - Endonym</option>
-                    <option value='language_english' <?php selected('language_english', $options['bibleGrouping'] ); ?> >Language - English Name</option>
-                    <option value='language_and_english' <?php selected('language_and_english', $options['bibleGrouping'] ); ?> >Language - Endonym and English Name</option>
-                </select>
-            </td>
-        </tr>        
-        <tr>
-            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Bible List Sorting', 'biblesupersearch' ); ?></th>
-            <td>
-                <select name='biblesupersearch_options[bibleSorting]'>
-                    <option value='language_english|name' <?php selected('language_english|name', $options['bibleSorting'] ); ?> >Language - English Name / Full Name</option>
-                    <option value='language_english|shortname' <?php selected('language_english|shortname', $options['bibleSorting'] ); ?> >Language - English Name / Short Name</option>
-                    <option value='language_english|rank|name' <?php selected('language_english|rank|name', $options['bibleSorting'] ); ?> >Language - English Name / Rank / Full Name</option>
-                    <option value='language_english|rank|shortname' <?php selected('language_english|rank|shortname', $options['bibleSorting'] ); ?> >
-                        Language - English Name / Rank / Short Name
-                    </option>
-                    <option value='language_english|rank' <?php selected('language_english|rank', $options['bibleSorting'] ); ?> >Language - English Name / Rank</option>
-                    <option value='rank' <?php selected('rank', $options['bibleSorting'] ); ?> >Rank</option>
-                    <option value='name' <?php selected('name', $options['bibleSorting'] ); ?> >Full Name</option>
-                    <option value='shortname' <?php selected('shortname', $options['bibleSorting'] ); ?> >Short Name</option>
-                </select>
 
-                <p><small>Note: This ONLY controls the Bible sorting in the Bible list; it doesn't affect the labels on the options.</small></p>
-                <p><small>Note: Rank is a user-defined sort order that is defined on the API.</small></p>
-            </td>
-        </tr>       
-        <tr>
-            <th scope="row"><label for='biblesupersearch_toggle_format_buttons'><?php esc_html_e( 'Bible List Default Language', 'biblesupersearch' ); ?></label></th>
-            <td>
-                <input id='biblesupersearch_bibleDefaultLanguageTop' type='checkbox' name='biblesupersearch_options[bibleDefaultLanguageTop]' value='1' 
-                    <?php if($options['bibleDefaultLanguageTop'] ) : echo "checked='checked'"; endif; ?>  />
-                Places the default language at the TOP of the Bible list. &nbsp;(Default language is currently <b><?php echo $languages[$options['language']] ;?></b>.)
-            </td>
-        </tr>              
-        <tr>
-            <th scope="row"><label for='biblesupersearch_bibleChangeUpdateNavigation'><?php esc_html_e( 'Bible Change Updates Navigation', 'biblesupersearch' ); ?></label></th>
-            <td>
-                <input id='biblesupersearch_bibleChangeUpdateNavigation' type='checkbox' name='biblesupersearch_options[bibleChangeUpdateNavigation]' value='1' 
-                    <?php if($options['bibleChangeUpdateNavigation'] ) : echo "checked='checked'"; endif; ?>  />
-
-                Whether to update navigation (ie paging and browsing buttons) immediately when the selected Bible(s) are changed to reflect the new Bible selections. &nbsp;Otherwise, the navigation will not update until the search or look up is performed..
-            </td>
-        </tr>      
-        <tr>
-            <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Landing Passage(s)', 'biblesupersearch' ); ?></th>
-            <td>
-                <input name='biblesupersearch_options[landingReference]' value='<?php echo $options['landingReference']?>' style='width:50%' />
-
-                <p><small>When app is first loaded, these reference(s) will automatically be retrieved. &nbsp;Form will remain blank, and URL will not change.</small></p>
-                <p><small>Takes any valid Bible reference, ie 'John 3:16; Romans 3:23; Genesis 1'</small></p>
-            </td>
-        </tr>        
-        <tr>
-            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_landingReferenceDefault'><?php esc_html_e( 'Use Landing Passage(s) as Default', 'biblesupersearch' ); ?></label></th>
-            <td>
-                <input id='biblesupersearch_landingReferenceDefault' type='checkbox' name='biblesupersearch_options[landingReferenceDefault]' value='1' 
-                    <?php if($options['landingReferenceDefault'] ) : echo "checked='checked'"; endif; ?>  />
-
-                <p><small>If a search is executed with no search keywords or references, should we load the landing passage?</small></p>
-            </td>
-        </tr>             
-        <tr>
-            <th scope="row" style='vertical-align: top'><label for='biblesupersearch_parallelBibleCleanUpForce'><?php esc_html_e( 'Force Parallel Bible Clean Up', 'biblesupersearch' ); ?></label></th>
-            <td>
-                <input id='biblesupersearch_parallelBibleCleanUpForce' type='checkbox' name='biblesupersearch_options[parallelBibleCleanUpForce]' value='1' 
-                    <?php if($options['parallelBibleCleanUpForce'] ) : echo "checked='checked'"; endif; ?>  />
-
-                <p><small>If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)</small></p>
-                <p><small>should we remove Bible selections above the new limit?  Otherwise, the selections will remain.</small></p>
-            </td>
-        </tr>          
+        <?php $BibleSuperSearch_Options->renderOptions('bible'); ?> 
+       
         <tr>
             <th scope="row" style='vertical-align: top'><?php esc_html_e( 'Limit Parallel Bibles by Width', 'biblesupersearch' ); ?></th>
             <td>

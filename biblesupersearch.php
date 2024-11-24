@@ -114,5 +114,4 @@ function biblesupersearch_custom_rewrite() {
 }
 
 
-
 //add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);

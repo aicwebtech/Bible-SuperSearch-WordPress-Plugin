@@ -7,7 +7,10 @@
         </td></tr>
         <tr><td colspan='2'><h2><?php esc_html_e( 'General Settings', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
-        <tr>
+        
+        <?php $BibleSuperSearch_Options->renderOptions('general', 'general_top'); ?> 
+
+<!--         <tr>
             <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Default Skin', 'biblesupersearch' ); ?></th>
             <td>
                 <select name='biblesupersearch_options[interface]'>
@@ -35,7 +38,7 @@
                 </select>
                 <br />Sets the default display language seen on the [biblesupersearch] shortcode.
             </td>
-        </tr>            
+        </tr>        -->     
         <tr>
             <th scope="row" style='width: 220px; vertical-align: top;'><?php esc_html_e( 'Display Language(s)', 'biblesupersearch' ); ?></th>
             <td>
@@ -58,18 +61,18 @@
                 <br />Sets the display language(s) that can be selected by the user.
             </td>
         </tr>                
-        <?php $BibleSuperSearch_Options->renderOptions('general'); ?> 
-        <tr>
+        <?php $BibleSuperSearch_Options->renderOptions('general', 'general'); ?> 
+<!--         <tr>
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_default_landing'><?php esc_html_e( 'Default Destination Page', 'biblesupersearch' ); ?></label></th>
             <td>
                 <select id='biblesupersearch_default_landing' type='checkbox' name='biblesupersearch_options[defaultDestinationPage]'>
-                <?php echo $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $options['defaultDestinationPage']); ?>
+                <?php echo $BibleSuperSearch_Options->getLandingPageOptionsOld(TRUE, $options['defaultDestinationPage']); ?>
                 </select>
                 <br /><br />
                 Select a page or post containing the [biblesupersearch] shortcode, and all other Bible SuperSearch forms on your site will redirect here.
                 This allows you to have the form on one page, but display the results on another.  Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.
             </td>
-        </tr>
+        </tr> -->
         <tr><td colspan='2'><?php submit_button(); ?></td></tr>
     </table>
 </div>

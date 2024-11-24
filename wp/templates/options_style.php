@@ -29,7 +29,7 @@
             <th scope="row" style='vertical-align: top'><label for='biblesupersearch_default_landing'><?php esc_html_e( 'Default Destination Page', 'biblesupersearch' ); ?></label></th>
             <td>
                 <select id='biblesupersearch_default_landing' type='checkbox' name='biblesupersearch_options[defaultDestinationPage]'>
-                <?php echo $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $options['defaultDestinationPage']); ?>
+                <?php echo $BibleSuperSearch_Options->getLandingPageOptionsOld(TRUE, $options['defaultDestinationPage']); ?>
                 </select>
                 <br /><br />
                 Select a page or post containing the [biblesupersearch] shortcode, and all other Bible SuperSearch forms on your site will redirect here.

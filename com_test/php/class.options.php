@@ -26,7 +26,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         'navigationButtons'                         => 'default',
         'bibleGrouping'                             => 'language',
         'bibleSorting'                              => 'language_english|name',
-        'bibleDefaultLanguageTop'                   => false,
+        'bibleDefaultLanguageTop'                   => true,
         'bibleChangeUpdateNavigation'               => false,
         'language'                                  => 'global_default',
         'languageList'                              => [],
@@ -49,11 +49,17 @@ abstract class BibleSuperSearch_Options_Abstract {
             'language_and_english'  => 'Language - Endonym and English Name',
         ],        
         'bibleSorting' => [
-            'language_english|name'         => 'Language - English Name / Full Name',
-            'language_english|shortname'    => 'Language - English Name / Short Name',
-            'language_english|rank|name'    => 'Language - English Name / Rank / Full Name',
+            'language_english|name'             => 'Language - English Name / Full Name',
+            'language_english|shortname'        => 'Language - English Name / Short Name',
+            'language_english|rank|name'        => 'Language - English Name / Rank / Full Name',
+            'language_english|rank|shortname'   => 'Language - English Name / Rank / Short Name',
+            'language_english|rank'             => 'Language - English Name / Rank', 
+            'rank'                              => 'Rank',
+            'name'                              => 'Full Name',
+            'shortname'                         => 'Short Name', 
         ],
         'language' => [
+            'global_default'        => 'Global Default',
 
             // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
             'ar'                    => 'العربية  / Arabic',
@@ -271,7 +277,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     }
 
-    public function renderOptions($tab, $option_list = [])
+    public function renderOptions($tab, $section = null, $option_list = [])
     {
         if(!isset($this->tabs[$tab])) {
             return false;
@@ -471,8 +477,29 @@ abstract class BibleSuperSearch_Options_Abstract {
         return;
     }
 
+    public function getLandingPageOptions()
+    {
+        $options = $this->fetchLandingPageOptions();
+
+        array_unshift($options, [
+            'value' => 0,
+            'label' => 'None'
+        ]);
+
+        return $options;
+    }
+
+    /** 
+     * Override to pull landing page options (from db or other storage)
+     * @return array
+     */ 
+    protected function fetchLandingPageOptions()
+    {
+        return [];
+    }
+
     // todo - make this generic! 
-    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
+    public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
         global $wpdb;
 
         $sql = "
@@ -970,6 +997,18 @@ abstract class BibleSuperSearch_Options_Abstract {
         $proc = ucwords($proc);
         $proc = str_replace(' ', '', $proc);
         return $proc;
+    }
+
+    public function getLanguagesWithGlobalDefault()
+    {
+        return self::$selector_options['language'];
+    }
+
+    public function getLanguages()
+    {
+        $opts = self::$selector_options['language'];
+        unset($opts['global_default']);
+        return $opts;
     }
 
     public function getInterfaces() {

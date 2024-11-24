@@ -102,7 +102,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         // flush_rewrite_rules( true );
     }
 
-    public function renderOptions($tab, $option_list = [])
+    public function renderOptions($tab, $section = null, $option_list = [])
     {
         if(!isset($this->tabs[$tab])) {
             return false;
@@ -122,6 +122,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
             $o = $list[$f];
 
+            if($section && (!isset($o['section']) || $o['section'] != $section)) {
+                continue;
+            }
+
+            if(isset($o['render']) && $o['render'] === false) {
+                continue;
+            }
+
             // todo - get class info, have class render field
             // $class = $this->makeOptionClass($list[$field]);
             $id = $o['id'] ?: 'biblesupersearch_' . $f;
@@ -131,7 +139,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             ?>
                 <tr <?php echo $row_classes; ?> >
                     <th scope="row" style='vertical-align: top;'>
-                        <label for='biblesupersearch_<?php echo $f ?>'><?php esc_html_e( $o['label'], 'biblesupersearch' ); ?></label>
+                        <label for='<?php echo $id ?>'><?php esc_html_e( $o['label'], 'biblesupersearch' ); ?></label>
                     </th>
             <?php
 
@@ -145,7 +153,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
                             <input id='<?php echo $id; ?>' type='checkbox' name='biblesupersearch_options[<?php echo $f; ?>]' value='1' 
                                 <?php if($options[$f] ) : echo "checked='checked'"; endif; ?>  /> 
                             <small>
-                                <?php echo $o['desc']?>
+                                <label for='<?php echo $id ?>'><?php echo $o['desc']?></label>
                             </small>
                         </td>
                     <?php
@@ -381,8 +389,8 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
-        $languages = static::getSelectorOptions('language');
-
+        $languages  = $this->getLanguages();
+         
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
         $statics = $this->getStatics();
@@ -397,7 +405,37 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         return;
     }
 
-    public function getLandingPageOptions($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
+    protected function fetchLandingPageOptions() 
+    {
+        global $wpdb;
+
+        $sql = "
+            SELECT ID, post_title, post_type, post_content FROM `{$wpdb->prefix}posts`
+            WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
+            AND post_type IN ('page','post') AND post_status = 'publish'
+        ";
+
+        $results = $wpdb->get_results($sql, ARRAY_A);
+        $pages = [];
+
+        foreach($results as $res) {
+            if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', ' ' . $res['post_content'])) {
+                continue; // Ignore example shortcodes ie [[biblesupersearch]]
+            }
+
+            $title = ($res['post_title']) ? $res['post_title'] : '(No Title, ID = ' . $res['ID'] . ')';
+            $type = ucfirst($res['post_type']);
+
+            $pages[] = [
+                'value' => $res['ID'],
+                'label' => $type . ': ' . $title,
+            ];
+        }
+
+        return $pages;
+    }
+
+    public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
         global $wpdb;
 
         $sql = "
@@ -438,12 +476,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         return $html;
     }
 
+    // still in use
     protected function _formatLandingPageOption(&$landing_page) {
         $title = ($landing_page['post_title']) ? $landing_page['post_title'] : '(No Title, ID = ' . $landing_page['ID'] . ')';
         $type = ucfirst($landing_page['post_type']);
         $landing_page['title_fmt'] = $type . ': ' . $title;
     }
 
+    // still in use (by widget)
     public function hasLandingPageOptions() {
         global $wpdb;
 
@@ -509,6 +549,13 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
     public function renderDownloadPage() {
 
+    }
+
+    public function getLanguagesWithGlobalDefault()
+    {
+        $opts = self::$selector_options['language'];
+        $opts['global_default'] = 'Global Default (General => Site Language)';
+        return $opts;
     }
 
     public function getInterfaceByName($name) {

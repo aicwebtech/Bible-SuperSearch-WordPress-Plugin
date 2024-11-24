@@ -124,7 +124,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
             }
         }
 
-        $landing_page_options = $BibleSuperSearch_Options->getLandingPageOptions(TRUE, $landing_page, 'Default');
+        $landing_page_options = $BibleSuperSearch_Options->getLandingPageOptionsOld(TRUE, $landing_page, 'Default');
 
         $title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'text_domain' );
         $show_bible_list = ! empty( $instance['show_bible_list'] ) ? $instance['show_bible_list'] : 0;
