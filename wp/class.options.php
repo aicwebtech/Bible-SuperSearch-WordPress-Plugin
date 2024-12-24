@@ -80,13 +80,17 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             }
         }
 
-
         if(is_string($options['defaultBible'])) {
             $options['defaultBible'] = explode(',', $options['defaultBible']);
         }
 
         $options['defaultBible'] = array_filter($options['defaultBible']);
         $options['defaultBible'] = array_values($options['defaultBible']);
+        
+        // Ensure Bibles selected as default are enabled
+        if(!$options['enableAllBibles']) {
+            $options['enabledBibles'] = array_merge($options['enabledBibles'], $options['defaultBible']);
+        }
 
         return $options;
     }
@@ -254,54 +258,25 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
                     }
 
                     break;
-            }
-        }
 
-        foreach($tab_item['texts'] as $field) {
-            if(array_key_exists($field, $incoming)) {
-                $input[$field] = $incoming[$field];
-            }
-        }          
+                case 'json':
+                    if(array_key_exists($field, $incoming)) {
+                        if(is_string($incoming[$field])) {
+                            $input[$field] = json_decode($incoming[$field], true);
+                        } elseif(is_array($incoming[$field])) {
+                            $input[$field] = $incoming[$field];
+                        } else {
+                            $input[$field] = [];
+                        }
 
-        foreach($tab_item['selects'] as $field) {
-            if(array_key_exists($field, $incoming)) {
-                $input[$field] = $incoming[$field];
-            }
-        }       
-
-        foreach($tab_item['checkboxes'] as $field) {
-            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? TRUE : FALSE;
-        }
-
-        if(is_array($tab_item['json'])) {
-            foreach($tab_item['json'] as $field) {
-                if(array_key_exists($field, $incoming)) {
-                    if(is_string($incoming[$field])) {
-                        $input[$field] = json_decode($incoming[$field], true);
-                    } elseif(is_array($incoming[$field])) {
-                        $input[$field] = $incoming[$field];
-                    } else {
-                        $input[$field] = [];
+                        $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
                     }
 
+                    $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
 
-                    $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
-                }
-
-                $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
-
-                //$input[$field] = (array_key_exists($field, $incoming)) ? json_encode($incoming[$field]) : '[]'; // ?? works?
-                
-
-                // $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : '[]';
+                    break;
             }
         }
-
-        // if(!isset($input['enableAllBibles'])) {
-        //     $input['enableAllBibles'] = FALSE;
-        // }
-
-        // $input['overrideCss'] = ($input['overrideCss']) ? TRUE : FALSE;
 
         // Cherry-pick default values 
         foreach($this->default_options as $item => $value) {
@@ -316,9 +291,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             }            
             else {
                 // Make sure default Bible is in list of selected Bibles
-                if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
-                    $input['enabledBibles'][] = $input['defaultBible'];
-                }
+                // Default Bible is now an array, this isn't working properly here
+                // Added this separately
+
+                // if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
+                //     $input['enabledBibles'][] = $input['defaultBible'];
+                // }
             }
         }
 

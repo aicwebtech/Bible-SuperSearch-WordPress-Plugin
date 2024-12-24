@@ -226,24 +226,24 @@ return [
         ],
 
         // :todo
-        // 'enableAllLanguages' => [
-        //     'label'         => 'Display Language(s)',
-        //     'desc'          => 'Enable ALL Languages',
-        //     'type'          => 'checkbox',
-        //     'default'       => true,
-        //     'section'       => 'general',
-        //     'render'        => false, // todo
-        // ],
-        // 'languageList' => [
-        //     'label'         => '',
-        //     'desc'          => 'Sets the display language(s) that can be selected by the user.',
-        //     'type'          => 'select',
-        //     'default'       => [],
-        //     'section'       => 'general',
-        //     'items'         => 'language',
-        //     'multiple'      => true,
-        //     'render'        => false, // todo
-        // ],
+        'enableAllLanguages' => [
+            'label'         => 'Display Language(s)',
+            'desc'          => 'Enable ALL Languages',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+            'render'        => false, // todo
+        ],
+        'languageList' => [
+            'label'         => '',
+            'desc'          => 'Sets the display language(s) that can be selected by the user.',
+            'type'          => 'select',
+            'default'       => [],
+            'section'       => 'general',
+            'items'         => 'language', // todo
+            'multiple'      => true,
+            'render'        => false, // todo
+        ],
 
         'navigation'        => [
             'label'         => 'Navigation',
@@ -286,7 +286,7 @@ return [
                                 'Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.',
             'type'          => 'select',
             'default'       => '0',
-            'section'       => 'features',
+            'section'       => 'general',
             'items'         => 'getLandingPageOptions'
         ],
     ],
@@ -294,23 +294,34 @@ return [
     'bible' => [
 
         // :todo
-        // 'enableAllBibles' => [
-        //     'label'         => 'Enabled Bibles',
-        //     'desc'          => 'Enable ALL Bibles',
-        //     'type'          => 'checkbox',
-        //     'default'       => true,
-        //     'section'       => 'general',
-        //     'render'        => false, // todo
-        // ],
-        // 'languageList' => [
-        //     'label'         => '',
-        //     'type'          => 'select',
-        //     'default'       => [],
-        //     'section'       => 'general',
-        //     'items'         => 'getBiblesList ??', //  going to need to rebuild bible fetcher or something here
-        //     'multiple'      => true,
-        //     'render'        => false, // todo
-        // ],
+        'defaultBible' => [
+            'label'         => 'Default Bible(s)',
+            'desc'          => 'Note: The number of multiple default Bibles is limited by the parallel Bible limit on the selected skin.' .
+                                  ' Bible selections beyond the limit will be ignored.',
+            'type'          => 'select',
+            'default'       => true,
+            'section'       => 'general',
+            'items'         => 'getBiblesListNew', //  going to need to rebuild bible fetcher or something here
+            'multiple'      => true,
+            'render'        => false, // todo
+        ],        
+        'enableAllBibles' => [
+            'label'         => 'Enabled Bibles',
+            'desc'          => 'Enable ALL Bibles',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+            'render'        => false, // todo
+        ],
+        'enabledBibles' => [
+            'label'         => '',
+            'type'          => 'select',
+            'default'       => [],
+            'section'       => 'general',
+            'items'         => 'getBiblesListNew', //  going to need to rebuild bible fetcher or something here
+            'multiple'      => true,
+            'render'        => false, // todo
+        ],
 
 
         'bibleGrouping' => [
@@ -363,13 +374,13 @@ return [
         ], 
 
         // :todo
-        // 'parallelBibleLimitByWidth' => [
-        //     'label'         => 'Limit Parallel Bibles by Width',
-        //     'type'          => 'custom',
-        //     'render'        => false,
-        //     'default'       => [],
-        //     'format'        => 'json',
-        // ],
+        'parallelBibleLimitByWidth' => [
+            'label'         => 'Limit Parallel Bibles by Width',
+            'type'          => 'json',
+            'render'        => false,
+            'default'       => [],
+            'format'        => 'json',
+        ],
     ],
 
     'advanced' => [        
@@ -423,5 +434,4 @@ return [
             'default'       => '',
         ], 
     ],
-
 ];

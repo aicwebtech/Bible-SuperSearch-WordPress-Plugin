@@ -103,68 +103,33 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected $tabs = [
         'general'  => [
-            'name'          => 'General',
-            // need list of fields for each tab.  IF field is not in list, it won't save!
-            'options'       => [], // modern, predefined fields
-            'texts'         => [], // input and textarea
-            'selects'       => [
-                'defaultDestinationPage', 'interface', 'pager', 'textDisplayDefault',
-                'pageScroll', 'formatButtons', 'navigationButtons', 'language', 'extraButtonsSeparate', 'languageList',
-            ],
-            'checkboxes'    => [
-                'overrideCss', 
-                'toggleAdvanced', 
-                'formatButtonsToggle', 
-                'includeTestament',
-                'enableAllLanguages', 
-            ],
+            'name'              => 'General',
+            'fully_dynamic'     => false, // todo
+            'backend_dynamic'   => true,
         ],
         'display' => [
-            'name' => 'Display',
-            'fully_dynamic' => true,
-            'options' => [],
-            'texts' => [],
-            'selects'       => [
-                // 'pager', 'textDisplayDefault',
-                // 'pageScroll', 'formatButtons', 'navigationButtons', 'extraButtonsSeparate',
-            ],
-            'checkboxes' => [],
+            'name'              => 'Display',
+            'fully_dynamic'     => true,
+            'backend_dynamic'   => true,
         ],         
         'features' => [
-            'name' => 'Features',
-            'fully_dynamic' => true,
-            'options' => [],
-            'texts' => [],
-            'selects' => [],
-            'checkboxes' => [],
+            'name'              => 'Features',
+            'fully_dynamic'     => true,
+            'backend_dynamic'   => true,
         ],         
         'bible'  => [
-            'name'          => 'Bibles',
-            'options'       => [], // modern, predefined fields
-            'texts'         => ['landingReference'],
-            'selects'       => ['defaultBible', 'enabledBibles', 'bibleGrouping', 'bibleSorting'],
-            'checkboxes'    => [
-                'enableAllBibles', 
-                'bibleDefaultLanguageTop', 
-                'bibleChangeUpdateNavigation',
-                'parallelBibleCleanUpForce',
-                'parallelBibleStartSuperceedsDefaultBibles',
-                'landingReferenceDefault',
-            ],
-            'json' => ['parallelBibleLimitByWidth'],
+            'name'              => 'Bibles',
+            'fully_dynamic'     => false, // todo
+            'backend_dynamic'   => true,
         ],        
-        // 'style'  => array(
+        // :todo
+        // 'style' => [
         //     'name'          => 'Appearance',
-        //     'fields'        => [], // 'formStyles'),
-        //     'checkboxes'    => array('overrideCss'),
-        // ),
+        // ],
         'advanced' => [
-            'name'          => 'Advanced',
-            'fully_dynamic' => true,
-            'options'       => [], // modern, predefined fields
-            'texts'         => [], //'apiUrl', 'pageScrollTopPadding'],
-            'selects'       => [],
-            'checkboxes'    => [], //['debug'],
+            'name'              => 'Advanced',
+            'fully_dynamic'     => true,
+            'backend_dynamic'   => true,
         ],
     ];
     
@@ -178,25 +143,11 @@ abstract class BibleSuperSearch_Options_Abstract {
         $options = $this->loadOptions();
         $defaults = [];
 
-        // echo('<pre>');
-        // print_r($options['display']); //die();
-
         foreach($options as $tab => &$tab_options) {
+            $this->tabs[$tab]['options'] = []; // Add options array to each tab's settings
+
             foreach($tab_options as $opt => &$settings) {
-
-                // var_dump($tab);
-                // var_dump($opt);
-                // var_dump($settings);
-                // die();
-
-                // if(in_array($settings['type'], ['section'])) {
-                //     // Not actually an option, skip
-                //     // unset($options[$opt]);
-                //     continue;
-                // }
-
                 $settings['field'] = $opt;
-                // $options[$opt] = $settings;
 
                 if(!in_array($opt, $this->tabs[$tab]['options'])) {
                     $this->tabs[$tab]['options'][] = $opt;
@@ -232,8 +183,6 @@ abstract class BibleSuperSearch_Options_Abstract {
                     } else {
                         $settings['items'] = $items;
                     }
-
-                    // print_r($settings['items']); die();
                 }
 
                 if(array_key_exists('default', $settings)) {
@@ -242,28 +191,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             }
 
             unset($settings);
-            // print_r($this->tabs[$tab]['options']); 
         }
         unset($tab_options);
 
-        // die();
-
-        // $defaults = array_column($options, 'default', 'field');
-
         $this->default_options = array_replace($this->default_options, $defaults);
         $this->options_list = $options;
-
-        // $tabs = array_column($options, 'tab', 'field');
-
-        // foreach($tabs as $f => $ftabs) {
-        //     $tabs = explode(',', $ftabs);
-
-        //     foreach($tabs as $tab) {                
-        //         if(!in_array($f, $this->tabs[$tab]['options'])) {
-        //             $this->tabs[$tab]['options'][] = $f;
-        //         }
-        //     }
-        // }
     }
 
     // Override to add/change/remove options
@@ -335,7 +267,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $options;
     }
 
-    public function getOptionsFiltered() {
+    public function getOptionsFiltered() 
+    {
         $options = $this->getOptions();
 
         if($options['enableAllBibles']) {
@@ -352,7 +285,8 @@ abstract class BibleSuperSearch_Options_Abstract {
     }
 
     // todo - make this generic!
-    public function setDefaultOptions() {
+    public function setDefaultOptions() 
+    {
 
         if ( ! is_array( get_option( $this->option_index ) ) ) {
             delete_option( $this->option_index ); // just in case
@@ -363,39 +297,12 @@ abstract class BibleSuperSearch_Options_Abstract {
         // flush_rewrite_rules( true );
     }
 
-    // todo - make this generic!
+    // todo - implement and make this generic!
     public function validateOptions( $incoming ) {
         $current = $input = $this->getOptions(TRUE);
         
         $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
         $tab_item = $this->tabs[ $tab ];
-
-        foreach($tab_item['texts'] as $field) {
-            if(array_key_exists($field, $incoming)) {
-                $input[$field] = $incoming[$field];
-            }
-        }          
-
-        foreach($tab_item['selects'] as $field) {
-            // if(array_key_exists($field, $incoming) && !empty($incoming[$field])) {
-            if(array_key_exists($field, $incoming)) {
-                $input[$field] = $incoming[$field];
-            }
-        }       
-
-        foreach($tab_item['checkboxes'] as $field) {
-            $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field]));
-        }
-
-        print_r($incoming);
-        print_r($input);
-        die();
-
-        // if(!isset($input['enableAllBibles'])) {
-        //     $input['enableAllBibles'] = FALSE;
-        // }
-
-        // $input['overrideCss'] = ($input['overrideCss']) ? TRUE : FALSE;
 
         // Cherry-pick default values 
         foreach($this->default_options as $item => $value) {
