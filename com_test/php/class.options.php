@@ -705,6 +705,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         $bss_options = $this->getOptions();
         
         $data['domain'] = static::parseDomain(site_url());
+        $method_used = 'None';
+        $methods_attempted = [];
 
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
@@ -718,6 +720,7 @@ abstract class BibleSuperSearch_Options_Abstract {
  
             $context = stream_context_create($options);
             $result  = file_get_contents($url, FALSE, $context);
+            $methods_attempted[] = $method_used = 'URL FOpen';
         }
         
         // Attempt 2: Fall back to cURL
@@ -731,6 +734,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             $result = curl_exec($ch);
             $curl_info = curl_getinfo($ch);
             curl_close($ch);
+            $methods_attempted[] = $method_used = 'cURL';
         }
 
         error_reporting($err);
@@ -745,9 +749,19 @@ abstract class BibleSuperSearch_Options_Abstract {
             echo 'Bible SuperSearch API Call Log' . $eol;
             echo 'Action: ' . $action . $eol;
             echo 'URL: ' . $url . $eol;
+            echo 'Method: ' . $method_used . $eol;
+            echo 'Method Attempted: ' . implode(', ', $methods_attempted) . $eol;
             echo 'Data: ' . print_r($data, true) . $eol;
             echo 'Has Results: ' . ($result === false ? 'No' : 'Yes') . $eol;
             echo $eol;
+
+            if(isset($curl_info)) {
+                echo 'cURL Info: <pre>';
+
+                print_r($curl_info);
+
+                echo '</pre>' . $eol . $eol;
+            }
 
             echo 'API errors:';
 
