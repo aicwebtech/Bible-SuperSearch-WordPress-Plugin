@@ -136,7 +136,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
             // todo - get class info, have class render field
             // $class = $this->makeOptionClass($list[$field]);
-            $id = $o['id'] ?: 'biblesupersearch_' . $f;
+            $id = $o['id'] ?? 'biblesupersearch_' . $f;
 
             $row_classes = isset($o['row_classes']) ? "class='" . $o['row_classes'] . "'" : '';
 

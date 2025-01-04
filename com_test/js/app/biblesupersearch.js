@@ -1222,7 +1222,7 @@ e.$.Table.$[i]?t++:(a&&e.$.Table.createComponent({tag:"tr",allowHtml:!0,content:
 var h=e.$.Table.$[s].createComponent({kind:l,item:n,showBookName:!1,owner:e})
 e.listComponents.push(h),e.$.Table.$[r].set("content"," ("+t+")"),a=n.book})},rendered:function(){this.inherited(arguments)
 var e=this
-this.RO=new ResizeObserver(function(){e.app&&e.app.set&&(e.app.set("resultsListHeight",e.hasNode().offsetHeight-16),e.app.set("resultsListWidth",e.hasNode().offsetWidth-22))}).observe(this.hasNode()),this.scrollToItem()},handleResize:function(){this.log()},scrollToItemDelay:function(){var e=this
+this.RO=new ResizeObserver(function(){e.app&&e.app.set&&(e.app.set("resultsListHeight",e.hasNode().offsetHeight-16),e.app.set("resultsListWidth",e.hasNode().offsetWidth-22))}).observe(this.hasNode()),this.scrollToItem()},handleResize:function(){this.log()},resizeDragStart:function(e,a){this.log(e,a)},resizeDragEnd:function(e,a){this.log(e,a)},scrollToItemDelay:function(){var e=this
 this.scrollDelay&&window.clearTimeout(this.scrollDelay),this.scrollDelay=window.setTimeout(function(){window.clearTimeout(e.scrollDelay),e.log("scrollTo Delay over"),e.scrollDelay=null,e.scrollToItem()},1e3)},scrollToItem:function(){this.log()
 var e=this
 if(!this.$)return void this.log("NO $ for components")
@@ -1880,7 +1880,7 @@ var t={}
 this._initLocaleShortcuts("en",t),this._initLocaleBibleBooks("en",t,e.books,"statics"),e.books=this.localeBibleBooks.en,e.shortcuts=t.shortcuts,this.debug&&this.log("Config language locale",this.configs.language),this.configs.language&&this.set("locale",this.configs.language),this.waterfall("onStaticsLoaded"),window.console&&console.log("BibleSuperSearch API version",this.statics.version),this.configs.apiUrl==l.apiUrl+"/api"?l._urlDefaultNotice():l._urlLocalNotice(),a&&null!=a&&(this.set("view",a),this.set("viewCache",a))
 for(i in this.accessible){var n=this.accessible[i]
 void 0===this.statics.access[n]&&(this.statics.access[n]=!1)}this.render(),this.appLoaded=!0,this.$.Router.trigger(),this.waterfall("onAppLoaded"),this.configs.query_string&&this.handleHashGeneric(this.configs.query_string),this.testInit&&this.initTests(),this.testOnLoad&&this.test()},processBiblesDisplayed:function(){this.biblesDisplayed=[]
-var e=this.statics.bibles,a=[],t=this.configs.enabledBibles,n=this._getBibleOrderBy().split("|"),s=this,o=function(e){e.lang=s.utils.ucfirst(e.lang),e.lang_native=s.utils.ucfirst(e.lang_native),a.push(e)}
+var e=this.statics.bibles,a=[],t=this.configs.enabledBibles,n=this._getBibleOrderBy().split("|"),s=this,o=function(e){e.lang=e.lang?s.utils.ucfirst(e.lang):null,e.lang_native=e.lang_native?s.utils.ucfirst(e.lang_native):null,a.push(e)}
 if(Array.isArray(t)&&t.length)for(i in t)e[t[i]]&&o(e[t[i]])
 else for(i in e)o(e[i])
 if(a.sort(function(e,a){var t=null,s=null,o=null

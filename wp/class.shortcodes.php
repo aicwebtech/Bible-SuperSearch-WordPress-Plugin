@@ -158,7 +158,8 @@ class BibleSuperSearch_Shortcodes {
         }
 
         if($options['language'] == 'global_default') {
-            list($lang, $locale) = explode('_', get_locale());
+            $pts = explode('_', get_locale());
+            $lang = $pts[0] ?? 'en';
             $options['language'] = strtolower($lang);
         }
         
