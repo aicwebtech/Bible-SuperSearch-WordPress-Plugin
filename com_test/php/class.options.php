@@ -63,6 +63,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
             // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
             'am'                    => 'اአማርኛ / Amharic',
+            'af'                    => 'Afrikaans / Afrikaans',
             'ar'                    => 'العربية  / Arabic',
             'bn'                    => 'বাংলা / Bengali',
             'de'                    => 'Deutsch / German',
@@ -103,6 +104,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'tl'                    => 'Wikang Tagalog / Tagalog',
             'tr'                    => 'Türkçe / Turkish',
             'vi'                    => 'Tiếng Việt / Vietnamese',
+            'ug'                    => 'ئۇيغۇرچە, Uyghurche / Uyghur',
             'ur'                    => 'اردو / Urdu',
             'zh_TW'                 => '繁體中文 / Chinese - Traditional',
             'zh_CN'                 => '简体中文 / Chinese - Simplified',

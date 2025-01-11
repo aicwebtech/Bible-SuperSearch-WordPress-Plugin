@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 4.0
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3 or later
@@ -184,9 +184,28 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
-= 5.7.0
+= 5.6.10
+
 * Added language option to use selected WP Site Language as the UI language, made this option the default language option.
 * Added tabs to config page and organized config options better.
+* Search results reference summary list
+* Option to Limit Search to Reference only if manually selected
+* Fixed and improved share dialog
+** Added config to determine when to use the system share dialog (ie mobile) vs the generic share dialog.
+** Added settings on dialog for including the link and formatting.
+* Fixed "Verse as Passage Display" formatting in copy mode to be consistent with "Verse as Passage Display" in read mode.
+* Fixed language fallback.  Previously, it would simply grab the first 2 charaters of the locale, resulting in erroneous selection.
+
+* Added User Interface Language translations:
+** Amharic
+** Afrikaans
+** Bengali
+** Burmese / Myanmar
+** Somali
+** Tamil
+** Telugu
+** Tajiki / Tajik
+** Uyghur
 
 = 5.6.2
 * Fixed default Bible on widget
