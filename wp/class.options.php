@@ -60,6 +60,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     {
         $Options = new static();
         add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
+        
+        add_options_page( 
+            'Bible SuperSearch Options (new)', 
+            'Bible SuperSearch (new)', 
+            'manage_options', 
+            'biblesupersearch_new', 
+            [$this, 'displayPluginOptionsNew']
+        );
     }
 
     public function getOptions($dont_set_default = FALSE) 
@@ -345,6 +353,56 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         return $plugins;
     }
+
+    public function displayPluginOptionsNew() 
+    {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+
+
+        // wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
+        // wp_enqueue_script_module('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
+        wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
+        wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
+        wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
+        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+
+        require( dirname(__FILE__) . '/template.options.new.php');
+        return;
+
+        $tabs = $this->tabs;
+        $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+
+        if ( ! isset( $_REQUEST['settings-updated'] ) ) {
+            $_REQUEST['settings-updated'] = FALSE;
+        }
+
+
+        if(!$tabs[ $tab ]) {
+            wp_die( __( 'Invalid tab.' ) );
+        }
+
+        // $this->setDefaultOptions();
+        biblesupersearch_enqueue_option();
+        $options    = $this->getOptions();
+        $bibles     = $this->getBible();
+        $interfaces = $this->getInterfaces(); 
+        $languages  = $this->getLanguages();
+         
+        $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
+
+        $statics = $this->getStatics();
+
+        // print_r($statics);
+
+        $download_enabled = (bool) $statics['download_enabled'];
+
+        $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
+
+        require( dirname(__FILE__) . '/template.options.php');
+        return;
+    }    
 
     public function displayPluginOptions() {
         $tabs = $this->tabs;
