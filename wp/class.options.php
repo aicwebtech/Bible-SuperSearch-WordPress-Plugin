@@ -22,9 +22,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $this->tabs['docs'] = [
             'name'          => 'Documentation',
-            'texts'         => [],
-            'selects'       => [],
-            'checkboxes'    => [],
+            'type'          => 'static',
         ];
 
         // Register some stuff with WordPress
@@ -360,36 +358,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
 
-
-        // wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
-        // wp_enqueue_script_module('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
-        wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
-        wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
-        wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
-        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
-
-        require( dirname(__FILE__) . '/template.options.new.php');
-        return;
-
-        $tabs = $this->tabs;
-        $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
-
-        if ( ! isset( $_REQUEST['settings-updated'] ) ) {
-            $_REQUEST['settings-updated'] = FALSE;
-        }
-
-
-        if(!$tabs[ $tab ]) {
-            wp_die( __( 'Invalid tab.' ) );
-        }
-
-        // $this->setDefaultOptions();
-        biblesupersearch_enqueue_option();
+        // biblesupersearch_enqueue_option(); // not needed for Vue
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
         $languages  = $this->getLanguages();
-         
+
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
         $statics = $this->getStatics();
@@ -400,11 +374,32 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
-        require( dirname(__FILE__) . '/template.options.php');
+        $bootstrap = new \stdclass;
+        $bootstrap->options = $options;
+        $bootstrap->tabs = array_values($this->tabs);
+        $bootstrap->option_props = $this->options_list;
+        $bootstrap->classes = new \stdclass;
+        $bootstrap->classes->tabs = 'postbox tab-content';
+
+
+        // wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
+        // wp_enqueue_script_module('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
+        wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
+        wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
+        wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
+        wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
+        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+
+        if ( ! isset( $_REQUEST['settings-updated'] ) ) {
+            $_REQUEST['settings-updated'] = FALSE;
+        }
+
+        require( dirname(__FILE__) . '/template.options.new.php');
         return;
     }    
 
-    public function displayPluginOptions() {
+    public function displayPluginOptions() 
+    {
         $tabs = $this->tabs;
         $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
 
@@ -419,8 +414,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         if(!$tabs[ $tab ]) {
             wp_die( __( 'Invalid tab.' ) );
         }
-
-        // $this->setDefaultOptions();
+;
         biblesupersearch_enqueue_option();
         $options    = $this->getOptions();
         $bibles     = $this->getBible();
@@ -430,8 +424,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
         $statics = $this->getStatics();
-
-        // print_r($statics);
 
         $download_enabled = (bool) $statics['download_enabled'];
 

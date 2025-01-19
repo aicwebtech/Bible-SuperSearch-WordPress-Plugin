@@ -4,10 +4,19 @@
 const { createApp } = Vue
 const { createVuetify } = Vuetify
 
-  const vuetify = createVuetify();
+import ConfigTabs from './source/ConfigTabs.vue.js';
+
+const vuetify = createVuetify();
 
   const app = createApp({
-    template: `{{message}}`,
+    template: `
+        <ConfigTabs></ConfigTabs>
+
+        {{message}}
+        `,
+    components: {
+        ConfigTabs
+    },
     data() {
       return {
         message: 'Hello Vue!'
@@ -15,4 +24,6 @@ const { createVuetify } = Vuetify
     }
   });
 
-  app.use(vuetify).mount('#bss_config_app');
+app.use(vuetify)
+    .provide('bootstrap', bootstrap)
+    .mount('#bss_config_app');

@@ -144,6 +144,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         $defaults = [];
 
         foreach($options as $tab => &$tab_options) {
+            $this->tabs[$tab]['id'] = $tab;
+            $this->tabs[$tab]['type'] = 'config';
             $this->tabs[$tab]['options'] = []; // Add options array to each tab's settings
 
             foreach($tab_options as $opt => &$settings) {

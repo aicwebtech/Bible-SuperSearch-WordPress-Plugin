@@ -243,6 +243,7 @@ return [
             'items'         => 'language', // todo
             'multiple'      => true,
             'render'        => false, // todo
+            'v-if'          => '!enableAllLanguages',
         ],
 
         'navigation'        => [
