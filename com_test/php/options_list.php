@@ -391,7 +391,8 @@ return [
             'desc'          => 'Leave blank for default of <code>https://api.biblesupersearch.com</code>.',
             'type'          => 'text',
             // 'default'       => dynamic, //
-            'id'            => 'biblesupersearch_url'
+            'id'            => 'biblesupersearch_url',
+            'v_component'   => 'ApiUrl',
         ],   
         'pageScrollTopPadding' => [
             'label'         => 'Scroll Top Padding',

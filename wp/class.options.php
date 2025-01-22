@@ -386,6 +386,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         // wp_enqueue_script_module('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
         wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
         wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
+        wp_enqueue_script('biblesupersearch_axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
         wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
         wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));

@@ -1,11 +1,10 @@
 // Tab Item that displays configs
+import ApiUrl from './components/ApiUrl.vue.js';
 
 const tpl = `
 
     <v-row
         v-for='config in tab.options'
-
-
     >   
         <v-col cols='2'><b>{{op(config).label}}</b></v-col>
         <v-col cols='6'> 
@@ -18,7 +17,7 @@ const tpl = `
 
             <v-sheet v-if='!descAsLabel(config)' v-html="op(config).desc" class='mt-1'></v-sheet>
         </v-col>
-        <v-col v-if='false' cols='4' v-html="op(config).desc"></v-col>
+        <v-col v-if='debug' cols='4'>{{options[config]}}</v-col>
     </v-row>
 `;
 
@@ -37,12 +36,12 @@ export default {
         },               
     },
     components: {
-
+        ApiUrl
 
     },
     data() {
         return {
-
+            debug: true
         }
     },
     computed: {
@@ -59,6 +58,11 @@ export default {
         },
         formComponent(config) {
             var prop = this.op(config);
+
+            if(prop.v_component) {
+                return prop.v_component;
+            }
+
             var map = {
                 select: 'v-select',
                 checkbox: 'v-switch',
