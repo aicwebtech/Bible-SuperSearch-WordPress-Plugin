@@ -360,9 +360,9 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         // biblesupersearch_enqueue_option(); // not needed for Vue
         $options    = $this->getOptions();
-        $bibles     = $this->getBible();
         $interfaces = $this->getInterfaces(); 
-        $languages  = $this->getLanguages();
+        // $bibles     = $this->getBible();
+        // $languages  = $this->getLanguages();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
@@ -376,10 +376,16 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $bootstrap = new \stdclass;
         $bootstrap->options = $options;
+        $bootstrap->options_default = $this->getDefaultOptions();
         $bootstrap->tabs = array_values($this->tabs);
         $bootstrap->option_props = $this->options_list;
         $bootstrap->classes = new \stdclass;
         $bootstrap->classes->tabs = 'postbox tab-content';
+        $bootstrap->statics = $this->getStatics(); // Note, statics is an array, not a stdclass ...
+        // $bootstrap->statics['bibles'] = $this->reformatItemsList( $this->getBible(), ['lang_short', 'lang'] );
+        $bootstrap->statics['bibles'] = $this->getBiblesForDisplay();
+        $bootstrap->statics['languages'] = $this->getLanguages();
+        $bootstrap->statics['interfaces'] = $this->getInterfaces(); 
 
 
         // wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));

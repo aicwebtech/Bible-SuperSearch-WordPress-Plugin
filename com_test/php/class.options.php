@@ -174,27 +174,30 @@ abstract class BibleSuperSearch_Options_Abstract {
                         } else if(is_callable([$this, $items])) {
                             $items = call_user_func([$this, $items]);
                         } else {
-                            $items = [];
+                            // String index, do nothing
+                            // $items = [];
                         }
                     } else if(!is_array($items)) {
                         $items = [];
                     }
 
+                    $settings['items'] = $this->reformatItemsList($items);
+
                     // Handle varying item array formats
-                    if($items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
-                        $settings['items'] = [];
+                    // if(!is_string($items) && $items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
+                    //     $settings['items'] = [];
 
-                        foreach($items as $value => $label) {
-                            $label = is_array($label) ? $label['name'] : $label;
+                    //     foreach($items as $value => $label) {
+                    //         $label = is_array($label) ? $label['name'] : $label;
 
-                            $settings['items'][] = [
-                                'value' => $value,
-                                'label' => $label,
-                            ];
-                        }
-                    } else {
-                        $settings['items'] = $items;
-                    }
+                    //         $settings['items'][] = [
+                    //             'value' => $value,
+                    //             'label' => $label,
+                    //         ];
+                    //     }
+                    // } else {
+                    //     $settings['items'] = $items;
+                    // }
                 }
 
                 if(array_key_exists('default', $settings)) {
@@ -208,6 +211,68 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         $this->default_options = array_replace($this->default_options, $defaults);
         $this->options_list = $options;
+    }
+
+    protected function reformatItemsList($items, $passthru = [])
+    {
+        if(!is_string($items) && $items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
+            $items_new = [];
+
+            foreach($items as $value => $item) {
+                $label = is_array($item) ? $item['name'] : $item;
+                
+                $item_new = [
+                    'value' => $value,
+                    'label' => $label,
+                ];
+
+                if(is_array($item) && !empty($passthru)) {
+                    foreach($passthru as $k) {
+                        $item_new[$k] = $item[$k] ?? null;
+                    }
+                }
+
+                $items_new[] = $item_new;
+            }
+        } else {
+            $items_new = $items;
+        }
+
+        return $items_new;
+    }
+
+    protected function getBiblesForDisplay()
+    {
+        $preformatted = $this->reformatItemsList( $this->getBibles(), ['lang_short', 'lang'] );
+
+        $bibles = [];
+
+        foreach($preformatted as $bible) {
+            if(!$bibles[$bible['lang_short']]) {
+                
+                $bibles[$bible['lang_short']] = [
+                    'role' => 'subheader',
+                    'label' => $bible['lang'],
+                    'itemProps' => ['disabled' => true, 'role' => 'divider'],
+                    'header' => 'hh ' . $bible['lang'],
+                ];
+
+
+
+
+
+                // $bibles[$bible['lang_short']] = [
+                //     'label' => $bible['lang'],
+                //     'children' => [],
+                // ];
+
+                // $bibles[$bible['lang_short']]['children'][] = $bible;
+            }
+            
+            $bibles[] = $bible;
+        }
+
+        return array_values($bibles);
     }
 
     // Override to add/change/remove options
@@ -277,6 +342,11 @@ abstract class BibleSuperSearch_Options_Abstract {
         $options['defaultBible'] = array_filter($options['defaultBible']);
 
         return $options;
+    }
+
+    public function getDefaultOptions() 
+    {
+        return $this->default_options;
     }
 
     public function getOptionsFiltered() 
@@ -590,7 +660,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $this->getBible();
     }
 
-    public function getEnabledBibles($statics = [], $sorting = NULL, $grouping = NULL) {
+    public function getEnabledBibles($statics = [], $sorting = NULL, $grouping = NULL) 
+    {
         $options = $this->getOptions();
         $bibles  = $this->getBibles($statics, $sorting, $grouping);
 

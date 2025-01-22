@@ -220,6 +220,7 @@ return [
             'label'         => 'Default Language',
             'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
             'type'          => 'select',
+            'multiple'      => true,
             'default'       => 'global_default',
             'section'       => 'general_top',
             'items'         => 'getLanguagesWithGlobalDefault',
@@ -302,9 +303,10 @@ return [
             'type'          => 'select',
             'default'       => true,
             'section'       => 'general',
-            'items'         => 'getBiblesListNew', //  going to need to rebuild bible fetcher or something here
+            'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
             'render'        => false, // todo
+            'v_component'   => 'SelectGroup',
         ],        
         'enableAllBibles' => [
             'label'         => 'Enabled Bibles',
@@ -319,7 +321,7 @@ return [
             'type'          => 'select',
             'default'       => [],
             'section'       => 'general',
-            'items'         => 'getBiblesListNew', //  going to need to rebuild bible fetcher or something here
+            'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
             'render'        => false, // todo
         ],

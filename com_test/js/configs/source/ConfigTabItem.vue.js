@@ -1,5 +1,6 @@
 // Tab Item that displays configs
 import ApiUrl from './components/ApiUrl.vue.js';
+import SelectGroup from './components/VSelectGroup.vue.js';
 
 const tpl = `
 
@@ -36,8 +37,8 @@ export default {
         },               
     },
     components: {
-        ApiUrl
-
+        ApiUrl,
+        SelectGroup
     },
     data() {
         return {
@@ -88,10 +89,21 @@ export default {
 
             // For selects / autocompletes
             bind.items = bind.items || prop.items;
+                console.log(bind.items, typeof bind.items);
+
+            if(bind.items && typeof bind.items == 'string') {
+                bind.items = this.bootstrap.statics[bind.items] || [];
+            }
+
+            console.log(bind.items);
+
+
             bind['item-title'] = 'label';
             bind['item-value'] = 'value';
+            bind['item-props'] = 'itemProps';
             bind.variant = 'outlined';
             bind.density = 'compact';
+            bind.multiple = prop.multiple || false;
             bind['hide-details'] = true;
 
             // For checkboxes / switches
