@@ -1,6 +1,13 @@
 // Tab Item that displays configs
 import ApiUrl from './components/ApiUrl.vue.js';
 import SelectGroup from './components/VSelectGroup.vue.js';
+import SelectOrdered from './components/VSelectOrdered.vue.js';
+
+var components = {
+    ApiUrl,
+    SelectGroup,
+    SelectOrdered
+};
 
 const tpl = `
 
@@ -36,10 +43,7 @@ export default {
             required: true
         },               
     },
-    components: {
-        ApiUrl,
-        SelectGroup
-    },
+    components: components,
     data() {
         return {
             debug: true
@@ -61,6 +65,10 @@ export default {
             var prop = this.op(config);
 
             if(prop.v_component) {
+                if(!components[prop.v_component]) {
+                    alert('Component missing ' + prop.v_component);
+                }
+
                 return prop.v_component;
             }
 

@@ -306,7 +306,7 @@ return [
             'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
             'render'        => false, // todo
-            'v_component'   => 'SelectGroup',
+            'v_component'   => 'SelectOrdered',
         ],        
         'enableAllBibles' => [
             'label'         => 'Enabled Bibles',
@@ -324,6 +324,7 @@ return [
             'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
             'render'        => false, // todo
+            'v_component'   => 'SelectGroup',
         ],
 
 

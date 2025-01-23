@@ -247,13 +247,19 @@ abstract class BibleSuperSearch_Options_Abstract {
 
         $bibles = [];
 
-        foreach($preformatted as $bible) {
+        foreach($preformatted as $key => $bible) {
             if(!$bibles[$bible['lang_short']]) {
+
+                if($key != 0) {                    
+                    // $bibles[] = [
+                    //     'itemProps' => ['disabled' => true, 'role' => 'divider'],
+                    // ];
+                }
                 
                 $bibles[$bible['lang_short']] = [
                     'role' => 'subheader',
                     'label' => $bible['lang'],
-                    'itemProps' => ['disabled' => true, 'role' => 'divider'],
+                    'itemProps' => ['disabled' => true, 'role' => 'header'],
                     'header' => 'hh ' . $bible['lang'],
                 ];
 

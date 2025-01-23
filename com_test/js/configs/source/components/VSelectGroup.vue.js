@@ -2,13 +2,14 @@
 const tpl = `
     <v-select>
         <template v-slot:item="{ props, item }">
-            <v-list-subheader v-if="item.header">
-                {{ item.header }}
+            <v-list-subheader v-if="item.props.role == 'header'">
+                {{ item.props.title }}
             </v-list-subheader>
-            <v-divider v-else-if="item.divider" />
+            <v-divider v-else-if="item.props.role == 'divider'" />
             <v-list-item v-else v-bind="props">
                 <template v-slot:prepend='{ isSelected }'>
-                    <v-checkbox-btn v-if='!item.props.disabled'
+                    <v-checkbox-btn 
+                        v-if='!item.props.disabled'
                         :key='item.value'
                         :model-value='isSelected'
                         :ripple="false"
