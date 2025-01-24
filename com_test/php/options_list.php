@@ -299,7 +299,7 @@ return [
             'desc'          => 'Note: The number of multiple default Bibles is limited by the parallel Bible limit on the selected skin.' .
                                   ' Bible selections beyond the limit will be ignored.',
             'type'          => 'select',
-            'default'       => true,
+            'default'       => ['kjv'],
             'section'       => 'general',
             'items'         => 'getBiblesListNew', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,

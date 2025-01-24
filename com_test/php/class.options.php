@@ -40,6 +40,7 @@ abstract class BibleSuperSearch_Options_Abstract {
     ];  
 
     protected $options = [];
+    protected $options_list = [];
 
     public static $selector_options = [
         'bibleGrouping' => [

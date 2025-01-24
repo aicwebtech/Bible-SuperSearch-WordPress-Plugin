@@ -82,11 +82,13 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         if(is_string($options['defaultBible'])) {
             $options['defaultBible'] = explode(',', $options['defaultBible']);
+        } elseif(is_array($options['defaultBible'])) {
+            $options['defaultBible'] = array_filter($options['defaultBible']);
+            $options['defaultBible'] = array_values($options['defaultBible']);
+        } else {
+            $options['defaultBible'] = [];
         }
 
-        $options['defaultBible'] = array_filter($options['defaultBible']);
-        $options['defaultBible'] = array_values($options['defaultBible']);
-        
         // Ensure Bibles selected as default are enabled
         if(!$options['enableAllBibles']) {
             $options['enabledBibles'] = array_merge($options['enabledBibles'], $options['defaultBible']);

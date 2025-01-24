@@ -184,6 +184,12 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.11
+*** Emergency bugfix
+* Default Bible was defaulting to boolean true, causing breakage when installing plugin for the first time.
+* Existing WP sites not affected
+
+
 = 5.6.10
 
 * Added language option to use selected WP Site Language as the UI language, made this option the default language option.
