@@ -4,7 +4,7 @@
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
     Description: Bible tool having multiple versions, keyword search, reference retrival, Bible downloader, and more.  Keeps your visitors on your website!
-    Version:     5.6.10
+    Version:     5.6.11
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
     License:     GPLv3 or later
