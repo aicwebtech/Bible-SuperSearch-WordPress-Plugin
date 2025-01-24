@@ -1,6 +1,12 @@
 
 const tpl = `
-    <v-select :bultiple='false' v-for='n in count' v-model='modelValue[idx(n)]' v-bind='$attrs'>
+    <v-select 
+        v-for='n in count' 
+        v-model='modelValue[idx(n)]' 
+        v-bind='$attrs'
+        :multiple='false' 
+        @update:modelValue='updateModelValue(n, $event)'
+    >
         
         <template v-slot:item="{ props, item }">
             <v-list-subheader v-if="item.props.role == 'header'">
@@ -17,15 +23,9 @@ const tpl = `
 
 export default {
     inject: ['bootstrap'],
-    props: [
-        'modelValue'
-        // 'items'
-    ],
-    // emits: ['update:modelValue'],
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
     template: tpl,
-    components: {
-
-    },
     data() {
         return {
             min: 2,
@@ -33,9 +33,23 @@ export default {
             count: 4
         }
     },
+    watch: {
+        count(is, was) {
+            if(is < this.modelValue.length) {
+                var nmv = this.modelValue.slice(0, is);
+                this.$emit('update:modelValue', nmv);
+            }
+        }
+    },
+
     methods: {
         idx: (num) => num - 1,
+        updateModelValue(n, event) {
+            console.log('updateModelValue', n, event); 
+            var mv = this.modelValue;
 
+
+        },
     }
 }
 

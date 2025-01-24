@@ -10,7 +10,6 @@ var components = {
 };
 
 const tpl = `
-
     <v-row
         v-for='config in tab.options'
     >   
@@ -28,7 +27,6 @@ const tpl = `
         <v-col v-if='debug' cols='4'>{{options[config]}}</v-col>
     </v-row>
 `;
-
 
 export default {
     inject: ['bootstrap'],
