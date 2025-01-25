@@ -1,0 +1,4 @@
+
+.v-select .v-field .v-field__input>input {
+    border: 0 !important;
+}

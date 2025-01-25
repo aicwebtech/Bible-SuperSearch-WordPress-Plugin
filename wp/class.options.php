@@ -398,6 +398,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
         wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('../com_test/js/configs/assets/style.css', __FILE__));
 
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {
             $_REQUEST['settings-updated'] = FALSE;

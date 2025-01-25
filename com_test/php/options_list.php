@@ -375,16 +375,32 @@ return [
                                 'should we remove Bible selections above the new limit?  Otherwise, the selections will remain.',
             'type'          => 'checkbox',
             'default'       => false,
-        ], 
+        ],         
 
         // :todo
-        'parallelBibleLimitByWidth' => [
+        'parallelBibleLimitByWidthEnable' => [
             'label'         => 'Limit Parallel Bibles by Width',
-            'type'          => 'json',
+            'desc'          => 'Whether to limit the number of parallel Bibles allowed based on page width.',
+            'type'          => 'checkbox',
+            'default'       => false,
             'render'        => false,
+        ], 
+        'parallelBibleLimitByWidth' => [
+            'label'         => '', // None
+            'type'          => 'json',
             'default'       => [],
             'format'        => 'json',
+            'v_component'   => 'BibleLimitsByWidth',
+            'v_no_attr'     => true,
         ],
+        'parallelBibleStartSuperceedsDefaultBibles' => [
+            'label'         => 'Initial Number of Parallel Bibles" Superceeds Default Bibles',
+            'desc'          => 'Forces the number of parallel Bible selectors displayed initially to always equal the ' . 
+                                '"Initial Number of Parallel Bibles,"regardless to the number of Bibles selected as default.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'render'        => false,
+        ], 
     ],
 
     'advanced' => [        

@@ -2,11 +2,13 @@
 import ApiUrl from './components/ApiUrl.vue.js';
 import SelectGroup from './components/VSelectGroup.vue.js';
 import SelectOrdered from './components/VSelectOrdered.vue.js';
+import BibleLimitsByWidth from './components/ParLim.vue.js';
 
 var components = {
     ApiUrl,
     SelectGroup,
-    SelectOrdered
+    SelectOrdered,
+    BibleLimitsByWidth
 };
 
 const tpl = `
@@ -86,6 +88,10 @@ export default {
             var prop = this.op(config),
                 bind = prop.vue_props || {};
 
+            if(prop.v_no_attr) {
+                return null;
+            }
+
             // bind.label = bind.label || prop.label;
             // bind.hint = bind.hint || prop.desc; // needs to allow HTML
 
@@ -124,6 +130,10 @@ export default {
 
             if(config == 'languageList') {
                 return !this.options.enableAllLanguages;
+            }
+
+            if(config == 'enabledBibles') {
+                return !this.options.enableAllBibles;
             }
 
             return true;
