@@ -20,13 +20,20 @@ const tpl = `
         <tbody>
             <tr v-for='n in count'>
                 <td>
-                    <v-text-field v-model='modelValue[idx(n)].minWidth' />
+                    <v-text-field 
+                        v-model='modelValue[idx(n)].minWidth' 
+                        :rules="[required, value => checkMinWidth(value, n) ]"  
+                        :read-only="n==1"
+                    />
                 </td>
                 <td>
                     <v-text-field read-only :value='calcMax(n)' />
                 </td>
                 <td>
-                    <v-text-field v-model='modelValue[idx(n)].maxBibles' />
+                    <v-text-field 
+                        v-model='modelValue[idx(n)].maxBibles' 
+                        :rules="[ required ]"  
+                    />
                 </td>
                 <td>
                     <v-text-field v-model='modelValue[idx(n)].minBibles' />
@@ -87,5 +94,32 @@ export default {
             // 'num' is the idx we need as we need to look forward one row
             return this.modelValue[num] && this.modelValue[num].minWidth ? this.modelValue[num].minWidth -1 : '';
         },
+        required(value) {
+            return value ? true : 'Required';
+        },
+        checkMinWidth(value, n) {
+            console.log('checkMin', arguments);
+
+            var val = parseInt(value, 10);
+
+            if(n == 1) {
+                return value == '0' ? true : 'Value must be 0';
+            }
+
+            var above = this.modelValue[ n - 2 ]?.minWidth || null;
+            var below = this.modelValue[ n ]?.minWidth || null;
+
+            if(above && val <= above) {
+                return 'Must be greater than above ' + above;
+            }            
+
+            if(below && val >= below) {
+                return 'Must be less than below ' + below;
+            }
+
+            // return  value > this.modelValue[ n - 2 ].minWidth ? true : 'Value must be greater than that in row above';
+
+            return true;
+        }
     }
 }

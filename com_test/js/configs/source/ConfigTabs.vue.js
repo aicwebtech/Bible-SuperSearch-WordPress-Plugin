@@ -1,36 +1,33 @@
 import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
-    
-    <v-tabs
-        v-model="selectedTab">
+    <v-form v-model='formValid'>
+        <v-tabs v-model="selectedTab">
+            <v-tab 
+                v-for='tab in tabList'
+                :value='tab.id'
+            >{{tab.name}}</v-tab>
+        </v-tabs>
 
-        <v-tab 
-            v-for='tab in tabList'
-            :value='tab.id'
-        >{{tab.name}}</v-tab>
+        <v-tabs-window v-model='selectedTab'>
+            <v-tabs-window-item
+                v-for='tab in tabList'
+                :value='tab.id'
+                :class='"pa-4 " + bootstrap.classes.tabs'
+            >
+                <v-sheet v-if='tab.type == "config"'>
+                    <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
+                </v-sheet>
+                <v-sheet v-else>
+                    Static tab: {{tab.name}}
 
+                    {{options}}
+                </v-sheet>
 
-    </v-tabs>
+            </v-tabs-window-item>
 
-    <v-tabs-window v-model='selectedTab'>
-        <v-tabs-window-item
-            v-for='tab in tabList'
-            :value='tab.id'
-            :class='"pa-4 " + bootstrap.classes.tabs'
-        >
-            <v-sheet v-if='tab.type == "config"'>
-                <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
-            </v-sheet>
-            <v-sheet v-else>
-                Static tab: {{tab.name}}
-
-                {{options}}
-            </v-sheet>
-
-        </v-tabs-window-item>
-
-    </v-tabs-window>
+        </v-tabs-window>
+    </v-form>
     `;
 
 export default {
@@ -41,6 +38,7 @@ export default {
     },
     data() {
         return {
+            formValid: false,
             selectedTab: 'general',
             options: this.bootstrap.options
         }

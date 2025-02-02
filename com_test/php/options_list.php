@@ -362,6 +362,7 @@ return [
                                 'Takes any valid Bible reference, ie \'John 3:16; Romans 3:23; Genesis 1\'',
             'type'          => 'text',
             'default'       => '',
+            'rules'         => ['smited'],
         ],    
         'landingReferenceDefault' => [
             'label'         => 'Use Landing Passage(s) as Default',

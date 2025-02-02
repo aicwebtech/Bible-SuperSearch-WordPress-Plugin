@@ -86,7 +86,8 @@ export default {
         },
         configProps(config) {
             var prop = this.op(config),
-                bind = prop.vue_props || {};
+                bind = prop.vue_props || {},
+                t = this;
 
             if(prop.v_no_attr) {
                 return null;
@@ -116,7 +117,23 @@ export default {
             bind.variant = 'outlined';
             bind.density = 'compact';
             bind.multiple = prop.multiple || false;
-            bind['hide-details'] = true;
+            bind['hide-details'] = 'auto';
+
+            if(Array.isArray(prop.rules)) {                
+                var rules = ['smited'];
+
+                bind['rules'] = [];
+
+                prop.rules.forEach(function(r) {
+                    bind['rules'].push(value => t[r](value, prop.label));
+                });
+            }
+
+
+            // bind['rules'] = [
+            //     // (value) => this.smited(value, prop.label)
+            //     this.smited
+            // ];
 
             // For checkboxes / switches
             // bind['true-value'] = '1';
@@ -136,6 +153,13 @@ export default {
                 return !this.options.enableAllBibles;
             }
 
+            if(config == 'parallelBibleLimitByWidth' || config == 'parallelBibleStartSuperceedsDefaultBibles') {
+                // :todo - update value of options parallelBibleLimitByWidthEnable
+                // :todo - hide label of parallelBibleStartSuperceedsDefaultBibles
+
+                // return this.options.parallelBibleLimitByWidthEnable; // || !!this.options.parallelBibleLimitByWidth;
+            }
+
             return true;
 
             // return false;
@@ -153,6 +177,11 @@ export default {
         descBr(config) {
             var comp = this.formComponent(config);
             return !(comp == 'v-switch' || comp == 'v-checkbox');
+        },
+
+        // rules
+        smited(value, label) {
+            return value ? true : label + ' is required';
         }
     }
 }
