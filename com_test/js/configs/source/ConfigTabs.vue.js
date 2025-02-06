@@ -2,6 +2,8 @@ import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
     <v-form v-model='formValid'>
+        Form valid: {{formValid}}
+    
         <v-tabs v-model="selectedTab">
             <v-tab 
                 v-for='tab in tabList'
