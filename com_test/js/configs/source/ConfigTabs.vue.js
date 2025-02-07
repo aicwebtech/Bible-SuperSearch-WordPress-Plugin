@@ -1,8 +1,10 @@
 import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
-    <v-form v-model='formValid'>
+    <v-form v-model='formValid' @submit.prevent>
         Form valid: {{formValid}}
+
+        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
     
         <v-tabs v-model="selectedTab">
             <v-tab 
@@ -29,6 +31,10 @@ const tpl = `
             </v-tabs-window-item>
 
         </v-tabs-window>
+
+        Form valid: {{formValid}}
+
+        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
     </v-form>
     `;
 

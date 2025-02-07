@@ -26,6 +26,7 @@ const tpl = `
                         :rules="[required, value => checkMinWidth(value, n) ]"  
                         :read-only="n==1"
                         :ref="(el) => storeRef('minWidth', n, el)"
+                        validate-on='lazy submit'
                     />
                 </td>
                 <td>
@@ -37,6 +38,7 @@ const tpl = `
                         :rules="[ required, value => checkMaxBibles(value, n) ]"  
                         :ref="(el) => storeRef('maxBibles', n, el)"
                         @update:modelValue='updateModelValue("maxBibles", n, $event)'
+                        validate-on='lazy submit'
                     />
                 </td>
                 <td>
@@ -45,6 +47,7 @@ const tpl = `
                         :rules="[ required, value => checkMinBibles(value, n) ]"  
                         :ref="(el) => storeRef('minBibles', n, el)"
                         @update:modelValue='updateModelValue("minBibles", n, $event)'
+                        validate-on='lazy submit'
                     />
                 </td>
                 <td>
@@ -53,6 +56,7 @@ const tpl = `
                         :rules="[ required, value => checkStartBibles(value, n) ]"  
                         :ref="(el) => storeRef('startBibles', n, el)"
                         @update:modelValue='updateModelValue("startBibles", n, $event)'
+                        validate-on='lazy submit'
                     />
                 </td>
             </tr>
@@ -276,6 +280,8 @@ export default {
         },
 
         validateField(key, n) {
+            return; // NO VALIDATION
+            
             if(this.validating[key]) {
                 console.log('already validating', key);
                 return;

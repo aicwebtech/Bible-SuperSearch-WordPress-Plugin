@@ -3,6 +3,7 @@ import ApiUrl from './components/ApiUrl.vue.js';
 import SelectGroup from './components/VSelectGroup.vue.js';
 import SelectOrdered from './components/VSelectOrdered.vue.js';
 import BibleLimitsByWidth from './components/ParLim.vue.js';
+import Rules from './components/FormRules.vue.js';
 
 var components = {
     ApiUrl,
@@ -46,7 +47,8 @@ export default {
     components: components,
     data() {
         return {
-            debug: true
+            debug: true,
+            rules: Rules
         }
     },
     computed: {
@@ -108,9 +110,6 @@ export default {
                 bind.items = this.bootstrap.statics[bind.items] || [];
             }
 
-            console.log(bind.items);
-
-
             bind['item-title'] = 'label';
             bind['item-value'] = 'value';
             bind['item-props'] = 'itemProps';
@@ -125,7 +124,11 @@ export default {
                 bind['rules'] = [];
 
                 prop.rules.forEach(function(r) {
-                    bind['rules'].push(value => t[r](value, prop.label));
+                    if(typeof t.rules[r] == 'function') {
+                        bind['rules'].push(v => t.rules[r](v, prop));
+                    } 
+                    
+                    // bind['rules'].push(value => t[r](value, prop.label));
                 });
             }
 
@@ -180,8 +183,8 @@ export default {
         },
 
         // rules
-        smited(value, label) {
-            return value ? true : label + ' is required';
+        smited(value, prop) {
+            return value ? true : prop.label + ' is required';
         }
     }
 }
