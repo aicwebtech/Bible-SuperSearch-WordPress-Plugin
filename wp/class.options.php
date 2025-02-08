@@ -59,13 +59,49 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $Options = new static();
         add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
         
-        add_options_page( 
-            'Bible SuperSearch Options (new)', 
-            'Bible SuperSearch (new)', 
-            'manage_options', 
-            'biblesupersearch_new', 
-            [$this, 'displayPluginOptionsNew']
+        // add_options_page( 
+        //     'Bible SuperSearch Options (new)', 
+        //     'Bible SuperSearch (new)', 
+        //     'manage_options', 
+        //     'biblesupersearch_new', 
+        //     [$this, 'displayPluginOptionsNew']
+        // );
+
+        add_menu_page(
+            'Bible SuperSearch',
+            'Bible SuperSearch',
+            'manage_options',
+            'biblesupersearch_menu',
+            [$this, 'displayPluginOptionsNew'],
+            'dashicons-book-alt',
+            45
         );
+
+        add_submenu_page(
+            'biblesupersearch_menu',
+            'Bible SuperSearch Documentation',
+            'Documentation',
+            'manage_options',
+            'biblesupersearch_docs',
+            [$this, 'displayPluginDocumentation']
+        );
+
+        add_submenu_page(
+            'biblesupersearch_menu',
+            'Bible SuperSearch Options (old)',
+            'Settings (old)',
+            'manage_options',
+            'biblesupersearch_old',
+            [$this, 'displayPluginOptions']
+        );
+
+        global $submenu;
+
+		if ( isset( $submenu[ 'biblesupersearch_menu'] ) ) {
+			// @codingStandardsIgnoreStart
+			$submenu[ 'biblesupersearch_menu' ][0][0] = 'Settings';
+			// @codingStandardsIgnoreEnd
+		}
     }
 
     public function getOptions($dont_set_default = FALSE) 
@@ -379,7 +415,11 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap = new \stdclass;
         $bootstrap->options = $options;
         $bootstrap->options_default = $this->getDefaultOptions();
-        $bootstrap->tabs = array_values($this->tabs);
+
+        // Documentation is platform-dependant, so not building into new, generic options app
+        $tabs = $this->tabs;
+        unset($tabs['docs']);
+        $bootstrap->tabs = array_values($tabs);
         $bootstrap->option_props = $this->options_list;
         $bootstrap->classes = new \stdclass;
         $bootstrap->classes->tabs = 'postbox tab-content';
@@ -440,6 +480,13 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
         require( dirname(__FILE__) . '/template.options.php');
+        return;
+    }
+
+    public function displayPluginDocumentation() 
+    {
+        wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
+        require( dirname(__FILE__) . '/templates/options_docs.php');
         return;
     }
 

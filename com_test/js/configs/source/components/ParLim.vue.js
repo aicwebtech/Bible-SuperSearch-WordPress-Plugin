@@ -1,6 +1,6 @@
 const tpl = `
 
-    <table>
+    <table class='bss-paralell-limits'>
         <thead>
             <tr>
                 <th>Minimum Width (in pixels)</th>
@@ -25,38 +25,35 @@ const tpl = `
                         v-model='modelValue[idx(n)].minWidth' 
                         :rules="[required, value => checkMinWidth(value, n) ]"  
                         :read-only="n==1"
-                        :ref="(el) => storeRef('minWidth', n, el)"
                         validate-on='lazy submit'
+                        :class='elemClasses'
                     />
                 </td>
                 <td>
-                    <v-text-field read-only :value='calcMax(n)' />
+                    <v-text-field read-only :value='calcMax(n)' :class='elemClasses' />
                 </td>
                 <td>
                     <v-text-field 
                         v-model='modelValue[idx(n)].maxBibles' 
                         :rules="[ required, value => checkMaxBibles(value, n) ]"  
-                        :ref="(el) => storeRef('maxBibles', n, el)"
-                        @update:modelValue='updateModelValue("maxBibles", n, $event)'
                         validate-on='lazy submit'
+                        :class='elemClasses'
                     />
                 </td>
                 <td>
                     <v-text-field 
                         v-model='modelValue[idx(n)].minBibles' 
                         :rules="[ required, value => checkMinBibles(value, n) ]"  
-                        :ref="(el) => storeRef('minBibles', n, el)"
-                        @update:modelValue='updateModelValue("minBibles", n, $event)'
                         validate-on='lazy submit'
+                        :class='elemClasses'
                     />
                 </td>
                 <td>
                     <v-text-field 
                         v-model='modelValue[idx(n)].startBibles' 
                         :rules="[ required, value => checkStartBibles(value, n) ]"  
-                        :ref="(el) => storeRef('startBibles', n, el)"
-                        @update:modelValue='updateModelValue("startBibles", n, $event)'
                         validate-on='lazy submit'
+                        :class='elemClasses'
                     />
                 </td>
             </tr>
@@ -64,8 +61,10 @@ const tpl = `
 
     </table>
 
-    <v-btn v-if='count < max' @click='count ++'>Add</v-btn>
-    <v-btn v-if='count > min' @click='count --'>Remove</v-btn>
+    <v-sheet class='text-center'>
+        <v-btn v-if='count < max' @click='count ++'>Add</v-btn>
+        <v-btn v-if='count > min' @click='count --'>Remove</v-btn>
+    </v-sheet>
 `;
 
 export default {
@@ -79,8 +78,9 @@ export default {
             max: 9999, // unlimited Bibles here (not in new UI)
             count: this.modelValue.length || 1,
             formValid: false,
-            formRefs: {},
             validating: {},
+            // maxWidth: 100,
+            elemClasses: 'mt-1 ml-3 mr-3',
             validatingDefault: {
                 minWidth: false,
                 maxBibles: false,
@@ -121,12 +121,6 @@ export default {
 
             // 'num' is the idx we need as we need to look forward one row
             return this.modelValue[num] && this.modelValue[num].minWidth ? this.modelValue[num].minWidth -1 : '';
-        },
-        storeRef(key, n, el) {
-            if(!el) return;
-
-            this.formRefs[key] = this.formRefs[key] || [];
-            this.formRefs[key][n - 1] = el;
         },  
         required(value) {
             return value ? true : 'Required';
@@ -185,10 +179,6 @@ export default {
                 return 'Must be greater than or equal to start Bibles ' + start;
             }
 
-            // this.resetValidating('maxBibles');
-            this.validateField('minBibles', n);
-            this.validateField('startBibles', n);
-
             return true;
         },
         checkMinBibles(value, n) {
@@ -218,10 +208,6 @@ export default {
             if(start && val > start) {
                 return 'Must be less than or equal to start Bibles ' + start;
             }
-
-            // this.resetValidating('minBibles');
-            this.validateField('maxBibles', n);
-            this.validateField('startBibles', n);
 
             return true;
         },
@@ -253,51 +239,7 @@ export default {
                 return 'Must be less than or equal to max Bibles ' + max;
             }
 
-            // this.resetValidating('minBibles');
-            this.validateField('minBibles', n);
-            this.validateField('maxBibles', n);
-
             return true;
-        },
-
-        resetValidating(key) {
-            this.validating = this.validatingDefault;
-
-            if(key) {
-                this.validating[key] = true;
-            }
-        },
-
-        updateModelValue(key, n, event) {
-                console.log('updateModelValue', key, n); 
-                // var mv = this.modelValue;
-
-                // mv[n - 1][key] = event;
-
-                // this.$emit('update:modelValue', mv);
-
-            this.resetValidating(key);
-        },
-
-        validateField(key, n) {
-            return; // NO VALIDATION
-            
-            if(this.validating[key]) {
-                console.log('already validating', key);
-                return;
-            }
-
-            this.validating[key] = true;
-            
-            var el = this.formRefs[key][n - 1];
-
-            if(!el) {
-                console.log('no element', key, n);
-                return;
-            }
-
-            el.validate();
         }
-
     }
 }

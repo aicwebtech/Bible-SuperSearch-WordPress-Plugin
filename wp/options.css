@@ -50,6 +50,11 @@
     border-bottom: 2px solid #006799;
 }
 
+.bss-docs {
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
 .shortcode-options-table {
     width: 100%;
     margin-bottom: 30px;

@@ -78,6 +78,7 @@ return [
         ],
         'overrideCss' => [
             'label'         => 'Override Styles',
+            'sublabel'      => 'Override WordPress CSS',
             'desc'          => 'Attempts to override some CSS styles from WordPress to make Bible SuperSearch look as was originally designed.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -149,6 +150,7 @@ return [
         ],
         'autocompleteMatchAnywhere' => [
             'label'         => 'Autocomplete Match Anywhere',
+            'sublabel'      => 'Loose Matching',
             'desc'          => 'Whether to match anywhere in the given option / Book name.  &nbsp;Otherwise, we only match at the beginning of the name.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -350,6 +352,7 @@ return [
         ],         
         'bibleChangeUpdateNavigation' => [
             'label'         => 'Bible Change Updates Navigation',
+            'sublabel'      => 'Update Navigation Links on Bible Change',
             'desc'          => 'Whether to update navigation (ie paging and browsing buttons) immediately when the selected Bible(s) are changed ' . 
                                 'to reflect the new Bible selections. <br />Otherwise, the navigation will not update until the search or look up is performed.',
             'type'          => 'checkbox',
@@ -372,6 +375,7 @@ return [
         ], 
         'parallelBibleCleanUpForce' => [
             'label'         => 'Force Parallel Bible Clean Up',
+            'sublabel'      => 'Remove Bibles Above Limit',
             'desc'          => 'If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)<br />' .
                                 'should we remove Bible selections above the new limit?  Otherwise, the selections will remain.',
             'type'          => 'checkbox',
@@ -391,8 +395,11 @@ return [
             'type'          => 'json',
             'default'       => [],
             'format'        => 'json',
+            'render'        => false,
             'v_component'   => 'BibleLimitsByWidth',
             'v_no_attr'     => true,
+            'label_cols'    => 1,
+            'comp_cols'     => 7,
         ],
         'parallelBibleStartSuperceedsDefaultBibles' => [
             'label'         => 'Initial Number of Parallel Bibles" Superceeds Default Bibles',

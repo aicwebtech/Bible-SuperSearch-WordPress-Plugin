@@ -2,3 +2,29 @@
 .v-select .v-field .v-field__input>input {
     border: 0 !important;
 }
+
+table.bss-paralell-limits thead tr th, table.bss-paralell-limits tbody tr:nth-child(odd) {
+    /* background-color: #ddd; */
+    background-color: rgb(var(--v-theme-secondary)) !important;
+}
+
+table.bss-paralell-limits thead tr th {
+    height: 50px;
+}
+
+.v-field--error {
+    color: rgb(var(--v-theme-on-error));
+    background-color: rgb(var(--v-theme-error)) !important;
+    font-size: 12px;
+}
+
+.v-field--error .v-field__input {
+    background-color: rgb(var(--v-theme-error-lighten)) !important;
+}
+
+table.bss-paralell-limits thead tr td {
+    text-align: center;
+
+table.bss-paralell-limits th, table.bss-paralell-limits td {
+    max-width: 150px;
+}

@@ -1,10 +1,12 @@
 import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
-    <v-form v-model='formValid' @submit.prevent>
-        Form valid: {{formValid}}
+    <v-form v-model='formValid' @submit.prevent @submit='submit'>
+        <v-btn class="mt-2" type="submit" >Submit</v-btn>
 
-        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
+        <v-sheet v-if='formValid === false' class='text-center'>
+            <v-alert type="error">Form is not valid</v-alert>
+        </v-sheet>
     
         <v-tabs v-model="selectedTab">
             <v-tab 
@@ -21,20 +23,17 @@ const tpl = `
             >
                 <v-sheet v-if='tab.type == "config"'>
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
+                    <v-sheet class='text-center'>
+                        <v-btn class="mt-2" type="submit">Submit</v-btn>
+                    </v-sheet>
                 </v-sheet>
                 <v-sheet v-else>
                     Static tab: {{tab.name}}
 
                     {{options}}
                 </v-sheet>
-
             </v-tabs-window-item>
-
         </v-tabs-window>
-
-        Form valid: {{formValid}}
-
-        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
     </v-form>
     `;
 
@@ -59,6 +58,11 @@ export default {
             tabs.push({name: 'API', id: 'api'});
 
             return tabs;
+        }
+    },
+    methods: {
+        submit() {
+            console.log('submit');
         }
     }
 }

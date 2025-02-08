@@ -63,20 +63,6 @@ function biblesupersearch_add_settings_link( $links ) {
 $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'biblesupersearch_add_settings_link' );
 
-//add_action( 'admin_menu', 'biblesupersearch_options_page' );
-
-function biblesupersearch_options_page() {
-    add_menu_page(
-        'Bible SuperSearch',
-        'Bible SuperSearch',
-        'manage_options',
-        'biblesupersearch',
-        '', //'wporg_options_page_html',
-        plugin_dir_url(__FILE__) . 'images/icon_wporg.png',
-        20
-    );
-}
-
 // Note this currently causes breakage on some hosts ($BibleSuperSearch_Options is null)
 // disabled for now
 function biblesupersearch_custom_rewrite() {

@@ -1,4 +1,4 @@
-<div class="inside">
+<div class="inside bss-docs">
     <table class="form-table">
         <tr><td colspan='2'><h2><?php esc_html_e( 'Documentation', 'biblesupersearch' ); ?></h2></td></tr>
         <tr><td colspan='2'>To use, simply add the shortcode <code>[biblesupersearch]</code> to any page or post.</td></tr>

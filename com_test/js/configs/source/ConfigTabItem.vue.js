@@ -16,8 +16,10 @@ const tpl = `
     <v-row
         v-for='config in tab.options'
     >   
-        <v-col cols='2'><b>{{op(config).label}}</b></v-col>
-        <v-col cols='6'> 
+        <v-col v-if='op(config).label_cols !== 0' :cols='op(config).label_cols || 2'>
+            <b>{{op(config).label}}</b>
+        </v-col>
+        <v-col :cols='op(config).comp_cols || 6'> 
             <component 
                 :is='formComponent(config)' 
                 v-model='options[config]'
@@ -25,7 +27,7 @@ const tpl = `
                 v-if='configIf(config)' 
             ></component>
 
-            <v-sheet v-if='!descAsLabel(config)' v-html="op(config).desc" class='mt-1'></v-sheet>
+            <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
         </v-col>
         <v-col v-if='debug' cols='4'>{{options[config]}}</v-col>
     </v-row>
@@ -98,13 +100,12 @@ export default {
             // bind.label = bind.label || prop.label;
             // bind.hint = bind.hint || prop.desc; // needs to allow HTML
 
-            if(this.descAsLabel(config)) {
-                bind.label = prop.desc;
+            if(this.hasSubLabel(config)) {
+                bind.label = prop.sublabel || prop.desc;
             } 
 
             // For selects / autocompletes
             bind.items = bind.items || prop.items;
-                console.log(bind.items, typeof bind.items);
 
             if(bind.items && typeof bind.items == 'string') {
                 bind.items = this.bootstrap.statics[bind.items] || [];
@@ -172,7 +173,7 @@ export default {
             // not sure this is even possible.
             return prop['v-if'] ? "`" + prop['v-if'] + "`" : "`true`";
         },
-        descAsLabel(config) {
+        hasSubLabel(config) {
             var comp = this.formComponent(config);
             return (comp == 'v-switch' || comp == 'v-checkbox');
         },
