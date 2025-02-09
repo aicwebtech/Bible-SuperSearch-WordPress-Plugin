@@ -380,7 +380,20 @@ return [
                                 'should we remove Bible selections above the new limit?  Otherwise, the selections will remain.',
             'type'          => 'checkbox',
             'default'       => false,
-        ],         
+        ],
+        'parallelSearchErrorSuppress' => [
+            'label'         => 'Suppress Parallel Search Error',
+            'desc'          => 'When enabled, the "verses from this Bible have been included for comparison" errors won\'t show. ',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ], 
+        'parallelSearchErrorSuppressUserConfig' => [
+            'label'         => 'Allow Users to Suppress Parallel Search Error',
+            'desc'          => 'When enabled, uses will be able to decide whether to show the "verses from this Bible have been included for comparison" errors. ' 
+                                . 'If enabled, Suppress Parallel Search Error will be the default value.',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ], 
 
         // :todo
         'parallelBibleLimitByWidthEnable' => [
@@ -422,9 +435,17 @@ return [
             'v_component'   => 'ApiUrl',
         ],   
         'pageScrollTopPadding' => [
-            'label'         => 'Scroll Top Padding',
+            'label'         => 'Scroll Top Padding (Desktop / Global)',
             'desc'          => 'Use to adjust the final position of automatic scrolling.  ' . 
                                 'A positive value will cause it to scroll further down, negative will scroll it further up.',
+            'type'          => 'integer',
+            'default'       => 0,
+            'units'         => 'pixels',
+        ],    
+        'pageScrollTopPaddingMobile' => [
+            'label'         => 'Scroll Top Padding (Mobile)',
+            'desc'          => 'Page Scroll Top Padding for mobile devices. ' . 
+                                'Overrides Scroll Top Padding (Desktop / Global).',
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
