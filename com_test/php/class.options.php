@@ -249,7 +249,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $bibles = [];
 
         foreach($preformatted as $key => $bible) {
-            if(!$bibles[$bible['lang_short']]) {
+            if(!isset($bibles[$bible['lang_short']])) {
 
                 if($key != 0) {                    
                     // $bibles[] = [

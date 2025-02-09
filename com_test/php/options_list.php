@@ -207,7 +207,14 @@ return [
         ],
     ],
     'general' => [
-        
+        'newConfigSave' => [
+            'label'         => 'Have we saved using the new configs yet?',
+            'desc'          => 'This does not shut down the old configs page!',
+            'type'          => 'hidden',
+            'default'       => 'false',
+            'section'       => 'general_top',
+            'render'        => false,
+        ],
         'interface' => [
             'label'         => 'Default Skin',
             'desc'          => 'Sets the default skin seen on the [biblesupersearch] shortcode.<br />' . 
@@ -227,15 +234,13 @@ return [
             'section'       => 'general_top',
             'items'         => 'getLanguagesWithGlobalDefault',
         ],
-
-        // :todo
         'enableAllLanguages' => [
             'label'         => 'Display Language(s)',
             'desc'          => 'Enable ALL Languages',
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'general',
-            'render'        => false, // todo
+            'render'        => false, 
         ],
         'languageList' => [
             'label'         => '',
@@ -243,12 +248,11 @@ return [
             'type'          => 'select',
             'default'       => [],
             'section'       => 'general',
-            'items'         => 'language', // todo
+            'items'         => 'language',
             'multiple'      => true,
-            'render'        => false, // todo
-            'v-if'          => '!enableAllLanguages',
+            'render'        => false, 
+            'if_conditions' => 'enableAllLanguages|false',
         ],
-
         'navigation'        => [
             'label'         => 'Navigation',
             'type'          => 'section',
@@ -327,9 +331,8 @@ return [
             'multiple'      => true,
             'render'        => false, // todo
             'v_component'   => 'SelectGroup',
+            'if_conditions' => 'enableAllBibles|false',
         ],
-
-
         'bibleGrouping' => [
             'label'         => 'Bible List Grouping',
             'type'          => 'select',
@@ -413,6 +416,7 @@ return [
             'v_no_attr'     => true,
             'label_cols'    => 1,
             'comp_cols'     => 7,
+            'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ],
         'parallelBibleStartSuperceedsDefaultBibles' => [
             'label'         => 'Initial Number of Parallel Bibles" Superceeds Default Bibles',
@@ -421,6 +425,7 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
             'render'        => false,
+            'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ], 
     ],
 

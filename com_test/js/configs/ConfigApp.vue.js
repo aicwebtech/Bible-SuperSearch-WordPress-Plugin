@@ -15,5 +15,5 @@ const app = createApp({
 });
 
 app.use(vuetify)
-    .provide('bootstrap', bootstrap)
+    .provide('bootstrap', biblesupersearch_config_bootstrap)
     .mount('#bss_config_app');

@@ -99,5 +99,19 @@ function biblesupersearch_custom_rewrite() {
     add_rewrite_rule('^' . $landing_page_link  . '/(.*)/?','index.php?page_id=' . $landing_page_id . '&bible_query=$matches[1]','top');
 }
 
-
 //add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
+
+add_action( 'rest_api_init', function () {
+    global $BibleSuperSearch_Options;
+
+    if(!$BibleSuperSearch_Options) {
+        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
+    }
+    
+    register_rest_route( 'biblesupersearch/v1', '/config', [
+        'methods' => 'GET',
+        'callback' => [$BibleSuperSearch_Options, 'getOptions'],
+        'permission_callback' => fn() => current_user_can('manage_options')
+    ]);
+} );
+

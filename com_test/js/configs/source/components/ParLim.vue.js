@@ -1,5 +1,4 @@
 const tpl = `
-
     <table class='bss-paralell-limits'>
         <thead>
             <tr>
@@ -58,7 +57,6 @@ const tpl = `
                 </td>
             </tr>
         </tbody>
-
     </table>
 
     <v-sheet class='text-center'>
@@ -79,7 +77,6 @@ export default {
             count: this.modelValue.length || 1,
             formValid: false,
             validating: {},
-            // maxWidth: 100,
             elemClasses: 'mt-1 ml-3 mr-3',
             validatingDefault: {
                 minWidth: false,
@@ -96,16 +93,26 @@ export default {
         }
     },
     watch: {
-        count(is, was) {
-            if(is < this.modelValue.length) {
-                var nmv = this.modelValue.slice(0, is);
-            } else {
-                var nmv = this.modelValue;
-                nmv.push(this.template);
-            }
-            
-            this.$emit('update:modelValue', nmv);
-        },
+        count: {
+            handler(is, was) {
+                if(is == this.modelValue.length) {
+                    return;
+                } else if(is < this.modelValue.length) {
+                    var nmv = this.modelValue.slice(0, is);
+                } else {
+                    var nmv = this.modelValue;
+
+                    for(var i = this.modelValue.length; i < is; i++) {
+                        var tmpCopy = Object.assign({}, this.template);
+                        tmpCopy.minWidth = i == 0 ? '0' : '';
+                        nmv.push(tmpCopy);
+                    }
+                }
+                
+                this.$emit('update:modelValue', nmv);
+            },
+            immediate: true
+        }
     },
 
     mounted() {
@@ -146,8 +153,6 @@ export default {
             if(below && val >= below) {
                 return 'Must be less than below ' + below;
             }
-
-            // return  value > this.modelValue[ n - 2 ].minWidth ? true : 'Value must be greater than that in row above';
 
             return true;
         },

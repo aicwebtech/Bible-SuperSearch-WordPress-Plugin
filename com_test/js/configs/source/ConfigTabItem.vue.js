@@ -16,20 +16,19 @@ const tpl = `
     <v-row
         v-for='config in tab.options'
     >   
-        <v-col v-if='op(config).label_cols !== 0' :cols='op(config).label_cols || 2'>
+        <v-col v-if='op(config).label_cols !== 0 && configIf(config)' :cols='op(config).label_cols || 2'>
             <b>{{op(config).label}}</b>
         </v-col>
-        <v-col :cols='op(config).comp_cols || 6'> 
+        <v-col :cols='op(config).comp_cols || 6' v-if='configIf(config)'> 
             <component 
                 :is='formComponent(config)' 
                 v-model='options[config]'
                 v-bind='configProps(config)'
-                v-if='configIf(config)' 
             ></component>
 
             <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
         </v-col>
-        <v-col v-if='debug' cols='4'>{{options[config]}}</v-col>
+        <v-col v-if='debug && configIf(config)' cols='4'>{{options[config]}}</v-col>
     </v-row>
 `;
 
@@ -56,10 +55,7 @@ export default {
     computed: {
         optionProps() {
             return this.bootstrap.option_props[this.tab.id];
-        },
-        // options() {
-        //     return this.bootstrap.options;
-        // }
+        }
     },
     methods: {
         op(config) {
@@ -134,10 +130,6 @@ export default {
             }
 
 
-            // bind['rules'] = [
-            //     // (value) => this.smited(value, prop.label)
-            //     this.smited
-            // ];
 
             // For checkboxes / switches
             // bind['true-value'] = '1';
@@ -149,43 +141,44 @@ export default {
         configIf(config) {
             var prop = this.op(config);
 
-            if(config == 'languageList') {
-                return !this.options.enableAllLanguages;
+            if(prop.type == 'hidden') {
+                return false;
             }
 
-            if(config == 'enabledBibles') {
-                return !this.options.enableAllBibles;
-            }
+            // Special cases
 
-            if(config == 'parallelBibleLimitByWidth' || config == 'parallelBibleStartSuperceedsDefaultBibles') {
-                // :todo - update value of options parallelBibleLimitByWidthEnable
-                // :todo - hide label of parallelBibleStartSuperceedsDefaultBibles
+            // End special cases
 
-                // return this.options.parallelBibleLimitByWidthEnable; // || !!this.options.parallelBibleLimitByWidth;
+
+            if(prop.if_conditions) {
+                var ifAnd = prop.if_conditions.split(',');
+                
+                for(var i = 0; i < ifAnd.length; i++) {
+                    var vv = ifAnd[i].split('|');
+
+                    if(vv[1] == 'false') {
+                        if(this.options[vv[0]]) {
+                            return false;
+                        }
+                    } else {
+                        if(!this.options[vv[0]]) {
+                            return false; 
+                        }
+                    }
+                }
+
+                return true;
             }
 
             return true;
-
-            // return false;
-            // return true;
-
-            // ideally, we'd be able to hand it an expression to evaluate
-            // not sure this is even possible.
-            return prop['v-if'] ? "`" + prop['v-if'] + "`" : "`true`";
         },
         hasSubLabel(config) {
             var comp = this.formComponent(config);
             return (comp == 'v-switch' || comp == 'v-checkbox');
         },
-
         descBr(config) {
             var comp = this.formComponent(config);
             return !(comp == 'v-switch' || comp == 'v-checkbox');
-        },
-
-        // rules
-        smited(value, prop) {
-            return value ? true : prop.label + ' is required';
         }
     }
 }

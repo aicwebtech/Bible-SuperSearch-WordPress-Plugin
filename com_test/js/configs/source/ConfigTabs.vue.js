@@ -50,19 +50,27 @@ export default {
             options: this.bootstrap.options
         }
     },
+    mounted() {
+        // if(this.options.newConfigSave == 'false' && this.options.parallelBibleLimitByWidth.length > 0) {
+        //     this.options.parallelBibleLimitByWidthEnable = true;
+        // }
+    },
     computed: {
         tabList() {
             var tabs = this.bootstrap.tabs;
-
-            // tabs.push({name: 'Documentation', id: 'docs'});
             tabs.push({name: 'API', id: 'api'});
-
             return tabs;
         }
     },
     methods: {
         submit() {
             console.log('submit');
+
+            var formData = this.options
+            formData.tab = 'all';
+            formData.newConfigSave = true;
+            
+            console.log(formData);
         }
     }
 }

@@ -273,52 +273,57 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     {
         $current = $input = $this->getOptions(TRUE);
         
-        $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
-        $tab_item = $this->tabs[ $tab ];
-        $list = $this->options_list[$tab];
+        $tab  = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+        $tabs = $tab == 'all' ? array_keys($this->tabs) : [$tab];
 
-        foreach($tab_item['options'] as $field) {
-            if(!isset($list[$field])) {
-                continue;
-            }
+        foreach($tabs as $tab) {
+            $tab_item = $this->tabs[ $tab ];
+            $list = $this->options_list[$tab];
 
-            switch($list[$field]['type']) {
-                case 'checkbox':
-                    $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? true : false;
-                    break;
-                case 'text':
-                case 'textarea':
-                case 'select':
-                    if(array_key_exists($field, $incoming)) {
-                        $input[$field] = $incoming[$field];
-                    }
+            foreach($tab_item['options'] as $field) {
+                if(!isset($list[$field])) {
+                    continue;
+                }
 
-                    break;
-
-                case 'integer':
-                case 'int':
-                    if(array_key_exists($field, $incoming)) {
-                        $input[$field] = (int)$incoming[$field];
-                    }
-
-                    break;
-
-                case 'json':
-                    if(array_key_exists($field, $incoming)) {
-                        if(is_string($incoming[$field])) {
-                            $input[$field] = json_decode($incoming[$field], true);
-                        } elseif(is_array($incoming[$field])) {
+                switch($list[$field]['type']) {
+                    case 'checkbox':
+                        $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? true : false;
+                        break;
+                    case 'text':
+                    case 'textarea':
+                    case 'hidden':
+                    case 'select':
+                        if(array_key_exists($field, $incoming)) {
                             $input[$field] = $incoming[$field];
-                        } else {
-                            $input[$field] = [];
                         }
 
-                        $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
-                    }
+                        break;
 
-                    $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
+                    case 'integer':
+                    case 'int':
+                        if(array_key_exists($field, $incoming)) {
+                            $input[$field] = (int)$incoming[$field];
+                        }
 
-                    break;
+                        break;
+
+                    case 'json':
+                        if(array_key_exists($field, $incoming)) {
+                            if(is_string($incoming[$field])) {
+                                $input[$field] = json_decode($incoming[$field], true);
+                            } elseif(is_array($incoming[$field])) {
+                                $input[$field] = $incoming[$field];
+                            } else {
+                                $input[$field] = [];
+                            }
+
+                            $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
+                        }
+
+                        $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
+
+                        break;
+                }
             }
         }
 
@@ -437,7 +442,8 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         wp_enqueue_script('biblesupersearch_axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
         wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
-        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+        // wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('./Config.vue.js', __FILE__));
         wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('../com_test/js/configs/assets/style.css', __FILE__));
 
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {

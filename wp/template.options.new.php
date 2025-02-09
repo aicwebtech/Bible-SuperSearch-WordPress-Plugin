@@ -25,7 +25,7 @@
 ?>
 
 <script>
-    var bootstrap = <?php echo json_encode($bootstrap); ?>;
+    var biblesupersearch_config_bootstrap = <?php echo json_encode($bootstrap); ?>;
 </script>
 
 
