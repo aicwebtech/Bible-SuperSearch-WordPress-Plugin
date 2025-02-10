@@ -1,7 +1,6 @@
 <?php
     // global $options, $bibles, $interfaces;
     global $BibleSuperSearch_Options;
-
     $api_version = (float) $BibleSuperSearch_Options->apiVersion();
     $statics = $BibleSuperSearch_Options->getStatics();
 
@@ -24,17 +23,18 @@
     }
 ?>
 
-<script>
-    var biblesupersearch_config_bootstrap = <?php echo json_encode($bootstrap); ?>;
-</script>
-
-
 <div class="biblesupersearch-option-tabs wrap">
+    <div class="icon32" id="icon-options-general"><br></div>
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
+    <script>
+        <?php
+            echo "var bss_options=" . json_encode($options) . ";\n";
+            echo "var bss_tab='" . $tab . "';\n";
+        ?>
+    </script>
 
     <div class="metabox-holder has-right-sidebar">
-        <!-- :todo rebuild side bar into vue.js -->
-        <div class="inner-sidebar" style='margin-top: 48px'>
+        <div class="inner-sidebar" style='margin-top: 44px'>
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
@@ -143,11 +143,58 @@
 
         <div id="post-body">
             <div id='post-body-menu'>
-                <!-- tab container -->
+                <?php foreach($tabs as $key => $item): ?>
+                    <a class='bss-menu-item <?php if($key == $tab) echo 'selected' ?>' href='?page=biblesupersearch&tab=<?php echo $key ?>'><?php echo $item['name'] ?></a>
+                <?php endforeach; ?>
             </div>
 
             <div id="post-body-content">
-                <div id='bss_config_app'></div>
+                <form method="post" action="options.php">
+                    <?php settings_fields( 'aicwebtech_plugin_options' ); ?>
+                    <input type='hidden' name='tab' value='<?php echo $tab ?>' />
+
+                    <div class="postbox tab-content">
+                        <div class='inside'>
+                            <table>
+                                <tr><th colspan="2">Today's Bible SuperSearch API Usage</th></tr>
+                                <tr><th>Daily hits</th><td><?php echo $access_hits; ?></td></tr>
+                                <tr><th>Limit</th><td><?php echo $access_limit; ?></td></tr>
+                                <tr><th>Remaining </th><td><?php echo $access_rem; ?></td></tr>
+                            </table>
+                        </div>
+
+                        <?php if($using_main_api): ?>
+                            <div class='inside' style='font-weight: bold'>
+                                This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
+                                <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
+                                <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>. <br /><br />
+                                Did you know that you can install our API on your server for FREE? &nbsp;Enjoy faster API speed and no usage limits.
+                                Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                            </div>
+                        <?php else: ?>
+                            <div class='inside' style='font-weight: bold'>
+                                Congratulations! &nbsp;You are successfully using this third party installation of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
+                            </div>
+                        <?php endif; ?>
+    
+                        <?php if(!empty($reccomended_plugins)): ?>
+                            <div class='inside'>
+                                Bible SuperSearch recommends these plugins: <br /><br />
+                                <ul>
+                                    <?php foreach($reccomended_plugins as $p): ?>
+                                        <li>
+                                            <a href='plugin-install.php?tab=plugin-information&plugin=<?php echo $p['name']; ?>&TB_iframe=true&width=640&height=500' class='thickbox'><?php echo $p['label'] ?></a>
+                                            &nbsp; <?php echo $p['description'] ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php require_once(dirname(__FILE__) . '/templates/options_docs_temp.php'); ?>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

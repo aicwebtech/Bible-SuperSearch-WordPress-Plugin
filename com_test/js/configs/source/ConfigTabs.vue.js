@@ -2,8 +2,6 @@ import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
     <v-form v-model='formValid' @submit.prevent @submit='submit'>
-        <v-btn class="mt-2" type="submit" >Submit</v-btn>
-
         <v-sheet v-if='formValid === false' class='text-center'>
             <v-alert type="error">Form is not valid</v-alert>
         </v-sheet>
@@ -22,7 +20,12 @@ const tpl = `
                 :class='"pa-4 " + bootstrap.classes.tabs'
             >
                 <v-sheet v-if='tab.type == "config"'>
+                    <v-sheet class='text-center'>
+                        <v-btn class="mt-2" type="submit">Submit</v-btn>
+                    </v-sheet>    
+                    <br />
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
+                    <br />
                     <v-sheet class='text-center'>
                         <v-btn class="mt-2" type="submit">Submit</v-btn>
                     </v-sheet>
@@ -58,7 +61,7 @@ export default {
     computed: {
         tabList() {
             var tabs = this.bootstrap.tabs;
-            tabs.push({name: 'API', id: 'api'});
+            // tabs.push({name: 'API', id: 'api'}); // todo: add API / dashboard tab
             return tabs;
         }
     },

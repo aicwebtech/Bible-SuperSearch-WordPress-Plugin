@@ -491,8 +491,22 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
     public function displayPluginDocumentation() 
     {
-        wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
-        require( dirname(__FILE__) . '/templates/options_docs.php');
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        
+        $options    = $this->getOptions();
+        $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
+
+        $statics = $this->getStatics();
+
+        $download_enabled = (bool) $statics['download_enabled'];
+
+        $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
+        
+        biblesupersearch_enqueue_option();
+        // wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
+        require( dirname(__FILE__) . '/template.options.docs.php');
         return;
     }
 
