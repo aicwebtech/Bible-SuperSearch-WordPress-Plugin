@@ -113,5 +113,21 @@ add_action( 'rest_api_init', function () {
         'callback' => [$BibleSuperSearch_Options, 'getOptions'],
         'permission_callback' => fn() => current_user_can('manage_options')
     ]);
+
+    register_rest_route( 'biblesupersearch/v1', '/config', [
+        'methods' => 'POST',
+        // 'callback' => [$BibleSuperSearch_Options, 'getOptions'],
+        'callback' => function($request) {
+            global $BibleSuperSearch_Options;
+            $data = $request->get_json_params();
+
+            print_r($data);
+            var_dump($request);
+
+            // $BibleSuperSearch_Options->setOptions($data);
+            // return $BibleSuperSearch_Options->getOptions();
+        },
+        'permission_callback' => fn() => current_user_can('manage_options')
+    ]);
 } );
 

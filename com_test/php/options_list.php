@@ -123,6 +123,7 @@ return [
             'type'          => 'integer',
             'default'       => 20,
             'section'       => 'features',
+            'rules'        => ['required', 'positiveInteger'],
         ],    
         'historyLimit' => [
             'label'         => 'History Limit',
@@ -130,6 +131,7 @@ return [
             'type'          => 'integer',
             'default'       => 50,
             'section'       => 'features',
+            'rules'        => ['required', 'positiveInteger'],
         ],
 
         // Autocomplete Settings
@@ -147,6 +149,7 @@ return [
             'default'       => 2,
             'section'       => 'features',
             'row_classes'   => 'autocomplete_toggle',
+            'rules'        => ['required', 'positiveInteger'],
         ],
         'autocompleteMatchAnywhere' => [
             'label'         => 'Autocomplete Match Anywhere',
@@ -164,6 +167,7 @@ return [
             'default'       => 10,
             'section'       => 'features',
             'row_classes'   => 'autocomplete_toggle',
+            'rules'        => ['required', 'positiveInteger'],
         ],
 
         // Strongs / hover dialogs
@@ -173,6 +177,7 @@ return [
             'type'          => 'integer',
             'default'       => 500,
             'section'       => 'features',
+            'rules'        => ['required', 'positiveInteger'],
         ],
         'strongsOpenClick' => [
             'label'         => 'Strong\'s Dialog Open by Click',
@@ -229,7 +234,6 @@ return [
             'label'         => 'Default Language',
             'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
             'type'          => 'select',
-            'multiple'      => true,
             'default'       => 'global_default',
             'section'       => 'general_top',
             'items'         => 'getLanguagesWithGlobalDefault',
@@ -368,7 +372,7 @@ return [
                                 'Takes any valid Bible reference, ie \'John 3:16; Romans 3:23; Genesis 1\'',
             'type'          => 'text',
             'default'       => '',
-            'rules'         => ['required'],
+            'rules'         => ['bibleReference'],
         ],    
         'landingReferenceDefault' => [
             'label'         => 'Use Landing Passage(s) as Default',
@@ -446,6 +450,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
+            'rules'        => ['required', 'integer'],
         ],    
         'pageScrollTopPaddingMobile' => [
             'label'         => 'Scroll Top Padding (Mobile)',
@@ -454,6 +459,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
+            'rules'        => ['required', 'integer'],
         ],    
         'shortcutsShowHidden' => [
             'label'         => 'Show Hidden Shortcuts',
@@ -467,6 +473,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
+            'rules'        => ['required', 'integer'],
         ],    
         'sideSwipeNavHideThresholdBottom' => [
             'label'         => 'Side Buttons Navigation Hide Threshold: Bottom',
@@ -474,6 +481,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
+            'rules'        => ['required', 'integer'],
         ],
         'debug' => [
             'label'         => 'Debug Mode',

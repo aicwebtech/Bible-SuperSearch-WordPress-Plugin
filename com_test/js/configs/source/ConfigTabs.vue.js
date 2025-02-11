@@ -21,7 +21,7 @@ const tpl = `
             >
                 <v-sheet v-if='tab.type == "config"'>
                     <v-sheet class='text-center'>
-                        <v-btn class="mt-2" type="submit">Submit</v-btn>
+                        <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Submit</v-btn>
                     </v-sheet>    
                     <br />
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
@@ -63,6 +63,9 @@ export default {
             var tabs = this.bootstrap.tabs;
             // tabs.push({name: 'API', id: 'api'}); // todo: add API / dashboard tab
             return tabs;
+        },
+        formValidFalse() {
+            return this.formValid === false;
         }
     },
     methods: {
@@ -74,6 +77,18 @@ export default {
             formData.newConfigSave = true;
             
             console.log(formData);
+
+            axios({
+                method: 'post',
+                url: this.bootstrap.configUrl,
+                data: formData
+            }).then((response) => {
+                console.log('response', response);
+                this.formValid = true;
+            }).catch((error) => {
+                console.log('error', error);
+                this.formValid = false;
+            });
         }
     }
 }
