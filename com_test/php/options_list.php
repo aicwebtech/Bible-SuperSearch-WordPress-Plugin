@@ -37,6 +37,9 @@ return [
             'type'          => 'select',
             'default'       => 'default',
         ],            
+        
+        // :Todo replace with extra buttons separate
+        // This will require REMOVING this option from the saved options?
         'extraButtonsSeparate' => [
             'label'         => 'How to Display Extra Buttons',
             'desc'          => 'These include help and download dialog buttons. &nbsp; * Some skins do not support this option.',
@@ -44,6 +47,15 @@ return [
             'type'          => 'select',
             'default'       => 'default',
         ],
+
+        'contextHelpInline' => [
+            'label'         => 'Context Help Inline',
+            'desc'          => 'Whether to show context help inline (relatively-positioned) to the form. Otherwise, context help will be shown in a popup tooltip',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+        ],   
         'formatButtonsToggle' => [
             'label'         => 'Auto-Hide Formatting Buttons',
             'desc'          => 'Formatting buttons will only show when a search is active.',
@@ -51,7 +63,7 @@ return [
             'default'       => false,
             'section'       => 'display',
             'default'       => 'default',
-        ],        
+        ],       
         'includeTestament' => [
             'label'         => 'Include Testament',
             'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',

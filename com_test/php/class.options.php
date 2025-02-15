@@ -1158,7 +1158,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         );
     }    
 
-    public function getFormatButtons() {
+    public function getFormatButtons() 
+    {
         return array(
             'default' => array(
                 'name' => $this->_getDefaultItemText(),
@@ -1181,7 +1182,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         );
     }   
 
-    public function getExtraButtons() {
+    public function getExtraButtons() 
+    {
         return array(
             'default' => array(
                 'name' => $this->_getDefaultItemText(),
@@ -1198,7 +1200,26 @@ abstract class BibleSuperSearch_Options_Abstract {
         );
     }        
 
-    protected function _getDefaultItemText() {
+    public function getExtraButtonsDisplay()
+    {
+        return [
+            'default' => [
+                'name' => $this->_getDefaultItemText(),
+            ],
+            'format' => [
+                'name' => 'Display with Formatting Buttons',
+            ],
+            'separate' => [
+                'name' => 'Display Separatly on the form.  (Some skins may not support this)',
+            ],
+            'none' => [
+                'name' => 'Do not display',
+            ],
+        ];
+    }
+
+    protected function _getDefaultItemText() 
+    {
         return 'Default for Selected Skin';
     }
 }
