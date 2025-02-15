@@ -184,11 +184,13 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.20
+* 
+
 = 5.6.11
 *** Emergency bugfix
 * Default Bible was defaulting to boolean true, causing breakage when installing plugin for the first time.
 * Existing WP sites not affected
-
 
 = 5.6.10
 
