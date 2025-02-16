@@ -104,6 +104,13 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 		}
     }
 
+    public function setOptions($options) 
+    {
+        $options = $this->validateOptions($options);
+        
+        update_option( $this->option_index, $options );
+    }
+
     public function getOptions($dont_set_default = FALSE) 
     {
         $options = get_option( $this->option_index );
@@ -272,8 +279,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     public function validateOptions( $incoming ) 
     {
         $current = $input = $this->getOptions(TRUE);
+
+        if(isset($incoming['_tab'])) {
+            $tab = $incoming['_tab'];
+            unset($incoming['_tab']);
+        } else {
+            $tab  = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+        }
         
-        $tab  = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
         $tabs = $tab == 'all' ? array_keys($this->tabs) : [$tab];
 
         foreach($tabs as $tab) {

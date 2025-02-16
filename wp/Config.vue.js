@@ -15,6 +15,7 @@ const app = createApp({
 });
 
 biblesupersearch_config_bootstrap.configUrl = wpApiSettings.root + 'biblesupersearch/v1/config';
+// biblesupersearch_config_bootstrap.configUrl = '/wp-admin/options.php';
 axios.defaults.headers.common['X-WP-Nonce'] = wpApiSettings.nonce;
 
 app.use(vuetify)

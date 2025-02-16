@@ -121,11 +121,8 @@ add_action( 'rest_api_init', function () {
             global $BibleSuperSearch_Options;
             $data = $request->get_json_params();
 
-            print_r($data);
-            var_dump($request);
-
-            // $BibleSuperSearch_Options->setOptions($data);
-            // return $BibleSuperSearch_Options->getOptions();
+            $BibleSuperSearch_Options->setOptions($data);
+            return $BibleSuperSearch_Options->getOptions();
         },
         'permission_callback' => fn() => current_user_can('manage_options')
     ]);

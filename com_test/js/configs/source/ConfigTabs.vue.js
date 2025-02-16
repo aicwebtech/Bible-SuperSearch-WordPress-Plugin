@@ -1,7 +1,8 @@
 import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
-    <v-form v-model='formValid' @submit.prevent @submit='submit'>
+    <v-form v-model='formValid' @submit.prevent='submit'>
+        {{formValid}}
         <v-sheet v-if='formValid === false' class='text-center'>
             <v-alert type="error">Form is not valid</v-alert>
         </v-sheet>
@@ -69,11 +70,20 @@ export default {
         }
     },
     methods: {
-        submit() {
-            console.log('submit');
+        async submit(e) {
+            await e; // wait for the event to finish
+            
+            console.log('submit', arguments);
+
+            if(this.formValid !== true) {
+                console.log('Form is not valid');
+                return;
+            }
+
+            console.log('Form is valid, submitting');
 
             var formData = this.options
-            formData.tab = 'all';
+            formData._tab = 'all';
             formData.newConfigSave = true;
             
             console.log(formData);
@@ -84,10 +94,10 @@ export default {
                 data: formData
             }).then((response) => {
                 console.log('response', response);
-                this.formValid = true;
+                // this.formValid = true;
             }).catch((error) => {
                 console.log('error', error);
-                this.formValid = false;
+                // this.formValid = false;
             });
         }
     }
