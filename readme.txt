@@ -185,7 +185,13 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 == Changelog ==
 
 = 5.6.20
-* 
+* Different CSS classes for each Bible text
+* Config / User setting to show or hide parallel Bible errors.
+* Preserve user config settings for next session (using Local Storage, not cookies)
+* Config to show contextual help as inline or tooltip. 
+* Bugfix: History showing blank items
+* Bugfix: Bookmarks allowing blank items
+* Bugfix: Fixed breakage of Previous chapter button / swipe
 
 = 5.6.11
 *** Emergency bugfix
