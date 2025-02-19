@@ -114,6 +114,20 @@ return [
             'default'       => false,
             'section'       => 'features',
         ],      
+        'saveUserSettings' => [
+            'label'         => 'Save User\'s Settings',
+            'desc'          => 'Whether to save user\'s settings to appear on next page load (saves to LocalStorage, not cookie)',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+        ],   
+        'omitUserLanguage' => [
+            'label'         => 'Don\'t Save User Language Selection',
+            'desc'          => 'If saving user settings, whether to exclude the user\'s selected Language',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+        ],   
         'legacyManual' => [
             'label'         => 'Legacy User\'s Manual',
             'desc'          => 'Whether to include a link to the legacy User\'s Manual (English only) on the quick start dialog.',
