@@ -141,7 +141,7 @@ export default {
         configIf(config) {
             var prop = this.op(config);
 
-            if(prop.type == 'hidden') {
+            if(prop.type == 'hidden' || prop.hidden) {
                 return false;
             }
 

@@ -59,26 +59,18 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $Options = new static();
         add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
         
-        // add_options_page( 
-        //     'Bible SuperSearch Options (new)', 
-        //     'Bible SuperSearch (new)', 
-        //     'manage_options', 
-        //     'biblesupersearch_new', 
-        //     [$this, 'displayPluginOptionsNew']
-        // );
-
         add_menu_page(
             'Bible SuperSearch',
             'Bible SuperSearch',
             'manage_options',
-            'biblesupersearch_menu',
+            'biblesupersearch',
             [$this, 'displayPluginOptionsNew'],
             'dashicons-book-alt',
-            45
+            76
         );
 
         add_submenu_page(
-            'biblesupersearch_menu',
+            'biblesupersearch',
             'Bible SuperSearch Documentation',
             'Documentation',
             'manage_options',
@@ -87,7 +79,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         );
 
         add_submenu_page(
-            'biblesupersearch_menu',
+            'biblesupersearch',
             'Bible SuperSearch Options (old)',
             'Settings (old)',
             'manage_options',
@@ -97,9 +89,9 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         global $submenu;
 
-		if ( isset( $submenu[ 'biblesupersearch_menu'] ) ) {
+		if ( isset( $submenu[ 'biblesupersearch'] ) ) {
 			// @codingStandardsIgnoreStart
-			$submenu[ 'biblesupersearch_menu' ][0][0] = 'Settings';
+			$submenu[ 'biblesupersearch' ][0][0] = 'Settings';
 			// @codingStandardsIgnoreEnd
 		}
     }

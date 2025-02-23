@@ -168,7 +168,7 @@
         <div id="post-body">
             <div id='post-body-menu'>
                 <?php foreach($tabs as $key => $item): ?>
-                    <a class='bss-menu-item <?php if($key == $tab) echo 'selected' ?>' href='?page=biblesupersearch&tab=<?php echo $key ?>'><?php echo $item['name'] ?></a>
+                    <a class='bss-menu-item <?php if($key == $tab) echo 'selected' ?>' href='?page=biblesupersearch_old&tab=<?php echo $key ?>'><?php echo $item['name'] ?></a>
                 <?php endforeach; ?>
             </div>
 

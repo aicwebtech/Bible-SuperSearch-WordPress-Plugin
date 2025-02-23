@@ -238,11 +238,12 @@ return [
         ],
     ],
     'general' => [
-        'newConfigSave' => [
+        '_newConfigSave' => [
             'label'         => 'Have we saved using the new configs yet?',
             'desc'          => 'This does not shut down the old configs page!',
-            'type'          => 'hidden',
-            'default'       => 'false',
+            'type'          => 'checkbox',
+            'hidden'        => true,
+            'default'       => false,
             'section'       => 'general_top',
             'render'        => false,
         ],
@@ -476,7 +477,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
-            'rules'        => ['required', 'integer'],
+            'rules'        => ['requiredInteger', 'integer'],
         ],    
         'pageScrollTopPaddingMobile' => [
             'label'         => 'Scroll Top Padding (Mobile)',
@@ -485,7 +486,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
-            'rules'        => ['required', 'integer'],
+            'rules'        => ['requiredInteger', 'integer'],
         ],    
         'shortcutsShowHidden' => [
             'label'         => 'Show Hidden Shortcuts',
@@ -499,7 +500,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
-            'rules'        => ['required', 'integer'],
+            'rules'        => ['requiredInteger', 'integer'],
         ],    
         'sideSwipeNavHideThresholdBottom' => [
             'label'         => 'Side Buttons Navigation Hide Threshold: Bottom',
@@ -507,7 +508,7 @@ return [
             'type'          => 'integer',
             'default'       => 0,
             'units'         => 'pixels',
-            'rules'        => ['required', 'integer'],
+            'rules'        => ['requiredInteger', 'integer'],
         ],
         'debug' => [
             'label'         => 'Debug Mode',

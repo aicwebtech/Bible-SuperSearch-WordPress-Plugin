@@ -23,6 +23,7 @@ const tpl = `
                 <v-sheet v-if='tab.type == "config"'>
                     <v-sheet class='text-center'>
                         <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Submit</v-btn>
+                        <v-btn class="mt-2" @click='tmpReset' :color="formValidFalse ? 'error' : 'primary'">Tmp reset</v-btn>
                     </v-sheet>    
                     <br />
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
@@ -55,9 +56,11 @@ export default {
         }
     },
     mounted() {
-        // if(this.options.newConfigSave == 'false' && this.options.parallelBibleLimitByWidth.length > 0) {
-        //     this.options.parallelBibleLimitByWidthEnable = true;
-        // }
+        console.log('mounted options', this.options);
+        
+        if(!this.options._newConfigSave && this.options.parallelBibleLimitByWidth.length > 0) {
+            this.options.parallelBibleLimitByWidthEnable = true;
+        }
     },
     computed: {
         tabList() {
@@ -84,7 +87,52 @@ export default {
 
             var formData = this.options
             formData._tab = 'all';
-            formData.newConfigSave = true;
+            formData._newConfigSave = true;
+
+            if(formData.enableAllLanguages) {
+                formData.languageList = [];
+            }
+
+            if(formData.enableAllBibles) {
+                formData.enabledBibles = [];
+            }
+            
+            console.log(formData);
+
+            axios({
+                method: 'post',
+                url: this.bootstrap.configUrl,
+                data: formData
+            }).then((response) => {
+                console.log('response', response);
+                // this.formValid = true;
+            }).catch((error) => {
+                console.log('error', error);
+                // this.formValid = false;
+            });
+        },
+        
+        
+        tmpReset() {
+            console.log('tmpReset');
+            if(this.formValid !== true) {
+                console.log('Form is not valid');
+                return;
+            }
+
+            console.log('Form is valid, submitting');
+
+            var formData = this.options
+            formData._tab = 'all';
+            formData._newConfigSave = false;
+
+            if(formData.enableAllLanguages) {
+                formData.languageList = [];
+            }
+
+            if(formData.enableAllBibles) {
+                formData.enabledBibles = [];
+            }
             
             console.log(formData);
 
