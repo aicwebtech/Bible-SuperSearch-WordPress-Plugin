@@ -16,10 +16,10 @@ const tpl = `
     <v-row
         v-for='config in tab.options'
     >   
-        <v-col v-if='op(config).label_cols !== 0 && configIf(config)' :cols='op(config).label_cols || 2'>
+        <v-col v-if='op(config).label_cols !== 0 && configIf(config)' :cols='op(config).label_cols || 2' class='text-right mt-3'>
             <b>{{op(config).label}}</b>
         </v-col>
-        <v-col :cols='op(config).comp_cols || 6' v-if='configIf(config)'> 
+        <v-col :cols='op(config).comp_cols || 5' v-if='configIf(config)'> 
             <component 
                 :is='formComponent(config)' 
                 v-model='options[config]'
@@ -48,7 +48,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: true,
+            debug: false,
             rules: Rules
         }
     },

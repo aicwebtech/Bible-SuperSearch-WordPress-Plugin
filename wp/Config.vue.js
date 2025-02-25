@@ -16,7 +16,12 @@ const app = createApp({
 
 biblesupersearch_config_bootstrap.configUrl = wpApiSettings.root + 'biblesupersearch/v1/config';
 // biblesupersearch_config_bootstrap.configUrl = '/wp-admin/options.php';
-axios.defaults.headers.common['X-WP-Nonce'] = wpApiSettings.nonce;
+
+biblesupersearch_config_bootstrap.configHttpHeaders = {
+    'X-WP-Nonce': wpApiSettings.nonce
+};
+
+// axios.defaults.headers.common['X-WP-Nonce'] = wpApiSettings.nonce;
 
 app.use(vuetify)
     .provide('bootstrap', biblesupersearch_config_bootstrap)

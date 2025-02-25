@@ -136,6 +136,12 @@ return [
             'default'       => false,
             'section'       => 'features',
         ],    
+        'bookmarksHistory' => [
+            'label'         => 'Bookmarks and History',
+            'type'          => 'section',
+            'default'       => true,
+            'section'       => 'features',
+        ],
         'bookmarksEnable' => [
             'label'         => 'Enable Bookmarks',
             'desc'          => '',
@@ -161,6 +167,12 @@ return [
         ],
 
         // Autocomplete Settings
+        'autocomplete' => [
+            'label'         => 'Autocomplete',
+            'type'          => 'section',
+            'default'       => true,
+            'section'       => 'features',
+        ],
         'autocompleteEnable' => [
             'label'         => 'Autocomplete Enable',
             'desc'          => 'Whether to enable autocomplete on reference fields.',
@@ -197,6 +209,12 @@ return [
         ],
 
         // Strongs / hover dialogs
+        'strongs' => [
+            'label'         => 'Strong\'s Numbers and Definitions',
+            'type'          => 'section',
+            'default'       => true,
+            'section'       => 'features',
+        ],
         'hoverDelayThreshold' => [
             'label'         => 'Strong\'s Hover Delay Threshold',
             'desc'          => 'Time, in milliseconds, to wait after hovering before opening a hover dialog (ie Strongs)',

@@ -2,7 +2,6 @@ import ConfigTabItem from './ConfigTabItem.vue.js';
 
 const tpl = `
     <v-form v-model='formValid' @submit.prevent='submit'>
-        {{formValid}}
         <v-sheet v-if='formValid === false' class='text-center'>
             <v-alert type="error">Form is not valid</v-alert>
         </v-sheet>
@@ -23,7 +22,7 @@ const tpl = `
                 <v-sheet v-if='tab.type == "config"'>
                     <v-sheet class='text-center'>
                         <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Submit</v-btn>
-                        <v-btn class="mt-2" @click='tmpReset' :color="formValidFalse ? 'error' : 'primary'">Tmp reset</v-btn>
+                        <v-btn v-if='false' class="mt-2" @click='tmpReset' :color="formValidFalse ? 'error' : 'primary'">Tmp reset</v-btn>
                     </v-sheet>    
                     <br />
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
@@ -97,24 +96,13 @@ export default {
                 formData.enabledBibles = [];
             }
             
-            console.log(formData);
-
-            axios({
-                method: 'post',
-                url: this.bootstrap.configUrl,
-                data: formData
-            }).then((response) => {
-                console.log('response', response);
-                // this.formValid = true;
-            }).catch((error) => {
-                console.log('error', error);
-                // this.formValid = false;
-            });
+            this._submitHelper(formData);
         },
         
         
         tmpReset() {
             console.log('tmpReset');
+
             if(this.formValid !== true) {
                 console.log('Form is not valid');
                 return;
@@ -134,14 +122,21 @@ export default {
                 formData.enabledBibles = [];
             }
             
-            console.log(formData);
+            this._submitHelper(formData);
+        },
+        _submitHelper(formData) {
+            console.log('submitHelper', formData);
+
+            var headers = this.bootstrap.configHttpHeaders || {};
 
             axios({
                 method: 'post',
                 url: this.bootstrap.configUrl,
-                data: formData
+                data: formData,
+                headers: headers
             }).then((response) => {
                 console.log('response', response);
+                alert('Settings saved');
                 // this.formValid = true;
             }).catch((error) => {
                 console.log('error', error);
