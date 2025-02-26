@@ -4,8 +4,8 @@
 }
 
 table.bss-paralell-limits thead tr th, table.bss-paralell-limits tbody tr:nth-child(odd) {
-    /* background-color: #ddd; */
-    background-color: rgb(var(--v-theme-secondary)) !important;
+    background-color: #ddd;
+    /* background-color: rgb(var(--v-theme-secondary)) !important; */
 }
 
 table.bss-paralell-limits thead tr th {

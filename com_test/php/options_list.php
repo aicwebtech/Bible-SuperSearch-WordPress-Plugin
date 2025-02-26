@@ -37,7 +37,15 @@ return [
             'type'          => 'select',
             'default'       => 'default',
         ],            
-        
+        'formatButtonsToggle' => [
+            'label'         => 'Auto-Hide Formatting Buttons',
+            'desc'          => 'Formatting buttons will only show when a search is active.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+        ],    
+
         // :Todo replace with extra buttons separate
         // This will require REMOVING this option from the saved options?
         'extraButtonsSeparate' => [
@@ -56,14 +64,6 @@ return [
             'section'       => 'display',
             'default'       => 'default',
         ],   
-        'formatButtonsToggle' => [
-            'label'         => 'Auto-Hide Formatting Buttons',
-            'desc'          => 'Formatting buttons will only show when a search is active.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'display',
-            'default'       => 'default',
-        ],       
         'includeTestament' => [
             'label'         => 'Include Testament',
             'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',
@@ -81,12 +81,13 @@ return [
             'default'       => 'default',
         ],
         'resultsListClickScroll' => [
-            'label'         => 'Results List: Scroll to Clicked Verse',
+            // 'label'         => 'Results List: Scroll to Clicked Verse',
             'desc'          => 'Scroll results list verse to top when clicking on it.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'display',
             'default'       => 'default',
+            'if_conditions' => 'resultsList',
         ],
         'overrideCss' => [
             'label'         => 'Override Styles',
@@ -117,25 +118,20 @@ return [
         ],      
         'saveUserSettings' => [
             'label'         => 'Save User\'s Settings',
+            'sublabel'      => ' ',
             'desc'          => 'Whether to save user\'s settings to appear on next page load (saves to LocalStorage, not cookie)',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
         ],   
         'omitUserLanguage' => [
-            'label'         => 'Don\'t Save User Language Selection',
-            'desc'          => 'If saving user settings, whether to exclude the user\'s selected Language',
+            'sublabel'      => 'Don\'t Save User Language Selection',
+            'desc'          => 'If saving user settings, exclude the user\'s selected Language.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
+            'if_conditions' => 'saveUserSettings',
         ],   
-        'legacyManual' => [
-            'label'         => 'Legacy User\'s Manual',
-            'desc'          => 'Whether to include a link to the legacy User\'s Manual (English only) on the quick start dialog.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'features',
-        ],    
         'bookmarksHistory' => [
             'label'         => 'Bookmarks and History',
             'type'          => 'section',
@@ -175,42 +171,45 @@ return [
         ],
         'autocompleteEnable' => [
             'label'         => 'Autocomplete Enable',
-            'desc'          => 'Whether to enable autocomplete on reference fields.',
+            'desc'          => 'Enable autocomplete on reference fields.',
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'features',
         ],
         'autocompleteThreshold' => [
-            'label'         => 'Autocomplete Threshold',
+            'label'         => 'Threshold',
             'desc'          => 'Minimum number of characters before autocomplete is triggered.',
             'type'          => 'integer',
             'default'       => 2,
             'section'       => 'features',
             'row_classes'   => 'autocomplete_toggle',
             'rules'        => ['required', 'positiveInteger'],
+            'if_conditions' => 'autocompleteEnable',
         ],
         'autocompleteMatchAnywhere' => [
-            'label'         => 'Autocomplete Match Anywhere',
+            'label'         => 'Match Anywhere',
             'sublabel'      => 'Loose Matching',
             'desc'          => 'Whether to match anywhere in the given option / Book name.  &nbsp;Otherwise, we only match at the beginning of the name.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
             'row_classes'   => 'autocomplete_toggle',
+            'if_conditions' => 'autocompleteEnable',
         ],
         'autocompleteMaximumOptions'    => [
-            'label'         => 'Autocomplete Maximum Options',
+            'label'         => 'Maximum Options',
             'desc'          => 'Maximum number of autocomplete options to show at once.',
             'type'          => 'integer',
             'default'       => 10,
             'section'       => 'features',
             'row_classes'   => 'autocomplete_toggle',
-            'rules'        => ['required', 'positiveInteger'],
+            'rules'         => ['required', 'positiveInteger'],
+            'if_conditions' => 'autocompleteEnable',
         ],
 
         // Strongs / hover dialogs
-        'strongs' => [
-            'label'         => 'Strong\'s Numbers and Definitions',
+        'dialogs' => [
+            'label'         => 'Dialogs',
             'type'          => 'section',
             'default'       => true,
             'section'       => 'features',
@@ -237,6 +236,7 @@ return [
         ],
         'strongsDialogSearchLink' => [
             'label'         => 'Strong\'s Dialog Search Link',
+            'sublabel'      => 'Show link to Strong\'s # Search in dialog.',
             'desc'          => 'When clicking the Strong\'s # opens the dialog, should we show a button to access the original search by Strong\'s # link?',
             'type'          => 'checkbox',
             'default'       => true,
@@ -254,6 +254,13 @@ return [
                 'always'    => 'Always use system share dialog (if available), otherwise use generic share dialog (Experimental)',
             ],
         ],
+        'legacyManual' => [
+            'label'         => 'Legacy User\'s Manual',
+            'desc'          => 'Quick Start Dialog: Include link to the legacy manual (English only).',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+        ],    
     ],
     'general' => [
         '_newConfigSave' => [
@@ -309,31 +316,32 @@ return [
         ],
         'swipePageChapter' => [
             'label'         => 'Touchscreen Swipe',
-            'desc'          => 'Enables changing chapter and search page via horizontal touchscreen swipe gesture.',
+            'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',
         ],    
         'arrowKeysPageChapter' => [
             'label'         => 'Arrow Keys',
-            'desc'          => 'Enables changing chapter and search page via left and right arrow keys.',
+            'desc'          => 'Change chapter and search page via left and right arrow keys.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',
         ],
         'sideSwipePageChapter' => [
             'label'         => 'Side Buttons',
-            'desc'          => 'Enables changing chapter and search page via fade-in side buttons.',
+            'desc'          => 'Change chapter and search page via fade-in side buttons.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',
         ],    
         'sideSwipeHideWithNavigationButtons' => [
-            'label'         => 'Side Buttons Hide With Navigation Buttons',
+            // 'label'         => 'Side Buttons Hide With Navigation Buttons',
             'desc'          => 'Hide side buttons when navigation buttons are showing.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',
+            'if_conditions' => 'sideSwipePageChapter',
         ],            
         'defaultDestinationPage' => [
             'label'         => 'Default Destination Page',

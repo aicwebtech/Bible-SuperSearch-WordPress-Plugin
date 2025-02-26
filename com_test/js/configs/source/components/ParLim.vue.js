@@ -2,8 +2,8 @@ const tpl = `
     <table class='bss-paralell-limits'>
         <thead>
             <tr>
-                <th>Minimum Width (in pixels)</th>
-                <th>Maximum Width (in pixels)</th>
+                <th>Minimum Width<br />(in pixels)</th>
+                <th>Maximum Width<br />(in pixels)</th>
                 <th>Maximum Bibles</th>
                 <th>Minimum Bibles</th>
                 <th>Initial Number of Parallel Bibles</th>
@@ -19,40 +19,49 @@ const tpl = `
 
         <tbody>
             <tr v-for='n in count'>
-                <td>
+                <td :class='tdClasses'>
                     <v-text-field 
                         v-model='modelValue[idx(n)].minWidth' 
                         :rules="[required, value => checkMinWidth(value, n) ]"  
                         :read-only="n==1"
                         validate-on='lazy submit'
                         :class='elemClasses'
+                        hide-details='auto'
                     />
                 </td>
-                <td>
-                    <v-text-field read-only :value='calcMax(n)' :class='elemClasses' />
+                <td :class='tdClasses'>
+                    <v-text-field 
+                        read-only 
+                        :value='calcMax(n)' 
+                        :class='elemClasses' 
+                        hide-details='auto'
+                    />
                 </td>
-                <td>
+                <td :class='tdClasses'>
                     <v-text-field 
                         v-model='modelValue[idx(n)].maxBibles' 
                         :rules="[ required, value => checkMaxBibles(value, n) ]"  
                         validate-on='lazy submit'
                         :class='elemClasses'
+                        hide-details='auto'
                     />
                 </td>
-                <td>
+                <td :class='tdClasses'>
                     <v-text-field 
                         v-model='modelValue[idx(n)].minBibles' 
                         :rules="[ required, value => checkMinBibles(value, n) ]"  
                         validate-on='lazy submit'
                         :class='elemClasses'
+                        hide-details='auto'
                     />
                 </td>
-                <td>
+                <td :class='tdClasses'>
                     <v-text-field 
                         v-model='modelValue[idx(n)].startBibles' 
                         :rules="[ required, value => checkStartBibles(value, n) ]"  
                         validate-on='lazy submit'
                         :class='elemClasses'
+                        hide-details='auto'
                     />
                 </td>
             </tr>
@@ -77,7 +86,8 @@ export default {
             count: this.modelValue.length || 1,
             formValid: false,
             validating: {},
-            elemClasses: 'mt-1 ml-3 mr-3',
+            elemClasses: '', // 'mt-1 ml-3 mr-6',
+            tdClasses: 'py-1 px-sm-1 px-md-3 px-lg-6 ',
             validatingDefault: {
                 minWidth: false,
                 maxBibles: false,
@@ -147,11 +157,11 @@ export default {
             var below = this.modelValue[ n ]?.minWidth || null;
 
             if(above && val <= above) {
-                return 'Must be greater than above ' + above;
+                return 'Must be greater than above (' + above + ')';
             }            
 
             if(below && val >= below) {
-                return 'Must be less than below ' + below;
+                return 'Must be less than below (' + below + ')';
             }
 
             return true;
@@ -169,19 +179,19 @@ export default {
             var start = this.modelValue[ n - 1 ]?.startBibles || null;
 
             if(above && val < above) {
-                return 'Must be greater than or equal to above ' + above;
+                return 'Must be greater than or equal to above (' + above + ')';
             }            
 
             if(below && val > below) {
-                return 'Must be less than or equal to below ' + below;
+                return 'Must be less than or equal to below (' + below + ')';
             }
 
             if(min && val < min) {
-                return 'Must be greater than or equal to min Bibles ' + min;
+                return 'Must be greater than or equal to min Bibles (' + min + ')';
             }
 
             if(start && val < start) {
-                return 'Must be greater than or equal to start Bibles ' + start;
+                return 'Must be greater than or equal to start Bibles (' + start + ')';
             }
 
             return true;
@@ -199,19 +209,19 @@ export default {
             var start = this.modelValue[ n - 1 ]?.startBibles || null;
 
             if(above && val < above) {
-                return 'Must be greater than or equal to above ' + above;
+                return 'Must be greater than or equal to above (' + above + ')';
             }            
 
             if(below && val > below) {
-                return 'Must be less than or equal to below ' + below;
+                return 'Must be less than or equal to below (' + below + ')';
             }
 
             if(max && val > max) {
-                return 'Must be less than or equal to max Bibles ' + max;
+                return 'Must be less than or equal to max Bibles (' + max + ')';
             }
 
             if(start && val > start) {
-                return 'Must be less than or equal to start Bibles ' + start;
+                return 'Must be less than or equal to start Bibles (' + start + ')';
             }
 
             return true;
@@ -229,19 +239,19 @@ export default {
             var max = this.modelValue[ n - 1 ]?.maxBibles || null;
 
             if(above && val < above) {
-                return 'Must be greater than or equal to above ' + above;
+                return 'Must be greater than or equal to above (' + above + ')';
             }            
 
             if(below && val > below) {
-                return 'Must be less than or equal to below ' + below;
+                return 'Must be less than or equal to below (' + below + ')';
             }
 
             if(min && val < min) {
-                return 'Must be greater than or equal to min Bibles ' + min;
+                return 'Must be greater than or equal to min Bibles (' + min + ')';
             }
 
             if(max && val > max) {
-                return 'Must be less than or equal to max Bibles ' + max;
+                return 'Must be less than or equal to max Bibles (' + max  + ')';
             }
 
             return true;

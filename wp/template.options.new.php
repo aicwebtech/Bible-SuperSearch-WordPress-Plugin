@@ -34,7 +34,7 @@
 
     <div class="metabox-holder has-right-sidebar">
         <!-- :todo rebuild side bar into vue.js -->
-        <div class="inner-sidebar" style='margin-top: 48px'>
+        <div class="inner-sidebar" style='margin-top: 48px; max-width: 281px; width: 100%'>
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
