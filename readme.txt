@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.21
+* Fixed translation issues on Bookmarks dialog
+
 = 5.6.20
 * Different CSS classes for each Bible text
 * Config / User setting to show or hide parallel Bible errors.
