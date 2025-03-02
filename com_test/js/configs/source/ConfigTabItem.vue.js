@@ -52,7 +52,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: false,
+            debug: true,
             rules: Rules
         }
     },
@@ -146,6 +146,14 @@ export default {
             }
 
             // Special cases
+
+            if(config === 'formatButtonsToggle') {
+                return this.options.formatButtons !== 'none';
+            }
+
+            if(config === 'strongsDialogSearchLink') {
+                return this.options.strongsOpenClick !== 'none';
+            }
 
             // End special cases
 

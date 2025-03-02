@@ -46,8 +46,11 @@ return [
             'default'       => 'default',
         ],    
 
-        // :Todo replace with extra buttons separate
+        // :Todo replace with extraButtonsDisplay?
         // This will require REMOVING this option from the saved options?
+        // Options displayed are for extraButtonsDisplay, but per code this works just fine
+        // Switching the config to extraButtonsDisplay will require extraButtonsSeparate to be REMOVED from the saved options
+        // NO real reason to do this, (extra time/effort for no real benifit) but it would be more consistent with the code
         'extraButtonsSeparate' => [
             'label'         => 'How to Display Extra Buttons',
             'desc'          => 'These include help and download dialog buttons. &nbsp; * Some skins do not support this option.',
@@ -55,17 +58,10 @@ return [
             'type'          => 'select',
             'default'       => 'default',
         ],
-
-        'contextHelpInline' => [
-            'label'         => 'Context Help Inline',
-            'desc'          => 'Whether to show context help inline (relatively-positioned) to the form. Otherwise, context help will be shown in a popup tooltip',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'display',
-            'default'       => 'default',
-        ],   
+  
         'includeTestament' => [
             'label'         => 'Include Testament',
+            'sublabel'      => 'Show "Old Testament" or "New Testament" in references.',
             'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -110,6 +106,7 @@ return [
         ],  
         'limitSearchManual' => [
             'label'         => 'Manual Search Limitation',
+            'sublabel'      => 'Limit Search To Reference ONLY if Selected.',
             'desc'          => 'Limit Search to Reference only if \'Limit Search To\' has been manually selected.' 
                             . '  Otherwise, search will automatically be limited by reference if a reference has been provided.',
             'type'          => 'checkbox',
@@ -118,8 +115,8 @@ return [
         ],      
         'saveUserSettings' => [
             'label'         => 'Save User\'s Settings',
-            'sublabel'      => ' ',
-            'desc'          => 'Whether to save user\'s settings to appear on next page load (saves to LocalStorage, not cookie)',
+            'sublabel'      => 'Selections will appear on future page loads.',
+            'desc'          => 'Whether to save user\'s settings to appear on next page load (saves to LocalStorage, not cookie).',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
@@ -151,6 +148,7 @@ return [
             'type'          => 'integer',
             'default'       => 20,
             'section'       => 'features',
+            'if_conditions' => 'bookmarksEnable',
             'rules'        => ['required', 'positiveInteger'],
         ],    
         'historyLimit' => [
@@ -237,7 +235,8 @@ return [
         'strongsDialogSearchLink' => [
             'label'         => 'Strong\'s Dialog Search Link',
             'sublabel'      => 'Show link to Strong\'s # Search in dialog.',
-            'desc'          => 'When clicking the Strong\'s # opens the dialog, should we show a button to access the original search by Strong\'s # link?',
+            'desc'          => 'When clicking the Strong\'s # opens the dialog instead of searching, ' .
+                                'should we show a button to access the original search by Strong\'s # link?',
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'features',
@@ -254,6 +253,16 @@ return [
                 'always'    => 'Always use system share dialog (if available), otherwise use generic share dialog (Experimental)',
             ],
         ],
+        'contextHelpInline' => [
+            'label'         => 'Context Help Below Item',
+            'sublabel'      => 'Show Contextual Help Below Item',
+            'desc'          => 'Whether to show contextual help below (or inline / relatively-positioned) to the item it\'s describing.' . 
+                                '&nbsp; Otherwise, it will be shown in a popup tooltip near the item (Default).',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+        ], 
         'legacyManual' => [
             'label'         => 'Legacy User\'s Manual',
             'desc'          => 'Quick Start Dialog: Include link to the legacy manual (English only).',
@@ -429,6 +438,7 @@ return [
         ],    
         'landingReferenceDefault' => [
             'label'         => 'Use Landing Passage(s) as Default',
+            'sublabel'      => 'Show landing passage if search is empty.',
             'desc'          => 'If a search is executed with no search keywords or references, should we load the landing passage?',
             'type'          => 'checkbox',
             'default'       => false,
@@ -443,22 +453,25 @@ return [
         ],
         'parallelSearchErrorSuppress' => [
             'label'         => 'Suppress Parallel Search Error',
+            'sublabel'      => 'When searching multiple Bibles, hide errors about specific Bibles.',
             'desc'          => 'When enabled, the "verses from this Bible have been included for comparison" errors won\'t show. ',
             'type'          => 'checkbox',
             'default'       => false,
         ], 
         'parallelSearchErrorSuppressUserConfig' => [
             'label'         => 'Allow Users to Suppress Parallel Search Error',
+            'sublabel'      => 'Show Parallel Search Error Suppression Option',
             'desc'          => 'When enabled, uses will be able to decide whether to show the "verses from this Bible have been included for comparison" errors. ' 
                                 . 'If enabled, Suppress Parallel Search Error will be the default value.',
             'type'          => 'checkbox',
+            'if_conditions' => 'parallelSearchErrorSuppress',
             'default'       => false,
         ], 
 
         // :todo
         'parallelBibleLimitByWidthEnable' => [
             'label'         => 'Limit Parallel Bibles by Width',
-            'desc'          => 'Whether to limit the number of parallel Bibles allowed based on page width.',
+            'desc'          => 'Limit the number of parallel Bibles shown and allowed based on page width.',
             'type'          => 'checkbox',
             'default'       => false,
             'render'        => false,
@@ -471,12 +484,13 @@ return [
             'render'        => false,
             'v_component'   => 'BibleLimitsByWidth',
             'v_no_attr'     => true,
-            'label_cols'    => 1,
+            'label_cols'    => 1, 
             'comp_cols'     => 7,
             'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ],
         'parallelBibleStartSuperceedsDefaultBibles' => [
-            'label'         => 'Initial Number of Parallel Bibles" Superceeds Default Bibles',
+            'label'         => 'Initial Number of Parallel Bibles Superceeds Default Bibles',
+            'sublabel'      => 'Force number of displayed Bibles to match Initial Number.',
             'desc'          => 'Forces the number of parallel Bible selectors displayed initially to always equal the ' . 
                                 '"Initial Number of Parallel Bibles,"regardless to the number of Bibles selected as default.',
             'type'          => 'checkbox',
@@ -497,8 +511,8 @@ return [
             'v_component'   => 'ApiUrl',
         ],   
         'pageScrollTopPadding' => [
-            'label'         => 'Scroll Top Padding (Desktop / Global)',
-            'desc'          => 'Use to adjust the final position of automatic scrolling.  ' . 
+            'label'         => 'Scroll Top Padding',
+            'desc'          => '(Desktop / Global) Use to adjust the final position of automatic scrolling.  ' . 
                                 'A positive value will cause it to scroll further down, negative will scroll it further up.',
             'type'          => 'integer',
             'default'       => 0,
@@ -538,8 +552,9 @@ return [
         ],
         'debug' => [
             'label'         => 'Debug Mode',
-            'desc'          => 'Enables a mulitude of debugging messages in the console. ' . 
-                                'Enabling this will slow things down considerably, and is not recommended for a production site.',
+            'sublabel'      => 'Enable Debugging Messages',
+            'desc'          => 'Enables a mulitude of debugging messages in the console and on the admin panel. ' . 
+                                'Enabling this will slow things down considerably, and is NOT recommended for a production site.',
             'type'          => 'checkbox',
             'default'       => false,
         ],         
