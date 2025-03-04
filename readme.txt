@@ -184,6 +184,10 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.22
+* Fixed issues with confirm dialogs not working in English
+* Fixed buttons disappearing on side of screen on mobile
+
 = 5.6.21
 * Fixed translation issues on Bookmarks dialog
 
