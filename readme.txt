@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.24 
+* Fixed other PHP version specific bugs
+
 = 5.6.23
 * No longer dying out if main API cannot be reached.  This allows users to turn on the debug mode to see what's going on.
 

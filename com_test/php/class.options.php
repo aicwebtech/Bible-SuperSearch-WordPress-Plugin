@@ -630,7 +630,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     public function apiVersion() {
         $statics = $this->getStatics();
-        return $statics['version'];
+        return (is_array($statics) && array_key_exists('version', $statics)) ?  $statics['version'] : '0.0.0';
     }
 
     public function getStatics($force = FALSE) {
@@ -692,6 +692,8 @@ abstract class BibleSuperSearch_Options_Abstract {
                     // Unable to connect to default API! Not dying out here so user can turn on debug
                 }
             }
+
+            return false;
         }
 
         $result['results']['timestamp'] = time();
@@ -754,9 +756,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         
         $eol = '<br />';
 
-        $enable_debug = ($bss_options['debug']) ? '' : ' Webmaster: please enable debug mode on Advanced tab for details';
+        $debug = $bss_options['debug'] || $result === false && $api_url == $this->default_options['apiUrl'];
+        $enable_debug = ($debug) ? '' : ' Webmaster: please enable debug mode on Advanced tab for details';
 
-        if($bss_options['debug']) {
+        if($debug) {
             echo 'Bible SuperSearch API Call Log' . $eol;
             echo 'Action: ' . $action . $eol;
             echo 'URL: ' . $url . $eol;

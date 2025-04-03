@@ -376,8 +376,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $statics = $this->getStatics();
 
         // print_r($statics);
-
-        $download_enabled = (bool) $statics['download_enabled'];
+        if(is_array($statics)) {
+            $download_enabled = (bool) $statics['download_enabled'];
+        }
+        else {
+            $download_enabled = FALSE;
+        }
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
 
