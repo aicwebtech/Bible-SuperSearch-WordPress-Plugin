@@ -452,7 +452,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $statics = $this->getStatics();
         $lang = [];
 
-        if(is_array($statics['bibles'])) {        
+        if(is_array($statics) && is_array($statics['bibles'])) {        
             foreach($statics['bibles'] as $module => &$bible) {
                 $lang[$module] = $bible['lang'];
 
@@ -777,7 +777,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
             echo 'API errors:';
 
-            if(is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
+            if(is_array($result_decoded) && is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
                 echo $eol;
 
                 foreach($result_decoded['errors'] as $e) {

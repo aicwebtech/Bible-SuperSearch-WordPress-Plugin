@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.6.25 
+* Fixed PHP warnings on options page.
+
 = 5.6.24 
 * Fixed other PHP version specific bugs
 

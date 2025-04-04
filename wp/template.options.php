@@ -7,6 +7,7 @@
     if(!isset($statics['access'])) {
         $access_limit = '(unknown)';
         $access_hits = '(unknown)';
+        $access_rem = '(unknown)';
     } else {        
         $access_hits = (int)$statics['access']['hits'];
 
