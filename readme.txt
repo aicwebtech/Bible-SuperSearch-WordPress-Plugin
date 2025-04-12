@@ -184,6 +184,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 5.7.0
+* Added: Gospel verses to Bible Help/SOS dialog
+* Fixed: form double submitting
+* Fixed: Book matching not always working in English
+
 = 5.6.25 
 * Fixed PHP warnings on options page.
 
