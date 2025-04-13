@@ -2,9 +2,9 @@
 Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
-Requires at least: 4.0
+Requires at least: 5.0
 Tested up to: 6.7
-Requires PHP: 5.6
+Requires PHP: 7.3
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -183,6 +183,13 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Plugin Configs: Widgets
 
 == Changelog ==
+
+= 6.0.0
+** BREAKING CHANGES 
+* PHP Version: 7.3 minimum
+* WordPress Version: 5.0 minimum
+* All CSS class names have been renamed to start with bss_
+* Only exception are CSS class names already starting with bss_ or biblesupersearch
 
 = 5.7.0
 * Added: Gospel verses to Bible Help/SOS dialog
