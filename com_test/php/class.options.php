@@ -530,7 +530,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $statics = $this->getStatics();
         $lang = [];
 
-        if(is_array($statics['bibles'])) {        
+        if(is_array($statics) && is_array($statics['bibles'])) {        
             foreach($statics['bibles'] as $module => &$bible) {
                 $lang[$module] = $bible['lang'];
 
@@ -709,7 +709,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     public function apiVersion() {
         $statics = $this->getStatics();
-        return $statics['version'];
+        return (is_array($statics) && array_key_exists('version', $statics)) ?  $statics['version'] : '0.0.0';
     }
 
     public function getStatics($force = FALSE) {
@@ -768,9 +768,11 @@ abstract class BibleSuperSearch_Options_Abstract {
                     echo($msg);
                 }
                 else {
-                    wp_die( __( 'Error: unable to load data from the Bible SuperSearch API server at ' . $url ) );
+                    // Unable to connect to default API! Not dying out here so user can turn on debug
                 }
             }
+
+            return false;
         }
 
         $result['results']['timestamp'] = time();
@@ -833,9 +835,10 @@ abstract class BibleSuperSearch_Options_Abstract {
         
         $eol = '<br />';
 
-        $enable_debug = ($bss_options['debug']) ? '' : ' Webmaster: please enable debug mode for details';
+        $debug = $bss_options['debug'] || $result === false && $api_url == $this->default_options['apiUrl'];
+        $enable_debug = ($debug) ? '' : ' Webmaster: please enable debug mode on Advanced tab for details';
 
-        if($bss_options['debug']) {
+        if($debug) {
             echo 'Bible SuperSearch API Call Log' . $eol;
             echo 'Action: ' . $action . $eol;
             echo 'URL: ' . $url . $eol;
@@ -847,21 +850,18 @@ abstract class BibleSuperSearch_Options_Abstract {
 
             if(isset($curl_info)) {
                 echo 'cURL Info: <pre>';
-
                 print_r($curl_info);
-
                 echo '</pre>' . $eol . $eol;
             }
 
             echo 'API errors:';
 
-            if(is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
+            if(is_array($result_decoded) && is_array($result_decoded['errors']) && !empty($result_decoded['errors'])) {
                 echo $eol;
 
                 foreach($result_decoded['errors'] as $e) {
                     echo '&nbsp; &nbsp; * ' . $e . $eol;
                 }
-
             } else {
                 echo '(NONE)';
             }    
