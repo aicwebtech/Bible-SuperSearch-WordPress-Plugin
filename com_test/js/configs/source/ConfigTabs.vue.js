@@ -21,14 +21,13 @@ const tpl = `
             >
                 <v-sheet v-if='tab.type == "config"'>
                     <v-sheet class='text-center'>
-                        <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Submit</v-btn>
-                        <v-btn v-if='false' class="mt-2" @click='tmpReset' :color="formValidFalse ? 'error' : 'primary'">Tmp reset</v-btn>
+                        <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Save Changes</v-btn>
                     </v-sheet>    
-                    <br />
+                    <br /><br />
                     <ConfigTabItem :tab='tab' :options='options'></ConfigTabItem>
-                    <br />
+                    <br /><br />
                     <v-sheet class='text-center'>
-                        <v-btn class="mt-2" type="submit">Submit</v-btn>
+                        <v-btn class="mt-2" type="submit" :color="formValidFalse ? 'error' : 'primary'">Save Changes</v-btn>
                     </v-sheet>
                 </v-sheet>
                 <v-sheet v-else>

@@ -12,7 +12,7 @@ var components = {
     BibleLimitsByWidth
 };
 
-const tpl = `
+const tpl_l = `
     <v-row
         v-for='config in tab.options'
     >   
@@ -36,6 +36,37 @@ const tpl = `
     </v-row>
 `;
 
+const tpl = `
+    <template v-for='config in tab.options'>
+        <v-sheet 
+            v-if='configIf(config)' 
+            class='mb-4'
+        >
+            <div 
+                v-if='op(config).label_cols !== 0 && configIf(config)' 
+                class='d-inline-block float-left w-25 ma-3'
+                :class="{'text-left': op(config).type == 'section', 'text-right': op(config).type != 'section'}"
+                style='max-width: 200px;'
+            >
+                <b>{{op(config).label}}</b>
+            </div>
+            <div 
+                class='d-inline-block float-left w-50'
+                style='max-width: 500px;'
+            >
+                <component 
+                    :is='formComponent(config)' 
+                    v-model='options[config]'
+                    v-bind='configProps(config)'
+                ></component>
+
+                <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
+            </div>
+            <div style='clear: both;'></div>
+        </v-sheet>
+    </template>
+`;
+
 export default {
     inject: ['bootstrap'],
     template: tpl,
@@ -52,7 +83,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: true,
+            debug: false,
             rules: Rules
         }
     },
