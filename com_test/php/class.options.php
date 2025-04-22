@@ -259,14 +259,11 @@ abstract class BibleSuperSearch_Options_Abstract {
                 
                 $bibles[$bible['lang_short']] = [
                     'role' => 'subheader',
+                    'group' => $bible['lang_short'],
                     'label' => $bible['lang'],
                     'itemProps' => ['disabled' => true, 'role' => 'header'],
                     'header' => 'hh ' . $bible['lang'],
                 ];
-
-
-
-
 
                 // $bibles[$bible['lang_short']] = [
                 //     'label' => $bible['lang'],
@@ -275,6 +272,8 @@ abstract class BibleSuperSearch_Options_Abstract {
 
                 // $bibles[$bible['lang_short']]['children'][] = $bible;
             }
+
+            $bible['group'] = $bible['lang_short'];
             
             $bibles[] = $bible;
         }

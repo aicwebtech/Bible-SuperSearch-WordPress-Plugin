@@ -62,6 +62,7 @@ const tpl = `
 
                 <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
             </div>
+            <div v-if='debug && configIf(config)' class='d-inline-block float-left w-25'>{{options[config]}}</div>
             <div style='clear: both;'></div>
         </v-sheet>
     </template>
@@ -83,7 +84,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: false,
+            debug: true,
             rules: Rules
         }
     },
