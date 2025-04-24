@@ -311,6 +311,7 @@ return [
             'label'         => '',
             'desc'          => 'Sets the display language(s) that can be selected by the user.',
             'type'          => 'select',
+            // 'v_component'   => 'v-autocomplete',
             'default'       => [],
             'section'       => 'general',
             'items'         => 'language',

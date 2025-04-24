@@ -101,7 +101,9 @@ export default {
             var prop = this.op(config);
 
             if(prop.v_component) {
-                if(!components[prop.v_component]) {
+                // console.log(this.vm.$options);
+                
+                if(prop.v_component[0] != 'v' && !components[prop.v_component]) {
                     alert('Component missing ' + prop.v_component);
                 }
 
@@ -145,7 +147,15 @@ export default {
 
             bind['item-title'] = 'label';
             bind['item-value'] = 'value';
-            bind['item-props'] = 'itemProps';
+            // bind['item-props'] = 'itemProps';
+
+            bind['item-props'] = function(item) {
+                var props = item.itemProps || {};
+                props.density = 'compact';
+                // props.variant = 'outlined';
+                return props;
+            }
+
             bind.variant = 'outlined';
             bind.density = 'compact';
             bind.multiple = prop.multiple || false;

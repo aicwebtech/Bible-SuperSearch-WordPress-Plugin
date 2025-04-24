@@ -7,15 +7,21 @@ const tpl = `
         :items="items"
     >
         <template v-slot:prepend-item>
-            <v-list-item
+            <!--<v-list-item
                 title="Select All"
                 @click="toggle"
             >
                 <template v-slot:prepend>
-                <v-checkbox-btn
-                    :indeterminate="someItemsSelected && !allItemsSelected"
-                    :model-value="allItemsSelected"
-                ></v-checkbox-btn>
+                    <v-checkbox-btn
+                        :indeterminate="someItemsSelected && !allItemsSelected"
+                        :model-value="allItemsSelected"
+                    ></v-checkbox-btn>
+                </template>
+            </v-list-item>-->
+            <v-list-item>
+                <template v-slot:default="{ isSelected }">
+                    <v-btn density='compact' @click='selectAllItems'>Select All</v-btn>
+                    <v-btn density='compact' @click='selectNone'>Select None</v-btn>
                 </template>
             </v-list-item>
 
@@ -26,6 +32,8 @@ const tpl = `
             <hr v-if="item.props.role == 'header'" />
             <v-list-subheader v-if="item.props.role == 'header'">
                 {{ item.props.title }}
+                <v-btn @click="selectAllGroup(item.raw.group)">Select All</v-btn>
+                <v-btn @click="selectNoneGroup(item.raw.group)">Select None</v-btn>
                 <span v-if='false' @click="toggleGroup(item.raw.group)">Toggle</span>
             </v-list-subheader>
             <v-divider v-else-if="item.props.role == 'divider'" />
@@ -95,6 +103,24 @@ export default {
             } else {
                 this.$emit('update:modelValue', this.valueItems.map(item => item.value));
             }
+        },
+        selectAllItems() {
+            this.$emit('update:modelValue', this.valueItems.map(item => item.value));
+        },
+        selectNone() {
+            this.$emit('update:modelValue', []);
+        },
+        selectAllGroup(group) {
+            var groupItems = this.valueItems.filter(i => i.group === group);
+            var values = groupItems.map(i => i.value);
+
+            this.$emit('update:modelValue', [...this.modelValue, ...values]);
+        },
+        selectNoneGroup(group) {
+            var groupItems = this.valueItems.filter(i => i.group === group);
+            var values = groupItems.map(i => i.value);
+
+            this.$emit('update:modelValue', this.modelValue.filter(i => !values.includes(i)));
         },
         // Experimental
         toggleGroup(group) {
