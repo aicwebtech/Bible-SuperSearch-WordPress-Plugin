@@ -434,7 +434,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->classes = new \stdclass;
         $bootstrap->classes->tabs = 'postbox tab-content';
         $bootstrap->statics = $this->getStatics(); // Note, statics is an array, not a stdclass ...
-        // $bootstrap->statics['bibles'] = $this->reformatItemsList( $this->getBible(), ['lang_short', 'lang'] );
         $bootstrap->statics['bibles'] = $this->getBiblesForDisplay();
         $bootstrap->statics['languages'] = $this->getLanguages();
         $bootstrap->statics['interfaces'] = $this->getInterfaces(); 

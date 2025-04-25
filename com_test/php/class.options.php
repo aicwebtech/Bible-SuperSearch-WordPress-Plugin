@@ -244,7 +244,7 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected function getBiblesForDisplay()
     {
-        $preformatted = $this->reformatItemsList( $this->getBibles(), ['lang_short', 'lang'] );
+        $preformatted = $this->reformatItemsList($this->getBibles([], 'language_english', 'none'), ['lang_short', 'lang'] );
 
         $bibles = [];
 

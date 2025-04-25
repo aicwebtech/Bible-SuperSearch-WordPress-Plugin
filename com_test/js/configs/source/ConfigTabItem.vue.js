@@ -12,7 +12,7 @@ var components = {
     BibleLimitsByWidth
 };
 
-const tpl_l = `
+const tpl_ = `
     <v-row
         v-for='config in tab.options'
     >   
@@ -46,13 +46,15 @@ const tpl = `
                 v-if='op(config).label_cols !== 0 && configIf(config)' 
                 class='d-inline-block float-left w-25 ma-3'
                 :class="{'text-left': op(config).type == 'section', 'text-right': op(config).type != 'section'}"
-                style='max-width: 200px;'
+                style='max-width: 250px;'
+                :style="{'max-width': op(config).label_width || '250px'}"
             >
                 <b>{{op(config).label}}</b>
             </div>
             <div 
                 class='d-inline-block float-left w-50'
-                style='max-width: 500px;'
+                ssstyle='max-width: {{op(config).comp_width || 500px}};'
+                :style="{'max-width': op(config).comp_width || '500px'}"
             >
                 <component 
                     :is='formComponent(config)' 
@@ -84,7 +86,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: true,
+            debug: false,
             rules: Rules
         }
     },

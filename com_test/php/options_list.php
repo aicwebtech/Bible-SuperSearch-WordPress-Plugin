@@ -314,7 +314,7 @@ return [
             // 'v_component'   => 'v-autocomplete',
             'default'       => [],
             'section'       => 'general',
-            'items'         => 'language',
+            'items'         => 'getLanguages',
             'multiple'      => true,
             'render'        => false, 
             'if_conditions' => 'enableAllLanguages|false',
@@ -487,6 +487,8 @@ return [
             'v_no_attr'     => true,
             'label_cols'    => 1, 
             'comp_cols'     => 7,
+            'label_width'   => '100px', // ??
+            'comp_width'    => '800px', // ??
             'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ],
         'parallelBibleStartSuperceedsDefaultBibles' => [
