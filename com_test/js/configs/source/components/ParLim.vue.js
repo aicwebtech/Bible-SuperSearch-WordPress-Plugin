@@ -4,16 +4,16 @@ const tpl = `
             <tr>
                 <th>Minimum Width<br />(in pixels)</th>
                 <th>Maximum Width<br />(in pixels)</th>
-                <th>Maximum Bibles</th>
-                <th>Minimum Bibles</th>
+                <th>Maximum<br />Parallel Bibles</th>
+                <th>Minimum<br />Parallel Bibles</th>
                 <th>Initial Number of Parallel Bibles</th>
             </tr>
             <tr>
                 <td>Minimum page width.&nbsp; Must start with 0 and be in ascending order.</td>
                 <td>Maximum page width.&nbsp; Automatically calculated.</td>
-                <td>Maximum allowable parallel Bibles at this width.</td>
-                <td>Minimum number of parallel Bible selectors displayed at this width.</td>
-                <td>Number of parallel Bible selectors to iniitally display when the app loads.</td>
+                <td>Maximum number of Bible selectors at this width.</td>
+                <td>Minimum number of Bible selectors at this width.</td>
+                <td>Number of Bible selectors to display when the app loads.</td>
             </tr>
         </thead>
 

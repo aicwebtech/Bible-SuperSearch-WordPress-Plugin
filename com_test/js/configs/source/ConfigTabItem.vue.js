@@ -43,18 +43,17 @@ const tpl = `
             class='mb-4'
         >
             <div 
-                v-if='op(config).label_cols !== 0 && configIf(config)' 
-                class='d-inline-block float-left w-25 ma-3'
+                v-if='op(config).label_width !== 0 && configIf(config)' 
+                class='d-inline-block float-left ma-3'
                 :class="{'text-left': op(config).type == 'section', 'text-right': op(config).type != 'section'}"
-                style='max-width: 250px;'
-                :style="{'max-width': op(config).label_width || '250px'}"
+                :style="{'width': op(config).label_width || '25%','max-width': op(config).label_max_width || '235px'}"
             >
                 <b>{{op(config).label}}</b>
             </div>
             <div 
-                class='d-inline-block float-left w-50'
+                class='d-inline-block float-left'
                 ssstyle='max-width: {{op(config).comp_width || 500px}};'
-                :style="{'max-width': op(config).comp_width || '500px'}"
+                :style="{'width': op(config).comp_width || '50%','max-width': op(config).comp_max_width || '500px'}"
             >
                 <component 
                     :is='formComponent(config)' 

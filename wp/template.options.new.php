@@ -28,12 +28,16 @@
     var biblesupersearch_config_bootstrap = <?php echo json_encode($bootstrap); ?>;
 </script>
 
+<style>
+
+</style>
+
 
 <div class="biblesupersearch-option-tabs wrap">
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
 
     <div class="metabox-holder has-right-sidebar">
-        <!-- :todo rebuild side bar into vue.js -->
+        <!-- :todo make side bar responsive -->
         <div class="inner-sidebar" style='margin-top: 48px; max-width: 281px; width: 100%'>
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>

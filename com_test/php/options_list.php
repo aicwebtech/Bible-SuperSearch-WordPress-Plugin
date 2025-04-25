@@ -485,10 +485,12 @@ return [
             'render'        => false,
             'v_component'   => 'BibleLimitsByWidth',
             'v_no_attr'     => true,
-            'label_cols'    => 1, 
-            'comp_cols'     => 7,
-            'label_width'   => '100px', // ??
-            'comp_width'    => '800px', // ??
+            'label_cols'    => 1, // obsolete
+            'comp_cols'     => 7, // obsolete
+            'label_width'   => '5%', // ??
+            'comp_width'    => '70%', // ??
+            'label_max_width'   => '50px', // ??
+            'comp_max_width'    => '700px', // ??
             'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ],
         'parallelBibleStartSuperceedsDefaultBibles' => [
