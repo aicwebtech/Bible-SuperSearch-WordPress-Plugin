@@ -7,7 +7,7 @@ const tpl = `
         :items="items"
     >
         <template v-slot:prepend-item>
-            <!--<v-list-item
+            <v-list-item
                 title="Select All"
                 @click="toggle"
             >
@@ -17,13 +17,13 @@ const tpl = `
                         :model-value="allItemsSelected"
                     ></v-checkbox-btn>
                 </template>
-            </v-list-item>-->
-            <v-list-item>
-                <template v-slot:default="{ isSelected }">
-                    <v-btn density='compact' @click='selectAllItems'>Select All</v-btn>
-                    <v-btn density='compact' @click='selectNone'>Select None</v-btn>
-                </template>
             </v-list-item>
+            <!--<v-list-item>
+                <template v-slot:default="{ isSelected }">
+                    <v-btn ddensity='compact' @click='selectAllItems'>Select All</v-btn>
+                    <v-btn ddensity='compact' @click='selectNone'>Select None</v-btn>
+                </template>
+            </v-list-item>-->
 
             <v-divider class="mt-2"></v-divider>
         </template>
@@ -31,10 +31,20 @@ const tpl = `
         <template v-slot:item="{ props, item }">
             <hr v-if="item.props.role == 'header'" />
             <v-list-subheader v-if="item.props.role == 'header'">
-                {{ item.props.title }}
-                <v-btn @click="selectAllGroup(item.raw.group)">Select All</v-btn>
-                <v-btn @click="selectNoneGroup(item.raw.group)">Select None</v-btn>
-                <span v-if='false' @click="toggleGroup(item.raw.group)">Toggle</span>
+                <v-checkbox-btn 
+                    :key='item.value'
+                    :model-value='selectAllByGroup[item.raw.group]'
+                    :ddindeterminate="selectAllByGroup[item.raw.group] !== true && selectAllByGroup[item.raw.group] !== false"
+                    :ripple="false"
+                    :tabindex="-1"
+                    @click="toggleGroup(item.raw.group)"
+                    class="d-inline"
+                />
+                
+                <!--<v-icon size='x-small' @click="selectAllGroup(item.raw.group)" icon='mdi-select-all'></v-icon>
+                <v-btn size='x-small' @click="selectNoneGroup(item.raw.group)" icon='mdi-select-remove'></v-btn>-->
+                <!--<span v-if='false' @click="toggleGroup(item.raw.group)">Toggle</span>-->
+                <b>{{ item.props.title }}</b>
             </v-list-subheader>
             <v-divider v-else-if="item.props.role == 'divider'" />
             <v-list-item v-else v-bind="props">
@@ -83,6 +93,7 @@ export default {
     data() {
         return {
             selectAll: false,
+            selectAllByGroup: {},
         }
     },
     computed: {
@@ -94,36 +105,61 @@ export default {
         },
         valueItems() {
             return this.items.filter(item => !!item.value);
+        },
+        groups() {
+            var groups = this.valueItems.map(i => i.group);
+            return [...new Set(groups)];
         }
     },
     methods: {
         toggle() {
             if(this.allItemsSelected) {
-                this.$emit('update:modelValue', []);
+                this.selectNone();
             } else {
-                this.$emit('update:modelValue', this.valueItems.map(item => item.value));
+                this.selectAllItems();
             }
         },
         selectAllItems() {
+            var t = this;
+
+            console.log('groups', this.groups);
+
+            this.groups.forEach((group) => t.selectAllByGroup[group] = true);
             this.$emit('update:modelValue', this.valueItems.map(item => item.value));
         },
         selectNone() {
+            var t = this;
+            
+            this.groups.forEach((group) => t.selectAllByGroup[group] = false);
             this.$emit('update:modelValue', []);
         },
         selectAllGroup(group) {
             var groupItems = this.valueItems.filter(i => i.group === group);
             var values = groupItems.map(i => i.value);
 
-            this.$emit('update:modelValue', [...this.modelValue, ...values]);
+            var valuesWithDuplicates = [...this.modelValue, ...values];
+
+            this.$emit('update:modelValue', [...new Set(valuesWithDuplicates)]);
+            this.selectAllByGroup[group] = true;
         },
         selectNoneGroup(group) {
             var groupItems = this.valueItems.filter(i => i.group === group);
             var values = groupItems.map(i => i.value);
 
             this.$emit('update:modelValue', this.modelValue.filter(i => !values.includes(i)));
+            this.selectAllByGroup[group] = false;
         },
         // Experimental
         toggleGroup(group) {
+            if(this.selectAllByGroup[group]) {
+                this.selectNoneGroup(group);
+            } else {
+                this.selectAllGroup(group);
+            }
+
+            return;
+            
+            
             console.log('group', group, this.valueItems);
             
             var groupItems = this.valueItems.filter(i => i.group === group);
@@ -134,7 +170,9 @@ export default {
 
             console.log(groupItems, values);
 
-            this.$emit('update:modelValue', [...this.modelValue, ...values]);
+            var valuesWithDuplicates = [...this.modelValue, ...values];
+
+            this.$emit('update:modelValue', [...new Set(valuesWithDuplicates)]);
 
 
             

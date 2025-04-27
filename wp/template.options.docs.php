@@ -3,6 +3,8 @@
     global $BibleSuperSearch_Options;
     $api_version = (float) $BibleSuperSearch_Options->apiVersion();
     $statics = $BibleSuperSearch_Options->getStatics();
+    list($api_ready, $api_checklist) = $BibleSuperSearch_Options->apiRequirementsCheck();
+
 
     if(!isset($statics['access'])) {
         $access_limit = '(unknown)';
@@ -25,7 +27,7 @@
 
 <div class="biblesupersearch-option-tabs wrap">
     <div class="icon32" id="icon-options-general"><br></div>
-    <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
+    <h1><?php esc_html_e( 'Bible SuperSearch Documentation', 'biblesupersearch' ); ?></h1>
     <script>
         <?php
             echo "var bss_options=" . json_encode($options) . ";\n";
@@ -169,7 +171,50 @@
                                 <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
                                 <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>. <br /><br />
                                 Did you know that you can install our API on your server for FREE? &nbsp;Enjoy faster API speed and no usage limits.
-                                Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                                
+                                <?php if($api_ready): ?>
+                                    Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                                <?php endif; ?>
+                            </div>
+                            <div class='inside' style='font-weight: bold'>
+                                <?php if($api_ready): ?>
+                                    Congratulations, your website meets the basic requirements to install the BibleSuperSearch API, see list below.
+                                <?php else: ?>
+                                    <span style='color: red'>Warning! &nbsp;Please resolve the following before attempting to install the BibleSuperSearch API. &nbsp;</span>
+
+                                    You will need to have your webhost upgrade or enable the missing items. 
+                                <?php endif; ?>
+                                <br /><br />
+
+                                <table>
+                                    <?php foreach($api_checklist as $row): ?>
+                                        <?php $rowcount ++; ?>
+
+                                        <?php if($row['type'] == 'header'): ?>
+                                            <tr><th colspan='2'><?php echo $row['label']; ?></th></tr>        
+                                        <?php elseif($row['type'] == 'error'): ?>
+                                            <tr><th colspan='2' class='bad'><?php echo $row['label']; ?></th></tr>
+                                        <?php elseif($row['type'] == 'hr'): ?>
+                                            <tr><td colspan='2'><hr /></td></tr>
+                                        <?php else: ?>
+                                            <tr <?php if($rowcount %2 == 0):?>class='zebra'<?php endif;?> >
+                                                <td><?php echo $row['label']; ?></td>
+                                                <?php if($row['success'] === NULL): ?>
+                                                    <td class='ok'>Okay</td>
+                                                <?php elseif($row['success'] == TRUE): ?>
+                                                    <td class='good'>Good</td>
+                                                <?php else: ?>
+                                                    <td class='bad'>Bad</td>
+                                                <?php endif; ?>
+                                            </tr>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+
+                                </table>
+
+                                <?php if($api_ready): ?>
+                                    <br />Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                                <?php endif; ?>
                             </div>
                         <?php else: ?>
                             <div class='inside' style='font-weight: bold'>

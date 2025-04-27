@@ -62,7 +62,6 @@ export default {
                         },
                         withCredentials: false
                     }).then(function(response) {
-                        console.log('response', response);
                         t.loading = false;
 
                         var data = response.data,
@@ -90,12 +89,11 @@ export default {
 
                     }).catch(function(error) {
                         t.loading = false;
-                        // console.log('error', error);
                         alert('Error:\nCannot load URL \'' + nv + '\',\nreverting to original.');
                         t.$emit('update:modelValue', ov);
                     });
                 } else {
-                    t.$emit('update:modelValue', 'https://api.biblesupersearch.com/');
+                    t.$emit('update:modelValue', 'https://api.biblesupersearch.com');
                 }
             }
         }

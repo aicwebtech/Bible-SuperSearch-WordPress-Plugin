@@ -57,10 +57,10 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     public function pluginMenu() 
     {
         $Options = new static();
-        add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
+        //add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
         
         add_menu_page(
-            'Bible SuperSearch',
+            'Bible 1',
             'Bible SuperSearch',
             'manage_options',
             'biblesupersearch',
@@ -98,6 +98,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
     public function setOptions($options) 
     {
+        $this->refresh_statics = false;
         $options = $this->validateOptions($options);
         
         update_option( $this->option_index, $options );
@@ -370,6 +371,10 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             $input['apiUrl'] = $this->default_options['apiUrl'];
         }
 
+        if($input['apiUrl'] != $current['apiUrl']) {
+            $this->refresh_statics = true;
+        }
+
         $this->_setStaticsReset(); // Always Force Reload statics when options saved
 
         // if($current['apiUrl'] != $input['apiUrl']) {
@@ -439,14 +444,25 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->statics['interfaces'] = $this->getInterfaces(); 
 
 
-        // wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
-        // wp_enqueue_script_module('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
-        wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
-        wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
-        wp_enqueue_script('biblesupersearch_axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
-        wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
+        wp_enqueue_script('biblesupersearch_vue', plugins_url('../com_test/js/bin/vue_3.5.13.global.js', __FILE__));
+        wp_enqueue_script('biblesupersearch_vuetify', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.js', __FILE__));
+        wp_enqueue_script('biblesupersearch_axios', plugins_url('../com_test/js/bin/axios_1.9.0.min.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_vuetify_css', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.css', __FILE__));
+        
+        // Pulling icons font locally isn't working, 
+        // :todo see how I got this working on the API ... 
+        // wp_enqueue_style('biblesupersearch_mdi_css', plugins_url('../com_test/js/bin/materialdesignicons_5.x.min.css', __FILE__));
+        
+        // Including JS / Styles via CDN apparently not allowed per WordPress plugin guidelines?
+        // Leaving CDN links here for reference and testing new versions before adopting locally ... 
+        // wp_enqueue_script('biblesupersearch_vue', 'https://unpkg.com/vue@3/dist/vue.global.js');
+        // wp_enqueue_script('biblesupersearch_vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.js');
+        // wp_enqueue_script('biblesupersearch_axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
+        // wp_enqueue_style('biblesupersearch_vuetify_css', 'https://cdn.jsdelivr.net/npm/vuetify@3.7.6/dist/vuetify.min.css');
+
+        // Including fonts via CDN IS allowed per WordPress plugin guidelines
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
-        // wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('../com_test/js/configs/ConfigApp.vue.js', __FILE__));
+
         wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('./Config.vue.js', __FILE__));
         wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('../com_test/js/configs/assets/style.css', __FILE__));
 

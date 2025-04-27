@@ -135,12 +135,22 @@ export default {
                 headers: headers
             }).then((response) => {
                 console.log('response', response);
-                alert('Settings saved');
+
+                if(response?.data?.refresh) {
+                    alert('Settings saved, page will refresh');
+                    this.refreshStatics();
+                } else {
+                    alert('Settings saved');
+                }
+
                 // this.formValid = true;
             }).catch((error) => {
                 console.log('error', error);
                 // this.formValid = false;
             });
+        },
+        refreshStatics() {
+            location.reload();
         }
     }
 }

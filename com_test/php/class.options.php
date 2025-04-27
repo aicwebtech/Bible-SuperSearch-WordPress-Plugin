@@ -143,6 +143,8 @@ abstract class BibleSuperSearch_Options_Abstract {
             'backend_dynamic'   => true,
         ],
     ];
+
+    public $refresh_statics = false;
     
     public function __construct() 
     {
@@ -782,6 +784,61 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected function _afterFetchStatics($result) {
         // Persist to DB!
+    }
+
+    public function apiRequirementsCheck() 
+    {
+        $api_url = $this->default_options['apiUrl'];
+
+        if(empty($api_url)) {
+            return [false, []];
+        }
+
+        $result = $this->_apiActionHelper('requirements', $api_url, []);
+
+        if($result === FALSE) {
+            return [false, []];
+        }
+
+        $req = $result['results'];
+
+        $php_success = (version_compare(phpversion(), $req['php_version'], '>=') == -1);
+        $installed_php_parts = explode('.', PHP_VERSION);
+        $installed_php = $installed_php_parts[0] . '.' . $installed_php_parts[1] . '.' . (int)$installed_php_parts[2];
+
+        $checklist = [];
+
+        $checklist[] = ['type' => 'item', 'label' => 'PHP Version >= ' . $req['php_version'] . ' (Current = ' . $installed_php . ')', 'success' => $php_success];
+
+        $req_extensions = $req['php_extensions_required'];
+        $rec_extensions = $req['php_extensions_recommended'];
+
+        // :Todo - handle differences between WP and other CMS 
+        // API requires MySQL 
+        // WP uses MySQL so we know it will be present
+        $req_extensions[] = 'PDO_MYSQL';
+
+        sort($req_extensions);
+        sort($rec_extensions);
+
+        foreach($req_extensions as $ext) {
+            $checklist[] = ['type' => 'item', 'label' => 'PHP Extension: ' . $ext, 'success' => extension_loaded($ext)];
+        }
+
+        foreach($rec_extensions as $ext) {
+            $checklist[] = ['type' => 'item', 'label' => 'PHP Extension: ' . $ext . ' (recommended)', 'success' => extension_loaded($ext) ?: NULL];
+        }
+
+        $success = true;
+
+        foreach($checklist as $row) {
+            if($row['type'] == 'item' && $row['success'] === false) {
+                $success = false;
+                break;
+            }
+        }
+
+        return [$success, $checklist];
     }
 
     protected function _apiActionHelper($action, $api_url, $data) 
