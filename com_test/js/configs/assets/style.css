@@ -1,6 +1,16 @@
 
-.v-select .v-field .v-field__input>input {
+.vv-select .v-field .v-field__input>input {
     border: 0 !important;
+}
+
+.v-select .v-field .v-field__input>input {
+    border: 2px solid transparent !important;
+}
+
+.v-select .v-field .v-field__input>input:focus {
+    box-shadow: 0 !important;
+    border: 0 !important;
+    background-color: white;
 }
 
 table.bss-paralell-limits thead tr th, table.bss-paralell-limits tbody tr:nth-child(odd) {

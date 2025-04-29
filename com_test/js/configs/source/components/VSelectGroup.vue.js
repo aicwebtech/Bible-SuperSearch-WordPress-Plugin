@@ -1,4 +1,3 @@
-
 const tpl = `
     <v-select 
         :modelValue="modelValue" 
@@ -6,7 +5,7 @@ const tpl = `
         multiple
         :items="items"
     >
-        <template v-slot:prepend-item>
+        <template v-slot:prepend-item v-if="showSelectAll">
             <v-list-item
                 title="Select All"
                 @click="toggle"
@@ -37,6 +36,7 @@ const tpl = `
                     :ddindeterminate="selectAllByGroup[item.raw.group] !== true && selectAllByGroup[item.raw.group] !== false"
                     :ripple="false"
                     :tabindex="-1"
+                    color="primary"
                     @click="toggleGroup(item.raw.group)"
                     class="d-inline"
                 />
@@ -54,6 +54,7 @@ const tpl = `
                         :key='item.value'
                         :model-value='isSelected'
                         :ripple="false"
+                        color="primary"
                         :tabindex="-1"
                     />
                 </template>
@@ -62,22 +63,6 @@ const tpl = `
     </v-select>
 `;
 
-/*
-            {{data}}
-            <v-list-subheader v-if="data.header">
-                {{ data.props.header }}
-            </v-list-subheader>
-            <v-divider v-else-if="data.divider" />
-
-        <template #item="{ data }">
-            <v-list-item v-bind="data"></v-list-item>
-        </template>
-
-        <template v-slot:item="{ props, item }">
-            <v-list-item v-bind="props"></v-list-item>
-        </template>
-
-*/
 
 export default {
     inject: ['bootstrap'],
@@ -93,6 +78,7 @@ export default {
     data() {
         return {
             selectAll: false,
+            showSelectAll: false, // todo make this a prop
             selectAllByGroup: {},
         }
     },
@@ -156,31 +142,6 @@ export default {
             } else {
                 this.selectAllGroup(group);
             }
-
-            return;
-            
-            
-            console.log('group', group, this.valueItems);
-            
-            var groupItems = this.valueItems.filter(i => i.group === group);
-
-
-
-            var values = groupItems.map(i => i.value);
-
-            console.log(groupItems, values);
-
-            var valuesWithDuplicates = [...this.modelValue, ...values];
-
-            this.$emit('update:modelValue', [...new Set(valuesWithDuplicates)]);
-
-
-            
-            // if(this.modelValue.includes(item.value)) {
-            //     this.$emit('update:modelValue', this.modelValue.filter(i => i !== item.value));
-            // } else {
-            //     this.$emit('update:modelValue', [...this.modelValue, item.value]);
-            // }
         }
     }
 }
