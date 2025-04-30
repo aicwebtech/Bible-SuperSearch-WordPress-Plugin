@@ -442,12 +442,22 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->statics['bibles'] = $this->getBiblesForDisplay();
         $bootstrap->statics['languages'] = $this->getLanguages();
         $bootstrap->statics['interfaces'] = $this->getInterfaces(); 
+        $bootstrap->configHttpHeaders = new \stdclass;
+        $bootstrap->configHttpHeaders->{'X-WP-Nonce'} = wp_create_nonce( 'wp_rest' );
+        $bootstrap->configUrl = esc_url_raw( rest_url() ) . 'biblesupersearch/v1/config';
+
+
 
 
         wp_enqueue_script('biblesupersearch_vue', plugins_url('../com_test/js/bin/vue_3.5.13.global.js', __FILE__));
         wp_enqueue_script('biblesupersearch_vuetify', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.js', __FILE__));
         wp_enqueue_script('biblesupersearch_axios', plugins_url('../com_test/js/bin/axios_1.9.0.min.js', __FILE__));
         wp_enqueue_style('biblesupersearch_vuetify_css', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.css', __FILE__));
+
+        wp_localize_script( 'wp-api', 'wpApiSettings', array(
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' )
+        ) );
         
         // Pulling icons font locally isn't working, 
         // :todo see how I got this working on the API ... 
@@ -464,6 +474,12 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
 
         wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('./Config.vue.js', __FILE__));
+
+        // wp_localize_script( 'biblesupersearch_vue_config', 'wpApiSettings', array(
+        //     'root' => esc_url_raw( rest_url() ),
+        //     'nonce' => wp_create_nonce( 'wp_rest' )
+        // ) );
+
         wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('../com_test/js/configs/assets/style.css', __FILE__));
 
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {

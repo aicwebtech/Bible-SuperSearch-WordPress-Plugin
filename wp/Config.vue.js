@@ -14,12 +14,13 @@ const app = createApp({
     },
 });
 
-biblesupersearch_config_bootstrap.configUrl = wpApiSettings.root + 'biblesupersearch/v1/config';
-// biblesupersearch_config_bootstrap.configUrl = '/wp-admin/options.php';
+// apparentely, wpApiSettings is not standard
 
-biblesupersearch_config_bootstrap.configHttpHeaders = {
-    'X-WP-Nonce': wpApiSettings.nonce
-};
+//// biblesupersearch_config_bootstrap.configUrl = wpApiSettings.root + 'biblesupersearch/v1/config';
+
+// biblesupersearch_config_bootstrap.configHttpHeaders = {
+//     'X-WP-Nonce': wpApiSettings.nonce
+// };
 
 // axios.defaults.headers.common['X-WP-Nonce'] = wpApiSettings.nonce;
 

@@ -1,16 +1,28 @@
-
-.vv-select .v-field .v-field__input>input {
-    border: 0 !important;
+.v-form {
+    background-color: black;
+    color: white;
 }
 
+
 .v-select .v-field .v-field__input>input {
-    border: 2px solid transparent !important;
+    border: 0 !important; */
+    line-height: 10px;
+    /* border: 2px solid #c7a589 !important; */
+    
+    /* the styleing we don't want, need to override
+    border-color:#c7a589;box-shadow:0 0 0 1px #c7a589
+}
+
+.vv-select .v-field .v-field__input>input {
+    border: 3px solid green !important;
+    height: 8px !important;
+    /* border-color: transparent !important; */
 }
 
 .v-select .v-field .v-field__input>input:focus {
     box-shadow: 0 !important;
     border: 0 !important;
-    background-color: white;
+    /* border: 0 !important; */
 }
 
 table.bss-paralell-limits thead tr th, table.bss-paralell-limits tbody tr:nth-child(odd) {

@@ -1,3 +1,11 @@
+input:focus {
+    /* background-color: cyan; */
+    border: 1px solid #006799;
+    border-color: transparent !important;
+    border-style: none;
+    box-shadow: none !important;
+}
+
 .biblesupersearch_enabled_bible {
     height: 300px;
     width: 450px;
