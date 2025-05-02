@@ -56,9 +56,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
     public function pluginMenu() 
     {
-        $Options = new static();
-        //add_options_page( 'Bible SuperSearch Options', 'Bible SuperSearch', 'manage_options', 'biblesupersearch', array($this, 'displayPluginOptions'));
-        
+
         add_menu_page(
             'Bible 1',
             'Bible SuperSearch',
@@ -76,15 +74,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             'manage_options',
             'biblesupersearch_docs',
             [$this, 'displayPluginDocumentation']
-        );
-
-        add_submenu_page(
-            'biblesupersearch',
-            'Bible SuperSearch Options (old)',
-            'Settings (old)',
-            'manage_options',
-            'biblesupersearch_old',
-            [$this, 'displayPluginOptions']
         );
 
         global $submenu;
@@ -148,125 +137,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         // Flush rewrite cache
         // flush_rewrite_rules( true );
-    }
-
-    public function renderOptions($tab, $section = null, $option_list = [])
-    {
-        if(!isset($this->tabs[$tab])) {
-            return false;
-        }
-
-        if(!$option_list) {
-            $option_list = $this->tabs[$tab]['options'];
-        }
-
-        $list = $this->options_list[$tab];
-        $options = $this->getOptions();
-
-        foreach($option_list as $f) {
-            if(!isset($list[$f])) {
-                continue;
-            }
-
-            $o = $list[$f];
-
-            if($section && (!isset($o['section']) || $o['section'] != $section)) {
-                continue;
-            }
-
-            if(isset($o['render']) && $o['render'] === false) {
-                continue;
-            }
-
-            // todo - get class info, have class render field
-            // $class = $this->makeOptionClass($list[$field]);
-            $id = $o['id'] ?? 'biblesupersearch_' . $f;
-
-            $row_classes = isset($o['row_classes']) ? "class='" . $o['row_classes'] . "'" : '';
-
-            ?>
-                <tr <?php echo $row_classes; ?> >
-                    <th scope="row" style='vertical-align: top;'>
-                        <label for='<?php echo $id ?>'><?php esc_html_e( $o['label'], 'biblesupersearch' ); ?></label>
-                    </th>
-            <?php
-
-            switch($o['type']) {
-                case 'section':
-                    // do nothing more
-                    break;
-                case 'checkbox':
-                    ?>
-                        <td>
-                            <input id='<?php echo $id; ?>' type='checkbox' name='biblesupersearch_options[<?php echo $f; ?>]' value='1' 
-                                <?php if($options[$f] ) : echo "checked='checked'"; endif; ?>  /> 
-                            <small>
-                                <label for='<?php echo $id ?>'><?php echo $o['desc']?></label>
-                            </small>
-                        </td>
-                    <?php
-
-                    break;
-                case 'text':
-                case 'integer':
-                case 'int':
-                    ?>
-                        <td>
-                            <input 
-                                id='<?php echo $id; ?>' 
-                                name='biblesupersearch_options[<?php echo $f; ?>]' 
-                                value='<?php echo $options[$f]?>' 
-                                style='width:50%' 
-                            />
-                            <p>
-                                <small>
-                                    <?php echo $o['desc']?>
-                                </small>
-                            </p>
-                        </td>
-                    <?php
-
-                    break;                
-                case 'textarea':
-                    ?>
-                        <td>
-                            <small>
-                                <?php echo $o['desc']?>
-                            </small><br /><br />
-
-                            <textarea 
-                                name='biblesupersearch_options[<?php echo $f; ?>]' 
-                                style='width:700px; height: 400px'
-                            ><?php echo $options[$f] ?: '' ?></textarea>
-                        </td>
-                    <?php
-
-                    break;
-                case 'select':
-                    ?>
-                        <td>
-                            <select name='biblesupersearch_options[<?php echo $f; ?>]' id='biblesupersearch_options[<?php echo $f; ?>]'>
-                                <?php foreach($o['items'] as $key => $opt): ?>
-                                    <option value='<?php echo $opt['value']; ?>' <?php if($options[$f] == $opt['value']): echo "selected=selected"; endif; ?> >
-                                        <?php echo $opt['label']; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <p>
-                                <small>
-                                    <?php echo $o['desc']?>
-                                </small>
-                            </p>
-                        </td>
-                    <?php
-
-                    break;
-            }
-
-            ?>
-                </tr>
-            <?php
-        }
     }
 
     public function validateOptions( $incoming ) 
@@ -377,10 +247,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $this->_setStaticsReset(); // Always Force Reload statics when options saved
 
-        // if($current['apiUrl'] != $input['apiUrl']) {
-            // $this->_setStaticsReset(); // Force Reload statics here if URL changed
-        // }
-
         return $input;
     }
 
@@ -490,47 +356,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         return;
     }    
 
-    public function displayPluginOptions() 
-    {
-        $tabs = $this->tabs;
-        $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
-
-        if ( ! isset( $_REQUEST['settings-updated'] ) ) {
-            $_REQUEST['settings-updated'] = FALSE;
-        }
-
-        if ( !current_user_can( 'manage_options' ) )  {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-        }
-
-        if(!$tabs[ $tab ]) {
-            wp_die( __( 'Invalid tab.' ) );
-        }
-;
-        biblesupersearch_enqueue_option();
-        $options    = $this->getOptions();
-        $bibles     = $this->getBible();
-        $interfaces = $this->getInterfaces(); 
-        $languages  = $this->getLanguages();
-         
-        $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
-
-        $statics = $this->getStatics();
-
-        // print_r($statics);
-        if(is_array($statics)) {
-            $download_enabled = (bool) $statics['download_enabled'];
-        }
-        else {
-            $download_enabled = FALSE;
-        }
-
-        $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
-
-        require( dirname(__FILE__) . '/template.options.php');
-        return;
-    }
-
     public function displayPluginDocumentation() 
     {
         if ( !current_user_can( 'manage_options' ) )  {
@@ -546,8 +371,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
         
-        biblesupersearch_enqueue_option();
-        // wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
         require( dirname(__FILE__) . '/template.options.docs.php');
         return;
     }
@@ -582,6 +406,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         return $pages;
     }
 
+    // still in use (by widget)
     public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
         global $wpdb;
 

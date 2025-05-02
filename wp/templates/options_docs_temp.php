@@ -1,3 +1,4 @@
+<!-- "TEMPORARY" FILE, NOT DEPRICATED -->
 <div class="inside bss-docs">
     <table class="form-table">
         <tr><td colspan='2'><h2><?php esc_html_e( 'Documentation', 'biblesupersearch' ); ?></h2></td></tr>

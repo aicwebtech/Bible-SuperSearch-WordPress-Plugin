@@ -1,5 +1,10 @@
 <?php
 
+// Depricated items
+// * render
+// * section
+// * row_classes ? (not used in vue app, but could be?)
+
 return [
     'display' => [
         'textDisplayDefault' => [

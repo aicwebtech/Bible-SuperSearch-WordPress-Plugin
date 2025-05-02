@@ -1,3 +1,4 @@
+DEPRICATED (template.options.php)
 <?php
     // global $options, $bibles, $interfaces;
     global $BibleSuperSearch_Options;

@@ -12,30 +12,6 @@ var components = {
     BibleLimitsByWidth
 };
 
-const tpl_ = `
-    <v-row
-        v-for='config in tab.options'
-    >   
-        <v-col 
-            v-if='op(config).label_cols !== 0 && configIf(config)' 
-            :cols='op(config).label_cols || 2' 
-            :class='op(config).type == "section" ? "text-left mt-3" : "text-right mt-3"'
-        >
-            <b>{{op(config).label}}</b>
-        </v-col>
-        <v-col :cols='op(config).comp_cols || 5' v-if='configIf(config)'> 
-            <component 
-                :is='formComponent(config)' 
-                v-model='options[config]'
-                v-bind='configProps(config)'
-            ></component>
-
-            <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
-        </v-col>
-        <v-col v-if='debug && configIf(config)' cols='4'>{{options[config]}}</v-col>
-    </v-row>
-`;
-
 const tpl = `
     <template v-for='config in tab.options'>
         <v-sheet 
