@@ -53,7 +53,7 @@ const tpl = `
             <div 
                 class='d-inline-block float-left'
                 ssstyle='max-width: {{op(config).comp_width || 500px}};'
-                :style="{'width': op(config).comp_width || '50%','max-width': op(config).comp_max_width || '500px'}"
+                :style="{'width': op(config).comp_width || '50%','max-width': op(config).comp_max_width || '550px'}"
             >
                 <component 
                     :is='formComponent(config)' 
