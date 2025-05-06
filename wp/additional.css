@@ -25,19 +25,18 @@ table.biblesupersearch_render_table {
 
 .biblesupersearch_render_table th {
     font-weight: bold;
-    /*font-size: 1em;*/
 }
 
-.biblesupersearch_render_table td {
-    /*font-size: 1em;*/
-}
-
-td.ver {
+td.bss_ver {
     width: initial;
 }
 
-td.ver sup {
+td.bss_ver sup {
     white-space: nowrap;
+}
+
+.bss_expander_row button {
+    color: black;
 }
 
 table.biblesupersearch_classic_form {
@@ -54,8 +53,3 @@ table.biblesupersearch_classic_form th, table.biblesupersearch_classic_form td {
 .biblesupersearch_main .format_buttons_html {
     color: black;
 }
-
-.biblesupersearch_main button, .biblesupersearch_main input, .biblesupersearch_main select, .biblesupersearch_main textarea {
-    /*padding: initial;*/
-}
-
