@@ -54,8 +54,10 @@ function biblesupersearch_enqueue_option() {
     wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/options.css', __FILE__));
 }
 
-function biblesupersearch_add_settings_link( $links ) {
-    $settings_link = '<a href="options-general.php?page=biblesupersearch">' . __( 'Settings' ) . '</a>';
+/* Adds settings link to plugin page */
+function biblesupersearch_add_settings_link( $links ) 
+{
+    $settings_link = '<a href="admin.php?page=biblesupersearch">' . __( 'Settings' ) . '</a>';
     array_unshift( $links, $settings_link );
     return $links;
 }
