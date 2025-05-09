@@ -83,6 +83,7 @@ return [
         ],
         'resultsListClickScroll' => [
             // 'label'         => 'Results List: Scroll to Clicked Verse',
+            'label'         => null,
             'desc'          => 'Scroll results list verse to top when clicking on it.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -127,6 +128,7 @@ return [
             'section'       => 'features',
         ],   
         'omitUserLanguage' => [
+            'label'        => null,
             'sublabel'      => 'Don\'t Save User Language Selection',
             'desc'          => 'If saving user settings, exclude the user\'s selected Language.',
             'type'          => 'checkbox',
@@ -352,6 +354,7 @@ return [
         ],    
         'sideSwipeHideWithNavigationButtons' => [
             // 'label'         => 'Side Buttons Hide With Navigation Buttons',
+            'label'         => null,  
             'desc'          => 'Hide side buttons when navigation buttons are showing.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -407,6 +410,7 @@ return [
         ],
         'bibleGrouping' => [
             'label'         => 'Bible List Grouping',
+            'desc'          => null,
             'type'          => 'select',
             'default'       => 'language',
             'items'         => 'bibleGrouping',

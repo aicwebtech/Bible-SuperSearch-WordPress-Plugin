@@ -479,7 +479,7 @@ abstract class BibleSuperSearch_Options_Abstract {
         $options = $this->fetchLandingPageOptions();
 
         array_unshift($options, [
-            'value' => 0,
+            'value' => '0',
             'label' => 'None'
         ]);
 
