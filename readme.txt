@@ -184,6 +184,12 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 6.0.1
+* Fixed total breakage of side swipe buttons
+* Fixed breakage when toggling from advanced to basic form.
+* Fixed user configs not resetting
+* Fixed max autocompletion options not working
+
 = 6.0.0
 ** BREAKING CHANGES 
 * PHP Version: 7.3 minimum
