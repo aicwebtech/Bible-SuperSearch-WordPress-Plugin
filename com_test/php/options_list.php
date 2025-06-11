@@ -6,6 +6,126 @@
 // * row_classes ? (not used in vue app, but could be?)
 
 return [
+    'general' => [
+        '_newConfigSave' => [
+            'label'         => 'Have we saved using the new configs yet?',
+            'desc'          => 'This does not shut down the old configs page!',
+            'type'          => 'checkbox',
+            'hidden'        => true,
+            'default'       => false,
+            'section'       => 'general_top',
+            'render'        => false,
+        ],
+        'interface' => [
+            'label'         => 'Default Skin',
+            'desc'          => 'Sets the default skin seen on the [biblesupersearch] shortcode.<br />' . 
+                                'To preview skins, please visit ' . 
+                                '<a href=\'https://www.biblesupersearch.com/client/\' target=\'_NEW\'>https://www.biblesupersearch.com/client/</a>',
+            'type'          => 'select',
+            'default'       => 'global_default',
+            'section'       => 'general_top',
+            'items'         => 'getInterfaces',
+        ],        
+        'language' => [
+            'label'         => 'Default Language',
+            'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
+            'type'          => 'select',
+            'default'       => 'global_default',
+            'section'       => 'general_top',
+            'items'         => 'getLanguagesWithGlobalDefault',
+        ],
+        'enableAllLanguages' => [
+            'label'         => 'Display Language(s)',
+            'desc'          => 'Enable ALL Languages',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+            'render'        => false, 
+        ],
+        'languageList' => [
+            'label'         => '',
+            'desc'          => 'Sets the display language(s) that can be selected by the user.',
+            'type'          => 'select',
+            // 'v_component'   => 'v-autocomplete',
+            'default'       => [],
+            'section'       => 'general',
+            'items'         => 'getLanguages',
+            'multiple'      => true,
+            'render'        => false, 
+            'if_conditions' => 'enableAllLanguages|false',
+        ],
+        'enableDefaultBiblesByLang' => [
+            'label'         => 'Default Bibles By Language',
+            'desc'          => 'Set Default Bibles By Language',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+            'render'        => false, 
+        ],
+        'defaultBiblesByLanguage' => [
+            'label'         => '', // None
+            'type'          => 'json',
+            'default'       => [],
+            'format'        => 'json',
+            'render'        => false,
+            'v_component'   => 'DefaultBiblesByLanguage',
+            'v_no_attr'     => true,
+            'label_cols'    => 1, // obsolete
+            'comp_cols'     => 7, // obsolete
+            'label_width'   => '5%', // ??
+            'comp_width'    => '70%', // ??
+            'label_max_width'   => '50px', // ??
+            'comp_max_width'    => '700px', // ??
+            'if_conditions' => 'enableDefaultBiblesByLang',
+        ],
+        'navigation'        => [
+            'label'         => 'Navigation',
+            'type'          => 'section',
+            'section'       => 'general',
+        ],
+        'swipePageChapter' => [
+            'label'         => 'Touchscreen Swipe',
+            'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+        ],    
+        'arrowKeysPageChapter' => [
+            'label'         => 'Arrow Keys',
+            'desc'          => 'Change chapter and search page via left and right arrow keys.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+        ],
+        'sideSwipePageChapter' => [
+            'label'         => 'Side Buttons',
+            'desc'          => 'Change chapter and search page via fade-in side buttons.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+        ],    
+        'sideSwipeHideWithNavigationButtons' => [
+            // 'label'         => 'Side Buttons Hide With Navigation Buttons',
+            'label'         => null,  
+            'desc'          => 'Hide side buttons when navigation buttons are showing.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+            'if_conditions' => 'sideSwipePageChapter',
+        ],            
+        'defaultDestinationPage' => [
+            'label'         => 'Default Destination Page',
+            'desc'          => 'Select a page or post containing the [biblesupersearch] shortcode, ' . 
+                                'and all other Bible SuperSearch forms on your site will redirect here.<br /><br /> ' .
+                                'This allows you to have the form on one page, but display the results on another.  ' . 
+                                'Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.',
+            'type'          => 'select',
+            'default'       => '0',
+            'section'       => 'general',
+            'items'         => 'getLandingPageOptions'
+        ],
+    ],
+
     'display' => [
         'textDisplayDefault' => [
             'label'         => 'Default Text Display',
@@ -278,102 +398,7 @@ return [
             'section'       => 'features',
         ],    
     ],
-    'general' => [
-        '_newConfigSave' => [
-            'label'         => 'Have we saved using the new configs yet?',
-            'desc'          => 'This does not shut down the old configs page!',
-            'type'          => 'checkbox',
-            'hidden'        => true,
-            'default'       => false,
-            'section'       => 'general_top',
-            'render'        => false,
-        ],
-        'interface' => [
-            'label'         => 'Default Skin',
-            'desc'          => 'Sets the default skin seen on the [biblesupersearch] shortcode.<br />' . 
-                                'To preview skins, please visit ' . 
-                                '<a href=\'https://www.biblesupersearch.com/client/\' target=\'_NEW\'>https://www.biblesupersearch.com/client/</a>',
-            'type'          => 'select',
-            'default'       => 'global_default',
-            'section'       => 'general_top',
-            'items'         => 'getInterfaces',
-        ],        
-        'language' => [
-            'label'         => 'Default Language',
-            'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
-            'type'          => 'select',
-            'default'       => 'global_default',
-            'section'       => 'general_top',
-            'items'         => 'getLanguagesWithGlobalDefault',
-        ],
-        'enableAllLanguages' => [
-            'label'         => 'Display Language(s)',
-            'desc'          => 'Enable ALL Languages',
-            'type'          => 'checkbox',
-            'default'       => true,
-            'section'       => 'general',
-            'render'        => false, 
-        ],
-        'languageList' => [
-            'label'         => '',
-            'desc'          => 'Sets the display language(s) that can be selected by the user.',
-            'type'          => 'select',
-            // 'v_component'   => 'v-autocomplete',
-            'default'       => [],
-            'section'       => 'general',
-            'items'         => 'getLanguages',
-            'multiple'      => true,
-            'render'        => false, 
-            'if_conditions' => 'enableAllLanguages|false',
-        ],
-        'navigation'        => [
-            'label'         => 'Navigation',
-            'type'          => 'section',
-            'section'       => 'general',
-        ],
-        'swipePageChapter' => [
-            'label'         => 'Touchscreen Swipe',
-            'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],    
-        'arrowKeysPageChapter' => [
-            'label'         => 'Arrow Keys',
-            'desc'          => 'Change chapter and search page via left and right arrow keys.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],
-        'sideSwipePageChapter' => [
-            'label'         => 'Side Buttons',
-            'desc'          => 'Change chapter and search page via fade-in side buttons.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],    
-        'sideSwipeHideWithNavigationButtons' => [
-            // 'label'         => 'Side Buttons Hide With Navigation Buttons',
-            'label'         => null,  
-            'desc'          => 'Hide side buttons when navigation buttons are showing.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-            'if_conditions' => 'sideSwipePageChapter',
-        ],            
-        'defaultDestinationPage' => [
-            'label'         => 'Default Destination Page',
-            'desc'          => 'Select a page or post containing the [biblesupersearch] shortcode, ' . 
-                                'and all other Bible SuperSearch forms on your site will redirect here.<br /><br /> ' .
-                                'This allows you to have the form on one page, but display the results on another.  ' . 
-                                'Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.',
-            'type'          => 'select',
-            'default'       => '0',
-            'section'       => 'general',
-            'items'         => 'getLandingPageOptions'
-        ],
-    ],
-
+    
     'bible' => [
 
         // :todo

@@ -115,7 +115,7 @@ abstract class BibleSuperSearch_Options_Abstract {
     protected $tabs = [
         'general'  => [
             'name'              => 'General',
-            'fully_dynamic'     => false, // todo
+            'fully_dynamic'     => true, 
             'backend_dynamic'   => true,
         ],
         'display' => [
@@ -130,9 +130,14 @@ abstract class BibleSuperSearch_Options_Abstract {
         ],         
         'bible'  => [
             'name'              => 'Bibles',
-            'fully_dynamic'     => false, // todo
+            'fully_dynamic'     => true, 
             'backend_dynamic'   => true,
         ],        
+        // 'language'  => [
+        //     'name'              => 'Languages',
+        //     'fully_dynamic'     => true, 
+        //     'backend_dynamic'   => true,
+        // ],        
         // :todo
         // 'style' => [
         //     'name'          => 'Appearance',
