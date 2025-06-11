@@ -261,8 +261,8 @@ return [
             ],
         ],
         'contextHelpInline' => [
-            'label'         => 'Context Help Below Item',
-            'sublabel'      => 'Show Contextual Help Below Item',
+            'label'         => 'Show Context Help Below Items',
+            'sublabel'      => 'Show Contextual Help Below Items (User Interface Settings Dialog)',
             'desc'          => 'Whether to show contextual help below (or inline / relatively-positioned) to the item it\'s describing.' . 
                                 '&nbsp; Otherwise, it will be shown in a popup tooltip near the item (Default).',
             'type'          => 'checkbox',
