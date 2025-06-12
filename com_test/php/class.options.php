@@ -1,6 +1,5 @@
 <?php
 
-
 abstract class BibleSuperSearch_Options_Abstract {
     protected $option_index = 'biblesupersearch_options';
 
@@ -190,22 +189,6 @@ abstract class BibleSuperSearch_Options_Abstract {
                     }
 
                     $settings['items'] = $this->reformatItemsList($items);
-
-                    // Handle varying item array formats
-                    // if(!is_string($items) && $items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
-                    //     $settings['items'] = [];
-
-                    //     foreach($items as $value => $label) {
-                    //         $label = is_array($label) ? $label['name'] : $label;
-
-                    //         $settings['items'][] = [
-                    //             'value' => $value,
-                    //             'label' => $label,
-                    //         ];
-                    //     }
-                    // } else {
-                    //     $settings['items'] = $items;
-                    // }
                 }
 
                 if(array_key_exists('default', $settings)) {
@@ -321,7 +304,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
     }
 
-    static public function getSelectorOptions($selector) {
+    static public function getSelectorOptions($selector) 
+    {
         if(array_key_exists($selector, static::$selector_options)) {
             return static::$selector_options[$selector];
         }
@@ -329,7 +313,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return FALSE;
     }
 
-    public function getOptions($dont_set_default = FALSE) {
+    public function getOptions($dont_set_default = FALSE) 
+    {
         // todo - make this generic!
 
         $options = get_option( $this->option_index );
@@ -375,7 +360,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         }
     }
 
-    protected function _getOptionsFromStorage() {
+    protected function _getOptionsFromStorage() 
+    {
 
     }
 
@@ -393,7 +379,8 @@ abstract class BibleSuperSearch_Options_Abstract {
     }
 
     // todo - implement and make this generic!
-    public function validateOptions( $incoming ) {
+    public function validateOptions( $incoming ) 
+    {
         $current = $input = $this->getOptions(TRUE);
         
         $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
@@ -532,7 +519,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $html;
     }
 
-    public function getBible($module = NULL) {
+    public function getBible($module = NULL) 
+    {
         $statics = $this->getStatics();
         $lang = [];
 
@@ -583,7 +571,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $bibles;
     }
 
-    public function getBibles($statics = NULL, $sorting = NULL, $grouping = NULL) {
+    public function getBibles($statics = NULL, $sorting = NULL, $grouping = NULL) 
+    {
         $options = $this->getOptions();
         $statics = $statics ? $statics : $this->getStatics();
         
@@ -695,7 +684,8 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     // TODO - make generic 
     // This code is WP specific
-    protected function _setStaticsReset() {
+    protected function _setStaticsReset() 
+    {
         // $statics               = get_option('biblesupersearch_statics');
         // $last_update_timestamp = (is_array($statics) && array_key_exists('timestamp', $statics)) ? $statics['timestamp'] : 0;
 
@@ -707,18 +697,21 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected $statics_loading = FALSE;
 
-    public function getUrl() {
+    public function getUrl() 
+    {
         $options    = $this->getOptions();
         $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
         return $url;
     }
 
-    public function apiVersion() {
+    public function apiVersion() 
+    {
         $statics = $this->getStatics();
         return (is_array($statics) && array_key_exists('version', $statics)) ?  $statics['version'] : '0.0.0';
     }
 
-    public function getStatics($force = FALSE) {
+    public function getStatics($force = FALSE) 
+    {
         if($this->statics_loading == TRUE) {
             return FALSE;
         }

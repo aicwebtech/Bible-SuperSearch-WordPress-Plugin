@@ -67,7 +67,58 @@ export default {
             rules: Rules
         }
     },
+    provide() {
+        return {
+            enabledLanguages: Vue.computed(() => this.enabledLanguages),
+            enabledBibles: Vue.computed(() => this.enabledBibles)
+        }
+    },
     computed: {
+        enabledLanguages() {
+            var t = this;
+            return this.bootstrap.statics.languages.filter(function(lang) {
+                if(t.options.enableAllLanguages) {
+                    return true;
+                }
+                
+                if(t.options.languageList && t.options.languageList.length > 0) {
+                    if(t.options.language == lang.value) {
+                        return true;
+                    }
+                    
+                    if(t.options.languageList.includes(lang.value)) {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return true
+            });
+        },
+        enabledBibles() {
+            var t = this;
+            
+            return this.bootstrap.statics.bibles.filter(function(bible) {
+                if(t.options.enableAllBibles) {
+                    return true;
+                }
+
+                if(t.options.enabledBibles && t.options.enabledBibles.length > 0) {
+                    // if(t.options.bible == bible.value) {
+                    //     return true; // default bible
+                    // }
+
+                    if(t.options.enabledBibles.includes(bible.value)) {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            });
+        },
         optionProps() {
             return this.bootstrap.option_props[this.tab.id];
         }

@@ -287,8 +287,6 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $statics = $this->getStatics();
 
-        // print_r($statics);
-
         $download_enabled = (bool) $statics['download_enabled'];
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
@@ -297,23 +295,20 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->options = $options;
         $bootstrap->options_default = $this->getDefaultOptions();
 
-        // Documentation is platform-dependant, so not building into new, generic options app
         $tabs = $this->tabs;
-        unset($tabs['docs']);
+        unset($tabs['docs']); // Documentation is platform-dependant, so not building into new, generic options app
+
         $bootstrap->tabs = array_values($tabs);
         $bootstrap->option_props = $this->options_list;
         $bootstrap->classes = new \stdclass;
         $bootstrap->classes->tabs = 'postbox tab-content';
-        $bootstrap->statics = $this->getStatics(); // Note, statics is an array, not a stdclass ...
+        $bootstrap->statics = $statics; // Note, statics is an array, not a stdclass ...
         $bootstrap->statics['bibles'] = $this->getBiblesForDisplay();
-        $bootstrap->statics['languages'] = $this->getLanguages();
+        $bootstrap->statics['languages'] =  $this->reformatItemsList( $this->getLanguages() );
         $bootstrap->statics['interfaces'] = $this->getInterfaces(); 
         $bootstrap->configHttpHeaders = new \stdclass;
         $bootstrap->configHttpHeaders->{'X-WP-Nonce'} = wp_create_nonce( 'wp_rest' );
         $bootstrap->configUrl = esc_url_raw( rest_url() ) . 'biblesupersearch/v1/config';
-
-
-
 
         wp_enqueue_script('biblesupersearch_vue', plugins_url('../com_test/js/bin/vue_3.5.13.global.js', __FILE__));
         wp_enqueue_script('biblesupersearch_vuetify', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.js', __FILE__));
@@ -449,14 +444,16 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     }
 
     // still in use
-    protected function _formatLandingPageOption(&$landing_page) {
+    protected function _formatLandingPageOption(&$landing_page) 
+    {
         $title = ($landing_page['post_title']) ? $landing_page['post_title'] : '(No Title, ID = ' . $landing_page['ID'] . ')';
         $type = ucfirst($landing_page['post_type']);
         $landing_page['title_fmt'] = $type . ': ' . $title;
     }
 
     // still in use (by widget)
-    public function hasLandingPageOptions() {
+    public function hasLandingPageOptions() 
+    {
         global $wpdb;
 
         $sql = "
@@ -515,11 +512,13 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         }
     }
 
-    protected function _afterFetchStatics($result) {
+    protected function _afterFetchStatics($result) 
+    {
         update_option('biblesupersearch_statics', $result['results']);
     }
 
-    public function renderDownloadPage() {
+    public function renderDownloadPage() 
+    {
 
     }
 
@@ -530,7 +529,8 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         return $opts;
     }
 
-    public function getInterfaceByName($name) {
+    public function getInterfaceByName($name) 
+    {
         $interfaces = $this->getInterfaces();
         $proc = $this->_processInterfaceName($name);
 
