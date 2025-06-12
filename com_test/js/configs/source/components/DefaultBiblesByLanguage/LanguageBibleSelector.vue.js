@@ -7,19 +7,20 @@ const tpl = `
         <td>
             model {{ modelValue }}
         
-
+            <VSelectOrdered
+                
+                :items="enabledBibles"
+                v-model="modelValue"
+                @update:modelValue="onSelect"
+                v-if="enabled"
+                item-title="label"
+                item-value="value"
+            />
         </td>
     </tr>
 `;
 
-            // <VSelectOrdered
-            //     :items="enabledBibles"
-            //     v-model="modelValue"
-            //     @update:modelValue="onSelect"
-            //     v-if="enabled"
-            //     llabel="name"
-            //     lvalue="id"
-            // />
+
 
 import VSelectOrdered from '../VSelectOrdered.vue.js';
 
@@ -28,6 +29,8 @@ export default {
     props: {
         modelValue: {
             // type: [String, Number, null],
+            type: Array,
+            default: () => [],
             required: true
         },
         language: {
@@ -43,7 +46,7 @@ export default {
     },
     watch: {
         modelValue(newValue, oldValue) {
-            this.enabled = newValue !== null && newValue !== undefined;
+            this.enabled = newValue !== null && newValue !== undefined && newValue.length > 0;
         }
     },
     data() {
@@ -59,6 +62,7 @@ export default {
     },
     methods: {
         onSelect(value) {
+            console.log('LBS Selected value:', value);
             this.$emit('update:modelValue', value);
         }
     }

@@ -56,6 +56,8 @@ export default {
         updateModelValue(n, event) {
             console.log('updateModelValue', n, event); 
             var mv = this.modelValue;
+
+            this.$emit('update:modelValue', this.modelValue);
         },
     }
 }
