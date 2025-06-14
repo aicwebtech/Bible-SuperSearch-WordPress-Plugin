@@ -8,12 +8,15 @@ const tpl = `
                     Bibles External:{{modelValue}} 
                     
                     <br>Internal: {{modelInternal}}
+
+                    <br>Passthru attr: {{$attrs}}
                 </th>
             </tr>
         </thead>
         <tbody>
             <Selector 
                 v-for='lang in enabledLanguages' 
+                v-bind="$attrs"
                 :language='lang' 
                 v-model='modelInternal[lang.value]' 
                 @update:modelValue="onUpdateValue"
@@ -28,6 +31,7 @@ export default {
     inject: ['bootstrap', 'enabledLanguages', 'enabledBibles'],
     props: ['modelValue'],
     emits: ['update:modelValue'],
+    inheritAttrs: false, // Prevent passing down attributes to the root element
     template: tpl,
     components: {
         Selector

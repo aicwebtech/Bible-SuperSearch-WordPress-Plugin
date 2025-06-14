@@ -8,13 +8,15 @@ const tpl = `
             model {{ modelValue }}
         
             <VSelectOrdered
-                
+                v-bind="$attrs"
                 :items="enabledBibles"
                 v-model="modelValue"
+                density="compact"
                 @update:modelValue="onSelect"
                 v-if="enabled"
                 item-title="label"
                 item-value="value"
+                :item-props="item => ({...item.itemProps, ...{ density: 'compact'}})"
             />
         </td>
     </tr>
@@ -39,7 +41,7 @@ export default {
         }
     },
     emits: ['update:modelValue'],
-    inject: ['enabledBibles'],
+    inject: ['enabledBibles', 'bootstrap'],
     template: tpl,
     components: {
         VSelectOrdered

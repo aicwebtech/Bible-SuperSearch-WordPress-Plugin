@@ -98,6 +98,8 @@ export default {
         },
         enabledBibles() {
             var t = this;
+
+            return this.bootstrap.statics.bibles;
             
             return this.bootstrap.statics.bibles.filter(function(bible) {
                 if(t.options.enableAllBibles) {
