@@ -1,28 +1,20 @@
 const tpl = `
-    <table>
-        <thead>
-            <tr>
-                <th>Language</th>
-                <th>Defaults</th>
-                <th>
-                    Bibles External:{{modelValue}} 
-                    
-                    <br>Internal: {{modelInternal}}
-
-                    <br>Passthru attr: {{$attrs}}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <Selector 
-                v-for='lang in enabledLanguages' 
-                v-bind="$attrs"
-                :language='lang' 
-                v-model='modelInternal[lang.value]' 
-                @update:modelValue="onUpdateValue"
-            />
-        </tbody>
-    </table>
+    <v-sheet class='overflow-y-auto border border-md' style='max-height: 400px;'>
+        <table class='w-100 no-cell-spacing'>
+            <tbody class='striped'>
+                <Selector 
+                    v-for='(lang, idx) in enabledLanguages' 
+                    v-bind="$attrs"
+                    :bg-color='idx % 2 == 0 ? "transparent" : "var(--v-theme-background)"'
+                    :language='lang' 
+                    v-model='modelInternal[lang.value]' 
+                    @update:modelValue="onUpdateValue"
+                    hide-details
+                    density="compact"
+                />
+            </tbody>
+        </table>
+    </v-sheet>
 `;
 
 import Selector from './LanguageBibleSelector.vue.js';

@@ -72,9 +72,9 @@ return [
             'v_no_attr'     => true,
             'label_cols'    => 1, // obsolete
             'comp_cols'     => 7, // obsolete
-            'label_width'   => '5%', // ??
+            'label_width'   => '30%', // ??
             'comp_width'    => '70%', // ??
-            'label_max_width'   => '50px', // ??
+            'label_max_width'   => '100px', // ??
             'comp_max_width'    => '700px', // ??
             'if_conditions' => 'enableDefaultBiblesByLang',
         ],

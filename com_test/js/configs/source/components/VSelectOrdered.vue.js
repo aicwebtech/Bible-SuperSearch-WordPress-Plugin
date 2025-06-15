@@ -5,6 +5,7 @@ const tpl = `
         v-model='modelValue[idx(n)]' 
         v-bind='$attrs'
         :multiple='false' 
+        :menu-props='menuProps'
         @update:modelValue='updateModelValue(n, $event)'
     >
         
@@ -30,7 +31,10 @@ export default {
         return {
             min: 1,
             max: 9999, // unlimited Bibles here (not in new UI)
-            count: this.modelValue.length || 1
+            count: this.modelValue.length || 1,
+            menuProps: {
+                style: 'width: 100px'
+            },
         }
     },
     watch: {

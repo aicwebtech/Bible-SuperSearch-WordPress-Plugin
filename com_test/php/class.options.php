@@ -234,24 +234,29 @@ abstract class BibleSuperSearch_Options_Abstract {
 
     protected function getBiblesForDisplay()
     {
-        $preformatted = $this->reformatItemsList($this->getBibles([], 'language_english', 'none'), ['lang_short', 'lang'] );
+        $preformatted = $this->reformatItemsList($this->getBibles([], 'language_english', 'none'), ['lang_short', 'lang', 'shortname'] );
 
         $bibles = [];
 
         foreach($preformatted as $key => $bible) {
             if(!isset($bibles[$bible['lang_short']])) {
 
-                if($key != 0) {                    
-                    // $bibles[] = [
-                    //     'itemProps' => ['disabled' => true, 'role' => 'divider'],
-                    // ];
-                }
+                // if($key != 0) {                    
+                //     $bibles[] = [
+                //         'type' => 'divider',
+                //         'itemProps' => ['disabled' => true, 'type' => 'divider'],
+                //     ];
+                // }
                 
                 $bibles[$bible['lang_short']] = [
-                    'role' => 'subheader',
+                    'type' => 'subheader',
                     'group' => $bible['lang_short'],
                     'label' => $bible['lang'],
-                    'itemProps' => ['disabled' => true, 'role' => 'header'],
+                    'itemProps' => [
+                        'disabled' => true, 
+                        'role' => 'header',
+                        // 'type' => 'subheader',
+                    ],
                     'header' => 'hh ' . $bible['lang'],
                 ];
 
@@ -264,6 +269,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             }
 
             $bible['group'] = $bible['lang_short'];
+
+            $bible['itemProps'] = [];
+
+            $bible['itemProps']['subtitle'] 
+                = $bible['shortname'] == $bible['label'] || mb_strlen($bible['label']) < 45 ? null : $bible['shortname'];
             
             $bibles[] = $bible;
         }

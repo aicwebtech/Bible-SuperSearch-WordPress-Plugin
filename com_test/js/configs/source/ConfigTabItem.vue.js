@@ -63,7 +63,7 @@ export default {
     components: components,
     data() {
         return {
-            debug: false,
+            debug: true,
             rules: Rules
         }
     },
@@ -98,8 +98,6 @@ export default {
         },
         enabledBibles() {
             var t = this;
-
-            return this.bootstrap.statics.bibles;
             
             return this.bootstrap.statics.bibles.filter(function(bible) {
                 if(t.options.enableAllBibles) {
@@ -179,12 +177,10 @@ export default {
 
             bind['item-title'] = 'label';
             bind['item-value'] = 'value';
-            // bind['item-props'] = 'itemProps';
 
             bind['item-props'] = function(item) {
                 var props = item.itemProps || {};
                 props.density = 'compact';
-                // props.variant = 'outlined';
                 return props;
             }
 
@@ -202,8 +198,6 @@ export default {
                     } 
                 });
             }
-
-
 
             // For checkboxes / switches
             // bind['true-value'] = '1';
