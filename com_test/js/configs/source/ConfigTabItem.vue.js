@@ -41,7 +41,7 @@ const tpl = `
 
                 <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
             </div>
-            <div v-if='debug && configIf(config)' class='d-inline-block float-left w-25'>{{options[config]}}</div>
+            <div v-if='debug && configIf(config)' class='d-inline-block float-left w-25 text-pre-wrap'>{{options[config]}}</div>
             <div style='clear: both;'></div>
         </v-sheet>
     </template>

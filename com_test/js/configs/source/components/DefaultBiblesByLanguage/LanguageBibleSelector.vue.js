@@ -29,6 +29,7 @@ const tpl = `
             <span v-else class='pa-3' @click='enabled = true'>
                 (Global Default Bibles)
             </span>
+            {{modelValue}}
         </td>
     </tr>
 `;
@@ -55,8 +56,11 @@ export default {
         VSelectOrdered
     },
     watch: {
-        modelValue(newValue, oldValue) {
-            this.enabled = newValue !== null && newValue !== undefined && newValue.length > 0;
+        modelValue: {
+            handler(newValue, oldValue) {
+                this.enabled = newValue !== null && newValue !== undefined && newValue.length > 0;
+            },
+            immediate: true
         },
         enabled(newValue, oldValue) {
             if (!newValue) {
@@ -69,7 +73,7 @@ export default {
     data() {
         return {
             enabled: false,
-            valueCache: null
+            valueCache: null //this.modelValue.slice() // null
         };
     },
     methods: {

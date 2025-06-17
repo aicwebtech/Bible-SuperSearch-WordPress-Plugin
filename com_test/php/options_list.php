@@ -54,6 +54,13 @@ return [
             'render'        => false, 
             'if_conditions' => 'enableAllLanguages|false',
         ],
+        'changeLanguageClearForm' => [
+            'label'         => '',
+            'desc'          => 'Clear the form if the user changes the language',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+        ],
         'enableDefaultBiblesByLang' => [
             'label'         => 'Default Bibles By Language',
             'desc'          => 'Set Default Bibles By Language',
