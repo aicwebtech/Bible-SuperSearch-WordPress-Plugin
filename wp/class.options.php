@@ -120,9 +120,18 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             $options['defaultBible'] = [];
         }
 
-        // Ensure Bibles selected as default are enabled
+        // Ensure Bibles selected as default or langauge default are enabled
         if(!$options['enableAllBibles']) {
             $options['enabledBibles'] = array_merge($options['enabledBibles'], $options['defaultBible']);
+
+            if($options['enableDefaultBiblesByLang'] && is_array($options['defaultBiblesByLanguage'])) {
+                $bbl = call_user_func_array('array_merge', array_values($options['defaultBiblesByLanguage']));
+                $options['enabledBibles'] = array_unique(array_merge($options['enabledBibles'], $bbl));
+            }
+        }
+
+        if(!$options['enableDefaultBiblesByLang']) {
+            $options['defaultBiblesByLanguage'] = [];
         }
 
         return $options;
@@ -525,7 +534,14 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     public function getLanguagesWithGlobalDefault()
     {
         $opts = self::$selector_options['language'];
-        $opts['global_default'] = 'Global Default (General => Site Language)';
+
+        $pts = explode('_', get_locale());
+        $lang = $pts[0] ?? 'en';
+        $lang = strtolower($lang);
+
+        $name = $this->getLanguageNameByCode($lang) ?? $lang;
+
+        $opts['global_default'] = 'Site Language -- ' . $name . ' (Settings => General)';
         return $opts;
     }
 

@@ -1086,6 +1086,11 @@ abstract class BibleSuperSearch_Options_Abstract {
         return $opts;
     }
 
+    public function getLanguageNameByCode($code)
+    {
+        return self::$selector_options['language'][$code] ?? null;
+    }
+
     public function getInterfaces() {
         return array(
             // 'TwentyTwenty' => array(

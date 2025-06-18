@@ -29,7 +29,10 @@ const tpl = `
             <span v-else class='pa-3' @click='enabled = true'>
                 (Global Default Bibles)
             </span>
-            {{modelValue}}
+
+            <span v-if='debug'>
+                {{modelValue}}
+            </span>
         </td>
     </tr>
 `;
@@ -50,7 +53,7 @@ export default {
         }
     },
     emits: ['update:modelValue'],
-    inject: ['enabledBibles', 'bootstrap'],
+    inject: ['enabledBibles', 'bootstrap', 'debug'],
     template: tpl,
     components: {
         VSelectOrdered

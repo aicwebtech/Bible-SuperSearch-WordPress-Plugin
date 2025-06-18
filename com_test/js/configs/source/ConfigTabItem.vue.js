@@ -63,14 +63,15 @@ export default {
     components: components,
     data() {
         return {
-            debug: true,
+            debug: false,
             rules: Rules
         }
     },
     provide() {
         return {
             enabledLanguages: Vue.computed(() => this.enabledLanguages),
-            enabledBibles: Vue.computed(() => this.enabledBibles)
+            enabledBibles: Vue.computed(() => this.enabledBibles),
+            debug: this.debug
         }
     },
     computed: {
@@ -98,17 +99,16 @@ export default {
         },
         enabledBibles() {
             var t = this;
+
+            return this.bootstrap.statics.bibles.slice();
             
+            // currently NOT filtering Bibles
             return this.bootstrap.statics.bibles.filter(function(bible) {
                 if(t.options.enableAllBibles) {
                     return true;
                 }
 
                 if(t.options.enabledBibles && t.options.enabledBibles.length > 0) {
-                    // if(t.options.bible == bible.value) {
-                    //     return true; // default bible
-                    // }
-
                     if(t.options.enabledBibles.includes(bible.value)) {
                         return true;
                     }
