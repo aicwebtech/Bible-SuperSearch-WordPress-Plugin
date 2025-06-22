@@ -58,8 +58,8 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     {
 
         add_menu_page(
-            'Bible 1',
-            'Bible SuperSearch',
+            'Bible SuperSearch', // browser title
+            'Bible SuperSearch', // top menu title
             'manage_options',
             'biblesupersearch',
             [$this, 'displayPluginOptionsNew'],

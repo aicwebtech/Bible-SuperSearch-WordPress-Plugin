@@ -117,11 +117,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             'fully_dynamic'     => true, 
             'backend_dynamic'   => true,
         ],
-        'display' => [
-            'name'              => 'Display',
-            'fully_dynamic'     => true,
-            'backend_dynamic'   => true,
-        ],         
+        // 'display' => [
+        //     'name'              => 'Display',
+        //     'fully_dynamic'     => true,
+        //     'backend_dynamic'   => true,
+        // ],         
         'features' => [
             'name'              => 'Features',
             'fully_dynamic'     => true,
@@ -132,11 +132,11 @@ abstract class BibleSuperSearch_Options_Abstract {
             'fully_dynamic'     => true, 
             'backend_dynamic'   => true,
         ],        
-        // 'language'  => [
-        //     'name'              => 'Languages',
-        //     'fully_dynamic'     => true, 
-        //     'backend_dynamic'   => true,
-        // ],        
+        'language'  => [
+            'name'              => 'Languages',
+            'fully_dynamic'     => true, 
+            'backend_dynamic'   => true,
+        ],        
         // :todo
         // 'style' => [
         //     'name'          => 'Appearance',

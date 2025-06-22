@@ -6,7 +6,7 @@
 // * row_classes ? (not used in vue app, but could be?)
 
 return [
-    'general' => [
+    'general_old' => [
         '_newConfigSave' => [
             'label'         => 'Have we saved using the new configs yet?',
             'desc'          => 'This does not shut down the old configs page!',
@@ -26,65 +26,9 @@ return [
             'section'       => 'general_top',
             'items'         => 'getInterfaces',
         ],        
-        'language' => [
-            'label'         => 'Default Language',
-            'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
-            'type'          => 'select',
-            'default'       => 'global_default',
-            'section'       => 'general_top',
-            'items'         => 'getLanguagesWithGlobalDefault',
-        ],
-        'enableAllLanguages' => [
-            'label'         => 'Display Language(s)',
-            'desc'          => 'Enable ALL Languages',
-            'type'          => 'checkbox',
-            'default'       => true,
-            'section'       => 'general',
-            'render'        => false, 
-        ],
-        'languageList' => [
-            'label'         => '',
-            'desc'          => 'Sets the display language(s) that can be selected by the user.',
-            'type'          => 'select',
-            // 'v_component'   => 'v-autocomplete',
-            'default'       => [],
-            'section'       => 'general',
-            'items'         => 'getLanguages',
-            'multiple'      => true,
-            'render'        => false, 
-            'if_conditions' => 'enableAllLanguages|false',
-        ],
-        'changeLanguageClearForm' => [
-            'label'         => '',
-            'desc'          => 'Clear the form if the user changes the language',
-            'type'          => 'checkbox',
-            'default'       => true,
-            'section'       => 'general',
-        ],
-        'enableDefaultBiblesByLang' => [
-            'label'         => 'Default Bibles By Language',
-            'desc'          => 'Set Default Bibles By Language',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-            'render'        => false, 
-        ],
-        'defaultBiblesByLanguage' => [
-            'label'         => '', // None
-            'type'          => 'json',
-            'default'       => [],
-            'format'        => 'json',
-            'render'        => false,
-            'v_component'   => 'DefaultBiblesByLanguage',
-            'v_no_attr'     => true,
-            'label_cols'    => 1, // obsolete
-            'comp_cols'     => 7, // obsolete
-            'label_width'   => '30%', // ??
-            'comp_width'    => '70%', // ??
-            'label_max_width'   => '100px', // ??
-            'comp_max_width'    => '700px', // ??
-            'if_conditions' => 'enableDefaultBiblesByLang',
-        ],
+
+
+        
         'navigation'        => [
             'label'         => 'Navigation',
             'type'          => 'section',
@@ -133,14 +77,61 @@ return [
         ],
     ],
 
-    'display' => [
+    'general' => [
+        'interface' => [
+            'label'         => 'Default Skin',
+            'desc'          => 'Sets the default skin seen on the [biblesupersearch] shortcode.<br />' . 
+                                'To preview skins, please visit ' . 
+                                '<a href=\'https://www.biblesupersearch.com/client/\' target=\'_NEW\'>https://www.biblesupersearch.com/client/</a>',
+            'type'          => 'select',
+            'default'       => 'global_default',
+            'section'       => 'general_top',
+            'items'         => 'getInterfaces',
+        ],  
+
+        // begin results display
         'textDisplayDefault' => [
             'label'         => 'Default Text Display',
             'desc'          => 'How to display Bible text by default.  The text display can be changed by the user.',
             'items'         => 'getTextDisplays',
             'type'          => 'select',
             'default'       => 'passage',
-        ],               
+        ],          
+        'includeTestament' => [
+            'label'         => 'Include Testament',
+            'sublabel'      => 'Show "Old Testament" or "New Testament" in references.',
+            'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+        ],
+        'resultsList' => [
+            'label'         => 'Results List',
+            'desc'          => 'Shows a list of all verses pulled by a search near the paginator.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+        ],
+        'resultsListClickScroll' => [
+            // 'label'         => 'Results List: Scroll to Clicked Verse',
+            'label'         => null,
+            'desc'          => 'Scroll results list verse to top when clicking on it.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+            'default'       => 'default',
+            'if_conditions' => 'resultsList',
+        ],
+        // End results display
+        
+        // begin navigation
+        'navigation'        => [
+            'label'         => 'Navigation',
+            'type'          => 'section',
+            'section'       => 'general',
+        ],
         'pager' => [
             'label'         => 'Paginator',
             'desc'          => 'Used to browse through multiple pages of search results.',
@@ -190,37 +181,55 @@ return [
             'type'          => 'select',
             'default'       => 'default',
         ],
-  
-        'includeTestament' => [
-            'label'         => 'Include Testament',
-            'sublabel'      => 'Show "Old Testament" or "New Testament" in references.',
-            'desc'          => 'Includes "Old Testament" or "New Testament" verbiage in some references.',
+
+
+        'swipePageChapter' => [
+            'label'         => 'Touchscreen Swipe',
+            'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
             'type'          => 'checkbox',
             'default'       => false,
-            'section'       => 'display',
-            'default'       => 'default',
-        ],
-        'resultsList' => [
-            'label'         => 'Results List',
-            'desc'          => 'Shows a list of all verses pulled by a search near the paginator.',
+            'section'       => 'general',
+        ],    
+        'arrowKeysPageChapter' => [
+            'label'         => 'Arrow Keys',
+            'desc'          => 'Change chapter and search page via left and right arrow keys.',
             'type'          => 'checkbox',
             'default'       => false,
-            'section'       => 'display',
-            'default'       => 'default',
+            'section'       => 'general',
         ],
-        'resultsListClickScroll' => [
-            // 'label'         => 'Results List: Scroll to Clicked Verse',
-            'label'         => null,
-            'desc'          => 'Scroll results list verse to top when clicking on it.',
+        'sideSwipePageChapter' => [
+            'label'         => 'Side Buttons',
+            'desc'          => 'Change chapter and search page via fade-in side buttons.',
             'type'          => 'checkbox',
             'default'       => false,
-            'section'       => 'display',
-            'default'       => 'default',
-            'if_conditions' => 'resultsList',
+            'section'       => 'general',
+        ],    
+        'sideSwipeHideWithNavigationButtons' => [
+            // 'label'         => 'Side Buttons Hide With Navigation Buttons',
+            'label'         => null,  
+            'desc'          => 'Hide side buttons when navigation buttons are showing.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+            'if_conditions' => 'sideSwipePageChapter',
+        ],            
+        'defaultDestinationPage' => [
+            'label'         => 'Default Destination Page',
+            'desc'          => 'Select a page or post containing the [biblesupersearch] shortcode, ' . 
+                                'and all other Bible SuperSearch forms on your site will redirect here.<br /><br /> ' .
+                                'This allows you to have the form on one page, but display the results on another.  ' . 
+                                'Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.',
+            'type'          => 'select',
+            'default'       => '0',
+            'section'       => 'general',
+            'items'         => 'getLandingPageOptions'
         ],
+        // end navigation
+        
+        // :todo: This is specific to WordPress?  Although other platforms may need the same config ... 
         'overrideCss' => [
             'label'         => 'Override Styles',
-            'sublabel'      => 'Override WordPress CSS',
+            'sublabel'      => 'Override WordPress Styling',
             'desc'          => 'Attempts to override some CSS styles from WordPress to make Bible SuperSearch look as was originally designed.',
             'type'          => 'checkbox',
             'default'       => false,
@@ -544,6 +553,68 @@ return [
             'render'        => false,
             'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ], 
+    ],
+
+    'language' => [
+'language' => [
+            'label'         => 'Default Language',
+            'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
+            'type'          => 'select',
+            'default'       => 'global_default',
+            'section'       => 'general_top',
+            'items'         => 'getLanguagesWithGlobalDefault',
+        ],
+        'enableAllLanguages' => [
+            'label'         => 'Display Language(s)',
+            'desc'          => 'Enable ALL Languages',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+            'render'        => false, 
+        ],
+        'languageList' => [
+            'label'         => '',
+            'desc'          => 'Sets the display language(s) that can be selected by the user.',
+            'type'          => 'select',
+            // 'v_component'   => 'v-autocomplete',
+            'default'       => [],
+            'section'       => 'general',
+            'items'         => 'getLanguages',
+            'multiple'      => true,
+            'render'        => false, 
+            'if_conditions' => 'enableAllLanguages|false',
+        ],
+        'changeLanguageClearForm' => [
+            'label'         => '',
+            'desc'          => 'Clear the form if the user changes the language',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+        ],
+        'enableDefaultBiblesByLang' => [
+            'label'         => 'Default Bibles By Language',
+            'desc'          => 'Set Default Bibles By Language',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'general',
+            'render'        => false, 
+        ],
+        'defaultBiblesByLanguage' => [
+            'label'         => '', // None
+            'type'          => 'json',
+            'default'       => [],
+            'format'        => 'json',
+            'render'        => false,
+            'v_component'   => 'DefaultBiblesByLanguage',
+            'v_no_attr'     => true,
+            'label_cols'    => 1, // obsolete
+            'comp_cols'     => 7, // obsolete
+            'label_width'   => '30%', // ??
+            'comp_width'    => '70%', // ??
+            'label_max_width'   => '100px', // ??
+            'comp_max_width'    => '700px', // ??
+            'if_conditions' => 'enableDefaultBiblesByLang',
+        ],
     ],
 
     'advanced' => [        
