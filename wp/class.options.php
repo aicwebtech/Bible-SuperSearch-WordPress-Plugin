@@ -126,7 +126,9 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
             if($options['enableDefaultBiblesByLang'] && is_array($options['defaultBiblesByLanguage'])) {
                 $bbl = call_user_func_array('array_merge', array_values($options['defaultBiblesByLanguage']));
-                $options['enabledBibles'] = array_unique(array_merge($options['enabledBibles'], $bbl));
+                $options['enabledBibles'] = array_merge($options['enabledBibles'], $bbl);
+                $options['enabledBibles'] = array_unique($options['enabledBibles']);
+                $options['enabledBibles'] = array_values($options['enabledBibles']);
             }
         }
 

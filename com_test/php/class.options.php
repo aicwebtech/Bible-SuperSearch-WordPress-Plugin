@@ -116,12 +116,7 @@ abstract class BibleSuperSearch_Options_Abstract {
             'name'              => 'General',
             'fully_dynamic'     => true, 
             'backend_dynamic'   => true,
-        ],
-        // 'display' => [
-        //     'name'              => 'Display',
-        //     'fully_dynamic'     => true,
-        //     'backend_dynamic'   => true,
-        // ],         
+        ],        
         'features' => [
             'name'              => 'Features',
             'fully_dynamic'     => true,

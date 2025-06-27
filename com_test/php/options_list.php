@@ -1,82 +1,10 @@
 <?php
 
 // Depricated items
-// * render
 // * section
 // * row_classes ? (not used in vue app, but could be?)
 
 return [
-    'general_old' => [
-        '_newConfigSave' => [
-            'label'         => 'Have we saved using the new configs yet?',
-            'desc'          => 'This does not shut down the old configs page!',
-            'type'          => 'checkbox',
-            'hidden'        => true,
-            'default'       => false,
-            'section'       => 'general_top',
-            'render'        => false,
-        ],
-        'interface' => [
-            'label'         => 'Default Skin',
-            'desc'          => 'Sets the default skin seen on the [biblesupersearch] shortcode.<br />' . 
-                                'To preview skins, please visit ' . 
-                                '<a href=\'https://www.biblesupersearch.com/client/\' target=\'_NEW\'>https://www.biblesupersearch.com/client/</a>',
-            'type'          => 'select',
-            'default'       => 'global_default',
-            'section'       => 'general_top',
-            'items'         => 'getInterfaces',
-        ],        
-
-
-        
-        'navigation'        => [
-            'label'         => 'Navigation',
-            'type'          => 'section',
-            'section'       => 'general',
-        ],
-        'swipePageChapter' => [
-            'label'         => 'Touchscreen Swipe',
-            'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],    
-        'arrowKeysPageChapter' => [
-            'label'         => 'Arrow Keys',
-            'desc'          => 'Change chapter and search page via left and right arrow keys.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],
-        'sideSwipePageChapter' => [
-            'label'         => 'Side Buttons',
-            'desc'          => 'Change chapter and search page via fade-in side buttons.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-        ],    
-        'sideSwipeHideWithNavigationButtons' => [
-            // 'label'         => 'Side Buttons Hide With Navigation Buttons',
-            'label'         => null,  
-            'desc'          => 'Hide side buttons when navigation buttons are showing.',
-            'type'          => 'checkbox',
-            'default'       => false,
-            'section'       => 'general',
-            'if_conditions' => 'sideSwipePageChapter',
-        ],            
-        'defaultDestinationPage' => [
-            'label'         => 'Default Destination Page',
-            'desc'          => 'Select a page or post containing the [biblesupersearch] shortcode, ' . 
-                                'and all other Bible SuperSearch forms on your site will redirect here.<br /><br /> ' .
-                                'This allows you to have the form on one page, but display the results on another.  ' . 
-                                'Add the [biblesupersearch] shortcode to any page or post, and it will appear in this list.',
-            'type'          => 'select',
-            'default'       => '0',
-            'section'       => 'general',
-            'items'         => 'getLandingPageOptions'
-        ],
-    ],
-
     'general' => [
         'interface' => [
             'label'         => 'Default Skin',
@@ -427,7 +355,6 @@ return [
             'section'       => 'general',
             'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
-            'render'        => false, // todo
             'v_component'   => 'SelectOrdered',
         ],        
         'enableAllBibles' => [
@@ -436,7 +363,6 @@ return [
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'general',
-            'render'        => false, // todo
         ],
         'enabledBibles' => [
             'label'         => '',
@@ -445,7 +371,6 @@ return [
             'section'       => 'general',
             'items'         => 'bibles', //  going to need to rebuild bible fetcher or something here
             'multiple'      => true,
-            'render'        => false, // todo
             'v_component'   => 'SelectGroup',
             'if_conditions' => 'enableAllBibles|false',
         ],
@@ -525,14 +450,12 @@ return [
             'desc'          => 'Limit the number of parallel Bibles shown and allowed based on page width.',
             'type'          => 'checkbox',
             'default'       => false,
-            'render'        => false,
         ], 
         'parallelBibleLimitByWidth' => [
             'label'         => '', // None
             'type'          => 'json',
             'default'       => [],
             'format'        => 'json',
-            'render'        => false,
             'v_component'   => 'BibleLimitsByWidth',
             'v_no_attr'     => true,
             'label_cols'    => 1, // obsolete
@@ -550,7 +473,6 @@ return [
                                 '"Initial Number of Parallel Bibles,"regardless to the number of Bibles selected as default.',
             'type'          => 'checkbox',
             'default'       => false,
-            'render'        => false,
             'if_conditions' => 'parallelBibleLimitByWidthEnable',
         ], 
     ],
@@ -570,7 +492,6 @@ return [
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'general',
-            'render'        => false, 
         ],
         'languageList' => [
             'label'         => '',
@@ -581,7 +502,6 @@ return [
             'section'       => 'general',
             'items'         => 'getLanguages',
             'multiple'      => true,
-            'render'        => false, 
             'if_conditions' => 'enableAllLanguages|false',
         ],
         'changeLanguageClearForm' => [
@@ -597,14 +517,12 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',
-            'render'        => false, 
         ],
         'defaultBiblesByLanguage' => [
             'label'         => '', // None
             'type'          => 'json',
             'default'       => [],
             'format'        => 'json',
-            'render'        => false,
             'v_component'   => 'DefaultBiblesByLanguage',
             'v_no_attr'     => true,
             'label_cols'    => 1, // obsolete
