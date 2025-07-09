@@ -469,8 +469,14 @@ return [
         ],
         'debug' => [
             'label'         => 'Debug Mode',
-            'desc'          => 'Enables a mulitude of debugging messages in the console. ' . 
+            'desc'          => 'Enables a mulitude of debugging messages in the console. ',
                                 'Enabling this will slow things down considerably, and is not recommended for a production site.',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ],         
+        'debug_shortcode' => [
+            'label'         => 'Debug Shortcode',
+            'desc'          => 'Enables debugging messages in the case the [biblesupersearch] shortcode isn\'t displaying the application.',
             'type'          => 'checkbox',
             'default'       => false,
         ],         
