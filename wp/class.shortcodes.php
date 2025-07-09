@@ -95,6 +95,13 @@ class BibleSuperSearch_Shortcodes {
     static public function display($atts, $thing, $it) {
         global $BibleSuperSearch_Options, $wp_query;
         $options        = $BibleSuperSearch_Options->getOptions();
+
+        $debug = $options['debug_shortcode'] ?? FALSE;
+
+        if($debug) {
+            echo('[biblesupersearch] shortcode called with attributes: ' . print_r($atts, TRUE) . '<br />');
+        }
+        
         $statics        = $BibleSuperSearch_Options->getStatics();
         biblesupersearch_enqueue_depends($options['overrideCss']);
         $container = 'biblesupersearch_container';
@@ -107,6 +114,10 @@ class BibleSuperSearch_Shortcodes {
         // $options['query_string'] = $query_string;
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
+
+        if($debug) {
+            echo('[biblesupersearch] shortcode processing plugin options<br />');
+        }
 
         unset($options['formStyles']); // Not using this config right now
 
@@ -121,6 +132,10 @@ class BibleSuperSearch_Shortcodes {
             $attr['destination_url']['default'] = $destination_url;
         }
         
+        if($debug) {
+            echo('[biblesupersearch] shortcode processing shortcode attributes<br />');
+        }
+
         $defaults = array(
             'container' => $container,
             'contact-form-7-id' => NULL,
@@ -132,6 +147,10 @@ class BibleSuperSearch_Shortcodes {
         
         $a = shortcode_atts($defaults, $atts);
         static::_validateAttributes($a);
+
+        if($debug) {
+            echo('[biblesupersearch] shortcode attributes validated<br />');
+        }
 
         $options['target'] = $a['container'];
         
@@ -165,6 +184,10 @@ class BibleSuperSearch_Shortcodes {
         
         $options_json   = json_encode($options);
         $statics_json   = json_encode($statics);
+
+        if($debug) {
+            echo('[biblesupersearch] shortcode rendering HTML<br />');
+        }
 
         $html  = '';
 
@@ -219,8 +242,13 @@ class BibleSuperSearch_Shortcodes {
 
         $html .= "    <noscript class='biblesupersearch_noscript'>Please enable JavaScript to use</noscript>\n";
         $html .= "</div>\n";
-
+        
         static::$instances ++;
+
+        if($debug) {
+            echo('[biblesupersearch] shortcode finished, returning rendered HTML<br />');
+        }
+
         return $html;
     }    
 
