@@ -611,6 +611,12 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
         ],         
+        'debug_shortcode' => [
+            'label'         => 'Debug Shortcode',
+            'desc'          => 'Enables debugging messages in the case the [biblesupersearch] shortcode isn\'t displaying the application.',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ],         
         'extraCss' => [
             'label'         => 'Extra CSS',
             'desc'          => 'Will be applied everywhere the <code>[biblesuperseach]</code> shortcode is found.',
