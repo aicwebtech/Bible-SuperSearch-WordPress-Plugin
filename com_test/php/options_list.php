@@ -496,7 +496,7 @@ return [
     ],
 
     'language' => [
-'language' => [
+        'language' => [
             'label'         => 'Default Language',
             'desc'          => 'Sets the default display language seen on the [biblesupersearch] shortcode.',
             'type'          => 'select',
@@ -506,14 +506,14 @@ return [
         ],
         'enableAllLanguages' => [
             'label'         => 'Display Language(s)',
-            'desc'          => 'Enable ALL Languages',
+            'desc'          => 'Enable ALL supported languages',
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'general',
         ],
         'languageList' => [
             'label'         => '',
-            'desc'          => 'Sets the display language(s) that can be selected by the user.',
+            'desc'          => 'Sets the display language(s) that can be seen by the user.',
             'type'          => 'select',
             // 'v_component'   => 'v-autocomplete',
             'default'       => [],
@@ -522,16 +522,26 @@ return [
             'multiple'      => true,
             'if_conditions' => 'enableAllLanguages|false',
         ],
+        'languageSelectionEnable' => [
+            'label'         => 'Enable Language Selection',
+            'sublabel'      => 'Whether to allow the user to select a language from the list.',
+            'desc'          => 'It is reccomended to disable this if you are using a 3rd party tool to manage site language.',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+        ],
         'changeLanguageClearForm' => [
             'label'         => '',
             'desc'          => 'Clear the form if the user changes the language',
             'type'          => 'checkbox',
             'default'       => true,
             'section'       => 'general',
+            'if_conditions' => 'languageSelectionEnable',
         ],
         'enableDefaultBiblesByLang' => [
             'label'         => 'Default Bibles By Language',
-            'desc'          => 'Set Default Bibles By Language',
+            'sublabel'      => 'Set Default Bibles By Language',
+            'desc'          => '(List of languages shown comes from Display Language(s) above.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'general',

@@ -293,11 +293,12 @@ class BibleSuperSearch_Shortcodes {
         ), $atts );
 
         // static::_validateAttributes($a);
+        $a['selector_height'] = esc_attr($a['selector_height']);
+        $a['sel_color']       = esc_attr($a['sel_color']);
 
         $html = '';
         $html .= "<div style='height: {$a['selector_height']}; overflow-y:auto'>";
         $html .= "<table><tr><th>Name</th><th>ID</th><th>Select</th></tr>";
-        // $html .= "<tbody style='height: {$a['selector_height']}; overflow-y:auto'>";
 
         foreach($interfaces as $id => $int) {
             $selected = ($id == $sel_interface) ? TRUE : FALSE;
