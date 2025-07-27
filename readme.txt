@@ -184,6 +184,20 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 6.1.0
+* Settings page for the WordPress plugin has been completely rebuilt with a modern User Interface (UI).  
+* Auto Scroll to Error message when No Results
+* One-click Copy/share Bible verses
+* Config to set Default Bibles by UI Language
+* Option to require users to manually save their settings by pushing a button.
+* Option to save user's selected Bibles into their settings.
+* Option to disable language selection.
+* Fixed issues with "Suppress Parallel Search"
+* Fixed history dialog to not show repeats, but only show the most recent.
+* Fixed history / book mark links when having the software on mutiple pages on a website.
+* Fixed potential cross site scripting issue.
+* Cleaned up dialog buttons to position the same regardless of language.
+
 = 6.0.1
 * Fixed total breakage of side swipe buttons
 * Fixed breakage when toggling from advanced to basic form.
@@ -195,7 +209,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * PHP Version: 7.3 minimum
 * WordPress Version: 5.0 minimum
 * All CSS class names have been renamed to start with bss_
-* Only exception are CSS class names already starting with bss_ or biblesupersearch
+* Only exception are CSS class names already starting with bss_ or biblesupersearch_
 
 = 5.7.0
 * Added: Gospel verses to Bible Help/SOS dialog
