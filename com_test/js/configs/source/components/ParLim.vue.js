@@ -125,10 +125,6 @@ export default {
         }
     },
 
-    mounted() {
-        console.log('formRefs', this.formRefs);
-    },
-
     methods: {
         idx: (num) => num - 1,
         calcMax(num) {

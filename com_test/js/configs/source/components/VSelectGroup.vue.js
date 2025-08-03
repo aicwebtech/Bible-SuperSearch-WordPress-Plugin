@@ -108,8 +108,6 @@ export default {
         selectAllItems() {
             var t = this;
 
-            console.log('groups', this.groups);
-
             this.groups.forEach((group) => t.selectAllByGroup[group] = true);
             this.$emit('update:modelValue', this.valueItems.map(item => item.value));
         },

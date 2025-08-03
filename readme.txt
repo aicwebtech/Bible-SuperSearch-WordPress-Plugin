@@ -196,6 +196,7 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Fixed history dialog to not show repeats, but only show the most recent.
 * Fixed history / book mark links when having the software on mutiple pages on a website.
 * Fixed potential cross site scripting issue.
+* Fixed broken pagination on advanced search
 * Cleaned up dialog buttons to position the same regardless of language.
 
 = 6.0.1

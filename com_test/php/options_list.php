@@ -216,7 +216,7 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
-            'if_conditions' => 'saveUserSettings',
+            'if_conditions' => 'saveUserSettings,languageSelectionEnable',
         ],   
         'bookmarksHistory' => [
             'label'         => 'Bookmarks and History',
@@ -538,6 +538,16 @@ return [
             'section'       => 'general',
             'if_conditions' => 'languageSelectionEnable',
         ],
+        'omitUserLanguage' => [
+            'clone'         => 'features.omitUserLanguage', 
+            // 'label'         => null,
+            // 'sublabel'      => 'Don\'t Save User Language Selection',
+            // 'desc'          => 'If saving user settings, exclude the user\'s selected Language.',
+            // 'type'          => 'checkbox',
+            // 'default'       => false,
+            // 'section'       => 'features',
+            // 'if_conditions' => 'saveUserSettings,languageSelectionEnable',
+        ],   
         'enableDefaultBiblesByLang' => [
             'label'         => 'Default Bibles By Language',
             'sublabel'      => 'Set Default Bibles By Language',

@@ -58,7 +58,6 @@ export default {
         idx: (num) => num - 1,
         
         updateModelValue(n, event) {
-            console.log('updateModelValue', n, event); 
             var mv = this.modelValue;
 
             this.$emit('update:modelValue', this.modelValue);

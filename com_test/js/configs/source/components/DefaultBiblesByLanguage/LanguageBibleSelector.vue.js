@@ -81,7 +81,6 @@ export default {
     },
     methods: {
         onSelect(value) {
-            console.log('LBS Selected value:', value);
             this.$emit('update:modelValue', value);
             this.valueCache = value;
         }

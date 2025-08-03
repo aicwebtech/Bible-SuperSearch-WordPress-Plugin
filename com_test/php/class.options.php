@@ -160,7 +160,22 @@ abstract class BibleSuperSearch_Options_Abstract {
             $this->tabs[$tab]['type'] = 'config';
             $this->tabs[$tab]['options'] = []; // Add options array to each tab's settings
 
-            foreach($tab_options as $opt => &$settings) {
+            foreach($tab_options as $optidx => &$settings) {
+                $opt = $optidx;
+                
+                // Todo - flesh out option cloning
+                // Allow cloning of options from the SAME tab?? ...
+                // Currently, the cloned option MUST have the same index as it's parent option
+                // Which means it can only appear once on a given tab
+                // Use case: IDK ... 
+                if(isset($settings['clone']) && $settings['clone']) {
+                    $cc = explode('.', $settings['clone']);
+                    unset($settings['clone']);
+                    //$opt = $cc[1] ?? $opt;
+                    
+                    $settings = array_replace($settings, $options[ $cc[0] ][$opt]);
+                }
+                
                 $settings['field'] = $opt;
 
                 if(!in_array($opt, $this->tabs[$tab]['options'])) {

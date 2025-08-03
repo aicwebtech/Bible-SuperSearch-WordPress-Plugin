@@ -54,8 +54,6 @@ export default {
         }
     },
     mounted() {
-        console.log('mounted options', this.options);
-        
         if(!this.options._newConfigSave && this.options.parallelBibleLimitByWidth.length > 0) {
             this.options.parallelBibleLimitByWidthEnable = true;
         }
@@ -73,15 +71,11 @@ export default {
     methods: {
         async submit(e) {
             await e; // wait for the event to finish
-            
-            console.log('submit', arguments);
 
             if(this.formValid !== true) {
-                console.log('Form is not valid');
+                window.console && console.log('Form is not valid');
                 return;
             }
-
-            console.log('Form is valid, submitting');
 
             var formData = this.options
             formData._tab = 'all';
@@ -97,17 +91,11 @@ export default {
             
             this._submitHelper(formData);
         },
-        
-        
         tmpReset() {
-            console.log('tmpReset');
-
             if(this.formValid !== true) {
-                console.log('Form is not valid');
+                window.console && console.log('Form is not valid');
                 return;
             }
-
-            console.log('Form is valid, submitting');
 
             var formData = this.options
             formData._tab = 'all';
@@ -124,8 +112,6 @@ export default {
             this._submitHelper(formData);
         },
         _submitHelper(formData) {
-            console.log('submitHelper', formData);
-
             var headers = this.bootstrap.configHttpHeaders || {};
 
             axios({
@@ -134,19 +120,14 @@ export default {
                 data: formData,
                 headers: headers
             }).then((response) => {
-                console.log('response', response);
-
                 if(response?.data?.refresh) {
                     alert('Settings saved, page will refresh');
                     this.refreshStatics();
                 } else {
                     alert('Settings saved');
                 }
-
-                // this.formValid = true;
             }).catch((error) => {
-                console.log('error', error);
-                // this.formValid = false;
+                window.console && console.log('error', error);
             });
         },
         refreshStatics() {

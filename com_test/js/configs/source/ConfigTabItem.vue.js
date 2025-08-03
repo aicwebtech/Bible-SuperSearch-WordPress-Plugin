@@ -131,8 +131,6 @@ export default {
             var prop = this.op(config);
 
             if(prop.v_component) {
-                // console.log(this.vm.$options);
-                
                 if(prop.v_component[0] != 'v' && !components[prop.v_component]) {
                     alert('Component missing ' + prop.v_component);
                 }

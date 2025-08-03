@@ -35,7 +35,6 @@ export default {
             this.newValue = event;
         },
         inputBlur(event) {
-            console.log('API URL blurred');
             var t = this,
                 nv = this.newValue,
                 ov = this.oldValue;
