@@ -197,6 +197,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 * Fixed history / book mark links when having the software on mutiple pages on a website.
 * Fixed potential cross site scripting issue.
 * Fixed broken pagination on advanced search
+* Fixed random chapter / verse actual references not populating into form.
+* Fixed results list / results count / pager showing in print mode.
+* Fixed text labels on some skins not showing properly for long translation strings. 
 * Cleaned up dialog buttons to position the same regardless of language.
 
 = 6.0.1
