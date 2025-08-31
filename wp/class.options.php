@@ -221,34 +221,27 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
             }
         }
 
-        if($tab == 'bible') {
-            if($input['enableAllBibles']) {
-                $input['enabledBibles'] = [];
-            }            
-            else {
-                // Make sure default Bible is in list of selected Bibles
-                // Default Bible is now an array, this isn't working properly here
-                // Added this separately
+        // Special cases
+        if($input['enableAllBibles']) {
+            $input['enabledBibles'] = [];
+        }            
 
-                // if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
-                //     $input['enabledBibles'][] = $input['defaultBible'];
-                // }
+        if($input['enableAllLanguages']) {
+            $input['languageList'] = [];
+        } else {
+            // Make sure default language is in list of selected languages
+            if(!in_array($input['language'], $input['languageList'])) {
+                $input['languageList'][] = $input['language'];
             }
         }
 
-        if($tab == 'general') {
-            if($input['enableAllLanguages']) {
-                $input['languageList'] = [];
-            }
-            else {
-                // Make sure default language is in list of selected languages
-                if(!in_array($input['language'], $input['languageList'])) {
-                    $input['languageList'][] = $input['language'];
-                }
-            }
+        if(!empty($input['landingReference'])) {
+            $input['landingReference'] = trim($input['landingReference']);
+            $input['landingReference'] = preg_replace('/[`\'"\\~!@#$%\^&*{}_[\]()=]/', ' ', $input['landingReference']);
+            $input['landingReference'] = preg_replace('/\s+/', ' ', $input['landingReference']);
         }
-
-        if($tab == 'advanced' && empty($input['apiUrl'])) {
+        
+        if(empty($input['apiUrl'])) {
             $input['apiUrl'] = $this->default_options['apiUrl'];
         }
 

@@ -184,6 +184,9 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 
 == Changelog ==
 
+= 6.1.1
+* Fixed some security issues
+
 = 6.1.0
 * Settings page for the WordPress plugin has been completely rebuilt with a modern User Interface (UI).  
 * Auto Scroll to Error message when No Results
