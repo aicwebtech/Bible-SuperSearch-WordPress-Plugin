@@ -40,12 +40,31 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
     wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));    
     wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/style.css', __FILE__));    
-    // wp_enqueue_script('biblesupersearch_main', plugins_url('app/biblesupersearch.js', __FILE__));
-    // wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
-    // wp_enqueue_style('biblesupersearch_css',   plugins_url('app/biblesupersearch.css', __FILE__));
     
     if($includeCssOverride) {
         wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/additional.css', __FILE__));
+    }
+}
+
+function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
+    // Quick workaround for new Gutenberg editor.
+    // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
+    // This is causing Bible SuperSearch to throw errors.
+    // Quick fix: block these incudes from being loaded from any admin page
+
+    if(is_admin()) {
+        return;
+    }
+
+    wp_enqueue_script_module('biblesupersearch_main', plugins_url('com_test/js/vue-app/assets/index.js', __FILE__));
+    // wp_enqueue_script_module('biblesupersearch_main', plugins_url('com_test/js/vue-app/assets/BibleSuperSearch.js', __FILE__));
+    // wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
+    wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/vue-app/assets/index.css', __FILE__));    
+    // wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/style.css', __FILE__));    
+
+    
+    if($includeCssOverride) {
+        // wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/additional.css', __FILE__));
     }
 }
 
