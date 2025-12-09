@@ -437,10 +437,50 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
         ], 
+        
+        'audioBibleSection' => [
+            'label'         => 'Audio Bible',
+            'type'          => 'section',
+        ],
+        'audioBible' => [
+            'label'         => 'Enable',
+            'desc'          => 'Show link and audio controls to play the audio.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'if_api'        => 'audio_enabled',
+        ],
+        'audioBibleDisplay' => [
+            'label'         => 'Audio Bible Display',
+            'desc'          => 'How to display the audio Bible controls.',
+            'items'         => [
+                'narrow'     => 'Always Narrow (Fits within Bible column - may cause issues)',
+                'wide'       => 'Always Wide (Full Width)',
+                'threshold'  => 'Dynamic by Threshold',
+            ],
+            'type'          => 'select',
+            'default'       => 'threshold',
+            'if_conditions' => 'audioBible',
+            'if_api'        => 'audio_enabled',
+            'if_api_desc'   => 'Audio Bible must also be enabled on the API.',
+        ],
+        'audioBibleDisplayThreshold' => [
+            'label'         => 'Audio Bible Display Threshold',
+            'desc'          => 'Minimum number of parallel Bibles selected before changing to wide display mode.',
+            'type'          => 'integer',
+            'default'       => 3,
+            'rules'         => ['required', 'positiveInteger'],
+            'if_api'        => 'audio_enabled',
+            'if_api_desc'   => 'Audio Bible must also be enabled on the API.',
+        ],
+
+        'parallelBibleSection' => [
+            'label'         => 'Paralell Bibles',
+            'type'          => 'section',
+        ],
         'parallelBibleCleanUpForce' => [
             'label'         => 'Force Parallel Bible Clean Up',
             'sublabel'      => 'Remove Bibles Above Limit',
-            'desc'          => 'If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below)<br />' .
+            'desc'          => 'If the parallel Bible limit is dynamically changed (ie by an expanding interface, or by limits set below), ' .
                                 'should we remove Bible selections above the new limit?  Otherwise, the selections will remain.',
             'type'          => 'checkbox',
             'default'       => false,
