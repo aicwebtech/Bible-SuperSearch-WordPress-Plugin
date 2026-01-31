@@ -309,7 +309,7 @@ class BibleSuperSearch_Shortcodes {
         static::_validateAttributes($a);
 
         if($debug) {
-            echo('[biblesupersearch] shortcode attributes validated<br />');
+            return '[biblesupersearch] shortcode attributes validated<br />';
         }
 
         $options['target'] = $a['container'];
@@ -371,7 +371,7 @@ class BibleSuperSearch_Shortcodes {
 
             if(!empty($query_vars)) {
                 $query_vars['redirected'] = TRUE;
-                $query_vars_json = json_encode($query_vars);
+                $query_vars_json = json_encode($query_vars, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
                 $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
             }
 
@@ -428,11 +428,6 @@ class BibleSuperSearch_Shortcodes {
 
             $html .= "</script>\n";
         }
-
-        // Experimental: Using a Contact Form 7 form for the Bible search form.
-        // if($a['contact-form-7-id']) {
-        //     $html .= static::_displayContactForm7($a);
-        // }
 
         $html .= "<div id='{$a['container']}' class='wp-exclude-emoji'>\n";
         
@@ -609,7 +604,7 @@ class BibleSuperSearch_Shortcodes {
 }
 
 add_shortcode('biblesupersearch', array('BibleSuperSearch_Shortcodes', 'display'));
-add_shortcode('biblesupersearch_new', array('BibleSuperSearch_Shortcodes', 'displayNew'));
+// add_shortcode('biblesupersearch_new', array('BibleSuperSearch_Shortcodes', 'displayNew')); // future
 add_shortcode('biblesupersearch_demo', array('BibleSuperSearch_Shortcodes', 'demo'));
 add_shortcode('biblesupersearch_bible_list', array('BibleSuperSearch_Shortcodes', 'bibleList'));
 add_shortcode('biblesupersearch_downloads', array('BibleSuperSearch_Shortcodes', 'downloadPage'));
