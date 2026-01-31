@@ -313,6 +313,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->configHttpHeaders = new \stdclass;
         $bootstrap->configHttpHeaders->{'X-WP-Nonce'} = wp_create_nonce( 'wp_rest' );
         $bootstrap->configUrl = esc_url_raw( rest_url() ) . 'biblesupersearch/v1/config';
+        $bootstrap->usingMainApi = $using_main_api;
 
         wp_enqueue_script('biblesupersearch_vue', plugins_url('../com_test/js/bin/vue_3.5.13.global.js', __FILE__));
         wp_enqueue_script('biblesupersearch_vuetify', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.js', __FILE__));

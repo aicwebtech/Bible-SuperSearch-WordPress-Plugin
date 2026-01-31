@@ -18,7 +18,8 @@ const tpl = `
     <template v-for='config in tab.options'>
         <v-sheet 
             v-if='configIf(config)' 
-            class='mb-4'
+            :class='classes(config)'
+            :color='!apiIf(config) ? "#ccc" : ""'
         >
             <div 
                 v-if='op(config).label_width !== 0 && configIf(config)' 
@@ -37,9 +38,22 @@ const tpl = `
                     :is='formComponent(config)' 
                     v-model='options[config]'
                     v-bind='configProps(config)'
+                    :disabled='disabled(config)'
                 ></component>
 
                 <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
+            </div>
+            <div v-if='!apiIf(config)' class='d-inline-block float-left ml-4 w-33'>
+                <v-alert v-if='bootstrap.usingMainApi' type='warning' density='default' variant='outlined' class='pa-1 text-body-2'>
+                    This feature is not available with the main Bible SuperSearch API. &nbsp;
+                    Please install our API to use this feature.
+                </v-alert>
+
+                <v-alert v-else type='warning' density='default' variant='outlined' class='pa-1 text-body-2'>
+                    {{op(config).if_api_desc || "This feature is not enabled on your Bible SuperSearch API."}}
+                    <br />
+                    Please enable this feature on your Bible SuperSearch API settings page.
+                </v-alert>
             </div>
             <div v-if='debug && configIf(config)' class='d-inline-block float-left w-25 text-pre-wrap'>{{options[config]}}</div>
             <div style='clear: both;'></div>
@@ -221,8 +235,11 @@ export default {
                 return this.options.strongsOpenClick !== 'none';
             }
 
-            // End special cases
+            if(config === 'audioBibleDisplayThreshold') {
+                return this.options.audioBible && this.options.audioBibleDisplay === 'threshold';
+            }
 
+            // End special cases
 
             if(prop.if_conditions) {
                 var ifAnd = prop.if_conditions.split(',');
@@ -245,6 +262,46 @@ export default {
             }
 
             return true;
+        },
+        apiIf(config) {
+            var prop = this.op(config);
+
+            if(prop.type == 'hidden' || prop.hidden) {
+                return false;
+            }
+
+            // Special cases
+            // End special cases
+
+            if(prop.if_api) {
+                var ifAnd = prop.if_api.split(',');
+                
+                for(var i = 0; i < ifAnd.length; i++) {
+                    var vv = ifAnd[i].split('|');
+
+                    if(vv[1] == 'false') {
+                        if(this.bootstrap.statics[vv[0]]) {
+                            return false;
+                        }
+                    } else {
+                        if(!this.bootstrap.statics[vv[0]]) {
+                            return false; 
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            return true;
+        },
+        classes(config) {
+            var classList = 'mb-4';
+
+            return classList;
+        },
+        disabled(config) {
+            return !this.apiIf(config);
         },
         hasSubLabel(config) {
             var comp = this.formComponent(config);
