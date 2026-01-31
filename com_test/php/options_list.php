@@ -474,7 +474,7 @@ return [
         ],
 
         'parallelBibleSection' => [
-            'label'         => 'Paralell Bibles',
+            'label'         => 'Parallel Bibles',
             'type'          => 'section',
         ],
         'parallelBibleCleanUpForce' => [

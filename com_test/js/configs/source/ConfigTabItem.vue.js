@@ -44,12 +44,12 @@ const tpl = `
                 <v-sheet v-if='!hasSubLabel(config) || op(config).sublabel' v-html="op(config).desc" class='mt-1'></v-sheet>
             </div>
             <div v-if='!apiIf(config)' class='d-inline-block float-left ml-4 w-33'>
-                <v-alert v-if='bootstrap.usingMainApi' type='warning' density='default' outlined class='pa-1 text-body-2'>
+                <v-alert v-if='bootstrap.usingMainApi' type='warning' density='default' variant='outlined' class='pa-1 text-body-2'>
                     This feature is not available with the main Bible SuperSearch API. &nbsp;
                     Please install our API to use this feature.
                 </v-alert>
 
-                <v-alert v-else type='warning' density='default' outlined class='pa-1 text-body-2'>
+                <v-alert v-else type='warning' density='default' variant='outlined' class='pa-1 text-body-2'>
                     {{op(config).if_api_desc || "This feature is not enabled on your Bible SuperSearch API."}}
                     <br />
                     Please enable this feature on your Bible SuperSearch API settings page.

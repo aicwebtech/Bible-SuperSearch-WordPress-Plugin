@@ -320,7 +320,7 @@ class BibleSuperSearch_Shortcodes {
             $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
 
             if(!$interface) {
-                return '<div>Error: Interface does not exist: ' . $a['interface'] . '</div>';
+                return '<div>Error: Interface does not exist: ' . esc_html( $a['interface'] ) . '</div>';
             }
 
             $a['interface'] = $interface['id'];
@@ -371,7 +371,7 @@ class BibleSuperSearch_Shortcodes {
 
             if(!empty($query_vars)) {
                 $query_vars['redirected'] = TRUE;
-                $query_vars_json = json_encode($query_vars);
+                $query_vars_json = wp_json_encode($query_vars);
                 $html .= "var biblesupersearch_form_data = {$query_vars_json};\n";
             }
 
