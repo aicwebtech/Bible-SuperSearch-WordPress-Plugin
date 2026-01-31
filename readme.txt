@@ -3,7 +3,7 @@ Contributors: aicwebtech
 Tags: Bible search, Bible, Strong's numbers
 Donate link: https://www.biblesupersearch.com/downloads/
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.3
 Stable tag: trunk
 License: GPLv3 or later
@@ -19,9 +19,6 @@ Keep your users on your website!   Unlike similar plugins, Bible SuperSearch dis
 This is the official [Bible SuperSearch](https://www.biblesupersearch.com) plugin.  It allows for seamless use of the Bible SuperSearch client and API on any WordPress site.
 
 This plugin pulls data from our API transparently.  You also have the option to install our API on your server for complete autonomy.
-
-NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of this plugin will be set to equal WordPress's minimum PHP version (Currently 7.2).
-
 
 # Core Features
 
@@ -42,7 +39,8 @@ NOTICE: PHP requirement change coming in Version 6.0.  Minimum PHP version of th
     * Advanced search
     * Bible help and getting started dialogs
     * Bible downloads dialog and shortcode allows downloading Bible text in various formats.  The shortcode allows having downloads separate from the main Bible app.
-    * Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desizred
+    * Selectable skins (interfaces) allow the Bible search to appear as simple or as complex as desired
+    * Audio Bible playback option (requires self-hosted BibleSuperSearch API).
 1. Widget providing a small Bible search form. 
 1. Bible downloads  - ability to download public domain or non-commercial use only Bibles in several formats
 
@@ -150,6 +148,20 @@ https://www.biblesupersearch.com/downloads/
 Once installed, you will have to point this plugin to your API install.
 Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your API in this box.
 
+= How do I use the Audio Bible feature?
+
+This requires installing the Bible SuperSearch API on your website; see above for details.
+
+This also requires either audio Bible mp3 files and/or paid access to a Text-to-Speech API.
+We currently support Narakeet and OpenAI. 
+
+Once you have the API installed, you will need to enable Audio Bible under options, and then enable audio Bible 
+on every Bible on which you want audio.  You will need to either upload the audio Bible files and/or set up a TTS API for the audio to work.
+
+In this WordPress plugin, under Settings => Bibles, enable Audio Bible.
+
+You will see "Listen" links on each verse or passage allowing you to listen to the text.
+
 == Screenshots ==
 1. Expanding Search Form - Contracted
 1. Expanding Search Form - Expanded
@@ -183,6 +195,11 @@ Settings => Bible SuperSearch => Advanced => API URL => Insert the URL to your A
 1. Plugin Configs: Widgets
 
 == Changelog ==
+
+= 6.2.0
+* Added Audio Bible playback option
+* Added configs for the audio Bible
+* Misc bugfixes
 
 = 6.1.1
 * Fixed some security issues
