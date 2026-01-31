@@ -320,7 +320,7 @@ class BibleSuperSearch_Shortcodes {
             $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
 
             if(!$interface) {
-                return '<div>Error: Interface does not exist: ' . $a['interface'] . '</div>';
+                return '<div>Error: Interface does not exist: ' . esc_html( $a['interface'] ) . '</div>';
             }
 
             $a['interface'] = $interface['id'];
