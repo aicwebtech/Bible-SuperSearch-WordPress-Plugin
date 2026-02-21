@@ -196,6 +196,10 @@ You will see "Listen" links on each verse or passage allowing you to listen to t
 
 == Changelog ==
 
+= 6.2.2
+* Bugfix: Fixed non-existent default skin option
+* Bugfix: Fixed potential file permission issue with templates
+
 = 6.2.1
 * Bugfix to support legacy PHP 7.3
 

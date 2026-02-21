@@ -12,7 +12,7 @@ return [
                                 'To preview skins, please visit ' . 
                                 '<a href=\'https://www.biblesupersearch.com/client/\' target=\'_NEW\'>https://www.biblesupersearch.com/client/</a>',
             'type'          => 'select',
-            'default'       => 'global_default',
+            'default'       => 'Expanding',
             'section'       => 'general_top',
             'items'         => 'getInterfaces',
         ],  

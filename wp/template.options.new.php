@@ -1,4 +1,9 @@
 <?php
+    /**
+     * (tempoary) Template for the new (Vue.js) settings page.
+     * Will be replaced when we rebuild this plugin.  
+     */
+    
     // global $options, $bibles, $interfaces;
     global $BibleSuperSearch_Options;
 

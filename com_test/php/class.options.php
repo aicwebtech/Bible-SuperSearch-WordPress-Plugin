@@ -1101,7 +1101,8 @@ abstract class BibleSuperSearch_Options_Abstract {
         return self::$selector_options['language'][$code] ?? null;
     }
 
-    public function getInterfaces() {
+    public function getInterfaces() 
+    {
         return array(
             // 'TwentyTwenty' => array(
             //     'name'  => 'Twenty Twenty', 
