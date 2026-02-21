@@ -196,6 +196,9 @@ You will see "Listen" links on each verse or passage allowing you to listen to t
 
 == Changelog ==
 
+= 6.2.1
+* Bugfix to support legacy PHP 7.3
+
 = 6.2.0
 * Added Audio Bible playback option
 * Added configs for the audio Bible

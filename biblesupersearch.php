@@ -4,7 +4,7 @@
     Plugin Name: Bible SuperSearch
     Plugin URI:  https://biblesupersearch.com/downloads/
     Description: Bible tool having multiple versions, keyword search, reference retrival, Bible downloader, and more.  Keeps your visitors on your website!
-    Version:     6.2.0
+    Version:     6.2.1
     Author:      Bible SuperSearch
     Author URI:  https://www.biblesupersearch.com
     License:     GPLv3 or later
@@ -145,7 +145,10 @@ add_action( 'rest_api_init', function () {
             $response->options = $BibleSuperSearch_Options->getOptions();
             return $response;
         },
-        'permission_callback' => fn() => current_user_can('manage_options')
+        //'permission_callback' => fn() => current_user_can('manage_options') // php 7.4 +
+        'permission_callback' => function() {
+            return current_user_can('manage_options');
+        }
     ]);
 
     register_rest_route( 'biblesupersearch/v1', '/config', [
@@ -163,7 +166,10 @@ add_action( 'rest_api_init', function () {
 
             return $response;
         },
-        'permission_callback' => fn() => current_user_can('manage_options')
+        //'permission_callback' => fn() => current_user_can('manage_options') // php 7.4 +
+        'permission_callback' => function() {
+            return current_user_can('manage_options');
+        }
     ]);
 } );
 
