@@ -9,6 +9,8 @@ defined( 'ABSPATH' ) or die; // exit if accessed directly
 class BibleSuperSearch_Shortcodes {
     static protected $instances = 0;
 
+    static protected $shortcode_title = '';
+
     static public $displayAttributes = array(
         // Attributes must be in underscore_case
         'interface' => array(
@@ -109,9 +111,21 @@ class BibleSuperSearch_Shortcodes {
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
 
+        // print_r($_REQUEST);
+        // print_r($wp_query->query_vars);
+
+        
+        // if(array_key_exists('q', $_REQUEST)) {
+        //     $options['query_string'] = $_REQUEST['q'];
+        //     static::$shortcode_title = $_REQUEST['q'] . ' - Bible Search Results';
+        // } else {
+        //     $options['query_string'] = '';
+        // }
+
         // Beginning of shareable, SEO-friendly linkage
-        // $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
-        // $options['query_string'] = $query_string;
+        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
+        $options['query_string'] = $query_string;
+        // echo('[biblesupersearch] query string from URL: ' . $query_string . '<br />');
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
@@ -601,6 +615,37 @@ class BibleSuperSearch_Shortcodes {
         }
     }
 
+    static public function shortcodeTitle($parts) 
+    {
+        global $post;
+
+        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+            return $title;
+        }
+
+        // Todo: parse query and generate title from it ... 
+        // Todo: I don't want to have to parse the query twice ... 
+        if(array_key_exists('q', $_REQUEST)) {
+            $parts['title'] = $_REQUEST['q'] . ' - ' . $parts['title'];
+        } 
+    
+        return $parts;
+    }
+
+    static public function shortcodeMeta()
+    {
+        global $post;
+
+        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+            return;
+        }
+
+        // Todo: I don't want to have to parse the query twice ... 
+
+        if(array_key_exists('q', $_REQUEST)) {
+            echo '<meta name="description" content="' . esc_attr($_REQUEST['q']) . '" />' . "\n";
+        }
+    }
 }
 
 add_shortcode('biblesupersearch', array('BibleSuperSearch_Shortcodes', 'display'));
@@ -609,3 +654,5 @@ add_shortcode('biblesupersearch_demo', array('BibleSuperSearch_Shortcodes', 'dem
 add_shortcode('biblesupersearch_bible_list', array('BibleSuperSearch_Shortcodes', 'bibleList'));
 add_shortcode('biblesupersearch_downloads', array('BibleSuperSearch_Shortcodes', 'downloadPage'));
 
+add_filter('document_title_parts', array('BibleSuperSearch_Shortcodes', 'shortcodeTitle'), 100, 1);
+add_action('wp_head', array('BibleSuperSearch_Shortcodes', 'shortcodeMeta'), 1);
