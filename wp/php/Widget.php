@@ -1,9 +1,11 @@
 <?php
 
-defined( 'ABSPATH' ) or die; // exit if accessed directly
+namespace BibleSuperSearch\WordPress;
+
+defined('ABSPATH') or die; // exit if accessed directly
 
 
-class BibleSuperSearch_Widget extends WP_Widget {
+class Widget extends \WP_Widget {
     
     public function __construct() {
  
@@ -15,8 +17,8 @@ class BibleSuperSearch_Widget extends WP_Widget {
             ]
         );
  
-        add_action( 'widgets_init', function() {
-            register_widget( 'BibleSuperSearch_Widget' );
+        add_action('widgets_init', function () {
+            register_widget(\BibleSuperSearch\WordPress\Widget::class);
         });
     }
  
@@ -41,8 +43,13 @@ class BibleSuperSearch_Widget extends WP_Widget {
 
         $options        = $BibleSuperSearch_Options->getOptions();
         $form_action    = get_permalink($landing_page);
-        $query_vars     = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
-        $selected_bible = array_key_exists('bible', $query_vars) ? $query_vars['bible'] : NULL;
+        $query_vars     = [];
+
+        if(array_key_exists('biblesupersearch', $_REQUEST) && is_array($_REQUEST['biblesupersearch'])) {
+            $query_vars = wp_unslash($_REQUEST['biblesupersearch']);
+        }
+
+        $selected_bible = array_key_exists('bible', $query_vars) ? sanitize_text_field($query_vars['bible']) : NULL;
         $bible_list = [];
 
         if(!$selected_bible) {
@@ -74,19 +81,19 @@ class BibleSuperSearch_Widget extends WP_Widget {
                 </p>
             <?php endif; ?>
 
-            <form action='<?php echo $form_action ?>' method='POST'>
-                <input name='biblesupersearch[request]' style='<?php echo $request_style ?>' placeholder= 'Verse(s) or Keyword(s)'/>
+            <form action='<?php echo esc_url($form_action); ?>' method='POST'>
+                <input name='biblesupersearch[request]' style='<?php echo esc_attr($request_style); ?>' placeholder='<?php echo esc_attr($this->default_placeholder_text); ?>'/>
 
                 <?php if($instance['bible_list_display'] != 'none'): ?>
                     <br />
-                    <select name='biblesupersearch[bible]' style='<?php echo $go_neighbor_format; ?>'>
+                    <select name='biblesupersearch[bible]' style='<?php echo esc_attr($go_neighbor_format); ?>'>
                         <?php foreach($bible_list as $bible): ?>
                             <?php 
                                 if($bible['group_value'] && $bible['group_value'] != $group):
                                     if($group !== NULL) echo '</optgroup>';
                                     $group = $bible['group_value'];
                             ?> 
-                                <optgroup label='<?php echo $bible['group_name'] ?>' >
+                                <optgroup label='<?php echo esc_attr($bible['group_name']); ?>' >
                             <?php endif; ?>
 
                             <?php
@@ -94,7 +101,7 @@ class BibleSuperSearch_Widget extends WP_Widget {
                                 $display  = $bible['display_name'];
                             ?>
 
-                            <option value='<?php echo $bible['module'] ?>' <?php echo $selected; ?> ><?php echo $display ?></option>
+                            <option value='<?php echo esc_attr($bible['module']); ?>' <?php echo $selected; ?> ><?php echo esc_html($display); ?></option>
                         <?php endforeach; ?>
                         <?php if($group): ?></optgroup><?php endif; ?>
                     </select>
@@ -268,4 +275,4 @@ class BibleSuperSearch_Widget extends WP_Widget {
     }
 }
 
-$BibleSuperSearch_Widget = new BibleSuperSearch_Widget();
+$BibleSuperSearch_Widget = new Widget();

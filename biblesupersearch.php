@@ -19,10 +19,21 @@
 
 // com_test is a temp dir name ...
 
+// Load autoloader and register PSR-4 namespaces
+require_once(dirname(__FILE__) . '/wp/Autoloader.php');
+
+$biblesupersearch_autoloader = new BibleSuperSearch_Autoloader();
+$biblesupersearch_autoloader->addNamespace('BibleSuperSearch\\WordPress', dirname(__FILE__) . '/wp/php');
+$biblesupersearch_autoloader->addNamespace('BibleSuperSearch\\Common', dirname(__FILE__) . '/com_test/php/src');
+$biblesupersearch_autoloader->register();
+
+// Load utility files that are not autoloaded
 require_once(dirname(__FILE__) . '/com_test/php/init.php');
-require_once(dirname(__FILE__) . '/wp/class.options.php');
-require_once(dirname(__FILE__) . '/wp/class.widgets.php');
-require_once(dirname(__FILE__) . '/wp/class.shortcodes.php');
+
+// Explicitly load WordPress class files (file-level side effects: hooks, shortcodes, global instances)
+require_once(dirname(__FILE__) . '/wp/php/Options.php');
+require_once(dirname(__FILE__) . '/wp/php/Widget.php');
+require_once(dirname(__FILE__) . '/wp/php/Shortcodes.php');
 
 // wp_enqueue_media(); // does not work
 
@@ -37,12 +48,12 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     }
 
     wp_enqueue_script('biblesupersearch_main', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
-    wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
-    wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));    
-    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/style.css', __FILE__));    
+    wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/js/additional.js', __FILE__));
+    wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));
+    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/css/style.css', __FILE__));
     
     if($includeCssOverride) {
-        wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/additional.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/css/additional.css', __FILE__));
     }
 }
 
@@ -77,7 +88,7 @@ function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
 
 function biblesupersearch_enqueue_option() {
     wp_enqueue_script('biblesupersearch_options',  plugins_url('wp/options.js', __FILE__));
-    wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/options.css', __FILE__));
+    wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/css/options.css', __FILE__));
 }
 
 /* Adds settings link to plugin page */
@@ -97,7 +108,7 @@ function biblesupersearch_custom_rewrite() {
     global $BibleSuperSearch_Options;
 
     if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
+        $BibleSuperSearch_Options = new \BibleSuperSearch\WordPress\Options();
     }
 
     $landing_page = $BibleSuperSearch_Options->getLandingPage();
@@ -133,7 +144,7 @@ add_action( 'rest_api_init', function () {
     global $BibleSuperSearch_Options;
 
     if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
+        $BibleSuperSearch_Options = new \BibleSuperSearch\WordPress\Options();
     }
     
     register_rest_route( 'biblesupersearch/v1', '/config', [

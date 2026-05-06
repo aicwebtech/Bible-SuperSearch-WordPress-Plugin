@@ -1,6 +1,8 @@
 <?php
 
-abstract class BibleSuperSearch_Options_Abstract {
+namespace BibleSuperSearch\Common;
+
+abstract class OptionsAbstract {
     protected $option_index = 'biblesupersearch_options';
 
     protected $default_options = [
@@ -294,7 +296,7 @@ abstract class BibleSuperSearch_Options_Abstract {
     // Override to add/change/remove options
     protected function loadOptions()
     {
-        return require(dirname(__FILE__) . '/options_list.php');
+        return require(dirname(__FILE__) . '/../includes/options_list.php');
     }
 
     protected function makeOptionClass($settings)

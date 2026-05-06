@@ -1,8 +1,12 @@
 <?php
 
-defined( 'ABSPATH' ) or die; // exit if accessed directly
+namespace BibleSuperSearch\WordPress;
 
-class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract 
+use BibleSuperSearch\Common\OptionsAbstract;
+
+defined('ABSPATH') or die; // exit if accessed directly
+
+class Options extends OptionsAbstract 
 {
     
     protected $option_index = 'biblesupersearch_options';
@@ -30,7 +34,7 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         // Settings Menu Page
         add_action( 'admin_menu', array($this, 'pluginMenu') );
 
-        register_activation_hook( dirname(__FILE__) . '/biblesupersearch.php', array($this, 'setDefaultOptions' ) );
+        register_activation_hook( dirname(__FILE__) . '/../../biblesupersearch.php', array($this, 'setDefaultOptions' ) );
 
         // Flush rewrite rules before everything else (if required)
         // add_action( 'init', array( $this, 'maybe_flush_rewrite_rules' ) );
@@ -315,10 +319,10 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         $bootstrap->configUrl = esc_url_raw( rest_url() ) . 'biblesupersearch/v1/config';
         $bootstrap->usingMainApi = $using_main_api;
 
-        wp_enqueue_script('biblesupersearch_vue', plugins_url('../com_test/js/bin/vue_3.5.13.global.js', __FILE__));
-        wp_enqueue_script('biblesupersearch_vuetify', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.js', __FILE__));
-        wp_enqueue_script('biblesupersearch_axios', plugins_url('../com_test/js/bin/axios_1.9.0.min.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_vuetify_css', plugins_url('../com_test/js/bin/vuetify_3.7.6.min.css', __FILE__));
+        wp_enqueue_script('biblesupersearch_vue', plugins_url('com_test/js/bin/vue_3.5.13.global.js', dirname(__FILE__, 2)));
+        wp_enqueue_script('biblesupersearch_vuetify', plugins_url('com_test/js/bin/vuetify_3.7.6.min.js', dirname(__FILE__, 2)));
+        wp_enqueue_script('biblesupersearch_axios', plugins_url('com_test/js/bin/axios_1.9.0.min.js', dirname(__FILE__, 2)));
+        wp_enqueue_style('biblesupersearch_vuetify_css', plugins_url('com_test/js/bin/vuetify_3.7.6.min.css', dirname(__FILE__, 2)));
 
         wp_localize_script( 'wp-api', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -339,20 +343,20 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
         // Including fonts via CDN IS allowed per WordPress plugin guidelines
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
 
-        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('./Config.vue.js', __FILE__));
+        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('wp/js/Config.vue.js', dirname(__FILE__, 2)));
 
         // wp_localize_script( 'biblesupersearch_vue_config', 'wpApiSettings', array(
         //     'root' => esc_url_raw( rest_url() ),
         //     'nonce' => wp_create_nonce( 'wp_rest' )
         // ) );
 
-        wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('../com_test/js/configs/assets/style.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_vue_config_css', plugins_url('com_test/js/configs/assets/style.css', dirname(__FILE__, 2)));
 
         if ( ! isset( $_REQUEST['settings-updated'] ) ) {
             $_REQUEST['settings-updated'] = FALSE;
         }
 
-        require( dirname(__FILE__) . '/template.options.new.php');
+        require(dirname(__FILE__) . '/../templates/template.options.new.php');
         return;
     }    
 
@@ -371,8 +375,8 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
 
         $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
         
-        wp_enqueue_style('biblesupersearch_docs_css', plugins_url('./options.css', __FILE__));
-        require( dirname(__FILE__) . '/template.options.docs.php');
+        wp_enqueue_style('biblesupersearch_docs_css', plugins_url('wp/css/options.css', dirname(__FILE__, 2)));
+        require(dirname(__FILE__) . '/../templates/template.options.docs.php');
         return;
     }
 
@@ -565,4 +569,4 @@ class BibleSuperSearch_Options_WP extends BibleSuperSearch_Options_Abstract
     }
 }
 
-$BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
+$BibleSuperSearch_Options = new Options();

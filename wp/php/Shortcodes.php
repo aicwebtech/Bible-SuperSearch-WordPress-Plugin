@@ -1,12 +1,10 @@
 <?php
 
-defined( 'ABSPATH' ) or die; // exit if accessed directly
+namespace BibleSuperSearch\WordPress;
 
-        // * formatButtons - Which formatting buttons to use?  Options: default, Classic or Stylable
-        // * navigationButtons - Which navigation buttons to use?  Options: default, Classic or Stylable
-        // * pager - Which pager to use? Options: default, Classic, Clean
+defined('ABSPATH') or die; // exit if accessed directly
 
-class BibleSuperSearch_Shortcodes {
+class Shortcodes {
     static protected $instances = 0;
 
     static protected $shortcode_title = '';
@@ -174,7 +172,7 @@ class BibleSuperSearch_Shortcodes {
             $interface = $BibleSuperSearch_Options->getInterfaceByName($a['interface']);
 
             if(!$interface) {
-                return '<div>Error: Interface does not exist: ' . $a['interface'] . '</div>';
+                return '<div>Error: Interface does not exist: ' . esc_html($a['interface']) . '</div>';
             }
 
             $a['interface'] = $interface['id'];
@@ -219,7 +217,7 @@ class BibleSuperSearch_Shortcodes {
 
             // Dynamically generate link to biblesupersearch_root_dir
             // Confirmed needed (by WordPress.com websites)
-            $bss_dir        = plugins_url('com_test/js/app', dirname(__FILE__));
+            $bss_dir        = plugins_url('com_test/js/app', dirname(__FILE__, 2));
             $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
             $html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n";
 
@@ -379,7 +377,7 @@ class BibleSuperSearch_Shortcodes {
 
             // Dynamically generate link to biblesupersearch_root_dir
             // Confirmed needed (by WordPress.com websites)
-            $bss_dir = plugins_url('com_test/js/vue-app', dirname(__FILE__)); 
+            $bss_dir = plugins_url('com_test/js/vue-app', dirname(__FILE__, 2));
             $html .= "var biblesupersearch_root_directory = '{$bss_dir}';\n";
             //$html .= "var biblesupersearch_instances = {" . $container . ": " . $options_json . "};\n"; // unused??
 
@@ -489,7 +487,7 @@ class BibleSuperSearch_Shortcodes {
         global $BibleSuperSearch_Options;
         $interfaces     = $BibleSuperSearch_Options->getInterfaces();
         $options        = $BibleSuperSearch_Options->getOptions();
-        $sel_interface  = !empty($_REQUEST['biblesupersearch_interface']) ? $_REQUEST['biblesupersearch_interface'] : $options['interface'];
+        $sel_interface  = !empty($_REQUEST['biblesupersearch_interface']) ? sanitize_text_field(wp_unslash($_REQUEST['biblesupersearch_interface'])) : $options['interface'];
         $sel_interface  = isset($interfaces[$sel_interface]) ? $sel_interface : $options['interface'];
 
         $a = shortcode_atts( array(
@@ -511,15 +509,15 @@ class BibleSuperSearch_Shortcodes {
             $style    = ($selected && $a['sel_color']) ? "style='background-color:{$a['sel_color']}'" : '';
             $disabled = ($selected) ? "disabled='disabled'" : '';
 
-            $html .= "<tr {$style}><td>{$int['name']}</td><td>{$id}</td><td style='text-align: center'><form>"; 
-            $html .= "<input type='hidden' name='biblesupersearch_interface' value='{$id}' />";
-            $html .= "<input type='submit' value='{$display}' style='width: 70%' {$disabled} /></form></td></tr>";
+            $html .= "<tr {$style}><td>" . esc_html($int['name']) . "</td><td>" . esc_html($id) . "</td><td style='text-align: center'><form>";
+            $html .= "<input type='hidden' name='biblesupersearch_interface' value='" . esc_attr($id) . "' />";
+            $html .= "<input type='submit' value='" . esc_attr($display) . "' style='width: 70%' {$disabled} /></form></td></tr>";
         }
 
         // $html .= "</tbody></table>";
         $html .= "</table></div>";
-        $html .= "<br /><h3>Displaying: {$interfaces[$sel_interface]['name']}</h3><br />";
-        $html .= do_shortcode("[biblesupersearch interface='{$sel_interface}']");
+        $html .= "<br /><h3>Displaying: " . esc_html($interfaces[$sel_interface]['name']) . "</h3><br />";
+        $html .= do_shortcode("[biblesupersearch interface='" . esc_attr($sel_interface) . "']");
 
         return $html;
     }
@@ -600,11 +598,11 @@ class BibleSuperSearch_Shortcodes {
             return $msg;
         }
 
-        wp_enqueue_script('biblesupersearch_download_js', plugins_url('download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css', plugins_url('download/download.css', __FILE__));
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('../download/download.js', __FILE__));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('../download/download.css', __FILE__));
 
         ob_start();
-        include(dirname(__FILE__) . '/download/download.php');
+        include(dirname(__FILE__) . '/../download/download.php');
         $html = ob_get_clean();
         return $html;
     }
@@ -626,7 +624,8 @@ class BibleSuperSearch_Shortcodes {
         // Todo: parse query and generate title from it ... 
         // Todo: I don't want to have to parse the query twice ... 
         if(array_key_exists('q', $_REQUEST)) {
-            $parts['title'] = $_REQUEST['q'] . ' - ' . $parts['title'];
+            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
+            $parts['title'] = $query_text . ' - ' . $parts['title'];
         } 
     
         return $parts;
@@ -643,16 +642,17 @@ class BibleSuperSearch_Shortcodes {
         // Todo: I don't want to have to parse the query twice ... 
 
         if(array_key_exists('q', $_REQUEST)) {
-            echo '<meta name="description" content="' . esc_attr($_REQUEST['q']) . '" />' . "\n";
+            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
+            echo '<meta name="description" content="' . esc_attr($query_text) . '" />' . "\n";
         }
     }
 }
 
-add_shortcode('biblesupersearch', array('BibleSuperSearch_Shortcodes', 'display'));
-// add_shortcode('biblesupersearch_new', array('BibleSuperSearch_Shortcodes', 'displayNew')); // future
-add_shortcode('biblesupersearch_demo', array('BibleSuperSearch_Shortcodes', 'demo'));
-add_shortcode('biblesupersearch_bible_list', array('BibleSuperSearch_Shortcodes', 'bibleList'));
-add_shortcode('biblesupersearch_downloads', array('BibleSuperSearch_Shortcodes', 'downloadPage'));
+add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
+// add_shortcode('biblesupersearch_new', [\BibleSuperSearch\WordPress\Shortcodes::class, 'displayNew']); // future
+add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::class, 'demo']);
+add_shortcode('biblesupersearch_bible_list', [\BibleSuperSearch\WordPress\Shortcodes::class, 'bibleList']);
+add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortcodes::class, 'downloadPage']);
 
-add_filter('document_title_parts', array('BibleSuperSearch_Shortcodes', 'shortcodeTitle'), 100, 1);
-add_action('wp_head', array('BibleSuperSearch_Shortcodes', 'shortcodeMeta'), 1);
+add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
+add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);

@@ -217,7 +217,7 @@ DEPRICATED (template.options.php)
                         </div>
                         <?php endif; ?>
 
-                        <?php require_once(dirname(__FILE__) . '/templates/options_' . $tab . '.php'); ?>
+                        <?php require_once(dirname(__FILE__) . '/options_' . $tab . '.php'); ?>
                     </div>
 
                 </form>

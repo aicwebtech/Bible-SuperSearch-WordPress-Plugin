@@ -1,7 +1,7 @@
 const { createApp } = Vue
 const { createVuetify } = Vuetify
 
-import ConfigTabs from '../com_test/js/configs/source/ConfigTabs.vue.js';
+import ConfigTabs from '../../com_test/js/configs/source/ConfigTabs.vue.js';
 
 const vuetify = createVuetify();
 

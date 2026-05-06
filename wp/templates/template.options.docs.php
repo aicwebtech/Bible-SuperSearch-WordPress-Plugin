@@ -235,7 +235,7 @@
                     </div>
                     <?php endif; ?>
 
-                    <?php require_once(dirname(__FILE__) . '/templates/options_docs_temp.php'); ?>
+                    <?php require_once(dirname(__FILE__) . '/options_docs_temp.php'); ?>
                 </div>
 
             </div>
