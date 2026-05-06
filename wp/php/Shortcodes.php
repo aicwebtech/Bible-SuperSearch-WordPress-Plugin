@@ -647,12 +647,3 @@ class Shortcodes {
         }
     }
 }
-
-add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
-// add_shortcode('biblesupersearch_new', [\BibleSuperSearch\WordPress\Shortcodes::class, 'displayNew']); // future
-add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::class, 'demo']);
-add_shortcode('biblesupersearch_bible_list', [\BibleSuperSearch\WordPress\Shortcodes::class, 'bibleList']);
-add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortcodes::class, 'downloadPage']);
-
-add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
-add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);

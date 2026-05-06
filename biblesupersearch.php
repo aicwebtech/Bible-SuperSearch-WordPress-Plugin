@@ -30,12 +30,29 @@ $biblesupersearch_autoloader->register();
 // Load utility files that are not autoloaded
 require_once(dirname(__FILE__) . '/com_test/php/init.php');
 
-// Explicitly load WordPress class files (file-level side effects: hooks, shortcodes, global instances)
-require_once(dirname(__FILE__) . '/wp/php/Options.php');
-require_once(dirname(__FILE__) . '/wp/php/Widget.php');
-require_once(dirname(__FILE__) . '/wp/php/Shortcodes.php');
+// Global instance ... (not ideal, but it is what it is for now)
+$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
-// wp_enqueue_media(); // does not work
+/**Init shortcodes */
+add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
+// add_shortcode('biblesupersearch_new', [\BibleSuperSearch\WordPress\Shortcodes::class, 'displayNew']); // future
+add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::class, 'demo']);
+add_shortcode('biblesupersearch_bible_list', [\BibleSuperSearch\WordPress\Shortcodes::class, 'bibleList']);
+add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortcodes::class, 'downloadPage']);
+
+add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
+add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);
+/** End inti shortcodes */
+
+/** Init widget */
+add_action('widgets_init', function () {
+    register_widget(\BibleSuperSearch\WordPress\Widget::class);
+});
+/** End init widget */
+
+
+
+/** Misc Functions */
 
 function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     // Quick workaround for new Gutenberg editor.
@@ -86,7 +103,8 @@ function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
     }
 }
 
-function biblesupersearch_enqueue_option() {
+function biblesupersearch_enqueue_option() 
+{
     wp_enqueue_script('biblesupersearch_options',  plugins_url('wp/options.js', __FILE__));
     wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/css/options.css', __FILE__));
 }

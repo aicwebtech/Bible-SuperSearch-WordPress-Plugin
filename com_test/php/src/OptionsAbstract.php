@@ -2,7 +2,11 @@
 
 namespace BibleSuperSearch\Common;
 
-abstract class OptionsAbstract {
+abstract class OptionsAbstract 
+{
+    
+    protected static $instance = null;
+
     protected $option_index = 'biblesupersearch_options';
 
     protected $default_options = [
@@ -150,6 +154,15 @@ abstract class OptionsAbstract {
     public function __construct() 
     {
         $this->initOptions();
+    }
+
+    public static function getInstance() 
+    {
+        if (static::$instance === null) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
     }
 
     protected function initOptions()

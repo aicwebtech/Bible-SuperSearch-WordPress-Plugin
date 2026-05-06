@@ -5,7 +5,8 @@ namespace BibleSuperSearch\WordPress;
 defined('ABSPATH') or die; // exit if accessed directly
 
 
-class Widget extends \WP_Widget {
+class Widget extends \WP_Widget 
+{
     
     public function __construct() {
  
@@ -16,10 +17,6 @@ class Widget extends \WP_Widget {
                 'description' => __('Small Bible search form.'),
             ]
         );
- 
-        add_action('widgets_init', function () {
-            register_widget(\BibleSuperSearch\WordPress\Widget::class);
-        });
     }
  
     public $args = array(
@@ -31,7 +28,8 @@ class Widget extends \WP_Widget {
 
     protected $default_placeholder_text = 'Verse(s) or Keyword(s)';
  
-    public function widget( $args, $instance ) {
+    public function widget( $args, $instance ) 
+    {
         global $BibleSuperSearch_Options;
 
         $landing_page   = $instance['landing_page'];
@@ -115,7 +113,8 @@ class Widget extends \WP_Widget {
         echo $args['after_widget'];
     }
  
-    public function form( $instance ) {
+    public function form( $instance ) 
+    {
         global $BibleSuperSearch_Options;
         $landing_page = array_key_exists('landing_page', $instance) ? (int) $instance['landing_page'] : 0;
         $options = $BibleSuperSearch_Options->getOptions();
@@ -240,7 +239,8 @@ class Widget extends \WP_Widget {
 
     }
  
-    public function update( $new_instance, $old_instance ) {
+    public function update( $new_instance, $old_instance ) 
+    {
  
         $instance = array();
         $instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
@@ -274,5 +274,3 @@ class Widget extends \WP_Widget {
         return $bible_list;
     }
 }
-
-$BibleSuperSearch_Widget = new Widget();

@@ -568,5 +568,3 @@ class Options extends OptionsAbstract
         return NULL;
     }
 }
-
-$BibleSuperSearch_Options = new Options();
