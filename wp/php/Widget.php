@@ -30,7 +30,7 @@ class Widget extends \WP_Widget
  
     public function widget( $args, $instance ) 
     {
-        global $BibleSuperSearch_Options;
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
         $landing_page   = $instance['landing_page'];
 
@@ -115,7 +115,7 @@ class Widget extends \WP_Widget
  
     public function form( $instance ) 
     {
-        global $BibleSuperSearch_Options;
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $landing_page = array_key_exists('landing_page', $instance) ? (int) $instance['landing_page'] : 0;
         $options = $BibleSuperSearch_Options->getOptions();
 
@@ -242,7 +242,7 @@ class Widget extends \WP_Widget
     public function update( $new_instance, $old_instance ) 
     {
  
-        $instance = array();
+        $instance = [];
         $instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
         $instance['show_bible_list'] = ( !empty( $new_instance['show_bible_list'] ) ) ? $new_instance['show_bible_list'] : '0';
         $instance['landing_page'] = ( !empty( $new_instance['landing_page'] ) ) ? $new_instance['landing_page'] : '0';
@@ -252,8 +252,9 @@ class Widget extends \WP_Widget
         return $instance;
     }
 
-    private function _getBibleList($bible_list_display = NULL, $bible_list_grouping = NULL) {
-        global $BibleSuperSearch_Options;
+    private function _getBibleList($bible_list_display = NULL, $bible_list_grouping = NULL) 
+    {
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
         $bible_list = [];
 

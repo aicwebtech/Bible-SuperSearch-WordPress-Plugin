@@ -4,11 +4,10 @@
      * Will be replaced when we rebuild this plugin.  
      */
     
-    // global $options, $bibles, $interfaces;
-    global $BibleSuperSearch_Options;
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
-    $api_version = (float) $BibleSuperSearch_Options->apiVersion();
-    $statics = $BibleSuperSearch_Options->getStatics();
+    $api_version = (float) $Options->apiVersion();
+    $statics = $Options->getStatics();
 
     if(!isset($statics['access'])) {
         $access_limit = '(unknown)';

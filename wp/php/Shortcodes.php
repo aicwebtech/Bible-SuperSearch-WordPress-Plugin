@@ -92,8 +92,10 @@ class Shortcodes {
         ),
     );
     
-    static public function display($atts, $thing, $it) {
-        global $BibleSuperSearch_Options, $wp_query;
+    static public function display($atts, $thing, $it) 
+    {
+        global $wp_query;
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $options        = $BibleSuperSearch_Options->getOptions();
 
         $debug = $options['debug_shortcode'] ?? FALSE;
@@ -265,7 +267,8 @@ class Shortcodes {
 
     public static function displayNew($atts, $thing, $it) 
     {
-        global $BibleSuperSearch_Options, $wp_query;
+        global $wp_query;
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $options        = $BibleSuperSearch_Options->getOptions();
 
         $debug = $options['debug_shortcode'] ?? FALSE;
@@ -457,10 +460,11 @@ class Shortcodes {
 
     static public function getDisplayAttributes()
     {
-        global $BibleSuperSearch_Options, $interfaces;
+        global $interfaces;
+        $Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
         if(!isset($interfaces) || empty($interfaces)) {
-            $interfaces = $BibleSuperSearch_Options->getInterfaces(); 
+            $interfaces = $Options->getInterfaces(); 
         } 
 
         $attr = self::$displayAttributes;
@@ -477,14 +481,16 @@ class Shortcodes {
         return $attr;
     }
 
-    static protected function _displayContactForm7($atts) {
+    static protected function _displayContactForm7($atts) 
+    {
         $html = 'CF7 ';
         $html .= do_shortcode('[contact-form-7 id="' . $atts['contact-form-7-id'] . '" title="Test Bible Form" do_not_store="true"]');
         return $html;
     }
 
-    static public function demo($atts) {
-        global $BibleSuperSearch_Options;
+    static public function demo($atts) 
+    {
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $interfaces     = $BibleSuperSearch_Options->getInterfaces();
         $options        = $BibleSuperSearch_Options->getOptions();
         $sel_interface  = !empty($_REQUEST['biblesupersearch_interface']) ? sanitize_text_field(wp_unslash($_REQUEST['biblesupersearch_interface'])) : $options['interface'];
@@ -524,9 +530,9 @@ class Shortcodes {
 
     // Lists all Bibles available
     // (Not just ones enabled in the plugin)
-    static public function bibleList($atts) {
-        global $BibleSuperSearch_Options;
-        // $statics = $BibleSuperSearch_Options->getStatics();
+    static public function bibleList($atts) 
+    {
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $bibles  = $BibleSuperSearch_Options->getEnabledBibles();
 
         $a = shortcode_atts( array(
@@ -569,8 +575,9 @@ class Shortcodes {
         return $html;
     }
 
-    static public function downloadPage($atts) {
-        global $BibleSuperSearch_Options;
+    static public function downloadPage($atts) 
+    {
+        $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
         $statics = $BibleSuperSearch_Options->getStatics();
 
         $a = shortcode_atts( array(
@@ -607,7 +614,8 @@ class Shortcodes {
         return $html;
     }
 
-    static protected function _validateAttributes(&$attr, $bool = array()) {
+    static protected function _validateAttributes(&$attr, $bool = array()) 
+    {
         foreach($bool as $idx) {
             $attr[$idx] = (array_key_exists($idx, $attr) && $attr[$idx] && $attr[$idx] != 'false') ? TRUE : FALSE;
         }

@@ -31,7 +31,7 @@ $biblesupersearch_autoloader->register();
 require_once(dirname(__FILE__) . '/com_test/php/init.php');
 
 // Global instance ... (not ideal, but it is what it is for now)
-$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
+//$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
 /**Init shortcodes */
 add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
@@ -51,10 +51,27 @@ add_action('widgets_init', function () {
 /** End init widget */
 
 
+/** Init Admin Menu */
+add_action( 'admin_menu', function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->pluginMenu();
+});
+
+/** Init Activation Hook */
+register_activation_hook( __FILE__ , function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->setDefaultOptions();
+});
+
+add_action( 'admin_init', function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->adminInit();
+});
 
 /** Misc Functions */
 
-function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
+function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) 
+{
     // Quick workaround for new Gutenberg editor.
     // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
     // This is causing Bible SuperSearch to throw errors.
@@ -74,7 +91,8 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     }
 }
 
-function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
+function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) 
+{
     // Quick workaround for new Gutenberg editor.
     // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
     // This is causing Bible SuperSearch to throw errors.
@@ -122,14 +140,11 @@ add_filter( "plugin_action_links_$plugin", 'biblesupersearch_add_settings_link' 
 
 // Note this currently causes breakage on some hosts ($BibleSuperSearch_Options is null)
 // disabled for now
-function biblesupersearch_custom_rewrite() {
-    global $BibleSuperSearch_Options;
+function biblesupersearch_custom_rewrite() 
+{
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
-    if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new \BibleSuperSearch\WordPress\Options();
-    }
-
-    $landing_page = $BibleSuperSearch_Options->getLandingPage();
+    $landing_page = $Options->getLandingPage();
 
     if(!$landing_page) {
         return;
@@ -159,19 +174,14 @@ function biblesupersearch_custom_rewrite() {
 //add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
 
 add_action( 'rest_api_init', function () {
-    global $BibleSuperSearch_Options;
-
-    if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new \BibleSuperSearch\WordPress\Options();
-    }
     
     register_rest_route( 'biblesupersearch/v1', '/config', [
         'methods' => 'GET',
         'callback' => function($request) {
-            global $BibleSuperSearch_Options;
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
             $response = new \stdClass;
             $response->status = 'success';
-            $response->options = $BibleSuperSearch_Options->getOptions();
+            $response->options = $Options->getOptions();
             return $response;
         },
         //'permission_callback' => fn() => current_user_can('manage_options') // php 7.4 +
@@ -183,15 +193,15 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'biblesupersearch/v1', '/config', [
         'methods' => 'POST',
         'callback' => function($request) {
-            global $BibleSuperSearch_Options;
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
             $data = $request->get_json_params();
 
-            $BibleSuperSearch_Options->setOptions($data);
+            $Options->setOptions($data);
 
             $response = new \stdClass;
             $response->status = 'success';
-            $response->refresh = $BibleSuperSearch_Options->refresh_statics;
-            $response->options = $BibleSuperSearch_Options->getOptions();
+            $response->refresh = $Options->refresh_statics;
+            $response->options = $Options->getOptions();
 
             return $response;
         },

@@ -28,19 +28,6 @@ class Options extends OptionsAbstract
             'name'          => 'Documentation',
             'type'          => 'static',
         ];
-
-        // Register some stuff with WordPress
-        
-        // Settings Menu Page
-        add_action( 'admin_menu', array($this, 'pluginMenu') );
-
-        register_activation_hook( dirname(__FILE__) . '/../../biblesupersearch.php', array($this, 'setDefaultOptions' ) );
-
-        // Flush rewrite rules before everything else (if required)
-        // add_action( 'init', array( $this, 'maybe_flush_rewrite_rules' ) );
-        
-        // Set-up Action and Filter Hooks
-        add_action( 'admin_init', array( $this, 'adminInit' ) );
     }
 
     function adminInit() 
@@ -258,7 +245,8 @@ class Options extends OptionsAbstract
         return $input;
     }
 
-    public function getRecomendedPlugins($missing_only = FALSE) {
+    public function getRecomendedPlugins($missing_only = FALSE) 
+    {
         $plugins = array(
             array(
                 'name'          => 'disable-emojis',
@@ -476,7 +464,8 @@ class Options extends OptionsAbstract
         return empty($results) ? FALSE : TRUE;
     }
 
-    public function getLandingPage() {
+    public function getLandingPage() 
+    {
         $options = $this->getOptions();
 
         if(!$options['defaultDestinationPage']) {
@@ -486,11 +475,13 @@ class Options extends OptionsAbstract
         return $this->_getLandingPageHelper($options['defaultDestinationPage']);
     }
     
-    public function getLandingPageById($id) {
+    public function getLandingPageById($id) 
+    {
         return $this->_getLandingPageHelper($id);
     }
 
-    protected function _getLandingPageHelper($id) {
+    protected function _getLandingPageHelper($id) 
+    {
         global $wpdb;
 
         $sql = "
@@ -511,7 +502,8 @@ class Options extends OptionsAbstract
     }
 
     // TODO - make generic
-    protected function _setStaticsReset() {
+    protected function _setStaticsReset() 
+    {
         $statics               = get_option('biblesupersearch_statics');
         $last_update_timestamp = (is_array($statics) && array_key_exists('timestamp', $statics)) ? $statics['timestamp'] : 0;
 

@@ -5,10 +5,10 @@
      */
     
     // global $options, $bibles, $interfaces;
-    global $BibleSuperSearch_Options;
-    $api_version = (float) $BibleSuperSearch_Options->apiVersion();
-    $statics = $BibleSuperSearch_Options->getStatics();
-    list($api_ready, $api_checklist) = $BibleSuperSearch_Options->apiRequirementsCheck();
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $api_version = (float) $Options->apiVersion();
+    $statics = $Options->getStatics();
+    list($api_ready, $api_checklist) = $Options->apiRequirementsCheck();
 
 
     if(!isset($statics['access'])) {
