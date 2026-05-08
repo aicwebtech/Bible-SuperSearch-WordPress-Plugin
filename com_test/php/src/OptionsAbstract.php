@@ -229,6 +229,21 @@ abstract class OptionsAbstract
         $this->options_list = $options;
     }
 
+    public function setDefaultOptions() 
+    {
+        $this->setOptions($this->default_options);
+    }
+
+    /**
+     * Fetches raw options (from database or other storage)
+     */
+    protected abstract function fetchOptions();
+
+    /**
+     * Saves options (to database or other storage)
+     */
+    protected abstract function storeOptions($options);
+
     protected function reformatItemsList($items, $passthru = [])
     {
         if(!is_string($items) && $items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
@@ -393,24 +408,6 @@ abstract class OptionsAbstract
         if($options['enableAllLanguages']) {
             $options['languageList'] = [];
         }
-    }
-
-    protected function _getOptionsFromStorage() 
-    {
-
-    }
-
-    // todo - make this generic!
-    public function setDefaultOptions() 
-    {
-
-        if ( ! is_array( get_option( $this->option_index ) ) ) {
-            delete_option( $this->option_index ); // just in case
-            update_option( $this->option_index, $this->default_options );
-        }
-
-        // Flush rewrite cache
-        // flush_rewrite_rules( true );
     }
 
     // todo - implement and make this generic!

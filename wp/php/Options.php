@@ -17,7 +17,6 @@ class Options extends OptionsAbstract
         parent::__construct();
 
         // Add some WordPress-specific options and tabs
-
         $this->default_options['overrideCss'] = TRUE;
         $this->default_options['extraCss'] = '';
 
@@ -30,6 +29,7 @@ class Options extends OptionsAbstract
         ];
     }
 
+    /** WordPress-specific methods */
     function adminInit() 
     {
         global $wp_version;
@@ -45,6 +45,7 @@ class Options extends OptionsAbstract
         register_setting( 'aicwebtech_plugin_options', $this->option_index, $args );
     }
 
+    /** WordPress-specific methods */
     public function pluginMenu() 
     {
 
@@ -76,17 +77,27 @@ class Options extends OptionsAbstract
 		}
     }
 
+    protected function storeOptions($options) 
+    {
+        update_option( $this->option_index, $options );
+    }
+
+    protected function fetchOptions() 
+    {
+        return get_option( $this->option_index );
+    }
+
     public function setOptions($options) 
     {
         $this->refresh_statics = false;
         $options = $this->validateOptions($options);
         
-        update_option( $this->option_index, $options );
+        $this->storeOptions($options);
     }
 
     public function getOptions($dont_set_default = FALSE) 
     {
-        $options = get_option( $this->option_index );
+        $options = $this->fetchOptions();
 
         if(!is_array($options)) {
             if(!$dont_set_default) {
@@ -130,6 +141,7 @@ class Options extends OptionsAbstract
         return $options;
     }
 
+    /** Custom Override for WordPress */
     public function setDefaultOptions() 
     {
         if ( ! is_array( get_option( $this->option_index ) ) ) {
@@ -245,6 +257,7 @@ class Options extends OptionsAbstract
         return $input;
     }
 
+    /** WordPress-specific methods */
     public function getRecomendedPlugins($missing_only = FALSE) 
     {
         $plugins = array(
@@ -267,6 +280,7 @@ class Options extends OptionsAbstract
         return $plugins;
     }
 
+    /** WordPress-specific methods */
     public function displayPluginOptionsNew() 
     {
         if ( !current_user_can( 'manage_options' ) )  {
@@ -347,7 +361,8 @@ class Options extends OptionsAbstract
         require(dirname(__FILE__) . '/../templates/template.options.new.php');
         return;
     }    
-
+    
+    /** WordPress-specific methods */
     public function displayPluginDocumentation() 
     {
         if ( !current_user_can( 'manage_options' ) )  {
@@ -399,7 +414,9 @@ class Options extends OptionsAbstract
     }
 
     // still in use (by widget)
-    public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) {
+    /** WordPress-specific methods */
+    public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) 
+    {
         global $wpdb;
 
         $sql = "
@@ -449,6 +466,7 @@ class Options extends OptionsAbstract
     }
 
     // still in use (by widget)
+    /** WordPress-specific methods */
     public function hasLandingPageOptions() 
     {
         global $wpdb;
