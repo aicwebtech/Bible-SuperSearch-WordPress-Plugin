@@ -229,6 +229,14 @@ abstract class OptionsAbstract
         $this->options_list = $options;
     }
 
+    
+    public function setOptions($options) 
+    {
+        $this->refresh_statics = false;
+        $options = $this->validateOptions($options);
+        $this->storeOptions($options);
+    }
+
     public function setDefaultOptions() 
     {
         $this->setOptions($this->default_options);
@@ -327,11 +335,6 @@ abstract class OptionsAbstract
         return require(dirname(__FILE__) . '/../includes/options_list.php');
     }
 
-    protected function makeOptionClass($settings)
-    {
-
-    }
-
     public function renderOptions($tab, $section = null, $option_list = [])
     {
         if(!isset($this->tabs[$tab])) {
@@ -365,9 +368,7 @@ abstract class OptionsAbstract
 
     public function getOptions($dont_set_default = FALSE) 
     {
-        // todo - make this generic!
-
-        $options = get_option( $this->option_index );
+        $options = $this->fetchOptions();
 
         if(!is_array($options)) {
             if(!$dont_set_default) {
@@ -385,9 +386,28 @@ abstract class OptionsAbstract
 
         if(is_string($options['defaultBible'])) {
             $options['defaultBible'] = explode(',', $options['defaultBible']);
+        } elseif(is_array($options['defaultBible'])) {
+            $options['defaultBible'] = array_filter($options['defaultBible']);
+            $options['defaultBible'] = array_values($options['defaultBible']);
+        } else {
+            $options['defaultBible'] = [];
         }
 
-        $options['defaultBible'] = array_filter($options['defaultBible']);
+        // Ensure Bibles selected as default or langauge default are enabled
+        if(!$options['enableAllBibles']) {
+            $options['enabledBibles'] = array_merge($options['enabledBibles'], $options['defaultBible']);
+
+            if($options['enableDefaultBiblesByLang'] && is_array($options['defaultBiblesByLanguage'])) {
+                $bbl = call_user_func_array('array_merge', array_values($options['defaultBiblesByLanguage']));
+                $options['enabledBibles'] = array_merge($options['enabledBibles'], $bbl);
+                $options['enabledBibles'] = array_unique($options['enabledBibles']);
+                $options['enabledBibles'] = array_values($options['enabledBibles']);
+            }
+        }
+
+        if(!$options['enableDefaultBiblesByLang']) {
+            $options['defaultBiblesByLanguage'] = [];
+        }
 
         return $options;
     }
@@ -410,13 +430,69 @@ abstract class OptionsAbstract
         }
     }
 
-    // todo - implement and make this generic!
     public function validateOptions( $incoming ) 
     {
         $current = $input = $this->getOptions(TRUE);
+
+        if(isset($incoming['_tab'])) {
+            $tab = $incoming['_tab'];
+            unset($incoming['_tab']);
+        } else {
+            $tab  = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
+        }
         
-        $tab = (isset($_REQUEST['tab'])) ? $_REQUEST['tab'] : 'general';
-        $tab_item = $this->tabs[ $tab ];
+        $tabs = $tab == 'all' ? array_keys($this->tabs) : [$tab];
+
+        foreach($tabs as $tab) {
+            $tab_item = $this->tabs[ $tab ];
+            $list = $this->options_list[$tab];
+
+            foreach($tab_item['options'] as $field) {
+                if(!isset($list[$field])) {
+                    continue;
+                }
+
+                switch($list[$field]['type']) {
+                    case 'checkbox':
+                        $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? true : false;
+                        break;
+                    case 'text':
+                    case 'textarea':
+                    case 'hidden':
+                    case 'select':
+                        if(array_key_exists($field, $incoming)) {
+                            $input[$field] = $incoming[$field];
+                        }
+
+                        break;
+
+                    case 'integer':
+                    case 'int':
+                        if(array_key_exists($field, $incoming)) {
+                            $input[$field] = (int)$incoming[$field];
+                        }
+
+                        break;
+
+                    case 'json':
+                        if(array_key_exists($field, $incoming)) {
+                            if(is_string($incoming[$field])) {
+                                $input[$field] = json_decode($incoming[$field], true);
+                            } elseif(is_array($incoming[$field])) {
+                                $input[$field] = $incoming[$field];
+                            } else {
+                                $input[$field] = [];
+                            }
+
+                            $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
+                        }
+
+                        $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
+
+                        break;
+                }
+            }
+        }
 
         // Cherry-pick default values 
         foreach($this->default_options as $item => $value) {
@@ -425,77 +501,37 @@ abstract class OptionsAbstract
             }
         }
 
-        if($tab == 'bible') {
-            if($input['enableAllBibles']) {
-                $input['enabledBibles'] = [];
-            }
-            else {
-                // Make sure default Bible is in list of selected Bibles
-                if(!in_array($input['defaultBible'], $input['enabledBibles'])) {
-                    $input['enabledBibles'][] = $input['defaultBible'];
-                }
+        // Special cases
+        if($input['enableAllBibles']) {
+            $input['enabledBibles'] = [];
+        }            
+
+        if($input['enableAllLanguages']) {
+            $input['languageList'] = [];
+        } else {
+            // Make sure default language is in list of selected languages
+            if(!in_array($input['language'], $input['languageList'])) {
+                $input['languageList'][] = $input['language'];
             }
         }
 
-        if($tab == 'advanced' && empty($input['apiUrl'])) {
+        if(!empty($input['landingReference'])) {
+            $input['landingReference'] = trim($input['landingReference']);
+            $input['landingReference'] = preg_replace('/[`\'"\\~!@#$%\^&*{}_[\]()=]/', ' ', $input['landingReference']);
+            $input['landingReference'] = preg_replace('/\s+/', ' ', $input['landingReference']);
+        }
+        
+        if(empty($input['apiUrl'])) {
             $input['apiUrl'] = $this->default_options['apiUrl'];
+        }
+
+        if($input['apiUrl'] != $current['apiUrl']) {
+            $this->refresh_statics = true;
         }
 
         $this->_setStaticsReset(); // Always Force Reload statics when options saved
 
         return $input;
-    }
-
-    public function getRecomendedPlugins($missing_only = FALSE) {
-        $plugins = array(
-            array(
-                'name'          => 'disable-emojis',
-                'file'          => 'disable-emojis/disable-emojis.php',
-                'label'         => 'Disable Emojis',
-                'description'   => ' - WordPress converts some characters to emojis, and this may cause Bible SuperSearch to not look as intended',
-            )
-        );
-
-        if($missing_only) {
-            foreach($plugins as $key => $plugin) {
-                if(is_plugin_active($plugin['file'])) {
-                    unset($plugins[$key]);
-                }
-            }
-        }
-
-        return $plugins;
-    }
-
-    public function displayPluginOptions() {
-        $tabs = $this->tabs;
-        $tab  = (array_key_exists('tab', $_REQUEST) && $_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
-
-        if ( ! isset( $_REQUEST['settings-updated'] ) ) {
-            $_REQUEST['settings-updated'] = FALSE;
-        }
-
-        if ( !current_user_can( 'manage_options' ) )  {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-        }
-
-        if(!$tabs[ $tab ]) {
-            wp_die( __( 'Invalid tab.' ) );
-        }
-
-        // $this->setDefaultOptions();
-        biblesupersearch_enqueue_option();
-        $options    = $this->getOptions();
-        $bibles     = $this->getBible();
-        $interfaces = $this->getInterfaces(); 
-        $statics = $this->getStatics();
-
-        $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
-
-        $reccomended_plugins = $this->getRecomendedPlugins(TRUE);
-
-        require( dirname(__FILE__) . '/template.options.php');
-        return;
     }
 
     public function getLandingPageOptions()
@@ -742,6 +778,10 @@ abstract class OptionsAbstract
         return (is_array($statics) && array_key_exists('version', $statics)) ?  $statics['version'] : '0.0.0';
     }
 
+    abstract protected function fetchStaticsCache();
+
+    abstract protected function storeStaticsCache($statics);
+
     public function getStatics($force = FALSE) 
     {
         if($this->statics_loading == TRUE) {
@@ -751,7 +791,7 @@ abstract class OptionsAbstract
         $options    = $this->getOptions();
         $url        = $options['apiUrl'] ?: $this->default_options['apiUrl'];
         $allow_url_fopen       = intval(ini_get('allow_url_fopen'));
-        $cached_statics        = get_option('biblesupersearch_statics');
+        $cached_statics        = $this->fetchStaticsCache();
         $last_update_timestamp = (is_array($cached_statics) && array_key_exists('timestamp', $cached_statics)) ? $cached_statics['timestamp'] : 0;
 
         if(empty($cached_statics['bibles']) || empty($cached_statics['version'])) {
@@ -780,7 +820,7 @@ abstract class OptionsAbstract
                 return $cached_statics;
             }
             elseif(!function_exists('curl_init') && $allow_url_fopen == 0) {
-                wp_die( __( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue') );
+                die( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue' );
             }
             else {
                 if($options['apiUrl'] != $this->default_options['apiUrl']) {
@@ -794,8 +834,7 @@ abstract class OptionsAbstract
                     }
 
                     $options['apiUrl'] = $this->default_options['apiUrl'];
-                    update_option($this->option_index, $options);
-                    //wp_die($msg);
+                    $this->putOptions($options);
                     echo($msg);
                 }
                 else {
@@ -812,7 +851,8 @@ abstract class OptionsAbstract
         return $result['results'];
     }
 
-    protected function _afterFetchStatics($result) {
+    protected function _afterFetchStatics($result) 
+    {
         // Persist to DB!
     }
 
@@ -1062,11 +1102,8 @@ abstract class OptionsAbstract
         return $domain;
     }
 
-    public function renderDownloadPage() {
-
-    }
-
-    public function getInterfaceByName($name) {
+    public function getInterfaceByName($name) 
+    {
         $interfaces = $this->getInterfaces();
         $proc = $this->_processInterfaceName($name);
 
@@ -1088,7 +1125,8 @@ abstract class OptionsAbstract
         return NULL;
     }
 
-    protected function _processInterfaceName($name) {
+    protected function _processInterfaceName($name) 
+    {
         $proc = str_replace('-', '', $name);
         // $proc = preg_replace('/\s*/', ' ', $proc);
         $proc = ucwords($proc);
@@ -1208,7 +1246,8 @@ abstract class OptionsAbstract
         ];
     }
 
-    public function getPagers() {
+    public function getPagers() 
+    {
         return array(
             'default' => array(
                 'name' => $this->_getDefaultItemText(),
@@ -1222,7 +1261,8 @@ abstract class OptionsAbstract
         );
     }        
 
-    public function getPageScrolls() {
+    public function getPageScrolls() 
+    {
         return array(
             'instant' => array(
                 'name' => 'Instant',
@@ -1236,7 +1276,8 @@ abstract class OptionsAbstract
         );
     }    
 
-    public function getNavigationButtons() {
+    public function getNavigationButtons() 
+    {
         return array(
             'default' => array(
                 'name' => $this->_getDefaultItemText(),

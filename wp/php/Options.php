@@ -87,60 +87,6 @@ class Options extends OptionsAbstract
         return get_option( $this->option_index );
     }
 
-    public function setOptions($options) 
-    {
-        $this->refresh_statics = false;
-        $options = $this->validateOptions($options);
-        
-        $this->storeOptions($options);
-    }
-
-    public function getOptions($dont_set_default = FALSE) 
-    {
-        $options = $this->fetchOptions();
-
-        if(!is_array($options)) {
-            if(!$dont_set_default) {
-                $this->setDefaultOptions();
-            }
-            
-            return $this->default_options;
-        }
-
-        foreach($this->default_options as $key => $val) {
-            if(!array_key_exists($key, $options) || empty($options[$key]) && $options[$key] !== FALSE) {
-                $options[$key] = $val;
-            }
-        }
-
-        if(is_string($options['defaultBible'])) {
-            $options['defaultBible'] = explode(',', $options['defaultBible']);
-        } elseif(is_array($options['defaultBible'])) {
-            $options['defaultBible'] = array_filter($options['defaultBible']);
-            $options['defaultBible'] = array_values($options['defaultBible']);
-        } else {
-            $options['defaultBible'] = [];
-        }
-
-        // Ensure Bibles selected as default or langauge default are enabled
-        if(!$options['enableAllBibles']) {
-            $options['enabledBibles'] = array_merge($options['enabledBibles'], $options['defaultBible']);
-
-            if($options['enableDefaultBiblesByLang'] && is_array($options['defaultBiblesByLanguage'])) {
-                $bbl = call_user_func_array('array_merge', array_values($options['defaultBiblesByLanguage']));
-                $options['enabledBibles'] = array_merge($options['enabledBibles'], $bbl);
-                $options['enabledBibles'] = array_unique($options['enabledBibles']);
-                $options['enabledBibles'] = array_values($options['enabledBibles']);
-            }
-        }
-
-        if(!$options['enableDefaultBiblesByLang']) {
-            $options['defaultBiblesByLanguage'] = [];
-        }
-
-        return $options;
-    }
-
     /** Custom Override for WordPress */
     public function setDefaultOptions() 
     {
@@ -153,108 +99,14 @@ class Options extends OptionsAbstract
         // flush_rewrite_rules( true );
     }
 
-    public function validateOptions( $incoming ) 
+    protected function fetchStaticsCache() 
     {
-        $current = $input = $this->getOptions(TRUE);
+        return get_option('biblesupersearch_statics');
+    }
 
-        if(isset($incoming['_tab'])) {
-            $tab = $incoming['_tab'];
-            unset($incoming['_tab']);
-        } else {
-            $tab  = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : 'general';
-        }
-        
-        $tabs = $tab == 'all' ? array_keys($this->tabs) : [$tab];
-
-        foreach($tabs as $tab) {
-            $tab_item = $this->tabs[ $tab ];
-            $list = $this->options_list[$tab];
-
-            foreach($tab_item['options'] as $field) {
-                if(!isset($list[$field])) {
-                    continue;
-                }
-
-                switch($list[$field]['type']) {
-                    case 'checkbox':
-                        $input[$field] = (array_key_exists($field, $incoming) && !empty($incoming[$field])) ? true : false;
-                        break;
-                    case 'text':
-                    case 'textarea':
-                    case 'hidden':
-                    case 'select':
-                        if(array_key_exists($field, $incoming)) {
-                            $input[$field] = $incoming[$field];
-                        }
-
-                        break;
-
-                    case 'integer':
-                    case 'int':
-                        if(array_key_exists($field, $incoming)) {
-                            $input[$field] = (int)$incoming[$field];
-                        }
-
-                        break;
-
-                    case 'json':
-                        if(array_key_exists($field, $incoming)) {
-                            if(is_string($incoming[$field])) {
-                                $input[$field] = json_decode($incoming[$field], true);
-                            } elseif(is_array($incoming[$field])) {
-                                $input[$field] = $incoming[$field];
-                            } else {
-                                $input[$field] = [];
-                            }
-
-                            $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
-                        }
-
-                        $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
-
-                        break;
-                }
-            }
-        }
-
-        // Cherry-pick default values 
-        foreach($this->default_options as $item => $value) {
-            if(!array_key_exists($item, $input)) {
-                $input[$item] = $value;
-            }
-        }
-
-        // Special cases
-        if($input['enableAllBibles']) {
-            $input['enabledBibles'] = [];
-        }            
-
-        if($input['enableAllLanguages']) {
-            $input['languageList'] = [];
-        } else {
-            // Make sure default language is in list of selected languages
-            if(!in_array($input['language'], $input['languageList'])) {
-                $input['languageList'][] = $input['language'];
-            }
-        }
-
-        if(!empty($input['landingReference'])) {
-            $input['landingReference'] = trim($input['landingReference']);
-            $input['landingReference'] = preg_replace('/[`\'"\\~!@#$%\^&*{}_[\]()=]/', ' ', $input['landingReference']);
-            $input['landingReference'] = preg_replace('/\s+/', ' ', $input['landingReference']);
-        }
-        
-        if(empty($input['apiUrl'])) {
-            $input['apiUrl'] = $this->default_options['apiUrl'];
-        }
-
-        if($input['apiUrl'] != $current['apiUrl']) {
-            $this->refresh_statics = true;
-        }
-
-        $this->_setStaticsReset(); // Always Force Reload statics when options saved
-
-        return $input;
+    protected function storeStaticsCache($statics) 
+    {
+        update_option('biblesupersearch_statics', $statics);
     }
 
     /** WordPress-specific methods */
@@ -534,11 +386,6 @@ class Options extends OptionsAbstract
     protected function _afterFetchStatics($result) 
     {
         update_option('biblesupersearch_statics', $result['results']);
-    }
-
-    public function renderDownloadPage() 
-    {
-
     }
 
     public function getLanguagesWithGlobalDefault()
