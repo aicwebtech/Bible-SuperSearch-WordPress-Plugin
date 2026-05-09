@@ -9,6 +9,9 @@ abstract class OptionsAbstract
 
     protected $option_index = 'biblesupersearch_options';
 
+    const DEFAULT_ITEM_TEXT = 'Default for Selected Skin';
+
+    /** Todo = this needs to come from the options list ONLY */
     protected $default_options = [
         'defaultBible'                              => 'kjv',
         'defaultBibles'                             => ['kjv'],
@@ -46,76 +49,7 @@ abstract class OptionsAbstract
 
     protected $options = [];
     protected $options_list = [];
-
-    public static $selector_options = [
-        'bibleGrouping' => [
-            'none'                  => 'None',
-            'language'              => 'Language - Endonym',
-            'language_english'      => 'Language - English Name',
-            'language_and_english'  => 'Language - Endonym and English Name',
-        ],        
-        'bibleSorting' => [
-            'language_english|name'             => 'Language - English Name / Full Name',
-            'language_english|shortname'        => 'Language - English Name / Short Name',
-            'language_english|rank|name'        => 'Language - English Name / Rank / Full Name',
-            'language_english|rank|shortname'   => 'Language - English Name / Rank / Short Name',
-            'language_english|rank'             => 'Language - English Name / Rank', 
-            'rank'                              => 'Rank',
-            'name'                              => 'Full Name',
-            'shortname'                         => 'Short Name', 
-        ],
-        'language' => [
-            'global_default'        => 'Global Default',
-
-            // 'en_pirate'             => 'English - Pirate', // (for debugging purposes)
-            'am'                    => 'اአማርኛ / Amharic',
-            'af'                    => 'Afrikaans / Afrikaans',
-            'ar'                    => 'العربية  / Arabic',
-            'bn'                    => 'বাংলা / Bengali',
-            'de'                    => 'Deutsch / German',
-            'en'                    => 'English',
-            'es'                    => 'Español / Spanish',
-            'et'                    => 'Eesti / Estonian',
-            'fa'                    => 'فارسی  / Persian',
-            'fr'                    => 'Français / French',
-            'gu'                    => 'ગુજરાતી / Gujarati',
-            'ha'                    => '(Hausa) هَوُسَ',
-            'he'                    => 'עברית  / Hebrew',
-            'hi'                    => 'हिन्दी, हिंदी / Hindi',
-            'hu'                    => 'Magyar / Hungarian',
-            'id'                    => 'Bahasa Indonesia / Indonesian',
-            'it'                    => 'Italiano / Italian',
-            'ja'                    => '日本語 (にほんご) / Japanese',
-            'kn'                    => 'ಕನ್ನಡ / Kannada',
-            'ko'                    => '한국어 / Korean',
-            'lv'                    => 'Latviešu / Latvian',
-            'mi'                    => 'Te reo Māori / Maori',
-            'mr'                    => 'मराठी / Marathi',
-            'my'                    => 'ဗမာစာ / Burmese / Myanmar',
-            'lt'                    => 'Lietuvių Kalba / Lithuanian',
-            'nl'                    => 'Nederlands, Vlaams / Dutch, Flemish',
-            'ne'                    => 'नेपाली / Nepali',
-            'pa'                    => 'ਪੰਜਾਬੀ / Punjabi, Panjabi',
-            'pl'                    => 'Polski / Polish',
-            'pt'                    => 'Português / Portuguese',
-            'ro'                    => 'Română / Romanian',
-            'ru'                    => 'Русский / Russian',
-            'so'                    => 'Soomaaliga, af Soomaali / Somali',
-            'sq'                    => 'Shqip / Albanian',
-            'sw'                    => 'Kiswahili / Swahili',
-            'ta'                    => 'தமிழ் / Tamil',
-            'te'                    => 'తెలుగు / Telugu',
-            'tg'                    => 'тоҷикӣ / Tajiki / Tajik',
-            'th'                    => 'ไทย / Thai',
-            'tl'                    => 'Wikang Tagalog / Tagalog',
-            'tr'                    => 'Türkçe / Turkish',
-            'vi'                    => 'Tiếng Việt / Vietnamese',
-            'ug'                    => 'ئۇيغۇرچە, Uyghurche / Uyghur',
-            'ur'                    => 'اردو / Urdu',
-            'zh_TW'                 => '繁體中文 / Chinese - Traditional',
-            'zh_CN'                 => '简体中文 / Chinese - Simplified',
-        ],
-    ];
+    protected $selector_options = null;
 
     protected $tabs = [
         'general'  => [
@@ -153,6 +87,7 @@ abstract class OptionsAbstract
     
     public function __construct() 
     {
+        $this->initSelectorOptions();
         $this->initOptions();
     }
 
@@ -201,8 +136,8 @@ abstract class OptionsAbstract
                     $items = $settings['items'];
 
                     if(is_string($items)) {
-                        if(isset(static::$selector_options[$items])) {
-                            $items = static::$selector_options[$items];
+                        if(isset($this->selector_options[$items])) {
+                            $items = $this->selector_options[$items];
                         } else if(is_callable([$this, $items])) {
                             $items = call_user_func([$this, $items]);
                         } else {
@@ -229,6 +164,14 @@ abstract class OptionsAbstract
         $this->options_list = $options;
     }
 
+    protected function initSelectorOptions()
+    {
+        if(isset($this->selector_options)) {
+            return;
+        }
+
+        $this->selector_options = require(dirname(__FILE__) . '/../includes/selector_options_list.php');
+    }
     
     public function setOptions($options) 
     {
@@ -357,10 +300,10 @@ abstract class OptionsAbstract
         }
     }
 
-    static public function getSelectorOptions($selector) 
+    public function getSelectorOptions($selector) 
     {
-        if(array_key_exists($selector, static::$selector_options)) {
-            return static::$selector_options[$selector];
+        if(array_key_exists($selector, $this->selector_options)) {
+            return $this->selector_options[$selector];
         }
 
         return FALSE;
@@ -1136,23 +1079,25 @@ abstract class OptionsAbstract
 
     public function getLanguagesWithGlobalDefault()
     {
-        return self::$selector_options['language'];
+        return $this->selector_options['language'];
     }
 
     public function getLanguages()
     {
-        $opts = self::$selector_options['language'];
+        $opts = $this->selector_options['language'];
         unset($opts['global_default']);
         return $opts;
     }
 
     public function getLanguageNameByCode($code)
     {
-        return self::$selector_options['language'][$code] ?? null;
+        return $this->selector_options['language'][$code] ?? null;
     }
 
     public function getInterfaces() 
     {
+        // return $this->selector_options['interface'];
+    
         return array(
             // 'TwentyTwenty' => array(
             //     'name'  => 'Twenty Twenty', 
@@ -1237,123 +1182,8 @@ abstract class OptionsAbstract
         );
     }
 
-    public function getTextDisplays() {
-        return [
-            'paragraph'         => ['name' => 'Paragraph'],
-            'passage'           => ['name' => 'Passage'],
-            'verse'             => ['name' => 'Verse'],
-            'verse_passage'     => ['name' => 'Verse as Passage Display'],
-        ];
-    }
-
-    public function getPagers() 
-    {
-        return array(
-            'default' => array(
-                'name' => $this->_getDefaultItemText(),
-            ),
-            'Classic' => array(
-                'name'  => 'Classic',
-            ),            
-            'Clean' => array(
-                'name'  => 'Clean',
-            ),
-        );
-    }        
-
-    public function getPageScrolls() 
-    {
-        return array(
-            'instant' => array(
-                'name' => 'Instant',
-            ),
-            'smooth' => array(
-                'name'  => 'Smooth',
-            ),            
-            'none' => array(
-                'name'  => 'None - No scrolling',
-            ),
-        );
-    }    
-
-    public function getNavigationButtons() 
-    {
-        return array(
-            'default' => array(
-                'name' => $this->_getDefaultItemText(),
-            ),
-            'Classic' => array(
-                'name'  => 'Classic',
-            ),            
-            'Stylable' => array(
-                'name'  => 'Stylable',
-            ),
-        );
-    }    
-
-    public function getFormatButtons() 
-    {
-        return array(
-            'default' => array(
-                'name' => $this->_getDefaultItemText(),
-            ),
-            'Classic' => array(
-                'name'  => 'Classic (Old icons from v2 - deprecated)',
-            ),            
-            'Stylable' => array(
-                'name'  => 'Stylable - Wide',
-            ),            
-            'StylableNarrow' => array(
-                'name'  => 'Stylable - Narrow',
-            ),           
-            'StylableMinimal' => array(
-                'name'  => 'Stylable - Minimal buttons, with settings dialog.',
-            ),            
-            'none' => array(
-                'name'  => 'None',
-            ),
-        );
-    }   
-
-    public function getExtraButtons() 
-    {
-        return array(
-            'default' => array(
-                'name' => $this->_getDefaultItemText(),
-            ),
-            'false' => array(
-                'name'  => 'With Formatting Buttons',
-            ),
-            'true' => array(
-                'name'  => 'Separate from Formatting Buttons *',
-            ),            
-            'none' => array(
-                'name'  => 'None - Do not display',
-            ),
-        );
-    }        
-
-    public function getExtraButtonsDisplay()
-    {
-        return [
-            'default' => [
-                'name' => $this->_getDefaultItemText(),
-            ],
-            'format' => [
-                'name' => 'Display with Formatting Buttons',
-            ],
-            'separate' => [
-                'name' => 'Display Separatly on the form.  (Some skins may not support this)',
-            ],
-            'none' => [
-                'name' => 'Do not display',
-            ],
-        ];
-    }
-
     protected function _getDefaultItemText() 
     {
-        return 'Default for Selected Skin';
+        return self::DEFAULT_ITEM_TEXT;
     }
 }
-

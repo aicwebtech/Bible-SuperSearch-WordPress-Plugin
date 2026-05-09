@@ -390,7 +390,7 @@ class Options extends OptionsAbstract
 
     public function getLanguagesWithGlobalDefault()
     {
-        $opts = self::$selector_options['language'];
+        $opts = $this->selector_options['language'];
 
         $pts = explode('_', get_locale());
         $lang = $pts[0] ?? 'en';
