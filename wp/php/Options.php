@@ -142,8 +142,6 @@ class Options extends OptionsAbstract
         // biblesupersearch_enqueue_option(); // not needed for Vue
         $options    = $this->getOptions();
         $interfaces = $this->getInterfaces(); 
-        // $bibles     = $this->getBible();
-        // $languages  = $this->getLanguages();
 
         $using_main_api = (empty($options['apiUrl']) || $options['apiUrl'] == $this->default_options['apiUrl']) ? TRUE : FALSE;
 
@@ -234,7 +232,8 @@ class Options extends OptionsAbstract
         require(dirname(__FILE__) . '/../templates/template.options.docs.php');
         return;
     }
-
+    
+    //** wordpress specific override */
     protected function fetchLandingPageOptions() 
     {
         global $wpdb;
@@ -266,6 +265,7 @@ class Options extends OptionsAbstract
     }
 
     // still in use (by widget)
+    // RENDERS HTML ... GROSS
     /** WordPress-specific methods */
     public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) 
     {
@@ -381,11 +381,6 @@ class Options extends OptionsAbstract
             $statics['timestamp'] = 0;
             update_option('biblesupersearch_statics', $statics);
         }
-    }
-
-    protected function _afterFetchStatics($result) 
-    {
-        update_option('biblesupersearch_statics', $result['results']);
     }
 
     public function getLanguagesWithGlobalDefault()

@@ -195,5 +195,6 @@ return [
         'format'    => ['name' => 'Display with Formatting Buttons'],
         'separate'  => ['name' => 'Display Separatly on the form.  (Some skins may not support this)'],
         'none'      => ['name' => 'Do not display'],
-    ]
+    ],
+    'landing_pages' => null, // populated dynamically
 ];
