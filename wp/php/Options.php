@@ -264,74 +264,12 @@ class Options extends OptionsAbstract
         return $pages;
     }
 
-    // still in use (by widget)
-    // RENDERS HTML ... GROSS
-    /** WordPress-specific methods */
-    public function getLandingPageOptionsOld($render_html = FALSE, $value = NULL, $zero_option = 'None', $zero_default = FALSE) 
-    {
-        global $wpdb;
-
-        $sql = "
-            SELECT ID, post_title, post_type, post_content FROM `{$wpdb->prefix}posts`
-            WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
-            AND post_type IN ('page','post') AND post_status = 'publish'
-        ";
-
-        $results = $wpdb->get_results($sql, ARRAY_A);
-
-        if(!$render_html) {
-            return $results;
-        }
-
-        $html = '';
-
-        if($zero_option) {
-            $sel  = (empty($value)) ? "selected = 'selected'" : '';
-
-            if($zero_option == 'Default' || $zero_default) {
-                $lp = $this->getLandingPage();
-                $zero_option = '(' . $zero_option . ') ' . $lp['title_fmt'];
-            }
-
-            $html = "<option value='0' {$sel}> {$zero_option} </option>";
-        }
-
-        foreach($results as $res) {
-            if(!preg_match('/[^\[]\[biblesupersearch( .*)?]/', ' ' . $res['post_content'])) {
-                continue; // Ignore example shortcodes ie [[biblesupersearch]]
-            }
-
-            $this->_formatLandingPageOption($res);
-            $sel  = ($res['ID'] == $value) ? "selected = 'selected'" : '';
-            $html .= "<option value='{$res['ID']}' {$sel}>{$res['title_fmt']}</option>";
-        }
-
-        return $html;
-    }
-
     // still in use
     protected function _formatLandingPageOption(&$landing_page) 
     {
         $title = ($landing_page['post_title']) ? $landing_page['post_title'] : '(No Title, ID = ' . $landing_page['ID'] . ')';
         $type = ucfirst($landing_page['post_type']);
         $landing_page['title_fmt'] = $type . ': ' . $title;
-    }
-
-    // still in use (by widget)
-    /** WordPress-specific methods */
-    public function hasLandingPageOptions() 
-    {
-        global $wpdb;
-
-        $sql = "
-            SELECT ID FROM `{$wpdb->prefix}posts`
-            WHERE ( post_content LIKE '%[biblesupersearch]%' OR post_content LIKE '%[biblesupersearch %]%' )
-            AND post_type IN ('page','post') AND post_status = 'publish'
-            LIMIT 1
-        ";
-
-        $results = $wpdb->get_results($sql, ARRAY_A);
-        return empty($results) ? FALSE : TRUE;
     }
 
     public function getLandingPage() 

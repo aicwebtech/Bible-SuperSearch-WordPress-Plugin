@@ -172,7 +172,7 @@ abstract class OptionsAbstract
         }
 
         $this->selector_options = require(dirname(__FILE__) . '/../includes/selector_options_list.php');
-        $this->selector_options['landing_pages'] = $this->getLandingPageOptions();
+        $this->selector_options['landing_pages'] = $this->fetchLandingPageOptions();
     }
     
     public function setOptions($options) 
@@ -464,16 +464,25 @@ abstract class OptionsAbstract
         return $input;
     }
 
-    public function getLandingPageOptions()
+    public function getLandingPageOptions($exclude_zero = false)
     {
-        $options = $this->fetchLandingPageOptions();
+        $options = $this->selector_options['landing_pages'] ?? [];
 
-        array_unshift($options, [
-            'value' => '0',
-            'label' => 'None'
-        ]);
+        if(!$exclude_zero) {
+            array_unshift($options, [
+                'value' => '0',
+                'label' => 'None'
+            ]);
+        }
 
         return $options;
+    }
+
+    public function hasLandingPageOptions()
+    {
+        $options = $this->selector_options['landing_pages'] ?? [];
+
+        return is_array($options) && !empty($options);
     }
 
     /** 
@@ -853,7 +862,6 @@ abstract class OptionsAbstract
             }    
 
             echo $eol . $eol;
-
             echo 'API error level: ';
 
             if(isset($result_decoded['error_level'])) {
@@ -880,7 +888,8 @@ abstract class OptionsAbstract
         return $result_decoded;
     }
 
-    protected function _validateApiResults($action, $results, $verbose = false) {
+    protected function _validateApiResults($action, $results, $verbose = false) 
+    {
         $valid = true;
         $eol = '<br />';
         $every = ['results', 'errors', 'error_level'];
@@ -920,7 +929,6 @@ abstract class OptionsAbstract
                 $valid = false;
             }
         }
-
 
         return $valid;
     }

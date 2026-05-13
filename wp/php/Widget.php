@@ -130,7 +130,7 @@ class Widget extends \WP_Widget
             }
         }
 
-        $landing_page_options = $BibleSuperSearch_Options->getLandingPageOptionsOld(TRUE, $landing_page, 'Default');
+        $landing_page_options = $this->getLandingPageOptionsHtml($landing_page, 'Default');
 
         $title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'text_domain' );
         $show_bible_list = ! empty( $instance['show_bible_list'] ) ? $instance['show_bible_list'] : 0;
@@ -235,8 +235,33 @@ class Widget extends \WP_Widget
         </script>
 
         <?php
-        
+    }
 
+    protected function getLandingPageOptionsHtml($value = NULL, $zero_option = 'None', $zero_default = FALSE) 
+    {
+        $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+
+        $landing_pages = $Options->getLandingPageOptions(true);
+
+        $html = '';
+
+        if($zero_option) {
+            $sel  = (empty($value)) ? "selected = 'selected'" : '';
+
+            if($zero_option == 'Default' || $zero_default) {
+                $lp = $Options->getLandingPage();
+                $zero_option = '(' . $zero_option . ') ' . $lp['title_fmt'];
+            }
+
+            $html = "<option value='0' {$sel}> {$zero_option} </option>";
+        }
+
+        foreach($landing_pages as $res) {
+            $sel  = ($res['value'] == $value) ? "selected = 'selected'" : '';
+            $html .= "<option value='{$res['value']}' {$sel}>{$res['label']}</option>";
+        }
+
+        return $html;
     }
  
     public function update( $new_instance, $old_instance ) 
