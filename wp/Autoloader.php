@@ -12,7 +12,7 @@ class BibleSuperSearch_Autoloader
      *
      * @var array<string, string>
      */
-    private array $prefixes = [];
+    private $prefixes = [];
 
     /**
      * Register a namespace prefix with a base directory.

@@ -195,7 +195,15 @@ class Options extends OptionsAbstract
         // Including fonts via CDN IS allowed per WordPress plugin guidelines
         wp_enqueue_style('biblesupersearch_mdi_css', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
 
-        wp_enqueue_script_module('biblesupersearch_vue_config', plugins_url('wp/js/Config.vue.js', dirname(__FILE__, 2)));
+        $vue_config_src = plugins_url('wp/js/Config.vue.js', dirname(__FILE__, 2));
+        
+        if ( function_exists( 'wp_enqueue_script_module' ) ) {
+            wp_enqueue_script_module('biblesupersearch_vue_config', $vue_config_src);
+        } else {
+            wp_enqueue_script('biblesupersearch_vue_config', $vue_config_src, [], null, true);
+            wp_script_add_data('biblesupersearch_vue_config', 'type', 'module');
+        }
+
 
         // wp_localize_script( 'biblesupersearch_vue_config', 'wpApiSettings', array(
         //     'root' => esc_url_raw( rest_url() ),

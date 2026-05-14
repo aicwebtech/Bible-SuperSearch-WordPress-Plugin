@@ -42,7 +42,7 @@ add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortco
 
 add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
 add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);
-/** End inti shortcodes */
+/** End init shortcodes */
 
 /** Init widget */
 add_action('widgets_init', function () {

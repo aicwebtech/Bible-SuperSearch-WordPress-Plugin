@@ -17,13 +17,14 @@ Make safe, minimal, production-ready changes to the plugin while preserving back
 - `com_test/js/configs/`: Admin configs app (Vue/Vuetify)
 - `com_test/js/vue-app/`: *Do not edit, maintained elsewhere* Future rebuilt BibleSuperSearch UI app (Vue/Vuetify)
 - `com_test/php/`: Shared plugin PHP option/config logic.
-- `templates/`: Option page templates.
+- `wp/templates/`: Option page templates.
 
 ## High-Value Files
 
-- `wp/class.shortcodes.php`: Shortcode handlers and output generation.
-- `wp/class.widgets.php`: Widget registration and rendering.
-- `wp/class.options.php`: WP admin option handling.
+- `wp/php/Shortcodes.php`: Shortcode handlers and output generation.
+- `wp/php/Widgets.php`: Widget registration and rendering.
+- `wp/php/Options.php`: WP option handling.
+- `com_test/php/src/OptionsAbstract.php`: WP option handling - generic abstract.
 - `biblesupersearch.php`: Plugin initialization and hooks.
 
 ## Coding Rules
@@ -42,7 +43,7 @@ Make safe, minimal, production-ready changes to the plugin while preserving back
 
 Use these scoped instruction files to determine task-specific guardrails:
 
-- `.github/instructions/wordpress-shortcodes.instructions.md`: Applies to shortcode and core WordPress integration files (`wp/class.shortcodes.php`, `wp/*.php`, `biblesupersearch.php`).
+- `.github/instructions/wordpress-shortcodes.instructions.md`: Applies to shortcode and core WordPress integration files (`wp/php/Shortcodes.php`, `wp/*.php`, `biblesupersearch.php`).
 - `.github/instructions/frontend-assets.instructions.md`: Applies to frontend asset sources in `com_test/js/app`, `com_test/js/configs`, and `com_test/js/vue-app`.
 - `.github/instructions/wp-admin-assets.instructions.md`: Applies to admin-facing PHP/CSS/JS in `wp/*` and option templates in `templates/*.php`.
 

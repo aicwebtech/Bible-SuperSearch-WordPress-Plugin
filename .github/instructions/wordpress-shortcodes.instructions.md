@@ -1,5 +1,5 @@
 ---
-applyTo: "wp/class.shortcodes.php,wp/*.php,biblesupersearch.php"
+applyTo: "wp/php/Shortcodes.php,wp/*.php,biblesupersearch.php"
 ---
 
 # WordPress Shortcode Guardrails

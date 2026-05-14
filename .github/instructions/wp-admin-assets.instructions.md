@@ -1,5 +1,5 @@
 ---
-applyTo: "wp/*.php,wp/*.css,wp/*.js,templates/*.php"
+applyTo: "wp/php/*.php,wp/css/*.css,wp/js/*.js,wp/templates/*.php"
 ---
 
 # WordPress Admin Asset Guardrails

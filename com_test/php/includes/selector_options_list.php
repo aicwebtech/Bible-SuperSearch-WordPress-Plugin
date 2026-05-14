@@ -193,7 +193,7 @@ return [
     'extra_buttons_display' => [
         'default'   => ['name' => $default_item_text],
         'format'    => ['name' => 'Display with Formatting Buttons'],
-        'separate'  => ['name' => 'Display Separatly on the form.  (Some skins may not support this)'],
+        'separate'  => ['name' => 'Display Separately on the form.  (Some skins may not support this)'],
         'none'      => ['name' => 'Do not display'],
     ],
     'landing_pages' => null, // populated dynamically
