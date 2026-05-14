@@ -103,8 +103,8 @@ function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE)
     }
 
     if(!function_exists('wp_enqueue_script_module')) {
-        function wp_enqueue_script_module($handle, $src = '', $deps = array(), $ver = false, $in_footer = false) {
-            $attrs = array('type' => 'module');
+        function wp_enqueue_script_module($handle, $src = '', $deps = [], $ver = false, $in_footer = false) {
+            $attrs = ['type' => 'module'];
             wp_enqueue_script($handle, $src, $deps, $ver, $in_footer);
             foreach($attrs as $key => $value) {
                 wp_script_add_data($handle, $key, $value);

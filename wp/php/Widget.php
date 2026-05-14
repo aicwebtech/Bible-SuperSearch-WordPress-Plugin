@@ -19,12 +19,12 @@ class Widget extends \WP_Widget
         );
     }
  
-    public $args = array(
+    public $args = [
         'before_widget' => '<div class="widget-wrap">',
         'after_widget'  => '</div>',
         'before_title'  => '<h4 class="widgettitle">',
         'after_title'   => '</h4>',
-    );
+    ];
 
     protected $default_placeholder_text = 'Verse(s) or Keyword(s)';
  

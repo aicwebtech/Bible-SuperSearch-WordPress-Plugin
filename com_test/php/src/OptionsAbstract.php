@@ -494,6 +494,28 @@ abstract class OptionsAbstract
         return [];
     }
 
+    public function getLandingPage() 
+    {
+        $options = $this->getOptions();
+
+        if(!$options['defaultDestinationPage']) {
+            return FALSE;
+        }
+
+        return $this->getLandingPageById($options['defaultDestinationPage']);
+    }
+    
+    public function getLandingPageById($id) 
+    {
+        $options = $this->selector_options['landing_pages'] ?? [];
+        
+        $lp = array_filter($options, function($o) use ($id) {
+            return $o['value'] == $id;
+        });
+
+        return !empty($lp) ? array_values($lp)[0] : FALSE;
+    }
+
     public function getBible($module) 
     {
         $statics = $this->getStatics();
@@ -683,7 +705,7 @@ abstract class OptionsAbstract
         }
 
         $this->statics_loading = TRUE;
-        $data       = array('language'  => 'en');
+        $data       = ['language'  => 'en'];
         
         $result     = $this->_apiActionHelper('statics', $url, $data);
         $this->statics_loading = FALSE;
@@ -797,13 +819,13 @@ abstract class OptionsAbstract
 
         // Attempt 1: Via file_get_contents
         if($allow_url_fopen == 1) {        
-            $options = array(
-                'http' => array(        // Use key 'http' even if you send the request to https://
+            $options = [
+                'http' => [        // Use key 'http' even if you send the request to https://
                     'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                     'method'  => 'POST',
                     'content' => http_build_query($data),
-                )
-            );
+                ]
+            ];
  
             $context = stream_context_create($options);
             $result  = file_get_contents($url, FALSE, $context);
@@ -939,7 +961,7 @@ abstract class OptionsAbstract
             return null;
         }
 
-        $host = str_replace(array('http:','https:'), '', $host);
+        $host = str_replace(['http:','https:'], '', $host);
         $host = trim($host);
         $host = trim($host, '/');
         $pieces = explode('/', $host);

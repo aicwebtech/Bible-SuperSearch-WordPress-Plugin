@@ -34,12 +34,12 @@ class Options extends OptionsAbstract
     {
         global $wp_version;
 
-        $args = array($this, 'validateOptions');
+        $args = [$this, 'validateOptions'];
 
         if ( version_compare( $wp_version, '4.7.0', '>=' ) ) {
-            $args = array(
-                'sanitize_callback' => array($this, 'validateOptions')
-            );
+            $args = [
+                'sanitize_callback' => [$this, 'validateOptions']
+            ];
         }
 
         register_setting( 'aicwebtech_plugin_options', $this->option_index, $args );
@@ -112,14 +112,14 @@ class Options extends OptionsAbstract
     /** WordPress-specific methods */
     public function getRecomendedPlugins($missing_only = FALSE) 
     {
-        $plugins = array(
-            array(
+        $plugins = [
+            [
                 'name'          => 'disable-emojis',
                 'file'          => 'disable-emojis/disable-emojis.php',
                 'label'         => 'Disable Emojis',
                 'description'   => ' - WordPress converts some characters to emojis, and this may cause Bible SuperSearch to not look as intended',
-            )
-        );
+            ]
+        ];
 
         if($missing_only) {
             foreach($plugins as $key => $plugin) {
@@ -176,10 +176,10 @@ class Options extends OptionsAbstract
         wp_enqueue_script('biblesupersearch_axios', plugins_url('com_test/js/bin/axios_1.9.0.min.js', dirname(__FILE__, 2)));
         wp_enqueue_style('biblesupersearch_vuetify_css', plugins_url('com_test/js/bin/vuetify_3.7.6.min.css', dirname(__FILE__, 2)));
 
-        wp_localize_script( 'wp-api', 'wpApiSettings', array(
+        wp_localize_script( 'wp-api', 'wpApiSettings', [
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' )
-        ) );
+        ] );
         
         // Pulling icons font locally isn't working, 
         // :todo see how I got this working on the API ... 
@@ -264,51 +264,6 @@ class Options extends OptionsAbstract
         return $pages;
     }
 
-    // still in use
-    protected function _formatLandingPageOption(&$landing_page) 
-    {
-        $title = ($landing_page['post_title']) ? $landing_page['post_title'] : '(No Title, ID = ' . $landing_page['ID'] . ')';
-        $type = ucfirst($landing_page['post_type']);
-        $landing_page['title_fmt'] = $type . ': ' . $title;
-    }
-
-    public function getLandingPage() 
-    {
-        $options = $this->getOptions();
-
-        if(!$options['defaultDestinationPage']) {
-            return FALSE;
-        }
-
-        return $this->_getLandingPageHelper($options['defaultDestinationPage']);
-    }
-    
-    public function getLandingPageById($id) 
-    {
-        return $this->_getLandingPageHelper($id);
-    }
-
-    protected function _getLandingPageHelper($id) 
-    {
-        global $wpdb;
-
-        $sql = "
-            SELECT * FROM `{$wpdb->prefix}posts`
-            WHERE ID = {$id}
-            AND post_type IN ('page','post') AND post_status = 'publish'
-        ";
-
-        $results = $wpdb->get_results($sql, ARRAY_A);
-
-        if(!$results) {
-            return FALSE;
-        }
-
-        $landing_page = $results[0];
-        $this->_formatLandingPageOption($landing_page);
-        return $landing_page;
-    }
-
     // TODO - make generic
     protected function _setStaticsReset() 
     {
@@ -320,7 +275,8 @@ class Options extends OptionsAbstract
             update_option('biblesupersearch_statics', $statics);
         }
     }
-
+    
+    //** WordPress specific override? */
     public function getLanguagesWithGlobalDefault()
     {
         $opts = $this->selector_options['language'];
@@ -333,28 +289,5 @@ class Options extends OptionsAbstract
 
         $opts['global_default'] = 'Site Language -- ' . $name . ' (Settings => General)';
         return $opts;
-    }
-
-    public function getInterfaceByName($name) 
-    {
-        $interfaces = $this->getInterfaces();
-        $proc = $this->_processInterfaceName($name);
-
-        if(array_key_exists($proc, $interfaces)) {
-            $interface = $interfaces[$proc];
-            $interface['id'] = $proc;
-            return $interface;
-        }
-
-        foreach($interfaces as $id => $info) {
-            $proc2 = $this->_processInterfaceName($info['name']);
-
-            if($info['name'] == $name || $proc == $proc2) {
-                $info['id'] = $id;
-                return $info;
-            }
-        }
-
-        return NULL;
     }
 }

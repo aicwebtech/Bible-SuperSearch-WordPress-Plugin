@@ -114,9 +114,9 @@
                            target="_blank"
                            class="button-secondary"><?php esc_html_e( 'Facebook', 'biblesupersearch' ); ?></a>
 
-                        <a href="https://twitter.com/bibsupsearch"
+                        <a href="https://x.com/bibsupsearch"
                            target="_blank"
-                           class="button-secondary"><?php esc_html_e( 'Twitter', 'biblesupersearch' ); ?></a>
+                           class="button-secondary"><?php esc_html_e( 'X', 'biblesupersearch' ); ?></a>
                     </div>   
                     <br />                 
                     <div style="text-align:center">
