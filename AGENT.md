@@ -22,7 +22,7 @@ Make safe, minimal, production-ready changes to the plugin while preserving back
 ## High-Value Files
 
 - `wp/php/Shortcodes.php`: Shortcode handlers and output generation.
-- `wp/php/Widgets.php`: Widget registration and rendering.
+- `wp/php/Widget.php`: Widget registration and rendering.
 - `wp/php/Options.php`: WP option handling.
 - `com_test/php/src/OptionsAbstract.php`: WP option handling - generic abstract.
 - `biblesupersearch.php`: Plugin initialization and hooks.

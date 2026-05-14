@@ -10,7 +10,7 @@ This repository is a WordPress plugin using shortcodes.
 
 ## Implementation Preferences
 
-- For shortcode changes, edit `wp/class.shortcodes.php` unless told otherwise.
+- For shortcode changes, edit `wp/php/Shortcodes.php` unless told otherwise.
 - Keep shortcode parsing deterministic and explicit.
 - Use `shortcode_atts` with stable defaults.
 - Avoid adding new dependencies unless necessary.
