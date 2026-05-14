@@ -19,14 +19,59 @@
 
 // com_test is a temp dir name ...
 
+// Load autoloader and register PSR-4 namespaces
+require_once(dirname(__FILE__) . '/wp/Autoloader.php');
+
+$biblesupersearch_autoloader = new BibleSuperSearch_Autoloader();
+$biblesupersearch_autoloader->addNamespace('BibleSuperSearch\\WordPress', dirname(__FILE__) . '/wp/php');
+$biblesupersearch_autoloader->addNamespace('BibleSuperSearch\\Common', dirname(__FILE__) . '/com_test/php/src');
+$biblesupersearch_autoloader->register();
+
+// Load utility files that are not autoloaded
 require_once(dirname(__FILE__) . '/com_test/php/init.php');
-require_once(dirname(__FILE__) . '/wp/class.options.php');
-require_once(dirname(__FILE__) . '/wp/class.widgets.php');
-require_once(dirname(__FILE__) . '/wp/class.shortcodes.php');
 
-// wp_enqueue_media(); // does not work
+// Global instance ... (not ideal, but it is what it is for now)
+//$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
-function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
+/**Init shortcodes */
+add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
+// add_shortcode('biblesupersearch_new', [\BibleSuperSearch\WordPress\Shortcodes::class, 'displayNew']); // future
+add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::class, 'demo']);
+add_shortcode('biblesupersearch_bible_list', [\BibleSuperSearch\WordPress\Shortcodes::class, 'bibleList']);
+add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortcodes::class, 'downloadPage']);
+
+add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
+add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);
+/** End init shortcodes */
+
+/** Init widget */
+add_action('widgets_init', function () {
+    register_widget(\BibleSuperSearch\WordPress\Widget::class);
+});
+/** End init widget */
+
+
+/** Init Admin Menu */
+add_action( 'admin_menu', function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->pluginMenu();
+});
+
+/** Init Activation Hook */
+register_activation_hook( __FILE__ , function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->setDefaultOptions();
+});
+
+add_action( 'admin_init', function() {
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $Options->adminInit();
+});
+
+/** Misc Functions */
+
+function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) 
+{
     // Quick workaround for new Gutenberg editor.
     // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
     // This is causing Bible SuperSearch to throw errors.
@@ -37,16 +82,17 @@ function biblesupersearch_enqueue_depends($includeCssOverride = TRUE) {
     }
 
     wp_enqueue_script('biblesupersearch_main', plugins_url('com_test/js/app/biblesupersearch.js', __FILE__));
-    wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/additional.js', __FILE__));
-    wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));    
-    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/style.css', __FILE__));    
+    wp_enqueue_script('biblesupersearch_wp_add', plugins_url('wp/js/additional.js', __FILE__));
+    wp_enqueue_style('biblesupersearch_css',   plugins_url('com_test/js/app/biblesupersearch.css', __FILE__));
+    wp_enqueue_style('biblesupersearch_css_wp',   plugins_url('wp/css/style.css', __FILE__));
     
     if($includeCssOverride) {
-        wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/additional.css', __FILE__));
+        wp_enqueue_style('biblesupersearch_css_wp_add',   plugins_url('wp/css/additional.css', __FILE__));
     }
 }
 
-function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
+function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) 
+{
     // Quick workaround for new Gutenberg editor.
     // When editing a page with a Bible SuperSearch shortcode, it is loading these includes without rendering the shortcode
     // This is causing Bible SuperSearch to throw errors.
@@ -57,8 +103,8 @@ function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
     }
 
     if(!function_exists('wp_enqueue_script_module')) {
-        function wp_enqueue_script_module($handle, $src = '', $deps = array(), $ver = false, $in_footer = false) {
-            $attrs = array('type' => 'module');
+        function wp_enqueue_script_module($handle, $src = '', $deps = [], $ver = false, $in_footer = false) {
+            $attrs = ['type' => 'module'];
             wp_enqueue_script($handle, $src, $deps, $ver, $in_footer);
             foreach($attrs as $key => $value) {
                 wp_script_add_data($handle, $key, $value);
@@ -75,9 +121,10 @@ function biblesupersearch_enqueue_depends_new($includeCssOverride = TRUE) {
     }
 }
 
-function biblesupersearch_enqueue_option() {
+function biblesupersearch_enqueue_option() 
+{
     wp_enqueue_script('biblesupersearch_options',  plugins_url('wp/options.js', __FILE__));
-    wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/options.css', __FILE__));
+    wp_enqueue_style('biblesupersearch_options',   plugins_url('wp/css/options.css', __FILE__));
 }
 
 /* Adds settings link to plugin page */
@@ -93,14 +140,11 @@ add_filter( "plugin_action_links_$plugin", 'biblesupersearch_add_settings_link' 
 
 // Note this currently causes breakage on some hosts ($BibleSuperSearch_Options is null)
 // disabled for now
-function biblesupersearch_custom_rewrite() {
-    global $BibleSuperSearch_Options;
+function biblesupersearch_custom_rewrite() 
+{
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
-    if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
-    }
-
-    $landing_page = $BibleSuperSearch_Options->getLandingPage();
+    $landing_page = $Options->getLandingPage();
 
     if(!$landing_page) {
         return;
@@ -130,19 +174,14 @@ function biblesupersearch_custom_rewrite() {
 //add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
 
 add_action( 'rest_api_init', function () {
-    global $BibleSuperSearch_Options;
-
-    if(!$BibleSuperSearch_Options) {
-        $BibleSuperSearch_Options = new BibleSuperSearch_Options_WP();
-    }
     
     register_rest_route( 'biblesupersearch/v1', '/config', [
         'methods' => 'GET',
         'callback' => function($request) {
-            global $BibleSuperSearch_Options;
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
             $response = new \stdClass;
             $response->status = 'success';
-            $response->options = $BibleSuperSearch_Options->getOptions();
+            $response->options = $Options->getOptions();
             return $response;
         },
         //'permission_callback' => fn() => current_user_can('manage_options') // php 7.4 +
@@ -154,15 +193,15 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'biblesupersearch/v1', '/config', [
         'methods' => 'POST',
         'callback' => function($request) {
-            global $BibleSuperSearch_Options;
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
             $data = $request->get_json_params();
 
-            $BibleSuperSearch_Options->setOptions($data);
+            $Options->setOptions($data);
 
             $response = new \stdClass;
             $response->status = 'success';
-            $response->refresh = $BibleSuperSearch_Options->refresh_statics;
-            $response->options = $BibleSuperSearch_Options->getOptions();
+            $response->refresh = $Options->refresh_statics;
+            $response->options = $Options->getOptions();
 
             return $response;
         },

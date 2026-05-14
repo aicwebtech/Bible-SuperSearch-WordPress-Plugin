@@ -1,14 +1,17 @@
-DEPRICATED (template.options.php)
 <?php
-    // global $options, $bibles, $interfaces;
-    global $BibleSuperSearch_Options;
-    $api_version = (float) $BibleSuperSearch_Options->apiVersion();
-    $statics = $BibleSuperSearch_Options->getStatics();
+    /**
+     * (tempoary) Template for the new (Vue.js) settings page.
+     * Will be replaced when we rebuild this plugin.  
+     */
+    
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+
+    $api_version = (float) $Options->apiVersion();
+    $statics = $Options->getStatics();
 
     if(!isset($statics['access'])) {
         $access_limit = '(unknown)';
         $access_hits = '(unknown)';
-        $access_rem = '(unknown)';
     } else {        
         $access_hits = (int)$statics['access']['hits'];
 
@@ -25,18 +28,21 @@ DEPRICATED (template.options.php)
     }
 ?>
 
+<script>
+    var biblesupersearch_config_bootstrap = <?php echo json_encode($bootstrap); ?>;
+</script>
+
+<style>
+
+</style>
+
+
 <div class="biblesupersearch-option-tabs wrap">
-    <div class="icon32" id="icon-options-general"><br></div>
     <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
-    <script>
-        <?php
-            echo "var bss_options=" . json_encode($options) . ";\n";
-            echo "var bss_tab='" . $tab . "';\n";
-        ?>
-    </script>
 
     <div class="metabox-holder has-right-sidebar">
-        <div class="inner-sidebar" style='margin-top: 44px'>
+        <!-- :todo make side bar responsive -->
+        <div class="inner-sidebar" style='margin-top: 48px; max-width: 281px; width: 100%'>
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
@@ -100,30 +106,6 @@ DEPRICATED (template.options.php)
                     </div>
                 </div>
             </div>
-
-<!--             <div class="postbox sm-box">
-                <h3>
-                    <span><?php esc_html_e( 'Frequently Asked Questions', 'biblesupersearch' ); ?></span>
-                </h3>
-                <div class="inside">
-                    <ul>
-                        <li>- <a
-                                    href="https://www.biblesupersearch.com/Getting-Started-with-biblesupersearch"
-                                    title="" target="_blank">Getting Started with Bible SuperSearch</a></li>
-                        <li>- <a
-                                    href="https://www.biblesupersearch.com/biblesupersearch-Shortcodes"
-                                    title="Bible SuperSearch Shortcodes" target="_blank">Bible SuperSearch Shortcodes</a></li>
-                        <li>- <a
-                                    href="https://www.biblesupersearch.com/Troubleshooting-biblesupersearch"
-                                    title="Troubleshooting Bible SuperSearch" target="_blank">Troubleshooting
-                                Bible SuperSearch</a></li>
-                    </ul>
-                    <div style="text-align:center;font-size:0.85em;padding:0.4rem 0 0">
-                        <span><?php echo wp_sprintf( esc_html__( 'Find out more in our %s', 'biblesupersearch' ), '<a href="https://www.biblesupersearch.com/my/knowledgebase.php" title="Knowledgebase" target="_blank">' . esc_html__( 'knowledge base', 'biblesupersearch' ) . '</a>' ); ?></span>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="postbox sm-box">
                 <h3>
                     <span><?php esc_html_e( 'Like our Software?  Please leave us a review and follow us!', 'biblesupersearch' ); ?></span>
@@ -134,9 +116,9 @@ DEPRICATED (template.options.php)
                            target="_blank"
                            class="button-secondary"><?php esc_html_e( 'Facebook', 'biblesupersearch' ); ?></a>
 
-                        <a href="https://twitter.com/bibsupsearch"
+                        <a href="https://x.com/bibsupsearch"
                            target="_blank"
-                           class="button-secondary"><?php esc_html_e( 'Twitter', 'biblesupersearch' ); ?></a>
+                           class="button-secondary"><?php esc_html_e( 'X', 'biblesupersearch' ); ?></a>
                     </div>   
                     <br />                 
                     <div style="text-align:center">
@@ -169,58 +151,11 @@ DEPRICATED (template.options.php)
 
         <div id="post-body">
             <div id='post-body-menu'>
-                <?php foreach($tabs as $key => $item): ?>
-                    <a class='bss-menu-item <?php if($key == $tab) echo 'selected' ?>' href='?page=biblesupersearch_old&tab=<?php echo $key ?>'><?php echo $item['name'] ?></a>
-                <?php endforeach; ?>
+                <!-- tab container -->
             </div>
 
             <div id="post-body-content">
-                <form method="post" action="options.php">
-                    <?php settings_fields( 'aicwebtech_plugin_options' ); ?>
-                    <input type='hidden' name='tab' value='<?php echo $tab ?>' />
-
-                    <div class="postbox tab-content">
-                        <div class='inside'>
-                            <table>
-                                <tr><th colspan="2">Today's Bible SuperSearch API Usage</th></tr>
-                                <tr><th>Daily hits</th><td><?php echo $access_hits; ?></td></tr>
-                                <tr><th>Limit</th><td><?php echo $access_limit; ?></td></tr>
-                                <tr><th>Remaining </th><td><?php echo $access_rem; ?></td></tr>
-                            </table>
-                        </div>
-
-                        <?php if($using_main_api): ?>
-                            <div class='inside' style='font-weight: bold'>
-                                This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
-                                <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
-                                <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>. <br /><br />
-                                Did you know that you can install our API on your server for FREE? &nbsp;Enjoy faster API speed and no usage limits.
-                                Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
-                            </div>
-                        <?php else: ?>
-                            <div class='inside' style='font-weight: bold'>
-                                Congratulations! &nbsp;You are successfully using this third party installation of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
-                            </div>
-                        <?php endif; ?>
-    
-                        <?php if(!empty($reccomended_plugins)): ?>
-                            <div class='inside'>
-                                Bible SuperSearch recommends these plugins: <br /><br />
-                                <ul>
-                                    <?php foreach($reccomended_plugins as $p): ?>
-                                        <li>
-                                            <a href='plugin-install.php?tab=plugin-information&plugin=<?php echo $p['name']; ?>&TB_iframe=true&width=640&height=500' class='thickbox'><?php echo $p['label'] ?></a>
-                                            &nbsp; <?php echo $p['description'] ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                        </div>
-                        <?php endif; ?>
-
-                        <?php require_once(dirname(__FILE__) . '/templates/options_' . $tab . '.php'); ?>
-                    </div>
-
-                </form>
+                <div id='bss_config_app'></div>
             </div>
         </div>
     </div>

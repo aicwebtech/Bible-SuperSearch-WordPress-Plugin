@@ -1,14 +1,15 @@
 <?php
     /**
-     * (tempoary) Template for the new (Vue.js) settings page.
+     * (tempoary) Template for the documentation page.
      * Will be replaced when we rebuild this plugin.  
      */
     
     // global $options, $bibles, $interfaces;
-    global $BibleSuperSearch_Options;
+    $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+    $api_version = (float) $Options->apiVersion();
+    $statics = $Options->getStatics();
+    list($api_ready, $api_checklist) = $Options->apiRequirementsCheck();
 
-    $api_version = (float) $BibleSuperSearch_Options->apiVersion();
-    $statics = $BibleSuperSearch_Options->getStatics();
 
     if(!isset($statics['access'])) {
         $access_limit = '(unknown)';
@@ -29,21 +30,17 @@
     }
 ?>
 
-<script>
-    var biblesupersearch_config_bootstrap = <?php echo json_encode($bootstrap); ?>;
-</script>
-
-<style>
-
-</style>
-
-
 <div class="biblesupersearch-option-tabs wrap">
-    <h1><?php esc_html_e( 'Bible SuperSearch Options', 'biblesupersearch' ); ?></h1>
+    <div class="icon32" id="icon-options-general"><br></div>
+    <h1><?php esc_html_e( 'Bible SuperSearch Documentation', 'biblesupersearch' ); ?></h1>
+    <script>
+        <?php
+            echo "var bss_options=" . json_encode($options) . ";\n";
+        ?>
+    </script>
 
     <div class="metabox-holder has-right-sidebar">
-        <!-- :todo make side bar responsive -->
-        <div class="inner-sidebar" style='margin-top: 48px; max-width: 281px; width: 100%'>
+        <div class="inner-sidebar" style='margin-top: 44px'>
             <?php if($using_main_api): ?>
                 <div class="postbox sm-box" style='background-color: #fffb17;'>
                     <h3 style='color: red'>Recommended Action: Install our API</h3>
@@ -117,9 +114,9 @@
                            target="_blank"
                            class="button-secondary"><?php esc_html_e( 'Facebook', 'biblesupersearch' ); ?></a>
 
-                        <a href="https://twitter.com/bibsupsearch"
+                        <a href="https://x.com/bibsupsearch"
                            target="_blank"
-                           class="button-secondary"><?php esc_html_e( 'Twitter', 'biblesupersearch' ); ?></a>
+                           class="button-secondary"><?php esc_html_e( 'X', 'biblesupersearch' ); ?></a>
                     </div>   
                     <br />                 
                     <div style="text-align:center">
@@ -152,11 +149,95 @@
 
         <div id="post-body">
             <div id='post-body-menu'>
-                <!-- tab container -->
+
             </div>
 
             <div id="post-body-content">
-                <div id='bss_config_app'></div>
+
+                <div class="postbox tab-content">
+                    <div class='inside'>
+                        <table>
+                            <tr><th colspan="2">Today's Bible SuperSearch API Usage</th></tr>
+                            <tr><th>Daily hits</th><td><?php echo $access_hits; ?></td></tr>
+                            <tr><th>Limit</th><td><?php echo $access_limit; ?></td></tr>
+                            <tr><th>Remaining </th><td><?php echo $access_rem; ?></td></tr>
+                        </table>
+                    </div>
+
+                    <?php if($using_main_api): ?>
+                        <div class='inside' style='font-weight: bold'>
+                            This plugin uses the Bible SuperSearch API. &nbsp;By installing, activating and using this plugin, you agree to the API
+                            <a href='https://api.biblesupersearch.com/documentation#tab_tos' target='_NEW'>Terms of Service</a> and 
+                            <a href='https://api.biblesupersearch.com/documentation#tab_privacy' target='_NEW'>Privacy Policy</a>. <br /><br />
+                            Did you know that you can install our API on your server for FREE? &nbsp;Enjoy faster API speed and no usage limits.
+                            
+                            <?php if($api_ready): ?>
+                                Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                            <?php endif; ?>
+                        </div>
+                        <div class='inside' style='font-weight: bold'>
+                            <?php if($api_ready): ?>
+                                Congratulations, your website meets the basic requirements to install the BibleSuperSearch API, see list below.
+                            <?php else: ?>
+                                <span style='color: red'>Warning! &nbsp;Please resolve the following before attempting to install the BibleSuperSearch API. &nbsp;</span>
+
+                                You will need to have your webhost upgrade or enable the missing items. 
+                            <?php endif; ?>
+                            <br /><br />
+
+                            <table>
+                                <?php foreach($api_checklist as $row): ?>
+                                    <?php $rowcount ++; ?>
+
+                                    <?php if($row['type'] == 'header'): ?>
+                                        <tr><th colspan='2'><?php echo $row['label']; ?></th></tr>        
+                                    <?php elseif($row['type'] == 'error'): ?>
+                                        <tr><th colspan='2' class='bad'><?php echo $row['label']; ?></th></tr>
+                                    <?php elseif($row['type'] == 'hr'): ?>
+                                        <tr><td colspan='2'><hr /></td></tr>
+                                    <?php else: ?>
+                                        <tr <?php if($rowcount %2 == 0):?>class='zebra'<?php endif;?> >
+                                            <td><?php echo $row['label']; ?></td>
+                                            <?php if($row['success'] === NULL): ?>
+                                                <td class='ok'>Okay</td>
+                                            <?php elseif($row['success'] == TRUE): ?>
+                                                <td class='good'>Good</td>
+                                            <?php else: ?>
+                                                <td class='bad'>Bad</td>
+                                            <?php endif; ?>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                            </table>
+
+                            <?php if($api_ready): ?>
+                                <br />Visit our downloads page for details: <a href='https://www.biblesupersearch.com/downloads' target='_NEW'>https://www.biblesupersearch.com/downloads</a>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class='inside' style='font-weight: bold'>
+                            Congratulations! &nbsp;You are successfully using this third party installation of the Bible SuperSearch API: <?php echo $options['apiUrl'] ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if(!empty($reccomended_plugins)): ?>
+                        <div class='inside'>
+                            Bible SuperSearch recommends these plugins: <br /><br />
+                            <ul>
+                                <?php foreach($reccomended_plugins as $p): ?>
+                                    <li>
+                                        <a href='plugin-install.php?tab=plugin-information&plugin=<?php echo $p['name']; ?>&TB_iframe=true&width=640&height=500' class='thickbox'><?php echo $p['label'] ?></a>
+                                        &nbsp; <?php echo $p['description'] ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php require_once(dirname(__FILE__) . '/options_docs_temp.php'); ?>
+                </div>
+
             </div>
         </div>
     </div>
