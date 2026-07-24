@@ -96,6 +96,14 @@ return [
             'section'       => 'display',
             'default'       => 'default',
         ],    
+        'hideUnavailableBooks' => [
+            'label'         => 'Exclude Unavailable Books',
+            'desc'          => 'Automatically hide books that are not available in selected Bible(s).',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'display',
+            'default'       => 'default',
+        ],    
 
         // :Todo replace with extraButtonsDisplay?
         // This will require REMOVING this option from the saved options?
@@ -110,7 +118,13 @@ return [
             'default'       => 'default',
         ],
 
-
+        'contextLinksAsButtons' => [ // BSS-280
+            'label'         => 'Context Links as Icons',
+            'desc'          => 'Display context links as icons instead of text.',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+        ],    
         'swipePageChapter' => [
             'label'         => 'Touchscreen Swipe',
             'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
@@ -663,6 +677,13 @@ return [
             'units'         => 'pixels',
             'rules'        => ['requiredInteger', 'integer'],
         ],
+        'disableCache' => [
+            'label'         => 'Disable Cache',
+            'sublabel'      => 'Disable Caching',
+            'desc'          => 'Disables browser caching throughout the application. ',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ],         
         'debug' => [
             'label'         => 'Debug Mode',
             'sublabel'      => 'Enable Debugging Messages',
