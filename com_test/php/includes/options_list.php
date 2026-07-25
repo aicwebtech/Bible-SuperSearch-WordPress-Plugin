@@ -235,7 +235,6 @@ return [
         'bookmarksHistory' => [
             'label'         => 'Bookmarks and History',
             'type'          => 'section',
-            'default'       => true,
             'section'       => 'features',
         ],
         'bookmarksEnable' => [
@@ -262,6 +261,63 @@ return [
             'section'       => 'features',
             'rules'        => ['required', 'positiveInteger'],
         ],
+
+        // :todo - edit these options
+        'crossReferences' => [
+            'label'         => 'Cross References',
+            'type'          => 'section',
+            'section'       => 'features',
+        ],
+        'crossReferenceEnable' => [ // BSS-158
+            'label'         => 'Enable Cross References',
+            'desc'          => 'Show cross references for the current passage.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+        ],
+        'crossReferenceShowDefault' => [ // BSS-158
+            'label'         => 'Default Display',
+            'desc'          => 'How cross references should be displayed by default.',
+            'type'          => 'select',
+            'default'       => 'toggle',
+            'section'       => 'features',
+            'items'         => [
+                'hidden'    => 'Hidden',
+                'toggle'    => 'Toggle',
+                'show'      => 'Show',
+            ],
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceFormatDefault' => [ // BSS-158
+            'label'         => 'Default Format',
+            'desc'          => 'How cross references should be formatted by default.',
+            'type'          => 'select',
+            'default'       => 'auto',
+            'section'       => 'features',
+            'items'         => [
+                'compact'   => 'Compact',
+                'auto'      => 'Auto',
+                'expand'    => 'Expand',
+            ],
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceLinkIncludeParent' => [ // BSS-158
+            'label'         => 'Include Parent Reference in Link',
+            'desc'          => 'Include the parent reference when linking to a cross reference.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceLinkNewTab' => [ // BSS-158
+            'label'         => 'Open Links in New Tab',
+            'desc'          => 'Open cross reference links in a new browser tab.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+
 
         // Autocomplete Settings
         'autocomplete' => [
