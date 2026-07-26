@@ -19,6 +19,11 @@ Make safe, minimal, production-ready changes to the plugin while preserving back
 - `com_test/php/`: Shared plugin PHP option/config logic.
 - `wp/templates/`: Option page templates.
 
+## External Libraries
+DO NOT *Edit* or *code review* these directories
+- `com_test/js/app/`:
+- `com_test/js/vue-app/`:
+
 ## High-Value Files
 
 - `wp/php/Shortcodes.php`: Shortcode handlers and output generation.

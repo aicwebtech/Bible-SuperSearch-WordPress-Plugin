@@ -39,7 +39,7 @@ Registered shortcodes: `[biblesupersearch]`, `[biblesupersearch_demo]`, `[bibles
 
 - `wp/` — everything WordPress-specific (PHP classes, templates, admin CSS/JS, download page, translations).
 - `com_test/` — shared/upstream Bible SuperSearch code (the name is a legacy temp dir name). `com_test/php/` is the platform-agnostic option library, shared with other Bible SuperSearch clients.
-- **Do not edit** `com_test/js/app/` (minified legacy Enyo client), `com_test/js/vue-app/` (built next-gen Vue client), or `com_test/js/bin/` (vendored Vue/Vuetify/axios). All are maintained in other repositories and overwritten wholesale on update.
+- **Do not edit** and **Do not code review** `com_test/js/app/` (minified legacy Enyo client), `com_test/js/vue-app/` (built next-gen Vue client), or `com_test/js/bin/` (vendored Vue/Vuetify/axios). All are maintained in other repositories and overwritten wholesale on update.
 
 ## Conventions and guardrails
 
