@@ -37,7 +37,7 @@ Make safe, minimal, production-ready changes to the plugin while preserving back
 4. Avoid introducing global state; prefer class methods and WordPress hooks.
 5. Do not hardcode site URLs or environment-specific paths.
 6. Keep diffs small and avoid refactoring unrelated code.
-7. Format changes using `PSR-12` format.
+7. Match the existing PHP style of the file being touched; much of this codebase predates `PSR-12`, and reformatting it is an unrelated refactor. Use `PSR-12` for new files.
 
 ## Instruction Scopes
 
@@ -45,7 +45,7 @@ Use these scoped instruction files to determine task-specific guardrails:
 
 - `.github/instructions/wordpress-shortcodes.instructions.md`: Applies to shortcode and core WordPress integration files (`wp/php/Shortcodes.php`, `wp/*.php`, `biblesupersearch.php`).
 - `.github/instructions/frontend-assets.instructions.md`: Applies to frontend asset sources in `com_test/js/app`, `com_test/js/configs`, and `com_test/js/vue-app`.
-- `.github/instructions/wp-admin-assets.instructions.md`: Applies to admin-facing PHP/CSS/JS in `wp/*` and option templates in `templates/*.php`.
+- `.github/instructions/wp-admin-assets.instructions.md`: Applies to admin-facing PHP/CSS/JS in `wp/php/*.php`, `wp/css/*.css`, `wp/js/*.js`, and option templates in `wp/templates/*.php`.
 
 When multiple scopes could match, prioritize the most specific file path and preserve backward compatibility.
 
