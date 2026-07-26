@@ -96,14 +96,6 @@ return [
             'section'       => 'display',
             'default'       => 'default',
         ],    
-        'hideUnavailableBooks' => [
-            'label'         => 'Exclude Unavailable Books',
-            'desc'          => 'Automatically hide books that are not available in selected Bible(s).',
-            'type'          => 'checkbox',
-            'default'       => true,
-            'section'       => 'display',
-            'default'       => 'default',
-        ],    
 
         // :Todo replace with extraButtonsDisplay?
         // This will require REMOVING this option from the saved options?
@@ -270,14 +262,15 @@ return [
         ],
         'crossReferenceEnable' => [ // BSS-158
             'label'         => 'Enable Cross References',
-            'desc'          => 'Show cross references for the current passage.',
+            'sublabel'      => 'Show cross references for the current passage.',
+            'desc'          => 'Note: Cross references must be enabled on the API for this to work.',
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'features',
         ],
         'crossReferenceShowDefault' => [ // BSS-158
             'label'         => 'Default Display',
-            'desc'          => 'How cross references should be displayed by default.',
+            'desc'          => 'How cross references should be displayed by default.  Users can change this setting in the settings dialog.',
             'type'          => 'select',
             'default'       => 'toggle',
             'section'       => 'features',
@@ -290,14 +283,14 @@ return [
         ],
         'crossReferenceFormatDefault' => [ // BSS-158
             'label'         => 'Default Format',
-            'desc'          => 'How cross references should be formatted by default.',
+            'desc'          => 'How cross references should be formatted by default. Users can change this setting in the settings dialog.',
             'type'          => 'select',
             'default'       => 'auto',
             'section'       => 'features',
             'items'         => [
-                'compact'   => 'Compact',
-                'auto'      => 'Auto',
-                'expand'    => 'Expand',
+                'compact'   => 'Compact: Always a compact horizontal list',
+                'auto'      => 'Auto: Horizontal or vertical (book-grouped) list based on a threshold',
+                'expand'    => 'Expand: Always a vertical list grouped by book name',
             ],
             'if_conditions' => 'crossReferenceEnable',
         ],
@@ -491,6 +484,14 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
         ], 
+        'hideUnavailableBooks' => [ // BSS-280
+            'label'         => 'Exclude Unavailable Books',
+            'sublabel'      => 'Hide / skip books that are not available in selected Bible(s).',
+            'desc'          => 'Including but not limited to: autocomplete, book selector, and navigation buttons.',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'display',
+        ],    
         'landingReference' => [
             'label'         => 'Landing Passage(s)',
             'desc'          => 'When app is first loaded, these reference(s) will automatically be retrieved. &nbsp; ' . 
@@ -733,10 +734,9 @@ return [
             'units'         => 'pixels',
             'rules'        => ['requiredInteger', 'integer'],
         ],
-        'disableCache' => [
+        'disableCache' => [ // BSS-271
             'label'         => 'Disable Cache',
-            'sublabel'      => 'Disable Caching',
-            'desc'          => 'Disables browser caching throughout the application. ',
+            'desc'          => 'Disables browser caching via cache busting.',
             'type'          => 'checkbox',
             'default'       => false,
         ],         
