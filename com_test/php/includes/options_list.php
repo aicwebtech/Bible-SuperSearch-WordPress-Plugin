@@ -311,7 +311,6 @@ return [
             'if_conditions' => 'crossReferenceEnable',
         ],
 
-
         // Autocomplete Settings
         'autocomplete' => [
             'label'         => 'Autocomplete',

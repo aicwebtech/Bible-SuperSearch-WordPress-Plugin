@@ -36,7 +36,7 @@ class Widget extends \WP_Widget
 
         if(!$landing_page) {
             $lp = $BibleSuperSearch_Options->getLandingPage();
-            $landing_page = (int) $lp['ID'];
+            $landing_page = ($lp) ? (int) $lp['value'] : 0;
         }
 
         $options        = $BibleSuperSearch_Options->getOptions();
@@ -250,7 +250,7 @@ class Widget extends \WP_Widget
 
             if($zero_option == 'Default' || $zero_default) {
                 $lp = $Options->getLandingPage();
-                $zero_option = '(' . $zero_option . ') ' . $lp['title_fmt'];
+                $zero_option = '(' . $zero_option . ')' . ($lp ? ' ' . $lp['label'] : '');
             }
 
             $html = "<option value='0' {$sel}> {$zero_option} </option>";

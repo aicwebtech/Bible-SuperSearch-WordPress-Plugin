@@ -159,8 +159,7 @@ function biblesupersearch_custom_rewrite()
     // todo - need to get WHOLE landing page link (relative to domain)
     // this only works for top level pages / posts
 
-    $landing_page_link = $landing_page['post_name'];
-    $landing_page_id = (int) $landing_page['ID'];
+    $landing_page_id = (int) $landing_page['value'];
     $landing_page_url = get_permalink($landing_page_id);
     $url_parsed = parse_url($landing_page_url);
     $landing_page_link = $url_parsed['path'];

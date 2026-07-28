@@ -87,6 +87,12 @@ class Options extends OptionsAbstract
         return get_option( $this->option_index );
     }
 
+    /** WordPress-specific override */
+    protected function fatalError($msg)
+    {
+        wp_die( $msg );
+    }
+
     /** Custom Override for WordPress */
     public function setDefaultOptions() 
     {

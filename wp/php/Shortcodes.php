@@ -123,7 +123,7 @@ class Shortcodes {
         // }
 
         // Beginning of shareable, SEO-friendly linkage
-        $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
+        $query_string = isset($wp_query->query_vars['bible_query']) ? $wp_query->query_vars['bible_query'] : '';
         $options['query_string'] = $query_string;
         // echo('[biblesupersearch] query string from URL: ' . $query_string . '<br />');
 
@@ -605,8 +605,8 @@ class Shortcodes {
             return $msg;
         }
 
-        wp_enqueue_script('biblesupersearch_download_js', plugins_url('../download/download.js', __FILE__));
-        wp_enqueue_style('biblesupersearch_download_css', plugins_url('../download/download.css', __FILE__));
+        wp_enqueue_script('biblesupersearch_download_js', plugins_url('wp/download/download.js', dirname(__FILE__, 2)));
+        wp_enqueue_style('biblesupersearch_download_css', plugins_url('wp/download/download.css', dirname(__FILE__, 2)));
 
         ob_start();
         include(dirname(__FILE__) . '/../download/download.php');
@@ -626,7 +626,7 @@ class Shortcodes {
         global $post;
 
         if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
-            return $title;
+            return $parts;
         }
 
         // Todo: parse query and generate title from it ... 
