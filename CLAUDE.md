@@ -41,6 +41,8 @@ Registered shortcodes: `[biblesupersearch]`, `[biblesupersearch_demo]`, `[bibles
 - `com_test/` — shared/upstream Bible SuperSearch code (the name is a legacy temp dir name). `com_test/php/` is the platform-agnostic option library, shared with other Bible SuperSearch clients.
 - **Do not edit** and **Do not code review** `com_test/js/app/` (minified legacy Enyo client), `com_test/js/vue-app/` (built next-gen Vue client), or `com_test/js/bin/` (vendored Vue/Vuetify/axios). All are maintained in other repositories and overwritten wholesale on update.
 
+  These directories **do** change in this repo's history — the upstream/vendor sync process drops new builds into them, so commits and diffs touching them are normal and expected. Treat such changes as out of scope: do not review them, do not flag them as unexpected or as accidental edits, and do not report them as findings. Only files outside these three directories are yours to edit or review.
+
 ## Conventions and guardrails
 
 `AGENT.md`, `.github/copilot-instructions.md`, and `.github/instructions/*.instructions.md` (scoped by path glob to shortcodes, frontend assets, and wp-admin assets) carry the authoritative rules. In short:
