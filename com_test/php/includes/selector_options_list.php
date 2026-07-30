@@ -127,6 +127,7 @@ return [
         'kn'                    => 'ಕನ್ನಡ / Kannada',
         'ko'                    => '한국어 / Korean',
         'lv'                    => 'Latviešu / Latvian',
+        'lue'                   => 'Luvale / Chiluvale',
         'mi'                    => 'Te reo Māori / Maori',
         'mr'                    => 'मराठी / Marathi',
         'my'                    => 'ဗမာစာ / Burmese / Myanmar',
