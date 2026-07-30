@@ -40,7 +40,7 @@ add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::
 add_shortcode('biblesupersearch_bible_list', [\BibleSuperSearch\WordPress\Shortcodes::class, 'bibleList']);
 add_shortcode('biblesupersearch_downloads', [\BibleSuperSearch\WordPress\Shortcodes::class, 'downloadPage']);
 
-add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1);
+add_filter('document_title_parts', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeTitle'], 100, 1); // breaking ... 
 add_action('wp_head', [\BibleSuperSearch\WordPress\Shortcodes::class, 'shortcodeMeta'], 1);
 /** End init shortcodes */
 
@@ -159,8 +159,7 @@ function biblesupersearch_custom_rewrite()
     // todo - need to get WHOLE landing page link (relative to domain)
     // this only works for top level pages / posts
 
-    $landing_page_link = $landing_page['post_name'];
-    $landing_page_id = (int) $landing_page['ID'];
+    $landing_page_id = (int) $landing_page['value'];
     $landing_page_url = get_permalink($landing_page_id);
     $url_parsed = parse_url($landing_page_url);
     $landing_page_link = $url_parsed['path'];

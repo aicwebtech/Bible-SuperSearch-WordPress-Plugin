@@ -110,7 +110,13 @@ return [
             'default'       => 'default',
         ],
 
-
+        'contextLinksAsButtons' => [ // BSS-280
+            'label'         => 'Context Links as Icons',
+            'desc'          => 'Display context links as icons instead of text.',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'general',
+        ],    
         'swipePageChapter' => [
             'label'         => 'Touchscreen Swipe',
             'desc'          => 'Change chapter and search page via horizontal touchscreen swipe.',
@@ -221,7 +227,6 @@ return [
         'bookmarksHistory' => [
             'label'         => 'Bookmarks and History',
             'type'          => 'section',
-            'default'       => true,
             'section'       => 'features',
         ],
         'bookmarksEnable' => [
@@ -247,6 +252,63 @@ return [
             'default'       => 50,
             'section'       => 'features',
             'rules'        => ['required', 'positiveInteger'],
+        ],
+
+        // :todo - edit these options
+        'crossReferences' => [
+            'label'         => 'Cross References',
+            'type'          => 'section',
+            'section'       => 'features',
+        ],
+        'crossReferenceEnable' => [ // BSS-158
+            'label'         => 'Enable Cross References',
+            'sublabel'      => 'Show cross references for the current passage.',
+            'desc'          => 'Note: Cross references must be enabled on the API for this to work.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+        ],
+        'crossReferenceShowDefault' => [ // BSS-158
+            'label'         => 'Default Display',
+            'desc'          => 'How cross references should be displayed by default.  Users can change this setting in the settings dialog.',
+            'type'          => 'select',
+            'default'       => 'toggle',
+            'section'       => 'features',
+            'items'         => [
+                'hidden'    => 'Hidden',
+                'toggle'    => 'Toggle',
+                'show'      => 'Show',
+            ],
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceFormatDefault' => [ // BSS-158
+            'label'         => 'Default Format',
+            'desc'          => 'How cross references should be formatted by default. Users can change this setting in the settings dialog.',
+            'type'          => 'select',
+            'default'       => 'auto',
+            'section'       => 'features',
+            'items'         => [
+                'compact'   => 'Compact: Always a compact horizontal list',
+                'auto'      => 'Auto: Horizontal or vertical (book-grouped) list based on a threshold',
+                'expand'    => 'Expand: Always a vertical list grouped by book name',
+            ],
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceLinkIncludeParent' => [ // BSS-158
+            'label'         => 'Include Parent Reference in Link',
+            'desc'          => 'Include the parent reference when linking to a cross reference.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+            'if_conditions' => 'crossReferenceEnable',
+        ],
+        'crossReferenceLinkNewTab' => [ // BSS-158
+            'label'         => 'Open Links in New Tab',
+            'desc'          => 'Open cross reference links in a new browser tab.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'features',
+            'if_conditions' => 'crossReferenceEnable',
         ],
 
         // Autocomplete Settings
@@ -421,6 +483,14 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
         ], 
+        'hideUnavailableBooks' => [ // BSS-280
+            'label'         => 'Exclude Unavailable Books',
+            'sublabel'      => 'Hide / skip books that are not available in selected Bible(s).',
+            'desc'          => 'Including but not limited to: autocomplete, book selector, and navigation buttons.',
+            'type'          => 'checkbox',
+            'default'       => true,
+            'section'       => 'display',
+        ],    
         'landingReference' => [
             'label'         => 'Landing Passage(s)',
             'desc'          => 'When app is first loaded, these reference(s) will automatically be retrieved. &nbsp; ' . 
@@ -663,6 +733,12 @@ return [
             'units'         => 'pixels',
             'rules'        => ['requiredInteger', 'integer'],
         ],
+        'disableCache' => [ // BSS-271
+            'label'         => 'Disable Cache',
+            'desc'          => 'Disables browser caching via cache busting.',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ],         
         'debug' => [
             'label'         => 'Debug Mode',
             'sublabel'      => 'Enable Debugging Messages',

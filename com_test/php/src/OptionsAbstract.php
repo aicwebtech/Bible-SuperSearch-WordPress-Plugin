@@ -197,6 +197,15 @@ abstract class OptionsAbstract
      */
     protected abstract function storeOptions($options);
 
+    /**
+     * Terminates the request with a fatal error message.
+     * Override to use the platform's native error handler.
+     */
+    protected function fatalError($msg)
+    {
+        die($msg);
+    }
+
     protected function reformatItemsList($items, $passthru = [])
     {
         if(!is_string($items) && $items !== [] && array_keys($items) !== range(0, count($items) - 1)) {
@@ -405,19 +414,17 @@ abstract class OptionsAbstract
                         break;
 
                     case 'json':
+                        // Note: fields absent from $incoming keep their current value ($input seeds from getOptions)
                         if(array_key_exists($field, $incoming)) {
                             if(is_string($incoming[$field])) {
-                                $input[$field] = json_decode($incoming[$field], true);
+                                $decoded = json_decode($incoming[$field], true);
+                                $input[$field] = is_array($decoded) ? $decoded : [];
                             } elseif(is_array($incoming[$field])) {
                                 $input[$field] = $incoming[$field];
                             } else {
                                 $input[$field] = [];
                             }
-
-                            $input[$field] = is_string($incoming[$field]) ? $incoming[$field] : json_encode($incoming[$field]);
                         }
-
-                        $input[$field] = (array_key_exists($field, $incoming)) ? $incoming[$field] : [];
 
                         break;
                 }
@@ -532,7 +539,7 @@ abstract class OptionsAbstract
         $options = $this->getOptions();
         $statics = $statics ? $statics : $this->getStatics();
 
-        if(!$statics || !is_array($statics) || !is_array($statics['bibles'])) {
+        if(!$statics || !is_array($statics) || empty($statics['bibles']) || !is_array($statics['bibles'])) {
             return [];
         }
         
@@ -715,7 +722,7 @@ abstract class OptionsAbstract
                 return $cached_statics;
             }
             elseif(!function_exists('curl_init') && $allow_url_fopen == 0) {
-                die( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue' );
+                $this->fatalError( 'Error: please have your web host turn on php.ini config allow_url_fopen OR install cURL to continue' );
             }
             else {
                 if($options['apiUrl'] != $this->default_options['apiUrl']) {
@@ -729,7 +736,7 @@ abstract class OptionsAbstract
                     }
 
                     $options['apiUrl'] = $this->default_options['apiUrl'];
-                    $this->putOptions($options);
+                    $this->storeOptions($options);
                     echo($msg);
                 }
                 else {
