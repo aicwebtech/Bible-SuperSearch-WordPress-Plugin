@@ -414,7 +414,7 @@ abstract class OptionsAbstract
                         break;
 
                     case 'json':
-                        // Note: absent fields keep their current stored value
+                        // Note: fields absent from $incoming keep their current value ($input seeds from getOptions)
                         if(array_key_exists($field, $incoming)) {
                             if(is_string($incoming[$field])) {
                                 $decoded = json_decode($incoming[$field], true);
