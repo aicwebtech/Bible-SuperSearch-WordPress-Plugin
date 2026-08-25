@@ -8,9 +8,17 @@ The official Bible SuperSearch WordPress plugin: a thin PHP/WordPress wrapper ar
 
 ## Build / test / run
 
-There is **no build system, package manager, linter, or test suite** — no `composer.json`, no `package.json`, no PHPUnit. All JS/CSS is committed pre-built or hand-written; the admin Vue app is served as native ES modules with Vue/Vuetify/axios vendored under `com_test/js/bin/`. Do not add build tooling or CDN-loaded scripts (WordPress plugin guidelines forbid CDN JS/CSS; CDN *fonts* are allowed — see `Options::displayPluginOptionsNew()`).
+There is **no build system, package manager, or linter** — no `composer.json`, no `package.json`. All JS/CSS is committed pre-built or hand-written; the admin Vue app is served as native ES modules with Vue/Vuetify/axios vendored under `com_test/js/bin/`. Do not add build tooling or CDN-loaded scripts (WordPress plugin guidelines forbid CDN JS/CSS; CDN *fonts* are allowed — see `Options::displayPluginOptionsNew()`).
 
-Verification is manual, in a real WordPress install:
+The one automated suite covers the platform-agnostic PHP in `com_test/php` (`OptionsAbstract`, `QueryStringParser`) — PHPUnit driven from a standalone PHAR, no Composer:
+
+```sh
+cd com_test/php && ./run-tests.sh
+```
+
+The PHAR is downloaded on first run into the git-ignored `com_test/php/tests/bin/`. The test tooling targets **PHP 8.2+** and PHPUnit 11.5 — deliberately not the plugin's PHP 7.3 minimum, since tests only run on a developer's machine; `php7.3 -l` covers the minimum instead. `PHP_BIN` and `PHPUNIT_VERSION` override both. The suite is strict: stray output, PHP notices and PHP warnings fail the run. Tests run offline: `OptionsAbstract` is exercised through the in-memory `tests/Support/TestOptions.php`, which stores options in an array and returns a statics fixture instead of calling the API. See `com_test/php/tests/README.md`. Anything WordPress-bound (`wp/`) has no test coverage.
+
+Everything else is verified manually, in a real WordPress install:
 
 1. The repo *is* the plugin directory of a live install at `/var/www/wordpress/wp-content/plugins/biblesupersearch` (`/var/www/biblesupersearch/ui-wordpress` is a symlink to the same path), so edits take effect on page reload.
 2. Load a page/post containing each touched shortcode; check for PHP fatals and rendered output with both default and custom attributes.

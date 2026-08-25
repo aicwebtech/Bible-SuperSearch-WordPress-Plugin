@@ -527,7 +527,12 @@ abstract class OptionsAbstract
     {
         $statics = $this->getStatics();
 
-        if(is_array($statics) && is_array($statics['bibles']) && is_array($statics['bibles'][$module])) {
+        if(
+            is_array($statics) && 
+            is_array($statics['bibles']) && 
+            array_key_exists($module, $statics['bibles']) && 
+            is_array($statics['bibles'][$module])
+        ) {
             return $statics['bibles'][$module];
         }
 
