@@ -672,8 +672,15 @@ class Shortcodes {
         // Todo: I don't want to have to parse the query twice ... 
 
         if(array_key_exists('q', $_REQUEST)) {
+            $form_data = self::parseQueryString();
+            // print_r($form_data); die();
+            $descr = QueryStringParser::buildTitle($form_data);
+            $bible = QueryStringParser::formatBibleList($form_data['bible']);
+
+            $descr .= $bible ? ' - ' . $bible : '';
+        
             $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            echo '<meta name="description" content="' . esc_attr($query_text) . '" />' . "\n";
+            echo '<meta name="description" content="' . esc_attr($descr) . '" />' . "\n";
         }
     }
 

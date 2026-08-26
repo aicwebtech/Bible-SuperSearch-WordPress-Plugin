@@ -252,6 +252,46 @@ class QueryStringParser
         return $formData;
     }
 
+    public static function formatBibleList(array $bible_list) 
+    {
+        if(!$bible_list) {
+            return null;
+        }
+
+        $bible_list_formatted = [];
+
+        foreach($bible_list as $bible) {
+            $fmt = self::formatBibleSingle($bible);
+
+            if($fmt) {
+                $bible_list_formatted[] = $fmt;
+            }
+        }
+
+        if(is_array($bible_list_formatted)) {
+            return implode(',', $bible_list_formatted);
+        }
+
+        return $bible_list_formatted;
+    }
+
+    private static function formatBibleSingle($bible) 
+    {
+        $special_cases = [
+            'kjv_strongs' => 'KJV with Strong\'s',
+        ];
+    
+        if(!$bible) {
+            return null;
+        }
+
+        if(array_key_exists($bible, $special_cases)) {
+            return $special_cases[$bible];
+        }
+
+        return str_replace('_', ' ', strtoupper($bible));
+    }
+
     private static function formHasField($fieldName) 
     {
         return true;
