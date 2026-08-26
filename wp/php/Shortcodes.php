@@ -2,12 +2,16 @@
 
 namespace BibleSuperSearch\WordPress;
 
+use BibleSuperSearch\Common\QueryStringParser;
+
 defined('ABSPATH') or die; // exit if accessed directly
 
 class Shortcodes {
     static protected $instances = 0;
 
     static protected $shortcode_title = '';
+    static protected $has_shortcode = false;
+    static protected $form_data = null;
 
     static public $displayAttributes = [
         // Attributes must be in underscore_case
@@ -458,6 +462,21 @@ class Shortcodes {
         return $html;
     }    
 
+    static public function detectShortcode() 
+    {
+        $post = get_queried_object();
+
+        if (!is_a($post, 'WP_Post') ) {
+            return;
+        }
+
+        if(has_shortcode($post->post_content, 'biblesupersearch')) {
+            self::$has_shortcode = true;
+        }
+
+        return self::$has_shortcode;
+    }
+
     static public function getDisplayAttributes()
     {
         global $interfaces;
@@ -623,9 +642,8 @@ class Shortcodes {
 
     static public function shortcodeTitle($parts) 
     {
-        global $post;
 
-        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+        if(!self::$has_shortcode) {
             return $parts;
         }
 
@@ -633,7 +651,11 @@ class Shortcodes {
         // Todo: I don't want to have to parse the query twice ... 
         if(array_key_exists('q', $_REQUEST)) {
             $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            $parts['title'] = $query_text . ' - ' . $parts['title'];
+            $form_data = self::parseQueryString();
+            // print_r($form_data); die();
+            $title = QueryStringParser::buildTitle($form_data);
+            $parts['title'] = $title . ' - ' . $parts['title'];
+            //$parts['title'] = $query_text . ' - ' . $parts['title'];
         } 
     
         return $parts;
@@ -643,7 +665,7 @@ class Shortcodes {
     {
         global $post;
 
-        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+        if(!self::$has_shortcode) {
             return;
         }
 
@@ -653,5 +675,20 @@ class Shortcodes {
             $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
             echo '<meta name="description" content="' . esc_attr($query_text) . '" />' . "\n";
         }
+    }
+
+    static public function parseQueryString() 
+    {
+        if(self::$form_data !== NULL) {
+            return self::$form_data;
+        }
+    
+        if(array_key_exists('q', $_REQUEST)) {
+            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
+            $query_text = trim($query_text);
+            self::$form_data = QueryStringParser::parsetoFormData($query_text);
+        }
+
+        return self::$form_data;
     }
 }

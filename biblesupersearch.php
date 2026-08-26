@@ -34,6 +34,7 @@ require_once(dirname(__FILE__) . '/com_test/php/init.php');
 //$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
 /**Init shortcodes */
+add_action('wp', [\BibleSuperSearch\WordPress\Shortcodes::class, 'detectShortcode']); // detect shortcode usage early
 add_shortcode('biblesupersearch', [\BibleSuperSearch\WordPress\Shortcodes::class, 'display']);
 // add_shortcode('biblesupersearch_new', [\BibleSuperSearch\WordPress\Shortcodes::class, 'displayNew']); // future
 add_shortcode('biblesupersearch_demo', [\BibleSuperSearch\WordPress\Shortcodes::class, 'demo']);

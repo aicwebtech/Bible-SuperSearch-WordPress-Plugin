@@ -12,13 +12,13 @@ class QueryStringParserTest extends TestCase
 {
     public function testAnEmptyRouteYieldsNoFormData()
     {
-        $this->assertNull(QueryStringParser::parseToFormData(''));
-        $this->assertNull(QueryStringParser::parseToFormData(null));
+        $this->assertSame([], QueryStringParser::parseToFormData(''));
+        $this->assertSame([], QueryStringParser::parseToFormData(null));
     }
 
     public function testAnUnknownRouteYieldsNoFormData()
     {
-        $this->assertNull(QueryStringParser::parseToFormData('/nope/kjv/john'));
+        $this->assertSame([], QueryStringParser::parseToFormData('/nope/kjv/john'));
     }
 
     public function testCacheRoute()

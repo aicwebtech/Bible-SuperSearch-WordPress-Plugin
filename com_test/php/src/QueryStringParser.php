@@ -7,7 +7,6 @@ class QueryStringParser
     public static function parseToFormData($query_string)
     {
         if($query_string) {
-
             $query_string = urldecode($query_string);
             $query_string = str_replace('.', ' ', $query_string);
             $parts = explode('/', $query_string);
@@ -51,6 +50,52 @@ class QueryStringParser
                     break;
             }
         }
+
+        return [];
+    }
+
+    public static function buildTitle($formData, $baseTitle = '', $baseFirst = false)
+    {
+        $mainSep = ' - ';
+
+        $fields = [
+            'request','reference','search','search_all','search_any',
+            'search_one','search_none','search_phrase', 'page'
+        ];
+
+        $values = [];
+
+        foreach($fields as $field) {
+            if(isset($formData[$field]) && $formData[$field] != '') {
+                if($field == 'page') {
+                    $values[] = 'Page' . ' ' . $formData[$field];
+                } else {
+                    $values[] = $formData[$field];
+                }
+            }
+        }
+
+        if(isset($formData['context']) && $formData['context'] == true) {
+            $values[] = 'In Context';
+        }
+
+        $bssTitle = implode(' | ', $values);
+        
+        if(!$baseTitle) {
+            $newTitle = $bssTitle;
+        } else {
+            if(!$bssTitle) {
+                $newTitle = $baseTitle;
+            } else {
+                if($baseFirst) {
+                    $newTitle = $baseTitle . $mainSep . $bssTitle;
+                } else {
+                    $newTitle = $bssTitle . $mainSep . $baseTitle;
+                }
+            }
+        }
+
+        return $newTitle;
     }
 
     public static function hashCache($parts) 
