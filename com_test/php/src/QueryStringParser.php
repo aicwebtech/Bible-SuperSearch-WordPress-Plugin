@@ -162,16 +162,14 @@ class QueryStringParser
 
     public static function hashSearch($parts, $forceUseRequestField = false) 
     {
-
         $bible  = $parts[0] ?? null;
-        $search = $parts[1] ?? null;
+        $search = $parts[1] ?? ''; // str_replace() below rejects null on PHP 8.1+
         $page = $parts[2] ?? null;
         $searchType = $parts[3] ?? null;
         $reference = $parts[4] ?? null;
         $useRequestField = ($forceUseRequestField || self::formHasField('request')) ? true : false;
 
         $formData = [
-            // search: str_replace('%20', ' ', $search),
             'bible' => $bible ? explode(',', $bible) : null,
             'search_type' => $searchType,
             'reference' => $reference,
@@ -180,8 +178,7 @@ class QueryStringParser
         
         if($useRequestField) {
             $formData['request'] = str_replace('%20', ' ', $search);
-        }
-        else {
+        } else {
             $formData['search'] = str_replace('%20', ' ', $search);
         }
 
@@ -252,44 +249,66 @@ class QueryStringParser
         return $formData;
     }
 
-    public static function formatBibleList(array $bible_list) 
+    public static function formatBibleList($bible_list, OptionsAbstract $Options = null) 
     {
-        if(!$bible_list) {
+        // $bible_list comes from the URL (the 'f' mode hands us whatever JSON the
+        // visitor supplied), so it may be any type at all. Never let that fatal.
+        if(is_string($bible_list)) {
+            $bible_list = [$bible_list];
+        }
+
+        if(!is_array($bible_list) || !$bible_list) {
             return null;
         }
 
         $bible_list_formatted = [];
 
         foreach($bible_list as $bible) {
-            $fmt = self::formatBibleSingle($bible);
+            $fmt = self::formatBibleSingle($bible, $Options);
 
             if($fmt) {
                 $bible_list_formatted[] = $fmt;
             }
         }
 
-        if(is_array($bible_list_formatted)) {
-            return implode(',', $bible_list_formatted);
+        if(count($bible_list_formatted) > 0) {
+            return implode(', ', $bible_list_formatted);
         }
 
-        return $bible_list_formatted;
+        return null;
     }
 
-    private static function formatBibleSingle($bible) 
+    private static function formatBibleSingle($bible, OptionsAbstract $Options = null) 
     {
+        // Individual entries are untrusted too - a nested array or object here
+        // must be skipped, not passed on to the Options lookup.
+        if(!is_string($bible) || $bible === '') {
+            return null;
+        }    
+    
         $special_cases = [
             'kjv_strongs' => 'KJV with Strong\'s',
         ];
-    
-        if(!$bible) {
-            return null;
-        }
 
+        if(!$Options) {
+            $Options = \BibleSuperSearch\Common\OptionsAbstract::getCurrentInstance();
+        }
+    
         if(array_key_exists($bible, $special_cases)) {
             return $special_cases[$bible];
+        } 
+
+        $fmt = null;
+
+        if($Options) {
+            $bible_info = $Options->getBible($bible); // Pull Bible info from cached statics, if available
+
+            if($bible_info) {
+                $fmt = $bible_info['name'] ?? null;
+            }
         }
 
-        return str_replace('_', ' ', strtoupper($bible));
+        return $fmt ?? str_replace('_', ' ', strtoupper($bible));
     }
 
     private static function formHasField($fieldName) 

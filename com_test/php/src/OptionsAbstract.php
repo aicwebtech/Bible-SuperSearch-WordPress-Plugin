@@ -101,6 +101,11 @@ abstract class OptionsAbstract
         return static::$instance;
     }
 
+    public static function getCurrentInstance() 
+    {
+        return static::$instance;
+    }
+
     protected function initOptions()
     {
         $options = $this->loadOptions();

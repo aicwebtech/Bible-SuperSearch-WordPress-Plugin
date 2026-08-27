@@ -11,7 +11,8 @@
          displayDetailsOnTestsThatTriggerDeprecations="true"
          failOnRisky="true"
          failOnWarning="true"
-         failOnNotice="true">
+         failOnNotice="true"
+         failOnDeprecation="true">
     <testsuites>
         <testsuite name="common">
             <directory suffix="Test.php">tests/Unit</directory>

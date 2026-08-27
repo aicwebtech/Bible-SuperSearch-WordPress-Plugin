@@ -31,7 +31,7 @@ $biblesupersearch_autoloader->register();
 require_once(dirname(__FILE__) . '/com_test/php/init.php');
 
 // Global instance ... (not ideal, but it is what it is for now)
-//$BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
+// $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
 
 /**Init shortcodes */
 add_action('wp', [\BibleSuperSearch\WordPress\Shortcodes::class, 'detectShortcode']); // detect shortcode usage early

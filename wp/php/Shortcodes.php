@@ -12,6 +12,10 @@ class Shortcodes {
     static protected $shortcode_title = '';
     static protected $has_shortcode = false;
     static protected $form_data = null;
+    static protected $query_idx = 'q';
+
+    // Longest query we will look at. Anything beyond this is not a real route.
+    const QUERY_MAX_LENGTH = 2000;
 
     static public $displayAttributes = [
         // Attributes must be in underscore_case
@@ -642,17 +646,12 @@ class Shortcodes {
 
     static public function shortcodeTitle($parts) 
     {
-
         if(!self::$has_shortcode) {
             return $parts;
         }
 
-        // Todo: parse query and generate title from it ... 
-        // Todo: I don't want to have to parse the query twice ... 
-        if(array_key_exists('q', $_REQUEST)) {
-            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
             $form_data = self::parseQueryString();
-            // print_r($form_data); die();
             $title = QueryStringParser::buildTitle($form_data);
             $parts['title'] = $title . ' - ' . $parts['title'];
             //$parts['title'] = $query_text . ' - ' . $parts['title'];
@@ -669,31 +668,60 @@ class Shortcodes {
             return;
         }
 
-        // Todo: I don't want to have to parse the query twice ... 
-
-        if(array_key_exists('q', $_REQUEST)) {
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
             $form_data = self::parseQueryString();
-            // print_r($form_data); die();
-            $descr = QueryStringParser::buildTitle($form_data);
-            $bible = QueryStringParser::formatBibleList($form_data['bible']);
 
-            $descr .= $bible ? ' - ' . $bible : '';
-        
-            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            echo '<meta name="description" content="' . esc_attr($descr) . '" />' . "\n";
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+
+            $descr = QueryStringParser::buildTitle($form_data);
+            $bible = QueryStringParser::formatBibleList(isset($form_data['bible']) ? $form_data['bible'] : null, $Options);
+
+            if($bible) {
+                // No leading separator when the query contributed no text of its own.
+                $descr = ($descr === '') ? $bible : $descr . ' - ' . $bible;
+            }
+
+            // An empty description tag is worse than none at all.
+            if($descr !== '') {
+                echo '<meta name="description" content="' . esc_attr($descr) . '" />' . "\n";
+            }
         }
     }
 
+    /**
+     * Parses the query string into form data.
+     * Always returns an array, so callers can index it safely.
+     */
     static public function parseQueryString() 
     {
         if(self::$form_data !== NULL) {
             return self::$form_data;
         }
-    
-        if(array_key_exists('q', $_REQUEST)) {
-            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            $query_text = trim($query_text);
-            self::$form_data = QueryStringParser::parsetoFormData($query_text);
+
+        self::$form_data = [];
+
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
+            $raw = wp_unslash($_REQUEST[self::$query_idx]);
+
+            // Untrusted: ?q[]=x submits an array, and the route may be any length.
+            if(is_scalar($raw)) {
+                $query_text = sanitize_text_field((string) $raw);
+                $query_text = trim($query_text);
+
+                if(function_exists('mb_substr')) {
+                    $query_text = mb_substr($query_text, 0, self::QUERY_MAX_LENGTH);
+                } else {
+                    $query_text = substr($query_text, 0, self::QUERY_MAX_LENGTH);
+                }
+
+                $form_data = QueryStringParser::parseToFormData($query_text);
+
+                // The parser returns null for a route it rejects (an invalid
+                // context lookup, malformed JSON form data).
+                if(is_array($form_data)) {
+                    self::$form_data = $form_data;
+                }
+            }
         }
 
         return self::$form_data;
