@@ -13,6 +13,7 @@ class Shortcodes {
     static protected $has_shortcode = false;
     static protected $form_data = null;
     static protected $query_idx = 'q';
+    static protected $base_title = null;
 
     // Longest query we will look at. Anything beyond this is not a real route.
     const QUERY_MAX_LENGTH = 2000;
@@ -203,6 +204,15 @@ class Shortcodes {
             $lang = $pts[0] ?? 'en';
             $options['language'] = strtolower($lang);
         }
+
+        $query_str = self::getQueryString();
+
+        if($query_str) {
+            $options['landingQueryString'] = $query_str;
+            $options['baseTitle'] = self::$base_title;
+        }
+
+        $options['baseShareUrl'] = get_permalink() . '?q=';
         
         $options_json   = json_encode($options);
         $statics_json   = json_encode($statics);
@@ -653,8 +663,8 @@ class Shortcodes {
         if(array_key_exists(self::$query_idx, $_REQUEST)) {
             $form_data = self::parseQueryString();
             $title = QueryStringParser::buildTitle($form_data);
+            self::$base_title = $parts['title'] . ' - ' . get_bloginfo('name');
             $parts['title'] = $title . ' - ' . $parts['title'];
-            //$parts['title'] = $query_text . ' - ' . $parts['title'];
         } 
     
         return $parts;
@@ -700,6 +710,23 @@ class Shortcodes {
 
         self::$form_data = [];
 
+        $query_string = self::getQueryString();
+
+        if(!empty($query_string)) {
+            $form_data = QueryStringParser::parseToFormData($query_string);
+
+            // The parser returns null for a route it rejects (an invalid
+            // context lookup, malformed JSON form data).
+            if(is_array($form_data)) {
+                self::$form_data = $form_data;
+            }
+        }
+
+        return self::$form_data;
+    }
+
+    static public function getQueryString() 
+    {
         if(array_key_exists(self::$query_idx, $_REQUEST)) {
             $raw = wp_unslash($_REQUEST[self::$query_idx]);
 
@@ -714,16 +741,10 @@ class Shortcodes {
                     $query_text = substr($query_text, 0, self::QUERY_MAX_LENGTH);
                 }
 
-                $form_data = QueryStringParser::parseToFormData($query_text);
-
-                // The parser returns null for a route it rejects (an invalid
-                // context lookup, malformed JSON form data).
-                if(is_array($form_data)) {
-                    self::$form_data = $form_data;
-                }
+                return $query_text;
             }
         }
 
-        return self::$form_data;
+        return '';
     }
 }
