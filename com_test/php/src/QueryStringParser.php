@@ -4,10 +4,12 @@ namespace BibleSuperSearch\Common;
 
 class QueryStringParser
 {
+    // $query_string is expected to arrive already URL-decoded (PHP decodes
+    // $_REQUEST for us).  Decoding again here would destroy any octet the
+    // visitor encoded deliberately.
     public static function parseToFormData($query_string)
     {
         if($query_string) {
-            $query_string = urldecode($query_string);
             $query_string = str_replace('.', ' ', $query_string);
             $parts = explode('/', $query_string);
             $mode  = array_shift($parts);
@@ -66,7 +68,9 @@ class QueryStringParser
         $values = [];
 
         foreach($fields as $field) {
-            if(isset($formData[$field]) && $formData[$field] != '') {
+            // Values come from attacker-supplied JSON on the 'f' route, so a
+            // nested array or object here must be skipped, not stringified.
+            if(isset($formData[$field]) && is_scalar($formData[$field]) && $formData[$field] != '') {
                 if($field == 'page') {
                     $values[] = 'Page' . ' ' . $formData[$field];
                 } else {
@@ -193,14 +197,16 @@ class QueryStringParser
         // malformed JSON throw out of the route handler - just ignore an invalid payload.
         if($parts[0] ?? null) {
             try {
-                $formData = json_decode($parts[0], true);
+                $formData = json_decode($parts[0], true, 512, JSON_THROW_ON_ERROR);
             }
-            catch(Exception $e) {
-                return;
+            catch(\JsonException $e) {
+                return [];
             }
         }
 
-        return $formData;
+        // Valid JSON is not necessarily an object - '/f/"hello"' decodes to a
+        // string without error.
+        return is_array($formData) ? $formData : [];
     }
 
     private static function _explodeHashPassage($parts) 
@@ -249,7 +255,7 @@ class QueryStringParser
         return $formData;
     }
 
-    public static function formatBibleList($bible_list, OptionsAbstract $Options = null) 
+    public static function formatBibleList($bible_list, ?OptionsAbstract $Options = null) 
     {
         // $bible_list comes from the URL (the 'f' mode hands us whatever JSON the
         // visitor supplied), so it may be any type at all. Never let that fatal.
@@ -278,7 +284,7 @@ class QueryStringParser
         return null;
     }
 
-    private static function formatBibleSingle($bible, OptionsAbstract $Options = null) 
+    private static function formatBibleSingle($bible, ?OptionsAbstract $Options = null) 
     {
         // Individual entries are untrusted too - a nested array or object here
         // must be skipped, not passed on to the Options lookup.

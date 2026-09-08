@@ -109,7 +109,7 @@ class QueryStringParserTest extends TestCase
     /** The hash is attacker-controllable, so bad JSON must not blow up. */
     public function testMalformedJsonFormPayloadIsIgnored()
     {
-        $this->assertNull(QueryStringParser::hashForm(['{not json']));
+        $this->assertSame([], QueryStringParser::hashForm(['{not json']));
     }
 
     /**

@@ -120,22 +120,6 @@ class Shortcodes {
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
 
-        // print_r($_REQUEST);
-        // print_r($wp_query->query_vars);
-
-        
-        // if(array_key_exists('q', $_REQUEST)) {
-        //     $options['query_string'] = $_REQUEST['q'];
-        //     static::$shortcode_title = $_REQUEST['q'] . ' - Bible Search Results';
-        // } else {
-        //     $options['query_string'] = '';
-        // }
-
-        // Beginning of shareable, SEO-friendly linkage
-        $query_string = isset($wp_query->query_vars['bible_query']) ? $wp_query->query_vars['bible_query'] : '';
-        $options['query_string'] = $query_string;
-        // echo('[biblesupersearch] query string from URL: ' . $query_string . '<br />');
-
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
         if($debug) {
@@ -212,7 +196,20 @@ class Shortcodes {
             $options['baseTitle'] = self::$base_title;
         }
 
-        $options['baseShareUrl'] = get_permalink() . '?q=';
+        // get_permalink() returns FALSE outside the loop.  Plain permalinks already
+        // carry a query string (?page_id=N), so the arg has to be merged in rather
+        // than appended.  The client concatenates the URL hash onto this value, so
+        // it must end with 'q='.
+        $permalink = get_permalink();
+
+        if($permalink) {
+            $permalink = remove_query_arg(self::$query_idx, $permalink);
+            $glue = (strpos($permalink, '?') === FALSE) ? '?' : '&';
+            $options['baseShareUrl'] = $permalink . $glue . self::$query_idx . '=';
+        }
+        else {
+            $options['baseShareUrl'] = NULL;
+        }
         
         $options_json   = json_encode($options);
         $statics_json   = json_encode($statics);
@@ -301,10 +298,6 @@ class Shortcodes {
         $attr = static::$displayAttributes;
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
-
-        // Beginning of shareable, SEO-friendly linkage
-        // $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
-        // $options['query_string'] = $query_string;
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
@@ -663,8 +656,17 @@ class Shortcodes {
         if(array_key_exists(self::$query_idx, $_REQUEST)) {
             $form_data = self::parseQueryString();
             $title = QueryStringParser::buildTitle($form_data);
-            self::$base_title = $parts['title'] . ' - ' . get_bloginfo('name');
-            $parts['title'] = $title . ' - ' . $parts['title'];
+
+            // Rebuild the title the way wp_get_document_title() will: the theme's
+            // separator, and every part WordPress supplied.  Reconstructing it as
+            // 'title - site name' duplicates the site name on the front page (where
+            // WordPress already sets the title to it) and drops page / tagline.
+            $sep = apply_filters('document_title_separator', '-');
+            self::$base_title = implode(" $sep ", array_filter($parts));
+
+            if($title) {
+                $parts['title'] = $title . " $sep " . $parts['title'];
+            }
         } 
     
         return $parts;

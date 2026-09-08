@@ -534,6 +534,7 @@ abstract class OptionsAbstract
 
         if(
             is_array($statics) && 
+            array_key_exists('bibles', $statics) && 
             is_array($statics['bibles']) && 
             array_key_exists($module, $statics['bibles']) && 
             is_array($statics['bibles'][$module])
