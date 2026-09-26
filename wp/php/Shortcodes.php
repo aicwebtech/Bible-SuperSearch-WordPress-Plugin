@@ -189,6 +189,7 @@ class Shortcodes {
             $options['language'] = strtolower($lang);
         }
 
+        // Query string handling is always enabled, even if shareLinkSeo is disabled.  
         $query_str = self::getQueryString();
 
         if($query_str) {
@@ -196,19 +197,20 @@ class Shortcodes {
             $options['baseTitle'] = self::$base_title;
         }
 
-        // get_permalink() returns FALSE outside the loop.  Plain permalinks already
-        // carry a query string (?page_id=N), so the arg has to be merged in rather
-        // than appended.  The client concatenates the URL hash onto this value, so
-        // it must end with 'q='.
-        $permalink = get_permalink();
+        $options['baseShareUrl'] = NULL;
 
-        if($permalink) {
-            $permalink = remove_query_arg(self::$query_idx, $permalink);
-            $glue = (strpos($permalink, '?') === FALSE) ? '?' : '&';
-            $options['baseShareUrl'] = $permalink . $glue . self::$query_idx . '=';
-        }
-        else {
-            $options['baseShareUrl'] = NULL;
+        if($options['shareLinkSeo']) {
+            // get_permalink() returns FALSE outside the WP loop.  Plain permalinks already
+            // carry a query string (?page_id=N), so the arg has to be merged in rather
+            // than appended.  The client concatenates the URL hash onto this value, so
+            // it must end with 'q='.
+            $permalink = get_permalink();
+
+            if($permalink) {
+                $permalink = remove_query_arg(self::$query_idx, $permalink);
+                $glue = (strpos($permalink, '?') === FALSE) ? '?' : '&';
+                $options['baseShareUrl'] = $permalink . $glue . self::$query_idx . '=';
+            } 
         }
         
         $options_json   = json_encode($options);

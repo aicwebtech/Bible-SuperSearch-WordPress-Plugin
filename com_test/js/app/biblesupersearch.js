@@ -966,10 +966,11 @@ var a=this.app.configs.landingReference||null
 return!(!a||""==a)&&(a=this.app.vt(a),this.$.reference?e.reference=a:e.request=a,!0)},submitDefault:function(){this.app.debug&&this.log()
 var e=this.app.configs.landingReference||null,a=this.app.configs.landingQueryString||null
 if(!this.hasFormElements())return!1
-if(!this.preventDefaultSubmit&&!this.app.get("loadingPagePrevent")&&a&&""!=a)return this.app.handleHashGeneric(a),!0
-if(!this.preventDefaultSubmit&&!this.app.get("loadingPagePrevent")&&e&&""!=e){this.app.debug&&this.log("Submitting ...")
-var t={}
-return e=this.app.vt(e),this.$.reference?t.reference=e:t.request=e,t.bible=this.$.bible?o.clone(this.$.bible.get("value")):o.clone(this.app.getDefaultBibles()),this.defaultSubmitting=!0,this.app.set("scrollMode","container_top"),this._submitFormHelper(t,!1),!0}return!1},clearForm:function(){var e=this
+if(!this.preventDefaultSubmit&&!this.app.get("loadingPagePrevent")&&a&&""!=a){var t=this.app.handleHashGeneric(a)
+if(this.app.configs.landingQueryString=null,t)return!0
+this.app.set("loadingPagePrevent",!1),this.error('landingQueryString "'+a+'" is not a valid route; using landingReference instead')}if(!this.preventDefaultSubmit&&!this.app.get("loadingPagePrevent")&&e&&""!=e){this.app.debug&&this.log("Submitting ...")
+var n={}
+return e=this.app.vt(e),this.$.reference?n.reference=e:n.request=e,n.bible=this.$.bible?o.clone(this.$.bible.get("value")):o.clone(this.app.getDefaultBibles()),this.defaultSubmitting=!0,this.app.set("scrollMode","container_top"),this._submitFormHelper(n,!1),!0}return!1},clearForm:function(){var e=this
 this._automaticChange=!0,this.set("formData",{}),window.setTimeout(function(){e._automaticChange=!1},100)},clearFormManual:function(){this.clearFormSemiAutomatic()},clearFormSemiAutomatic:function(){var e=this
 this.app.UserConfig.hasBibles()&&(this._dontClearBibles=!0),this.set("formData",{}),this.waterfall("onClearFormWaterfall"),this.clearHash(),this.populateDefaults(),this._dontClearBibles&&window.setTimeout(function(){e._dontClearBibles=!1},100)},changeLocaleManual:function(){this.app.debug&&this.log(),this.app.configs.changeLanguageClearForm&&this.clearFormSemiAutomatic()},populateDefaults:function(){},submitForm:function(){if(!this.formContainer){var e=o.clone(this.get("formData"))
 this.$.context||(e.context=!1),this.$.reference_booksel&&this.$.reference&&this.$.reference.set("value",e.reference||null),this._submitFormHelper(e,!0)}},submitFormAuto:function(){return this._submitFormHelper(o.clone(this.get("formData")),!1)},submitFormManual:function(){return this._submitFormHelper(o.clone(this.get("formData")),!0)},submitFormWith:function(e){var a=o.clone(this.get("formData")),a=o.mixin(a,e)
@@ -1639,8 +1640,7 @@ else var a=!this.$.inc_format||this.$.inc_format.get("checked")
 return e=(this.app.UserConfig.get("red_letter"),e.replace(/[‹›]/g,"")),a&&this.app.UserConfig.get("strongs")||(e=e.replace(/\} \{/g,""),e=e.replace(/\{[^\}]+\}/g,"")),a&&this.app.UserConfig.get("italics")||(e=e.replace(/[\[\]]/g,"")),e=e.replace("¶ ","")}})},{"./Dialog":"src/components/dialogs/Dialog","../Link/LinkBuilder":"src/components/Link/LinkBuilder","../Locale/i18nContent":"src/components/Locale/i18nContent","../Locale/i18nComponent":"src/components/Locale/i18nComponent","../Image":"src/components/Image"}],"src/components/dialogs/Link":[function(e,a,t,require,request){var n=require("enyo/kind"),s=require("enyo/Button"),i=(require("enyo/Anchor"),require("./Dialog")),o=(require("../Link/LinkBuilder"),require("../Locale/i18nContent")),r=(require("../Locale/i18nComponent"),require("enyo/TextArea"),require("enyo/Input")),l=(require("../Image"),require("enyo/utils"))
 require("enyo/Signals")
 e.exports=n({name:"LinkDialog",kind:i,maxWidth:"400px",height:"140px",classes:"bss_help_dialog bss_link_dialog",bibleString:null,ezCopy:!1,titleComponents:[{classes:"header",components:[{kind:o,classes:"bss_dialog_title",content:"Link"}]}],bodyComponents:[{name:"FullUrlContainer",classes:"bss-copy-link-containr",components:[{kind:r,name:"FullUrl"}]},{name:"ShortUrlContainer",classes:"bss-copy-link-containr",components:[{tag:"br"},{kind:r,name:"ShortUrl"},{kind:s,onclick:"copyShortUrl",components:[{kind:o,content:"Copy"}]}]}],buttonComponents:[{name:"Copy",kind:s,ontap:"copy",components:[{kind:o,content:"Copy"}]},{name:"Close",kind:s,ontap:"close",components:[{kind:o,content:"Close"}]}],handlers:{onLocaleChange:"localeChanged"},create:function(){this.inherited(arguments)},close:function(){this.app.set("linkShowing",!1)},showingChanged:function(e,a){this.inherited(arguments),a&&this.populate()},populate:function(){var e=(document.title,this.app.buildShareUrl(window.location.hash))
-this.$.FullUrl.set("value",e),this.$.FullUrlContainer.set("showing",!0),this.$.ShortUrlContainer.set("showing",!1)},populateOld:function(){var e=(document.title,window.location.href),a=this.app.get("shortHashUrl"),t=window.location.hash.substr(1),n=this.app.buildShareUrl(a)
-e=this.app.buildShareUrl(t),this.app.debug&&this.log("url",e,"shortHash",a),a&&!t?this.$.FullUrlContainer.set("showing",!1):(this.$.FullUrlContainer.set("showing",!0),this.$.FullUrl.set("value",e)),!a&&t?(this.app.debug&&this.log("Needs short hash"),this.$.ShortUrlContainer.set("showing",!1)):n==e?(this.app.debug&&this.log("Doesnt need long hash"),this.$.ShortUrlContainer.set("showing",!1)):(this.$.ShortUrlContainer.set("showing",!0),this.$.ShortUrl.set("value",n))},localeChanged:function(e,a){},copy:function(){return this.copyFullUrl()},copyFullUrl:function(){if(!this.share())return this.copyFullUrlHelper()},copyShortUrl:function(){return this.app._copyComponentContent(this.$.ShortUrl,"value")},copyFullUrlHelper:function(){return this.app._copyComponentContent(this.$.FullUrl,"value")},share:function(){if(navigator.share){var e=navigator.share({title:document.title,url:this.$.FullUrl.get("value")})
+this.$.FullUrl.set("value",e),this.$.FullUrlContainer.set("showing",!0),this.$.ShortUrlContainer.set("showing",!1)},localeChanged:function(e,a){},copy:function(){return this.copyFullUrl()},copyFullUrl:function(){if(!this.share())return this.copyFullUrlHelper()},copyShortUrl:function(){return this.app._copyComponentContent(this.$.ShortUrl,"value")},copyFullUrlHelper:function(){return this.app._copyComponentContent(this.$.FullUrl,"value")},share:function(){if(navigator.share){var e=navigator.share({title:document.title,url:this.$.FullUrl.get("value")})
 return e.then(l.bind(this,function(){this.app.debug&&this.log("Successful share")}),l.bind(this,function(){this.app.debug&&this.log("Failed to share 1"),this.copyFullUrlHelper()})),e.catch(l.bind(this,function(e){this.app.debug&&this.log("Failed to share 2"),this.copyFullUrlHelper()})),!0}return!1}})},{"./Dialog":"src/components/dialogs/Dialog","../Link/LinkBuilder":"src/components/Link/LinkBuilder","../Locale/i18nContent":"src/components/Locale/i18nContent","../Locale/i18nComponent":"src/components/Locale/i18nComponent","../Image":"src/components/Image"}],"src/components/dialogs/BibleInfo":[function(e,a,t,require,request){var n=require("enyo/kind"),s=require("enyo/Button"),i=(require("enyo/Anchor"),require("enyo/Input"),require("enyo/Checkbox"),require("./Dialog")),o=(require("../Link/LinkBuilder"),require("../Locale/i18nContent")),l=(require("../../components/Locale/i18nComponent"),require("enyo/Signals")),l=r&&r.Signals?r.Signals:l
 e.exports=n({name:"BibleInfoDialog",kind:i,maxWidth:"800px",height:"575px",classes:"bss_help_dialog",bibleString:null,titleComponents:[{classes:"header",components:[{kind:o,classes:"bss_dialog_title",name:"title",content:"Settings"}]}],bodyComponents:[{name:"container",style:"text-align: justify",classes:"bss_bible_info_container",allowHtml:!0,attributes:{dir:"auto"}},{kind:l,onBibleInfo:"handleOpen"}],buttonComponents:[{name:"Close",kind:s,ontap:"close",components:[{kind:o,content:"Close"}]}],close:function(){this.app.setDialogShowing("BibleInfo",!1)},handleOpen:function(e,a){var t=a.module||null
 if(t&&void 0!==this.app.statics.bibles[t]){var n=this.app.statics.bibles[t]
@@ -2218,9 +2218,12 @@ for(f in e.localeDatasetsRaw._template)if("meta"!=f&&"bibleBooks"!=f){var w=e.lo
 var n=t.meta.code,s=n.toUpperCase()+" "+t.meta.nameEn
 a.true(!0)
 for(f in t)if("shortcuts"!=f&&"bibleBooksSource"!=f&&!e.findBookByName(f,"en")&&(e.testVerbose||void 0===e.localeDatasetsRaw._template[f])){var i=" "+s+' "'+f+'"'
-a.notEqual(typeof e.localeDatasetsRaw._template[f],"undefined","Item defined in locale should NOT be undefined in template"+i)}})})},handleHashGeneric:function(e){if(this.appLoaded)if(this.loadingPagePrevent=!1,this.debug&&this.log("handleHashGeneric",e),e&&""!=e){this.debug&&this.log("hash",e),e=decodeURI(e),e=e.replace(/\./g," ")
-var a=e.split("/"),t=a.shift()
-if(""==t)var t=a.shift()
+a.notEqual(typeof e.localeDatasetsRaw._template[f],"undefined","Item defined in locale should NOT be undefined in template"+i)}})})},handleHashGeneric:function(e){if(!this.appLoaded)return!1
+if(this.loadingPagePrevent=!1,this.debug&&this.log("handleHashGeneric",e),!e||""==e)return this.debug&&this.log("no hash"),this._hashLocalStorage()
+this.debug&&this.log("hash",e),"#"==e.charAt(0)&&(e=e.substr(1))
+try{e=decodeURI(e)}catch(a){this.debug&&this.log("could not decode hash, using as-is",e)}e=e.replace(/\./g," ")
+var a=e.split("/"),t=a.shift(),n=""==t
+if(n)var t=a.shift()
 switch(t){case"c":return this.loadingPagePrevent=!0,this._hashCache(a)
 case"cr":return this.loadingPagePrevent=!0,this.resetScrollMode(),this._hashReference(a,!0)
 case"p":return this.loadingPagePrevent=!0,this._hashPassage(a)
@@ -2230,22 +2233,28 @@ case"s":return this.loadingPagePrevent=!0,this._hashSearch(a)
 case"sl":return this.loadingPagePrevent=!0,this._hashSearchLink(a)
 case"context":return this.loadingPagePrevent=!0,this._hashContext(a)
 case"strongs":return this.loadingPagePrevent=!0,this._hashSearch(a)
-case"f":return this.loadingPagePrevent=!0,this._hashForm(a)}}else this.debug&&this.log("no hash"),this._hashLocalStorage()},_hashLocalStorage:function(){this.debug&&this.log()
+case"f":return this.loadingPagePrevent=!0,this._hashForm(a)
+default:return n&&this.error('Unrecognized route mode "'+t+'" in "'+e+'"'),!1}},_hashLocalStorage:function(){this.debug&&this.log()
 var e=localStorage.getItem("BibleSuperSearchFormData")
-if(e&&"string"==typeof e)try{var a=JSON.parse(e)}catch(e){return this.debug&&this.log("ignoring invalid stored form data"),void localStorage.removeItem("BibleSuperSearchFormData")}else{if("object"!=typeof biblesupersearch_form_data)return
-var a=c.clone(biblesupersearch_form_data)}a.redirected&&(this.preventRedirect=!0),localStorage.removeItem("BibleSuperSearchFormData"),this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:a,newTab:"auto",submitAsManual:!0})},_hashCache:function(e){var a=e[0]||null,t=e[1]||null
-this.waterfall("onCacheChange",{cacheHash:a,page:t})},_hashPassage:function(e){var a=this._explodeHashPassage(e),t=this._assembleHashPassage(a)
-this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto"})},_hashSearchLink:function(e){var a=e.shift(),t=this._explodeHashPassage(e),n=this._assembleHashPassage(t)
-n.results_list_cache_id=a,this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:n,newTab:"auto"})},_hashStrongs:function(e){var a=e[0]||null,t={search:a}
-this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto"})},_hashContext:function(e){var a=this._explodeHashPassage(e)
-if(!a.chap||!a.verse||-1!=a.chap.indexOf("-")||-1!=a.verse.indexOf("-"))return void this.log("invalid context")
+if(e&&"string"==typeof e)try{var a=JSON.parse(e)}catch(e){return this.debug&&this.log("ignoring invalid stored form data"),localStorage.removeItem("BibleSuperSearchFormData"),!1}else{if("object"!=typeof biblesupersearch_form_data)return!1
+var a=c.clone(biblesupersearch_form_data)}return a.redirected&&(this.preventRedirect=!0),localStorage.removeItem("BibleSuperSearchFormData"),this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:a,newTab:"auto",submitAsManual:!0}),!0},_hashCache:function(e){var a=e[0]||null,t=e[1]||null
+return a?(this.waterfall("onCacheChange",{cacheHash:a,page:t}),!0):(this.debug&&this.log("no cache hash"),!1)},_hashPassage:function(e){var a=this._explodeHashPassage(e),t=this._assembleHashPassage(a)
+return t.reference||t.request?(this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto"}),!0):(this.debug&&this.log("invalid passage"),!1)},_hashSearchLink:function(e){var a=e.shift(),t=this._explodeHashPassage(e),n=this._assembleHashPassage(t)
+return n.reference||n.request?(n.results_list_cache_id=a,this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:n,newTab:"auto"}),!0):(this.debug&&this.log("invalid search link"),!1)},_hashStrongs:function(e){var a=e[0]||null
+if(!a)return this.debug&&this.log("no strongs number"),!1
+var t={search:a}
+return this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:"auto"}),!0},_hashContext:function(e){var a=this._explodeHashPassage(e)
+if(!a.chap||!a.verse||-1!=a.chap.indexOf("-")||-1!=a.verse.indexOf("-"))return this.log("invalid context"),!1
 var t=this._assembleHashPassage(a)
-t.context=!0,this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:!0})},_hashReference:function(e,a){var t=this._explodeHashPassage(e)
+return t.reference||t.request?(t.context=!0,this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:t,newTab:!0}),!0):(this.debug&&this.log("invalid context passage"),!1)},_hashReference:function(e,a){var t=this._explodeHashPassage(e)
 t.chap=null,t.verse=null
 var n=this._assembleHashPassage(t)
-this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:n,newTab:!0,crossReference:!!a})},_hashRequest:function(e){this._hashSearch(e,!0)},_hashSearch:function(e,a){var t=e[0]||null,n=e[1]||null,s=e[2]||null,i=e[3]||null,o=e[4]||null,r=!(!a&&!this.formHasField("request")),l={bible:t?t.split(","):null,search_type:i,reference:o,page:s}
-r?l.request=n.replace(/%20/g," "):l.search=n.replace(/%20/g," "),this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:l,newTab:!0})},_hashForm:function(e){var a={}
-if(e[0])try{a=JSON.parse(e[0])}catch(e){return void(this.debug&&this.log("ignoring invalid hash form data"))}this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:a,newTab:!0})},runFormData:function(e){this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:e,newTab:!0,submitAsManual:!0})},_explodeHashPassage:function(e){return{bible:e[0]||null,book:e[1]||null,chap:e[2]||null,verse:e[3]||null}},_assembleHashPassage:function(e){if(!e.book)return{}
+return n.reference||n.request?(this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:n,newTab:!0,crossReference:!!a}),!0):(this.debug&&this.log("invalid reference"),!1)},_hashRequest:function(e){return this._hashSearch(e,!0)},_hashSearch:function(e,a){var t=e[0]||null,n=e[1]||null,s=e[2]||null,i=e[3]||null,o=e[4]||null,r=!(!a&&!this.formHasField("request"))
+if(!n)return this.debug&&this.log("no search string"),!1
+var l={bible:t?t.split(","):null,search_type:i,reference:o,page:s}
+return r?l.request=n.replace(/%20/g," "):l.search=n.replace(/%20/g," "),this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:l,newTab:!0}),!0},_hashForm:function(e){var a={}
+if(!e[0])return this.debug&&this.log("no hash form data"),!1
+try{a=JSON.parse(e[0])}catch(e){return this.debug&&this.log("ignoring invalid hash form data"),!1}return this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:a,newTab:!0}),!0},runFormData:function(e){this.debug&&this.log("sending onHashRunForm"),this.waterfall("onHashRunForm",{formData:e,newTab:!0,submitAsManual:!0})},_explodeHashPassage:function(e){return{bible:e[0]||null,book:e[1]||null,chap:e[2]||null,verse:e[3]||null}},_assembleHashPassage:function(e){if(!e.book)return{}
 var a=this.formHasField("request")&&!(this.formPrefersReferenceField()&&this.formHasField("reference")),t=e.book.replace(/%20/g," ")
 e.chap&&(t+=" "+e.chap,e.verse&&-1==e.chap.indexOf("-")&&(t+=":"+e.verse))
 var n={bible:e.bible?e.bible.split(","):null}
@@ -2380,11 +2389,12 @@ t.results=c.clone(t.results),t.results.results=this.responseCollection.toVerses(
 if(!t.results)return!1
 t.results=c.clone(t.results),t.results.results=this.responseCollection.toMultiversePassages(c.clone(t.results.results))}else var t=c.clone(this.get("responseData"))
 this.waterfall("onFormResponseSuccess",t),R.send("onFormResponseSuccess",t),this.set("responseDataNew",t)}},_shareBaseIsQuery:function(e){return"="==e.charAt(e.length-1)},getShareBaseUrl:function(){var e=this.configs.baseShareUrl
-return e&&""!=e?(-1!=e.indexOf("#")||this._shareBaseIsQuery(e)||(e+="#"),e):window.location.href.split("#")[0]+"#"},buildShareUrl:function(e){e=e||"","#"==e.charAt(0)&&(e=e.substr(1))
+return e&&""!=e?this._shareBaseIsQuery(e)?e:e.split("#")[0]+"#":window.location.href.split("#")[0]+"#"},_stripShareSeparator:function(e){return this._shareBaseIsQuery(e)?e.replace(/[?&][^?&]*=$/,""):e.replace(/#$/,"")},buildShareUrl:function(e){e=e||"","#"==e.charAt(0)&&(e=e.substr(1))
 var a=this.getShareBaseUrl()
+if(""==e)return this._stripShareSeparator(a)
 if(!this._shareBaseIsQuery(a))return a+e
 var t=e
-try{t=decodeURIComponent(e)}catch(a){this.debug&&this.log("could not decode route, encoding as-is",e)}return a+encodeURIComponent(t)},_copyComponentContent:function(e,a,t,n){if(e){var a=a||"content",t=t||!1,t=!!navigator.share&&t,s=e.get(a),i=e.get("tag"),o=e.hasNode()
+try{t=decodeURIComponent(e)}catch(a){this.debug&&this.log("could not decode route, encoding as-is",e)}return a+encodeURIComponent(t).replace(/%2F/gi,"/").replace(/%2C/gi,",")},_copyComponentContent:function(e,a,t,n){if(e){var a=a||"content",t=t||!1,t=!!navigator.share&&t,s=e.get(a),i=e.get("tag"),o=e.hasNode()
 if(o&&s){if(document.selection){var r=document.body.createTextRange()
 r.moveToElementText(o),r.select()}else{var r=document.createRange()
 r.setStartBefore(o),r.setEndAfter(o),window.getSelection().removeAllRanges(),window.getSelection().addRange(r)}if(("p"==i||"div"==i)&&navigator&&navigator.clipboard&&navigator.clipboard.writeText){var l=window.getSelection().toString(),h=navigator.clipboard.writeText(l)
