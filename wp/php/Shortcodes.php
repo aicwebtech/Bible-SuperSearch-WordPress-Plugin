@@ -194,6 +194,13 @@ class Shortcodes {
 
         if($query_str) {
             $options['landingQueryString'] = $query_str;
+
+            // Block themes render the content (and this shortcode) before wp_head(),
+            // so the title filter may not have run yet.  Building the title runs it.
+            if(self::$base_title === null) {
+                wp_get_document_title();
+            }
+
             $options['baseTitle'] = self::$base_title;
         }
 
@@ -210,10 +217,11 @@ class Shortcodes {
                 $permalink = remove_query_arg(self::$query_idx, $permalink);
                 $glue = (strpos($permalink, '?') === FALSE) ? '?' : '&';
                 $options['baseShareUrl'] = $permalink . $glue . self::$query_idx . '=';
-            } 
+            }
         }
-        
-        $options_json   = json_encode($options);
+
+        // baseTitle is decoded, author-controlled text; keep it from closing the <script>.
+        $options_json   = json_encode($options, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
         $statics_json   = json_encode($statics);
 
         if($debug) {
@@ -664,7 +672,10 @@ class Shortcodes {
             // 'title - site name' duplicates the site name on the front page (where
             // WordPress already sets the title to it) and drops page / tagline.
             $sep = apply_filters('document_title_separator', '-');
-            self::$base_title = implode(" $sep ", array_filter($parts));
+            // The parts arrive HTML-escaped (&amp;, &#8217;), but the client sets
+            // document.title as plain text, so decode them.
+            $base_title = implode(" $sep ", array_filter($parts));
+            self::$base_title = html_entity_decode($base_title, ENT_QUOTES, get_bloginfo('charset'));
 
             if($title) {
                 $parts['title'] = $title . " $sep " . $parts['title'];
