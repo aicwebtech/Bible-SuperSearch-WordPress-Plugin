@@ -110,7 +110,31 @@ return [
             'default'       => 'default',
         ],
 
-        'contextLinksAsButtons' => [ // BSS-280
+        'gospelButton' => [
+            'label'         => 'Gospel Button',
+            'desc'          => 'Show a button to display the Gospel message.',
+            'type'          => 'select',
+            'default'       => 'none',
+            'items'         => [
+                'none'      => 'None - Don\'t Show',
+                'verses'    => 'Verse - Display a list of verses.',
+                'url'       => 'URL - link to an outside page with the Gospel message.',
+            ],
+        ],
+        'gospelVerses' => [
+            'label'         => 'Gospel Verses',
+            'desc'          => 'The verses to display when the Gospel button is clicked.',
+            'type'          => 'textarea',
+            'default'       => 'Romans 3:10, 23; 6:23; 5:8; 10:9, 13; John 3:16; John 14:6; Acts 4:12; Ephesians 2:8, 9',
+        ],
+        'gospelButtonUrl' => [
+            'label'         => 'Gospel Button URL',
+            'desc'          => 'The URL to link to when the Gospel button is clicked.',
+            'type'          => 'text',
+            'default'       => null,
+        ],
+
+        'contextLinksAsButtons' => [
             'label'         => 'Context Links as Icons',
             'desc'          => 'Display context links as icons instead of text.',
             'type'          => 'checkbox',
