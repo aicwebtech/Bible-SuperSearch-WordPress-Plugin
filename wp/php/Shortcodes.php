@@ -753,7 +753,7 @@ class Shortcodes {
                 if(function_exists('mb_substr')) {
                     $query_text = mb_substr($query_text, 0, self::QUERY_MAX_LENGTH);
                 } else {
-                    $query_text = substr($query_text, 0, self::QUERY_MAX_LENGTH);
+                    $query_text = wp_check_invalid_utf8(substr($query_text, 0, self::QUERY_MAX_LENGTH), true);
                 }
 
                 return $query_text;

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class OptionsStorageTest extends TestCase
 {
-    protected function makeOptions(array $stored = null)
+    protected function makeOptions(?array $stored = null)
     {
         $config = ['statics' => Fixtures::statics()];
 

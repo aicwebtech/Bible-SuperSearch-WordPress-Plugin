@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class LandingPageTest extends TestCase
 {
-    protected function makeOptions(array $stored = [], array $pages = null)
+    protected function makeOptions(array $stored = [], ?array $pages = null)
     {
         return new TestOptions([
             'options'       => $stored,

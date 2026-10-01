@@ -407,7 +407,7 @@ return [
         'shareLinkSeo' => [
             'label'         => 'SEO-Friendly Share Links',
             'sublabel'      => 'Generate SEO-Friendly Links for Link / Content sharing.',
-            'desc'          => 'Whether to use SEO-friendly share links (?q=) instead of hashed (#) links.  ' . 
+            'desc'          => 'Whether to use SEO-friendly share links (?q=) instead of hashed (#) links ' . 
                                 'in the Link and Share dialogs. ' .
                                 'Note: This is only for sharing links, and does not affect the internal link structure of the app.',
             'type'          => 'checkbox',

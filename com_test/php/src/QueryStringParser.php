@@ -10,7 +10,9 @@ class QueryStringParser
     public static function parseToFormData($query_string)
     {
         if($query_string) {
-            $query_string = str_replace('.', ' ', $query_string);
+            if(strpos(ltrim($query_string, '/'), 'f/') !== 0) {
+                $query_string = str_replace('.', ' ', $query_string);
+            }
             $parts = explode('/', $query_string);
             $mode  = array_shift($parts);
 
