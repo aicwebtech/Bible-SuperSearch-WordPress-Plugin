@@ -1,1 +1,4 @@
 pushall
+# PHPUnit PHAR, downloaded on demand by com_test/php/run-tests.sh
+com_test/php/tests/bin/
+.phpunit.cache/

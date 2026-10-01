@@ -74,6 +74,17 @@ When editing shortcode logic:
 
 ## Testing Expectations
 
+The shared PHP library in `com_test/php` has a PHPUnit suite (standalone PHAR, no
+Composer; needs PHP 8.2+). Run it after touching `com_test/php/src` or the
+option lists:
+
+```sh
+cd com_test/php && ./run-tests.sh
+```
+
+Add or update tests under `com_test/php/tests/Unit` alongside the change; see
+`com_test/php/tests/README.md`. Everything under `wp/` is verified by hand.
+
 At minimum after shortcode-related changes:
 
 1. Load plugin in a local WordPress instance without fatal errors.
