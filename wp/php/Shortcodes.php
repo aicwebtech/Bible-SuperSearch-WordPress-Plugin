@@ -2,12 +2,21 @@
 
 namespace BibleSuperSearch\WordPress;
 
+use BibleSuperSearch\Common\QueryStringParser;
+
 defined('ABSPATH') or die; // exit if accessed directly
 
 class Shortcodes {
     static protected $instances = 0;
 
     static protected $shortcode_title = '';
+    static protected $has_shortcode = false;
+    static protected $form_data = null;
+    static protected $query_idx = 'q';
+    static protected $base_title = null;
+
+    // Longest query we will look at. Anything beyond this is not a real route.
+    const QUERY_MAX_LENGTH = 2000;
 
     static public $displayAttributes = [
         // Attributes must be in underscore_case
@@ -111,22 +120,6 @@ class Shortcodes {
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
 
-        // print_r($_REQUEST);
-        // print_r($wp_query->query_vars);
-
-        
-        // if(array_key_exists('q', $_REQUEST)) {
-        //     $options['query_string'] = $_REQUEST['q'];
-        //     static::$shortcode_title = $_REQUEST['q'] . ' - Bible Search Results';
-        // } else {
-        //     $options['query_string'] = '';
-        // }
-
-        // Beginning of shareable, SEO-friendly linkage
-        $query_string = isset($wp_query->query_vars['bible_query']) ? $wp_query->query_vars['bible_query'] : '';
-        $options['query_string'] = $query_string;
-        // echo('[biblesupersearch] query string from URL: ' . $query_string . '<br />');
-
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
         if($debug) {
@@ -195,8 +188,40 @@ class Shortcodes {
             $lang = $pts[0] ?? 'en';
             $options['language'] = strtolower($lang);
         }
-        
-        $options_json   = json_encode($options);
+
+        // Query string handling is always enabled, even if shareLinkSeo is disabled.  
+        $query_str = self::getQueryString();
+
+        if($query_str) {
+            $options['landingQueryString'] = $query_str;
+
+            // Block themes render the content (and this shortcode) before wp_head(),
+            // so the title filter may not have run yet.  Building the title runs it.
+            if(self::$base_title === null) {
+                wp_get_document_title();
+            }
+
+            $options['baseTitle'] = self::$base_title;
+        }
+
+        $options['baseShareUrl'] = NULL;
+
+        if($options['shareLinkSeo']) {
+            // get_permalink() returns FALSE outside the WP loop.  Plain permalinks already
+            // carry a query string (?page_id=N), so the arg has to be merged in rather
+            // than appended.  The client concatenates the URL hash onto this value, so
+            // it must end with 'q='.
+            $permalink = get_permalink();
+
+            if($permalink) {
+                $permalink = remove_query_arg(self::$query_idx, $permalink);
+                $glue = (strpos($permalink, '?') === FALSE) ? '?' : '&';
+                $options['baseShareUrl'] = $permalink . $glue . self::$query_idx . '=';
+            }
+        }
+
+        // baseTitle is decoded, author-controlled text; keep it from closing the <script>.
+        $options_json   = json_encode($options, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
         $statics_json   = json_encode($statics);
 
         if($debug) {
@@ -283,10 +308,6 @@ class Shortcodes {
         $attr = static::$displayAttributes;
 
         $query_vars = array_key_exists('biblesupersearch', $_REQUEST) ? $_REQUEST['biblesupersearch'] : [];
-
-        // Beginning of shareable, SEO-friendly linkage
-        // $query_string = array_key_exists('bible_query', $wp_query->query_vars) ? $wp_query->query_vars['bible_query'] : '';
-        // $options['query_string'] = $query_string;
 
         $first_instance = static::$instances == 0 ? TRUE : FALSE;
 
@@ -458,6 +479,21 @@ class Shortcodes {
         return $html;
     }    
 
+    static public function detectShortcode() 
+    {
+        $post = get_queried_object();
+
+        if (!is_a($post, 'WP_Post') ) {
+            return;
+        }
+
+        if(has_shortcode($post->post_content, 'biblesupersearch')) {
+            self::$has_shortcode = true;
+        }
+
+        return self::$has_shortcode;
+    }
+
     static public function getDisplayAttributes()
     {
         global $interfaces;
@@ -623,17 +659,27 @@ class Shortcodes {
 
     static public function shortcodeTitle($parts) 
     {
-        global $post;
-
-        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+        if(!self::$has_shortcode) {
             return $parts;
         }
 
-        // Todo: parse query and generate title from it ... 
-        // Todo: I don't want to have to parse the query twice ... 
-        if(array_key_exists('q', $_REQUEST)) {
-            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            $parts['title'] = $query_text . ' - ' . $parts['title'];
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
+            $form_data = self::parseQueryString();
+            $title = QueryStringParser::buildTitle($form_data);
+
+            // Rebuild the title the way wp_get_document_title() will: the theme's
+            // separator, and every part WordPress supplied.  Reconstructing it as
+            // 'title - site name' duplicates the site name on the front page (where
+            // WordPress already sets the title to it) and drops page / tagline.
+            $sep = apply_filters('document_title_separator', '-');
+            // The parts arrive HTML-escaped (&amp;, &#8217;), but the client sets
+            // document.title as plain text, so decode them.
+            $base_title = implode(" $sep ", array_filter($parts));
+            self::$base_title = html_entity_decode($base_title, ENT_QUOTES, get_bloginfo('charset'));
+
+            if($title) {
+                $parts['title'] = $title . " $sep " . $parts['title'];
+            }
         } 
     
         return $parts;
@@ -643,15 +689,77 @@ class Shortcodes {
     {
         global $post;
 
-        if(!$post || !is_singular() || !has_shortcode($post->post_content, 'biblesupersearch')) {
+        if(!self::$has_shortcode) {
             return;
         }
 
-        // Todo: I don't want to have to parse the query twice ... 
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
+            $form_data = self::parseQueryString();
 
-        if(array_key_exists('q', $_REQUEST)) {
-            $query_text = sanitize_text_field(wp_unslash($_REQUEST['q']));
-            echo '<meta name="description" content="' . esc_attr($query_text) . '" />' . "\n";
+            $Options = \BibleSuperSearch\WordPress\Options::getInstance();
+
+            $descr = QueryStringParser::buildTitle($form_data);
+            $bible = QueryStringParser::formatBibleList(isset($form_data['bible']) ? $form_data['bible'] : null, $Options);
+
+            if($bible) {
+                // No leading separator when the query contributed no text of its own.
+                $descr = ($descr === '') ? $bible : $descr . ' - ' . $bible;
+            }
+
+            // An empty description tag is worse than none at all.
+            if($descr !== '') {
+                echo '<meta name="description" content="' . esc_attr($descr) . '" />' . "\n";
+            }
         }
+    }
+
+    /**
+     * Parses the query string into form data.
+     * Always returns an array, so callers can index it safely.
+     */
+    static public function parseQueryString() 
+    {
+        if(self::$form_data !== NULL) {
+            return self::$form_data;
+        }
+
+        self::$form_data = [];
+
+        $query_string = self::getQueryString();
+
+        if(!empty($query_string)) {
+            $form_data = QueryStringParser::parseToFormData($query_string);
+
+            // The parser returns null for a route it rejects (an invalid
+            // context lookup, malformed JSON form data).
+            if(is_array($form_data)) {
+                self::$form_data = $form_data;
+            }
+        }
+
+        return self::$form_data;
+    }
+
+    static public function getQueryString() 
+    {
+        if(array_key_exists(self::$query_idx, $_REQUEST)) {
+            $raw = wp_unslash($_REQUEST[self::$query_idx]);
+
+            // Untrusted: ?q[]=x submits an array, and the route may be any length.
+            if(is_scalar($raw)) {
+                $query_text = sanitize_text_field((string) $raw);
+                $query_text = trim($query_text);
+
+                if(function_exists('mb_substr')) {
+                    $query_text = mb_substr($query_text, 0, self::QUERY_MAX_LENGTH);
+                } else {
+                    $query_text = substr($query_text, 0, self::QUERY_MAX_LENGTH);
+                }
+
+                return $query_text;
+            }
+        }
+
+        return '';
     }
 }

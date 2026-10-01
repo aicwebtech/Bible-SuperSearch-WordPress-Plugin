@@ -428,6 +428,16 @@ return [
                 'always'    => 'Always use system share dialog (if available), otherwise use generic share dialog (Experimental)',
             ],
         ],
+        'shareLinkSeo' => [
+            'label'         => 'SEO-Friendly Share Links',
+            'sublabel'      => 'Generate SEO-Friendly Links for Link / Content sharing.',
+            'desc'          => 'Whether to use SEO-friendly share links (?q=) instead of hashed (#) links.  ' . 
+                                'in the Link and Share dialogs. ' .
+                                'Note: This is only for sharing links, and does not affect the internal link structure of the app.',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'section'       => 'display',
+        ], 
         'contextHelpInline' => [
             'label'         => 'Show Context Help Below Items',
             'sublabel'      => 'Show Contextual Help Below Items (User Interface Settings Dialog)',
@@ -436,7 +446,6 @@ return [
             'type'          => 'checkbox',
             'default'       => false,
             'section'       => 'display',
-            'default'       => 'default',
         ], 
         'legacyManual' => [
             'label'         => 'Legacy User\'s Manual',
@@ -520,6 +529,7 @@ return [
             'desc'          => 'When app is first loaded, these reference(s) will automatically be retrieved. &nbsp; ' . 
                                 'Form will remain blank, and URL will not change.<br />' . 
                                 'Takes any valid Bible reference, ie \'John 3:16; Romans 3:23; Genesis 1\'',
+            'v_component'   => 'LandingPassage',
             'type'          => 'text',
             'default'       => '',
             'rules'         => ['bibleReference'],
