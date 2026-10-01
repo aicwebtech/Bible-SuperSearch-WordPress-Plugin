@@ -194,6 +194,8 @@ class Shortcodes {
 
         if($query_str) {
             $options['landingQueryString'] = $query_str;
+            // Lets the client swap the '?q=' for the equivalent URL hash once the route loads.
+            $options['landingQueryParam'] = self::$query_idx;
 
             // Block themes render the content (and this shortcode) before wp_head(),
             // so the title filter may not have run yet.  Building the title runs it.

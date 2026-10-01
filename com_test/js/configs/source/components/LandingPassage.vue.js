@@ -7,7 +7,7 @@ const tpl = `
             v-bind="$attrs"
         >
         </v-textarea>
-        <v-btn @click='populate' size="small">Populate with the Gospel</v-btn>
+        <v-btn @click='populate' size="small" :disabled='loading || $attrs.disabled'>Populate with the Gospel</v-btn>
     </template>
 `;
 
