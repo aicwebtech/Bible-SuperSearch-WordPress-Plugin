@@ -5,13 +5,15 @@ import SelectOrdered from './components/VSelectOrdered.vue.js';
 import BibleLimitsByWidth from './components/ParLim.vue.js';
 import DefaultBiblesByLanguage from './components/DefaultBiblesByLanguage/DefaultBiblesByLanguage.vue.js';
 import Rules from './components/FormRules.vue.js';
+import LandingPassage from './components/LandingPassage.vue.js';
 
 var components = {
     ApiUrl,
     SelectGroup,
     SelectOrdered,
     BibleLimitsByWidth,
-    DefaultBiblesByLanguage
+    DefaultBiblesByLanguage,
+    LandingPassage
 };
 
 const tpl = `
