@@ -205,4 +205,48 @@ class ValidateOptionsTest extends TestCase
 
         $this->assertSame('John 3:16 Rom 1:1', $valid['landingReference']);
     }
+
+    public function testGospelButtonUrlAcceptsHttpAndHttps()
+    {
+        foreach(['http://example.com/gospel', 'HTTPS://example.com/gospel?a=1#b'] as $url) {
+            $valid = $this->options->validateOptions(['_tab' => 'general', 'gospelButtonUrl' => $url]);
+
+            $this->assertSame($url, $valid['gospelButtonUrl']);
+        }
+    }
+
+    public function testGospelButtonUrlIsTrimmed()
+    {
+        $valid = $this->options->validateOptions(['_tab' => 'general', 'gospelButtonUrl' => '  https://example.com/  ']);
+
+        $this->assertSame('https://example.com/', $valid['gospelButtonUrl']);
+    }
+
+    public function testGospelButtonUrlRejectsScriptableAndInvalidUrls()
+    {
+        $bad = [
+            'javascript:alert(1)',
+            'JavaScript:alert(1)',
+            "java\tscript:alert(1)",
+            'data:text/html,<script>alert(1)</script>',
+            'vbscript:msgbox(1)',
+            'https://example.com/" onclick="alert(1)',
+            'https://example.com/"onmouseover="alert(1)',
+            "https://example.com/'onmouseover='alert(1)",
+            'https://example.com/</script><script>alert(1)</script>',
+            'https://example.com/<img>',
+            'https://example.com/`alert(1)`',
+            'https://example.com\\@evil.com/',
+            '//example.com/gospel',
+            '/gospel',
+            'example.com',
+            'http://',
+        ];
+
+        foreach($bad as $url) {
+            $valid = $this->options->validateOptions(['_tab' => 'general', 'gospelButtonUrl' => $url]);
+
+            $this->assertNull($valid['gospelButtonUrl'], 'Accepted: ' . $url);
+        }
+    }
 }

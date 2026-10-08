@@ -380,7 +380,7 @@ class Shortcodes {
             $options['language'] = strtolower($lang);
         }
         
-        $options_json   = json_encode($options);
+        $options_json   = json_encode($options, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
         $statics_json   = json_encode($statics);
 
         if($debug) {

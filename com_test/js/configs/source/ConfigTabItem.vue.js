@@ -237,6 +237,14 @@ export default {
                 return this.options.strongsOpenClick !== 'none';
             }
 
+            if(config === 'gospelButtonUrl') {
+                return this.options.gospelButton === 'url';
+            }
+
+            if(config === 'gospelVerses') {
+                return this.options.gospelButton === 'verses';
+            }
+
             if(config === 'audioBibleDisplayThreshold') {
                 return this.options.audioBible && this.options.audioBibleDisplay === 'threshold';
             }
