@@ -53,6 +53,54 @@ return [
             'if_conditions' => 'resultsList',
         ],
         // End results display
+
+        'gospel'        => [
+            'label'         => 'Share the Gospel',
+            'type'          => 'section',
+        ],
+
+        'gospelButton' => [
+            'label'         => 'Gospel Button',
+            'desc'          => 'Show a button to display the Gospel message.',
+            'type'          => 'select',
+            'default'       => 'none',
+            'items'         => [
+                'none'      => 'None - Don\'t Show',
+                'verses'    => 'Verse - Display a list of verses.',
+                'url'       => 'URL - link to an outside page with the Gospel message.',
+            ],
+        ],
+        'gospelVerses' => [
+            'label'         => 'Gospel Verses',
+            'desc'          => 'The verses to display when the Gospel button is clicked.',
+            'type'          => 'textarea',
+            'default'       => 'Romans 3:10, 23; 6:23; 5:8; 10:9, 13; John 3:16; John 14:6; Acts 4:12; Ephesians 2:8, 9',
+            'rules'         => ['required', 'bibleReference'],
+        ],
+        'gospelButtonUrl' => [
+            'label'         => 'Gospel Button URL',
+            'desc'          => 'The URL to link to when the Gospel button is clicked.',
+            'type'          => 'text',
+            'default'       => null,
+            'rules'         => ['required'],
+        ],
+        'landingReference' => [
+            'label'         => 'Landing Passage(s)',
+            'desc'          => 'When app is first loaded, these reference(s) will automatically be retrieved. &nbsp; ' . 
+                                'Form will remain blank, and URL will not change.<br />' . 
+                                'Takes any valid Bible reference, ie \'John 3:16; Romans 3:23; Genesis 1\'',
+            'v_component'   => 'LandingPassage',
+            'type'          => 'text',
+            'default'       => '',
+            'rules'         => ['bibleReference'],
+        ],    
+        'landingReferenceDefault' => [
+            'label'         => 'Use Landing Passage(s) as Default',
+            'sublabel'      => 'Show landing passage if search is empty.',
+            'desc'          => 'If a search is executed with no search keywords or references, should we load the landing passage?',
+            'type'          => 'checkbox',
+            'default'       => false,
+        ], 
         
         // begin navigation
         'navigation'        => [
@@ -110,7 +158,7 @@ return [
             'default'       => 'default',
         ],
 
-        'contextLinksAsButtons' => [ // BSS-280
+        'contextLinksAsButtons' => [
             'label'         => 'Context Links as Icons',
             'desc'          => 'Display context links as icons instead of text.',
             'type'          => 'checkbox',

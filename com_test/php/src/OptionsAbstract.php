@@ -463,6 +463,11 @@ abstract class OptionsAbstract
             $input['landingReference'] = preg_replace('/\s+/', ' ', $input['landingReference']);
         }
         
+        // The client assigns this directly to an href, so only allow http(s) URLs (blocks javascript:, data:, etc)
+        if(!empty($input['gospelButtonUrl'])) {
+            $input['gospelButtonUrl'] = $this->sanitizeHttpUrl($input['gospelButtonUrl']);
+        }
+
         if(empty($input['apiUrl'])) {
             $input['apiUrl'] = $this->default_options['apiUrl'];
         }
@@ -474,6 +479,40 @@ abstract class OptionsAbstract
         $this->_setStaticsReset(); // Always Force Reload statics when options saved
 
         return $input;
+    }
+
+    /**
+     * Returns the URL if it is an absolute http(s) URL with a host, otherwise NULL
+     */
+    protected function sanitizeHttpUrl($url)
+    {
+        if(!is_string($url)) {
+            return null;
+        }
+
+        $url = trim($url);
+
+        // Reject whitespace / control characters, which browsers strip when parsing the scheme
+        if($url === '' || preg_match('/[\x00-\x20\x7F]/', $url)) {
+            return null;
+        }
+
+        // Reject HTML / JS delimiters so the URL can't break out of an attribute or inline <script>
+        if(preg_match('/["\'<>`\\\\]/', $url)) {
+            return null;
+        }
+
+        $parts = parse_url($url);
+
+        if(!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+            return null;
+        }
+
+        if(!in_array(strtolower($parts['scheme']), ['http', 'https'], true)) {
+            return null;
+        }
+
+        return $url;
     }
 
     public function getLandingPageOptions($exclude_zero = false)
