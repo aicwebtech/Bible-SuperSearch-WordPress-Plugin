@@ -90,7 +90,46 @@ class TestOptions extends OptionsAbstract
         return $this->statics_fixture === null ? false : $this->statics_fixture;
     }
 
+    /** @var array[] Requests passed to _apiRequest(): each [url, data, method] */
+    public $api_requests = [];
+
+    /** @var array Response returned by _apiRequest() (merged over a 200 JSON default) */
+    public $api_response = [];
+
+    /**
+     * Overridden to keep the suite offline - records the request and returns
+     * the canned $api_response.
+     */
+    protected function _apiRequest($url, $data, $method = 'POST')
+    {
+        $this->api_requests[] = [$url, $data, $method];
+
+        $this->last_api_response = array_replace([
+            'body'              => json_encode(['results' => [], 'errors' => [], 'error_level' => 0]),
+            'status'            => 200,
+            'headers'           => [],
+            'method_used'       => 'Test',
+            'methods_attempted' => ['Test'],
+            'curl_info'         => null,
+        ], $this->api_response);
+
+        return $this->last_api_response;
+    }
+
+    /**
+     * Overridden: the real implementation calls WordPress' site_url()
+     */
+    protected function _apiDomain()
+    {
+        return 'example.com';
+    }
+
     /* ---- test-only accessors for protected members ---- */
+
+    public function callApiActionHelper($action, $api_url, $data, $version = null, $quiet = false, $method = 'POST')
+    {
+        return $this->_apiActionHelper($action, $api_url, $data, $version, $quiet, $method);
+    }
 
     public function getStoredOptions()
     {

@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
  */
 class ParseDomainTest extends TestCase
 {
+    /**
+     * @dataProvider hostProvider
+     */
     #[DataProvider('hostProvider')]
     public function testParseDomain($host, $expected)
     {

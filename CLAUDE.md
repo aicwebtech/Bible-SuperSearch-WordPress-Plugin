@@ -13,10 +13,11 @@ There is **no build system, package manager, or linter** — no `composer.json`,
 The one automated suite covers the platform-agnostic PHP in `com_test/php` (`OptionsAbstract`, `QueryStringParser`) — PHPUnit driven from a standalone PHAR, no Composer:
 
 ```sh
-cd com_test/php && ./run-tests.sh
+cd com_test/php && ./run-tests.sh        # default php
+cd com_test/php && ./run-tests-all.sh    # every installed php7.3 ... php8.5
 ```
 
-The PHAR is downloaded on first run into the git-ignored `com_test/php/tests/bin/`. The test tooling targets **PHP 8.2+** and PHPUnit 11.5 — deliberately not the plugin's PHP 7.3 minimum, since tests only run on a developer's machine; `php7.3 -l` covers the minimum instead. `PHP_BIN` and `PHPUNIT_VERSION` override both. The suite is strict: stray output, PHP notices and PHP warnings fail the run. Tests run offline: `OptionsAbstract` is exercised through the in-memory `tests/Support/TestOptions.php`, which stores options in an array and returns a statics fixture instead of calling the API. See `com_test/php/tests/README.md`. Anything WordPress-bound (`wp/`) has no test coverage.
+The PHAR is downloaded on first run into the git-ignored `com_test/php/tests/bin/`. The suite runs on every PHP the plugin supports (**7.3 – 8.5**): `run-tests.sh` uses PHPUnit 11.5 + `phpunit.xml` on PHP 8.2+, and PHPUnit 9.6 + `phpunit-9.xml` below that. Tests must therefore work on both — declare data providers with both `#[DataProvider]` and a `@dataProvider` doc-comment. `PHP_BIN` and `PHPUNIT_VERSION` override the defaults. The suite is strict: stray output, PHP notices and PHP warnings fail the run. Tests run offline: `OptionsAbstract` is exercised through the in-memory `tests/Support/TestOptions.php`, which stores options in an array and returns a statics fixture instead of calling the API. See `com_test/php/tests/README.md`. Anything WordPress-bound (`wp/`) has no test coverage.
 
 Everything else is verified manually, in a real WordPress install:
 

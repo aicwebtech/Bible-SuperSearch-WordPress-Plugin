@@ -12,7 +12,8 @@ cd com_test/php
 ./run-tests.sh --filter ParseDomain     # arguments are passed through to phpunit
 ./run-tests.sh --testdox                # readable list of what is covered
 ./run-tests.sh --display-skipped        # why tests were skipped
-PHP_BIN=php8.4 ./run-tests.sh           # run against another PHP build
+PHP_BIN=php7.3 ./run-tests.sh           # run against another PHP build
+./run-tests-all.sh                      # every supported PHP that is installed
 ```
 
 The project has no Composer, so PHPUnit is used as a standalone PHAR. The first
@@ -21,22 +22,35 @@ offline.
 
 ### PHP and PHPUnit versions
 
-The test tooling targets **PHP 8.2+** and tracks a current PHPUnit (11.5). That
-is deliberately *not* the PHP the plugin supports — `readme.txt` still claims
-7.3 — because tests only ever run on a developer's machine, never on a user's
-host. Tying the tooling to the oldest supported runtime would cost every PHPUnit
-option added since 9.6 and buy very little.
+The suite runs on every PHP the plugin supports, **7.3 – 8.5**. No single
+PHPUnit covers that range, so `run-tests.sh` picks one from the PHP it runs:
 
-To check the library still parses on the plugin's minimum, lint it instead:
+| PHP | PHPUnit | Config |
+| --- | --- | --- |
+| 8.2 – 8.5 | 11.5 | `phpunit.xml` |
+| 7.3 – 8.1 | 9.6 | `phpunit-9.xml` (pre-10 schema) |
 
-```sh
-php7.3 -l src/OptionsAbstract.php
+Keep the two configs in step. `run-tests-all.sh` runs the suite on each of
+`php7.3` … `php8.5` that is installed, prints a summary, and fails if any
+installed version fails.
+
+Every test has to run under both PHPUnit versions. In practice that means
+declaring data providers twice — PHPUnit 11 reads the attribute and ignores the
+doc-comment, PHPUnit 9 reads the doc-comment (an attribute is just a comment on
+PHP 7):
+
+```php
+/**
+ * @dataProvider hostProvider
+ */
+#[DataProvider('hostProvider')]
+public function testParseDomain($host, $expected)
 ```
 
-`PHPUNIT_VERSION` overrides the PHPUnit release, and each version is cached
-under its own name in `tests/bin/`. Note that anything before PHPUnit 10 also
-needs the pre-10 config schema, so going back that far means supplying a 9.x
-`phpunit.xml` as well.
+and sticking to PHP 7.3 syntax and assertions that exist in PHPUnit 9.6.
+
+`PHPUNIT_VERSION` overrides the PHPUnit release (a version before 10 selects
+`phpunit-9.xml`), and each version is cached under its own name in `tests/bin/`.
 
 If the machine has no outbound network, download the PHAR from
 <https://phar.phpunit.de/> by hand and save it as

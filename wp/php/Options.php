@@ -20,6 +20,9 @@ class Options extends OptionsAbstract
         $this->default_options['overrideCss'] = TRUE;
         $this->default_options['extraCss'] = '';
 
+        $this->options_list['advanced']['apiProxy']['desc'] .= 
+            '<br /><br />Disable if your web host blocks the WordPress REST API or if you have permalinks disabled.';
+
         $this->tabs['general']['checkboxes'][] = 'overrideCss';
         $this->tabs['advanced']['texts'][] = 'extraCss';
 

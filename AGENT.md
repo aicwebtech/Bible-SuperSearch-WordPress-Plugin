@@ -75,11 +75,12 @@ When editing shortcode logic:
 ## Testing Expectations
 
 The shared PHP library in `com_test/php` has a PHPUnit suite (standalone PHAR, no
-Composer; needs PHP 8.2+). Run it after touching `com_test/php/src` or the
+Composer; runs on PHP 7.3 - 8.5). Run it after touching `com_test/php/src` or the
 option lists:
 
 ```sh
-cd com_test/php && ./run-tests.sh
+cd com_test/php && ./run-tests.sh        # default php
+cd com_test/php && ./run-tests-all.sh    # every supported php installed
 ```
 
 Add or update tests under `com_test/php/tests/Unit` alongside the change; see

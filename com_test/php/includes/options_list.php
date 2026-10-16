@@ -750,7 +750,15 @@ return [
             // 'default'       => dynamic, //
             'id'            => 'biblesupersearch_url',
             'v_component'   => 'ApiUrl',
-        ],   
+        ],
+        'apiProxy' => [
+            'label'         => 'API Proxy',
+            'sublabel'      => '(Recommended) Relay API Requests Through This Website',
+            'desc'          => 'Routes Bible SuperSearch API requests through this website instead of sending them directly from the visitor\'s browser. ' .
+                                'Recommended for security reasons (to hide your API key), and to avoid cross-website (ie CORS) issues. ',
+            'type'          => 'checkbox',
+            'default'       => true,
+        ],
         'pageScrollTopPadding' => [
             'label'         => 'Scroll Top Padding',
             'desc'          => '(Desktop / Global) Use to adjust the final position of automatic scrolling.  ' . 

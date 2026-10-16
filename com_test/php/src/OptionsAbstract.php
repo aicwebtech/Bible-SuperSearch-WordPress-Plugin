@@ -859,72 +859,175 @@ abstract class OptionsAbstract
         return [$success, $checklist];
     }
 
-    protected function _apiActionHelper($action, $api_url, $data) 
+    /**
+     * Actions the client may relay through apiProxy(), returning JSON
+     */
+    protected static $api_proxy_actions = [
+        'query', 'statics', 'books', 'readcache', 'render', 'render_needed', 'statistics', 'strongs', 'audio_check', 'version'
+    ];
+
+    /**
+     * Actions the client may relay through apiProxy(), returning a file (passed through as-is)
+     */
+    protected static $api_proxy_raw_actions = ['download', 'audio'];
+
+    /**
+     * API version the un-versioned API URL points to
+     */
+    const API_DEFAULT_VERSION = 'v2';
+
+    /**
+     * Response headers passed through on raw actions
+     */
+    protected static $api_proxy_raw_headers = ['content-type', 'content-disposition', 'content-length'];
+
+    /**
+     * Response of the most recent API request, as returned by _apiRequest()
+     */
+    protected $last_api_response = null;
+
+    /**
+     * Relays a client request to the configured Bible SuperSearch API.
+     * Only whitelisted actions are relayed.
+     * 
+     * @param string $action API action, defaults to 'query'
+     * @param array $data request parameters
+     * @param string|null $version API version (v<integer>, ie 'v3'), or NULL for the un-versioned API (v2)
+     * @param string $method HTTP method: GET or POST
+     * @return array|false ['status' => int, 'raw' => bool, 'body' => array|string, 'headers' => array], or FALSE if the action or version is not allowed
+     */
+    public function apiProxy($action, $data, $version = NULL, $method = 'POST') 
     {
-        $url_action = ($action == 'query') ? '/api' : '/api/' . $action;
-        $url = $api_url . $url_action;
+        $action  = $action ?: 'query';
+        $version = $version ?: NULL;
+        $raw     = in_array($action, static::$api_proxy_raw_actions, TRUE);
 
-        $result = FALSE;
-        $allow_url_fopen = (int) ini_get('allow_url_fopen');
-        $err = error_reporting();
-        error_reporting(E_ERROR | E_PARSE);
-        $bss_options = $this->getOptions();
-        
-        $data['domain'] = static::parseDomain(site_url());
-        $method_used = 'None';
-        $methods_attempted = [];
+        if(!$raw && !in_array($action, static::$api_proxy_actions, TRUE)) {
+            return FALSE;
+        }
 
-        // Attempt 1: Via file_get_contents
-        if($allow_url_fopen == 1) {        
-            $options = [
-                'http' => [        // Use key 'http' even if you send the request to https://
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($data),
-                ]
+        if($version !== NULL && !preg_match('/^v[0-9]+$/', $version)) {
+            return FALSE;
+        }
+
+        $data = is_array($data) ? $data : [];
+
+        // Serve statics from cache instead of hitting the API on every page load
+        // The cache holds the un-versioned (default version) statics
+        if($action == 'statics' && ($version === NULL || $version == static::API_DEFAULT_VERSION)) {
+            // getStatics() may echo errors or debugging, which would corrupt the response
+            ob_start();
+            $statics = $this->getStatics();
+            ob_end_clean();
+
+            if(!$statics) {
+                return $this->_apiProxyError('Unable to load data from the Bible SuperSearch API');
+            }
+
+            return [
+                'status'  => 200,
+                'raw'     => FALSE,
+                'body'    => ['results' => $statics, 'errors' => [], 'error_level' => 0],
+                'headers' => [],
             ];
- 
-            $context = stream_context_create($options);
-            $result  = file_get_contents($url, FALSE, $context);
-            $methods_attempted[] = $method_used = 'URL FOpen';
-        }
-        
-        // Attempt 2: Fall back to cURL
-        if($result === FALSE && function_exists('curl_init')) {        
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            $result = curl_exec($ch);
-            $curl_info = curl_getinfo($ch);
-            curl_close($ch);
-            $methods_attempted[] = $method_used = 'cURL';
         }
 
-        error_reporting($err);
+        if($raw) {
+            $data['domain'] = $this->_apiDomain();
+            $response = $this->_apiRequest($this->_apiActionUrl($action, $this->getUrl(), $version), $data, $method);
 
+            if($response['body'] === FALSE) {
+                return $this->_apiProxyError('Unable to connect to the Bible SuperSearch API');
+            }
+
+            return [
+                'status'  => $response['status'] ?: 200,
+                'raw'     => TRUE,
+                'body'    => $response['body'],
+                'headers' => array_intersect_key($response['headers'], array_flip(static::$api_proxy_raw_headers)),
+            ];
+        }
+
+        $result = $this->_apiActionHelper($action, $this->getUrl(), $data, $version, TRUE, $method);
+
+        if(!is_array($result)) {
+            return $this->_apiProxyError('Unable to connect to the Bible SuperSearch API');
+        }
+
+        return [
+            'status'  => $this->last_api_response['status'] ?: 200,
+            'raw'     => FALSE,
+            'body'    => $result,
+            'headers' => [],
+        ];
+    }
+
+    protected function _apiProxyError($message) 
+    {
+        return [
+            'status'  => 502,
+            'raw'     => FALSE,
+            'body'    => ['results' => [], 'errors' => [$message], 'error_level' => 5],
+            'headers' => [],
+        ];
+    }
+
+    /**
+     * @param string $action
+     * @param string $api_url
+     * @param string|null $version API version (ie 'v3'), or NULL for the un-versioned API
+     */
+    protected function _apiActionUrl($action, $api_url, $version = NULL) 
+    {
+        $url = $api_url . '/api';
+
+        if($version) {
+            $url .= '/' . $version;
+        }
+
+        if($action != 'query') {
+            $url .= '/' . $action;
+        }
+
+        return $url;
+    }
+
+    /**
+     * Domain of this website, sent to the API with every request
+     */
+    protected function _apiDomain() 
+    {
+        return static::parseDomain(site_url());
+    }
+
+    protected function _apiActionHelper($action, $api_url, $data, $version = NULL, $quiet = FALSE, $method = 'POST') 
+    {
+        $url = $this->_apiActionUrl($action, $api_url, $version);
+        $bss_options = $this->getOptions();
+        $data['domain'] = $this->_apiDomain();
+
+        $response = $this->_apiRequest($url, $data, $method);
+        $result = $response['body'];
         $result_decoded = ($result === false) ? false : json_decode($result, true);
         
         $eol = '<br />';
 
-        $debug = $bss_options['debug'] || $result === false && $api_url == $this->default_options['apiUrl'];
+        $debug = !$quiet && ($bss_options['debug'] || $result === false && $api_url == $this->default_options['apiUrl']);
         $enable_debug = ($debug) ? '' : ' Webmaster: please enable debug mode on Advanced tab for details';
 
         if($debug) {
             echo 'Bible SuperSearch API Call Log' . $eol;
             echo 'Action: ' . $action . $eol;
             echo 'URL: ' . $url . $eol;
-            echo 'Method: ' . $method_used . $eol;
-            echo 'Method Attempted: ' . implode(', ', $methods_attempted) . $eol;
+            echo 'Method: ' . $response['method_used'] . $eol;
+            echo 'Method Attempted: ' . implode(', ', $response['methods_attempted']) . $eol;
             echo 'Data: ' . print_r($data, true) . $eol;
             echo 'Has Results: ' . ($result === false ? 'No' : 'Yes') . $eol;
             echo $eol;
 
-            if(isset($curl_info)) {
+            if(isset($response['curl_info'])) {
                 echo 'cURL Info: <pre>';
-                print_r($curl_info);
+                print_r($response['curl_info']);
                 echo '</pre>' . $eol . $eol;
             }
 
@@ -952,7 +1055,9 @@ abstract class OptionsAbstract
             echo $eol . $eol;
         }
 
-        if($result === FALSE && $allow_url_fopen != 1 && !function_exists('curl_init')) {
+        if($quiet) {
+            // No output
+        } else if($result === FALSE && (int) ini_get('allow_url_fopen') != 1 && !function_exists('curl_init')) {
             echo 'ERROR: Unable to connect to Bible SuperSearch API due to server settings.' . $eol;
             echo 'Please have your system administrator set allow_url_fopen=1 in your php.ini and/or enable cURL.' . $eol;
             echo 'API action: ' . $action . $eol . $eol;
@@ -965,6 +1070,123 @@ abstract class OptionsAbstract
         }
 
         return $result_decoded;
+    }
+
+    /**
+     * Sends an HTTP request, via file_get_contents, falling back to cURL
+     * 
+     * @param string $url
+     * @param array $data request parameters
+     * @param string $method GET or POST
+     * @return array ['body' => string|false, 'status' => int, 'headers' => [lowercase name => value], 'method_used', 'methods_attempted', 'curl_info']
+     */
+    protected function _apiRequest($url, $data, $method = 'POST') 
+    {
+        $method  = (strtoupper($method) == 'GET') ? 'GET' : 'POST';
+        $query   = http_build_query($data);
+        $body    = FALSE;
+        $status  = 0;
+        $headers = [];
+        $curl_info = NULL;
+        $method_used = 'None';
+        $methods_attempted = [];
+        $allow_url_fopen = (int) ini_get('allow_url_fopen');
+        $err = error_reporting();
+        error_reporting(E_ERROR | E_PARSE);
+
+        if($method == 'GET' && $query !== '') {
+            $url .= (strpos($url, '?') === FALSE ? '?' : '&') . $query;
+        }
+
+        // Attempt 1: Via file_get_contents
+        if($allow_url_fopen == 1) {        
+            $options = [
+                'http' => [        // Use key 'http' even if you send the request to https://
+                    'method'        => $method,
+                    'ignore_errors' => TRUE, // Return the body of error responses, too
+                ]
+            ];
+
+            if($method == 'POST') {
+                $options['http']['header']  = "Content-type: application/x-www-form-urlencoded\r\n";
+                $options['http']['content'] = $query;
+            }
+ 
+            $context = stream_context_create($options);
+            $body    = file_get_contents($url, FALSE, $context);
+            $methods_attempted[] = $method_used = 'URL FOpen';
+
+            if($body !== FALSE) {
+                // $http_response_header is deprecated as of PHP 8.5; its replacement was added in 8.4
+                $raw_headers = function_exists('http_get_last_response_headers') ? http_get_last_response_headers() : ($http_response_header ?? []);
+
+                foreach((array) $raw_headers as $line) {
+                    static::_parseResponseHeaderLine($line, $status, $headers);
+                }
+            }
+        }
+        
+        // Attempt 2: Fall back to cURL
+        if($body === FALSE && function_exists('curl_init')) {        
+            $status  = 0;
+            $headers = [];
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+
+            if($method == 'POST') {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            }
+
+            curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($ch, $line) use (&$status, &$headers) {
+                static::_parseResponseHeaderLine($line, $status, $headers);
+                return strlen($line);
+            });
+
+            $body = curl_exec($ch);
+            $curl_info = curl_getinfo($ch);
+            $status = (int) $curl_info['http_code'];
+
+            // No-op since PHP 8.0, deprecated as of 8.5
+            if(PHP_VERSION_ID < 80000) {
+                curl_close($ch);
+            }
+
+            $methods_attempted[] = $method_used = 'cURL';
+        }
+
+        error_reporting($err);
+
+        $this->last_api_response = [
+            'body'              => $body,
+            'status'            => $status,
+            'headers'           => $headers,
+            'method_used'       => $method_used,
+            'methods_attempted' => $methods_attempted,
+            'curl_info'         => $curl_info,
+        ];
+
+        return $this->last_api_response;
+    }
+
+    /**
+     * Parses one raw HTTP response header line into $status / $headers
+     * A status line (as after a redirect) starts a new set of headers
+     */
+    protected static function _parseResponseHeaderLine($line, &$status, &$headers) 
+    {
+        $line = trim($line);
+
+        if(preg_match('#^HTTP/\S+\s+(\d{3})#', $line, $matches)) {
+            $status  = (int) $matches[1];
+            $headers = [];
+        } elseif(strpos($line, ':') !== FALSE) {
+            list($name, $value) = explode(':', $line, 2);
+            $headers[strtolower(trim($name))] = trim($value);
+        }
     }
 
     protected function _validateApiResults($action, $results, $verbose = false) 

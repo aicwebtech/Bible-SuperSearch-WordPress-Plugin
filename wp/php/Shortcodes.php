@@ -222,6 +222,12 @@ class Shortcodes {
             }
         }
 
+        // Relay API requests through the WordPress REST API.
+        // Not with plain permalinks: the client appends paths to the API URL, which breaks '?rest_route='
+        if(!empty($options['apiProxy']) && get_option('permalink_structure')) {
+            $options['apiUrl'] = ApiProxy::getUrl();
+        }
+
         // baseTitle is decoded, author-controlled text; keep it from closing the <script>.
         $options_json   = json_encode($options, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
         $statics_json   = json_encode($statics);

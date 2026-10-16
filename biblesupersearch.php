@@ -174,7 +174,8 @@ function biblesupersearch_custom_rewrite()
 //add_action('init', 'biblesupersearch_custom_rewrite', 10, 0);
 
 add_action( 'rest_api_init', function () {
-    
+    \BibleSuperSearch\WordPress\ApiProxy::registerRoutes();
+
     register_rest_route( 'biblesupersearch/v1', '/config', [
         'methods' => 'GET',
         'callback' => function($request) {
