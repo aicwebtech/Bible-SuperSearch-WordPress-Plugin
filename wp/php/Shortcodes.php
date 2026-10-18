@@ -222,11 +222,7 @@ class Shortcodes {
             }
         }
 
-        // Relay API requests through the WordPress REST API.
-        // Not with plain permalinks: the client appends paths to the API URL, which breaks '?rest_route='
-        if(!empty($options['apiProxy']) && get_option('permalink_structure')) {
-            $options['apiUrl'] = ApiProxy::getUrl();
-        }
+        $options['apiUrl'] = static::clientApiUrl($options, $options['apiUrl']);
 
         // baseTitle is decoded, author-controlled text; keep it from closing the <script>.
         $options_json   = json_encode($options, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
@@ -619,6 +615,21 @@ class Shortcodes {
         return $html;
     }
 
+    /**
+     * API URL for the browser: the API proxy if enabled and usable, otherwise $direct_url
+     */
+    static public function clientApiUrl($options, $direct_url) 
+    {
+        // Relay API requests through the WordPress REST API.
+        // Not with plain permalinks: the client appends paths to the API URL, which breaks '?rest_route='
+        // Not if this website blocks the REST API for visitors
+        if(!empty($options['apiProxy']) && get_option('permalink_structure') && !ApiProxyCheck::isBlocked()) {
+            return ApiProxy::getUrl();
+        }
+
+        return $direct_url;
+    }
+
     static public function downloadPage($atts) 
     {
         $BibleSuperSearch_Options = \BibleSuperSearch\WordPress\Options::getInstance();
@@ -633,7 +644,8 @@ class Shortcodes {
         $BibleSuperSearchDownloadFormats = $statics['download_formats'];
         // $BibleSuperSearchBibles          = $statics['bibles'];
         $BibleSuperSearchBibles          = $BibleSuperSearch_Options->getEnabledBibles($statics, 'name', 'language_english');
-        $BibleSuperSearchAPIURL          = $BibleSuperSearch_Options->getUrl();
+        // The download page appends '/api/...'
+        $BibleSuperSearchAPIURL          = untrailingslashit(static::clientApiUrl($BibleSuperSearch_Options->getOptions(), $BibleSuperSearch_Options->getUrl()));
         $BibleSuperSearchDownloadVerbose = $a['verbose'];
         $BibleSuperSearchDownloadLimit   = array_key_exists('download_limit', $statics) ? (int) $statics['download_limit'] : 0;
 

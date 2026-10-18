@@ -90,7 +90,7 @@ class TestOptions extends OptionsAbstract
         return $this->statics_fixture === null ? false : $this->statics_fixture;
     }
 
-    /** @var array[] Requests passed to _apiRequest(): each [url, data, method] */
+    /** @var array[] Requests passed to _apiRequest(): each [url, data, method, ignore_errors] */
     public $api_requests = [];
 
     /** @var array Response returned by _apiRequest() (merged over a 200 JSON default) */
@@ -100,9 +100,9 @@ class TestOptions extends OptionsAbstract
      * Overridden to keep the suite offline - records the request and returns
      * the canned $api_response.
      */
-    protected function _apiRequest($url, $data, $method = 'POST')
+    protected function _apiRequest($url, $data, $method = 'POST', $ignore_errors = FALSE)
     {
-        $this->api_requests[] = [$url, $data, $method];
+        $this->api_requests[] = [$url, $data, $method, $ignore_errors];
 
         $this->last_api_response = array_replace([
             'body'              => json_encode(['results' => [], 'errors' => [], 'error_level' => 0]),

@@ -21,7 +21,8 @@ class Options extends OptionsAbstract
         $this->default_options['extraCss'] = '';
 
         $this->options_list['advanced']['apiProxy']['desc'] .= 
-            '<br /><br />Disable if your web host blocks the WordPress REST API or if you have permalinks disabled.';
+            '<br /><br />Requires permalinks. If this website blocks the WordPress REST API for visitors who are not logged in, ' .
+            'this is detected when the settings are saved, and API requests are sent directly from visitors\' browsers instead.';
 
         $this->tabs['general']['checkboxes'][] = 'overrideCss';
         $this->tabs['advanced']['texts'][] = 'extraCss';
@@ -52,7 +53,7 @@ class Options extends OptionsAbstract
     public function pluginMenu() 
     {
 
-        add_menu_page(
+        $hook = add_menu_page(
             'Bible SuperSearch', // browser title
             'Bible SuperSearch', // top menu title
             'manage_options',
@@ -61,6 +62,9 @@ class Options extends OptionsAbstract
             'dashicons-book-alt',
             76
         );
+
+        // Before the page renders, so any problem found shows in the admin notices
+        add_action('load-' . $hook, [ApiProxyCheck::class, 'runIfStale']);
 
         add_submenu_page(
             'biblesupersearch',
@@ -88,6 +92,12 @@ class Options extends OptionsAbstract
     protected function fetchOptions() 
     {
         return get_option( $this->option_index );
+    }
+
+    /** WordPress-specific override */
+    protected function _apiDomain()
+    {
+        return static::parseDomain(site_url());
     }
 
     /** WordPress-specific override */

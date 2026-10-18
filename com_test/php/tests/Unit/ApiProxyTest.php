@@ -182,41 +182,29 @@ class ApiProxyTest extends TestCase
         $this->assertArrayHasKey('error_level', $result['body']);
     }
 
-    public function testRawActionPassesBodyAndOnlyAllowedHeaders()
+    public function testRawActionIsReturnedForStreamingWithoutARequest()
     {
         $options = $this->makeOptions();
-        $options->api_response = [
-            'body'    => "PK\x03\x04binary",
-            'headers' => [
-                'content-type'        => 'application/zip',
-                'content-disposition' => 'attachment; filename="kjv.zip"',
-                'set-cookie'          => 'session=abc',
-                'server'              => 'nginx',
-            ],
-        ];
 
-        $result = $options->apiProxy('download', ['format' => 'json', 'bible' => '["kjv"]'], null, 'GET');
+        $result = $options->apiProxy('download', ['format' => 'json', 'bible' => '["kjv"]', 'domain' => 'evil.example'], null, 'GET');
 
         $this->assertTrue($result['raw']);
         $this->assertSame(200, $result['status']);
-        $this->assertSame("PK\x03\x04binary", $result['body']);
-        $this->assertSame([
-            'content-type'        => 'application/zip',
-            'content-disposition' => 'attachment; filename="kjv.zip"',
-        ], $result['headers']);
-        $this->assertSame('https://api.biblesupersearch.com/api/download', $options->api_requests[0][0]);
-        $this->assertSame('example.com', $options->api_requests[0][1]['domain']);
+        $this->assertSame('https://api.biblesupersearch.com/api/download', $result['url']);
+        $this->assertSame('json', $result['data']['format']);
+        $this->assertSame('example.com', $result['data']['domain']);
+        $this->assertSame('GET', $result['method']);
+        $this->assertSame([], $options->api_requests);
     }
 
-    public function testUnreachableApiOnRawActionIsABadGateway()
+    public function testVersionedRawActionUrl()
     {
         $options = $this->makeOptions();
-        $options->api_response = ['body' => false, 'status' => 0];
 
-        $result = $options->apiProxy('audio', [], 'v2');
+        $result = $options->apiProxy('audio', ['bible' => 'kjv'], 'v2', 'GET');
 
-        $this->assertSame(502, $result['status']);
-        $this->assertFalse($result['raw']);
+        $this->assertTrue($result['raw']);
+        $this->assertSame('https://api.biblesupersearch.com/api/v2/audio', $result['url']);
     }
 
     public function testQuietApiActionHelperEmitsNoOutput()
@@ -228,5 +216,63 @@ class ApiProxyTest extends TestCase
         $result = $options->callApiActionHelper('query', 'https://api.biblesupersearch.com', [], null, true);
 
         $this->assertNull($result);
+    }
+
+    public function testNonJsonResultIsFalseAndErrorBodiesAreNotRequested()
+    {
+        $options = $this->makeOptions();
+        $options->api_response = ['body' => '<html>500 Internal Server Error</html>', 'status' => 500];
+
+        // Not quiet: reports the invalid result
+        ob_start();
+        $result = $options->callApiActionHelper('statics', 'https://api.biblesupersearch.com', []);
+        ob_end_clean();
+
+        $this->assertFalse($result);
+        $this->assertFalse($options->api_requests[0][3]);
+    }
+
+    public function testProxyRequestsAskForErrorBodies()
+    {
+        $options = $this->makeOptions();
+        $options->api_response = ['status' => 404, 'body' => json_encode(['results' => [], 'errors' => ['No results'], 'error_level' => 4])];
+
+        $result = $options->apiProxy('query', ['search' => 'zzz']);
+
+        $this->assertTrue($options->api_requests[0][3]);
+        $this->assertSame(['No results'], $result['body']['errors']);
+    }
+
+    public static function origins()
+    {
+        $site = ['https://example.com/', 'https://example.com/wp'];
+
+        return [
+            'same-origin fetch'          => ['same-origin', null, $site, true],
+            'same-origin POST'           => ['same-origin', 'https://example.com', $site, true],
+            'opened directly'            => ['none', null, $site, true],
+            'header case'                => ['Same-Origin', null, $site, true],
+            'cross-site'                 => ['cross-site', 'https://evil.example', $site, false],
+            'same-site subdomain'        => ['same-site', 'https://sub.example.com', $site, false],
+            'Sec-Fetch-Site wins'        => ['cross-site', 'https://example.com', $site, false],
+            'no headers'                 => [null, null, $site, true],
+            'matching Origin'            => [null, 'https://example.com', $site, true],
+            'Origin host case'           => [null, 'https://EXAMPLE.com', $site, true],
+            'Origin explicit port'       => [null, 'https://example.com:443', $site, true],
+            'Origin other port'          => [null, 'https://example.com:8443', $site, false],
+            'Origin other scheme'        => [null, 'http://example.com', $site, false],
+            'Origin other host'          => [null, 'https://evil.example', $site, false],
+            'Origin null'                => [null, 'null', $site, false],
+            'Origin matches site_url'    => [null, 'https://wp.example.com', ['https://example.com', 'https://wp.example.com/'], true],
+        ];
+    }
+
+    /**
+     * @dataProvider origins
+     */
+    #[DataProvider('origins')]
+    public function testOriginCheck($sec_fetch_site, $origin, $allowed, $expected)
+    {
+        $this->assertSame($expected, TestOptions::apiProxyOriginAllowed($sec_fetch_site, $origin, $allowed));
     }
 }

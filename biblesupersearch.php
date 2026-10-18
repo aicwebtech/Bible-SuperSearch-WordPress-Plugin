@@ -62,7 +62,13 @@ add_action( 'admin_menu', function() {
 register_activation_hook( __FILE__ , function() {
     $Options = \BibleSuperSearch\WordPress\Options::getInstance();
     $Options->setDefaultOptions();
+
+    // Can't check here: this plugin's REST routes aren't live until activation completes
+    // Checked on the next settings page load instead
+    delete_option(\BibleSuperSearch\WordPress\ApiProxyCheck::OPTION_INDEX);
 });
+
+add_action( 'admin_notices', ['\BibleSuperSearch\WordPress\ApiProxyCheck', 'adminNotice'] );
 
 add_action( 'admin_init', function() {
     $Options = \BibleSuperSearch\WordPress\Options::getInstance();
@@ -198,6 +204,11 @@ add_action( 'rest_api_init', function () {
             $data = $request->get_json_params();
 
             $Options->setOptions($data);
+            $options = $Options->getOptions();
+
+            if(!empty($options['apiProxy'])) {
+                \BibleSuperSearch\WordPress\ApiProxyCheck::run();
+            }
 
             $response = new \stdClass;
             $response->status = 'success';

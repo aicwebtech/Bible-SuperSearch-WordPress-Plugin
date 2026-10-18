@@ -756,7 +756,7 @@ abstract class OptionsAbstract
             $result = $this->_apiActionHelper('statics_changed', $url, []);
 
             // If statics have NOT changed (or no results), send cached.
-            if($result === NULL || $result && $result['results']['updated'] <= $last_update_timestamp) {
+            if(!is_array($result) || $result['results']['updated'] <= $last_update_timestamp) {
                 return $cached_statics;
             }
         }
@@ -932,19 +932,16 @@ abstract class OptionsAbstract
             ];
         }
 
+        // Files can be large, so the request is not made here.  Pass the result to apiStream()
         if($raw) {
             $data['domain'] = $this->_apiDomain();
-            $response = $this->_apiRequest($this->_apiActionUrl($action, $this->getUrl(), $version), $data, $method);
-
-            if($response['body'] === FALSE) {
-                return $this->_apiProxyError('Unable to connect to the Bible SuperSearch API');
-            }
 
             return [
-                'status'  => $response['status'] ?: 200,
+                'status'  => 200,
                 'raw'     => TRUE,
-                'body'    => $response['body'],
-                'headers' => array_intersect_key($response['headers'], array_flip(static::$api_proxy_raw_headers)),
+                'url'     => $this->_apiActionUrl($action, $this->getUrl(), $version),
+                'data'    => $data,
+                'method'  => $method,
             ];
         }
 
@@ -962,7 +959,184 @@ abstract class OptionsAbstract
         ];
     }
 
-    protected function _apiProxyError($message) 
+    /**
+     * Whether a proxy request may be relayed, based on its browser-supplied headers.
+     * Refuses requests made by other websites from a visitor's browser.
+     * Requests without either header (old browsers, non-browser clients) are allowed.
+     *
+     * @param string|null $sec_fetch_site Sec-Fetch-Site request header
+     * @param string|null $origin Origin request header
+     * @param array $allowed_origins URLs of this website; only scheme, host and port are compared
+     * @return bool
+     */
+    public static function apiProxyOriginAllowed($sec_fetch_site, $origin, array $allowed_origins)
+    {
+        if($sec_fetch_site) {
+            // 'none': opened directly by the user, ie typed into the address bar
+            return in_array(strtolower(trim($sec_fetch_site)), ['same-origin', 'none'], TRUE);
+        }
+
+        if($origin) {
+            $origin = static::_normalizeOrigin($origin);
+
+            if($origin === FALSE) {
+                return FALSE;
+            }
+
+            foreach($allowed_origins as $allowed) {
+                if(static::_normalizeOrigin($allowed) === $origin) {
+                    return TRUE;
+                }
+            }
+
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Reduces a URL to scheme://host:port, or FALSE if it has no scheme or host
+     */
+    protected static function _normalizeOrigin($url)
+    {
+        $parts = parse_url(trim($url));
+
+        if(empty($parts['scheme']) || empty($parts['host'])) {
+            return FALSE;
+        }
+
+        $scheme = strtolower($parts['scheme']);
+        $port   = isset($parts['port']) ? (int) $parts['port'] : ($scheme == 'https' ? 443 : 80);
+
+        return $scheme . '://' . strtolower($parts['host']) . ':' . $port;
+    }
+
+    /**
+     * Relays a raw (file) action, as returned by apiProxy(), straight to the output
+     * The file is streamed, never held in memory
+     *
+     * @param array $raw raw apiProxy() result
+     * @return bool FALSE if the API could not be reached and nothing was output
+     */
+    public function apiStream($raw)
+    {
+        $url    = $raw['url'];
+        $method = (strtoupper($raw['method']) == 'GET') ? 'GET' : 'POST';
+        $query  = http_build_query($raw['data']);
+        $status = 0;
+        $headers = [];
+        $started = FALSE;
+
+        if($method == 'GET' && $query !== '') {
+            $url .= (strpos($url, '?') === FALSE ? '?' : '&') . $query;
+        }
+
+        @set_time_limit(0);
+
+        if(function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+            if($method == 'POST') {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            }
+
+            curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($ch, $line) use (&$status, &$headers) {
+                static::_parseResponseHeaderLine($line, $status, $headers);
+                return strlen($line);
+            });
+
+            curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $chunk) use (&$status, &$headers, &$started) {
+                if(!$started) {
+                    $this->_apiStreamHeaders($status, $headers);
+                    $started = TRUE;
+                }
+
+                echo $chunk;
+                flush();
+                return strlen($chunk);
+            });
+
+            curl_exec($ch);
+
+            // An empty body still needs its headers sent
+            if(!$started && $status) {
+                $this->_apiStreamHeaders($status, $headers);
+                $started = TRUE;
+            }
+
+            // No-op since PHP 8.0, deprecated as of 8.5
+            if(PHP_VERSION_ID < 80000) {
+                curl_close($ch);
+            }
+
+            return $started;
+        }
+
+        if((int) ini_get('allow_url_fopen') != 1) {
+            return FALSE;
+        }
+
+        $options = [
+            'http' => [
+                'method'        => $method,
+                'ignore_errors' => TRUE,
+            ]
+        ];
+
+        if($method == 'POST') {
+            $options['http']['header']  = "Content-type: application/x-www-form-urlencoded\r\n";
+            $options['http']['content'] = $query;
+        }
+
+        $err = error_reporting();
+        error_reporting(E_ERROR | E_PARSE);
+        $fp = fopen($url, 'rb', FALSE, stream_context_create($options));
+        error_reporting($err);
+
+        if(!$fp) {
+            return FALSE;
+        }
+
+        $meta = stream_get_meta_data($fp);
+
+        foreach((array) $meta['wrapper_data'] as $line) {
+            static::_parseResponseHeaderLine($line, $status, $headers);
+        }
+
+        $this->_apiStreamHeaders($status, $headers);
+        fpassthru($fp);
+        fclose($fp);
+        return TRUE;
+    }
+
+    /**
+     * Sends the status and allowed headers of a streamed raw action
+     */
+    protected function _apiStreamHeaders($status, $headers)
+    {
+        $headers = array_intersect_key($headers, array_flip(static::$api_proxy_raw_headers));
+
+        if(!isset($headers['content-type'])) {
+            $headers['content-type'] = 'application/octet-stream';
+        }
+
+        // The output would be compressed, so the upstream length would be wrong
+        if(ini_get('zlib.output_compression')) {
+            unset($headers['content-length']);
+        }
+
+        http_response_code($status ?: 200);
+
+        foreach($headers as $name => $value) {
+            header($name . ': ' . $value);
+        }
+    }
+
+    protected function _apiProxyError($message)
     {
         return [
             'status'  => 502,
@@ -995,10 +1169,7 @@ abstract class OptionsAbstract
     /**
      * Domain of this website, sent to the API with every request
      */
-    protected function _apiDomain() 
-    {
-        return static::parseDomain(site_url());
-    }
+    abstract protected function _apiDomain();
 
     protected function _apiActionHelper($action, $api_url, $data, $version = NULL, $quiet = FALSE, $method = 'POST') 
     {
@@ -1006,9 +1177,15 @@ abstract class OptionsAbstract
         $bss_options = $this->getOptions();
         $data['domain'] = $this->_apiDomain();
 
-        $response = $this->_apiRequest($url, $data, $method);
+        // Quiet (proxy) requests relay the API's error responses, too
+        $response = $this->_apiRequest($url, $data, $method, $quiet);
         $result = $response['body'];
         $result_decoded = ($result === false) ? false : json_decode($result, true);
+
+        // Not JSON, ie an HTML error page
+        if(!$quiet && !is_array($result_decoded)) {
+            $result_decoded = false;
+        }
         
         $eol = '<br />';
 
@@ -1078,9 +1255,11 @@ abstract class OptionsAbstract
      * @param string $url
      * @param array $data request parameters
      * @param string $method GET or POST
+     * @param bool $ignore_errors whether to return the body of HTTP error (4xx / 5xx) responses
+     *        Otherwise file_get_contents fails on them, falling back to cURL
      * @return array ['body' => string|false, 'status' => int, 'headers' => [lowercase name => value], 'method_used', 'methods_attempted', 'curl_info']
      */
-    protected function _apiRequest($url, $data, $method = 'POST') 
+    protected function _apiRequest($url, $data, $method = 'POST', $ignore_errors = FALSE) 
     {
         $method  = (strtoupper($method) == 'GET') ? 'GET' : 'POST';
         $query   = http_build_query($data);
@@ -1103,7 +1282,7 @@ abstract class OptionsAbstract
             $options = [
                 'http' => [        // Use key 'http' even if you send the request to https://
                     'method'        => $method,
-                    'ignore_errors' => TRUE, // Return the body of error responses, too
+                    'ignore_errors' => (bool) $ignore_errors,
                 ]
             ];
 
