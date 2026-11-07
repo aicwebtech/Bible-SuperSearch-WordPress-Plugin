@@ -44,6 +44,47 @@ class ApiProxyTest extends TestCase
         $this->assertSame([], $options->api_requests);
     }
 
+    /**
+     * @dataProvider disallowedActions
+     */
+    #[DataProvider('disallowedActions')]
+    public function testDisallowedActionIsNotAllowed($action)
+    {
+        $this->assertFalse($this->makeOptions()->apiProxyAllowed($action));
+    }
+
+    /**
+     * @dataProvider invalidVersions
+     */
+    #[DataProvider('invalidVersions')]
+    public function testInvalidVersionIsNotAllowed($version)
+    {
+        $this->assertFalse($this->makeOptions()->apiProxyAllowed('books', $version));
+    }
+
+    public static function allowedRequests()
+    {
+        return [
+            'default action'  => [null, null],
+            'json action'     => ['books', null],
+            'raw action'      => ['download', null],
+            'versioned raw'   => ['audio', 'v2'],
+            'empty version'   => ['strongs', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider allowedRequests
+     */
+    #[DataProvider('allowedRequests')]
+    public function testAllowedRequestMakesNoApiRequest($action, $version)
+    {
+        $options = $this->makeOptions();
+
+        $this->assertTrue($options->apiProxyAllowed($action, $version));
+        $this->assertSame([], $options->api_requests);
+    }
+
     public function testEmptyActionDefaultsToQuery()
     {
         $options = $this->makeOptions();
@@ -245,7 +286,7 @@ class ApiProxyTest extends TestCase
 
     public static function origins()
     {
-        $site = ['https://example.com/', 'https://example.com/wp'];
+        $site = ['https://example.com/', 'https://example.com/app'];
 
         return [
             'same-origin fetch'          => ['same-origin', null, $site, true],
@@ -263,7 +304,7 @@ class ApiProxyTest extends TestCase
             'Origin other scheme'        => [null, 'http://example.com', $site, false],
             'Origin other host'          => [null, 'https://evil.example', $site, false],
             'Origin null'                => [null, 'null', $site, false],
-            'Origin matches site_url'    => [null, 'https://wp.example.com', ['https://example.com', 'https://wp.example.com/'], true],
+            'Origin matches 2nd site URL' => [null, 'https://app.example.com', ['https://example.com', 'https://app.example.com/'], true],
         ];
     }
 

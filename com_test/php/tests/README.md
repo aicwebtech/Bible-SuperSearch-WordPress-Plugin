@@ -4,6 +4,10 @@ PHPUnit coverage for the platform-agnostic PHP library shared by the Bible
 SuperSearch clients (`OptionsAbstract`, `QueryStringParser`). Nothing here loads
 WordPress, and nothing here touches the network or a database.
 
+This directory will become a separate library, so keep the suite platform
+independent: no WordPress (or other host platform) functions, classes or
+assumptions. Code bound to WordPress is tested by its own suite, in `wp/tests`.
+
 ## Running
 
 ```sh

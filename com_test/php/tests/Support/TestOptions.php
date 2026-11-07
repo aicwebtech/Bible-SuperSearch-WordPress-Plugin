@@ -117,7 +117,7 @@ class TestOptions extends OptionsAbstract
     }
 
     /**
-     * Overridden: the real implementation calls WordPress' site_url()
+     * Overridden: the website's domain is supplied by the platform
      */
     protected function _apiDomain()
     {

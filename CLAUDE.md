@@ -10,14 +10,23 @@ The official Bible SuperSearch WordPress plugin: a thin PHP/WordPress wrapper ar
 
 There is **no build system, package manager, or linter** — no `composer.json`, no `package.json`. All JS/CSS is committed pre-built or hand-written; the admin Vue app is served as native ES modules with Vue/Vuetify/axios vendored under `com_test/js/bin/`. Do not add build tooling or CDN-loaded scripts (WordPress plugin guidelines forbid CDN JS/CSS; CDN *fonts* are allowed — see `Options::displayPluginOptionsNew()`).
 
-The one automated suite covers the platform-agnostic PHP in `com_test/php` (`OptionsAbstract`, `QueryStringParser`) — PHPUnit driven from a standalone PHAR, no Composer:
+There are two automated PHPUnit suites, each driven from a standalone PHAR (no Composer). The first covers the platform-agnostic PHP in `com_test/php` (`OptionsAbstract`, `QueryStringParser`):
 
 ```sh
 cd com_test/php && ./run-tests.sh        # default php
 cd com_test/php && ./run-tests-all.sh    # every installed php7.3 ... php8.5
 ```
 
-The PHAR is downloaded on first run into the git-ignored `com_test/php/tests/bin/`. The suite runs on every PHP the plugin supports (**7.3 – 8.5**): `run-tests.sh` uses PHPUnit 11.5 + `phpunit.xml` on PHP 8.2+, and PHPUnit 9.6 + `phpunit-9.xml` below that. Tests must therefore work on both — declare data providers with both `#[DataProvider]` and a `@dataProvider` doc-comment. `PHP_BIN` and `PHPUNIT_VERSION` override the defaults. The suite is strict: stray output, PHP notices and PHP warnings fail the run. Tests run offline: `OptionsAbstract` is exercised through the in-memory `tests/Support/TestOptions.php`, which stores options in an array and returns a statics fixture instead of calling the API. See `com_test/php/tests/README.md`. Anything WordPress-bound (`wp/`) has no test coverage.
+The PHAR is downloaded on first run into the git-ignored `com_test/php/tests/bin/`. The suite runs on every PHP the plugin supports (**7.3 – 8.5**): `run-tests.sh` uses PHPUnit 11.5 + `phpunit.xml` on PHP 8.2+, and PHPUnit 9.6 + `phpunit-9.xml` below that. Tests must therefore work on both — declare data providers with both `#[DataProvider]` and a `@dataProvider` doc-comment. `PHP_BIN` and `PHPUNIT_VERSION` override the defaults. The suite is strict: stray output, PHP notices and PHP warnings fail the run. Tests run offline: `OptionsAbstract` is exercised through the in-memory `tests/Support/TestOptions.php`, which stores options in an array and returns a statics fixture instead of calling the API. See `com_test/php/tests/README.md`. Keep this suite free of WordPress, because `com_test` will become its own library.
+
+The second suite, in `wp/tests`, covers the WordPress-specific code in `wp/php` (`ApiProxy`, `ApiProxyCheck`, and the WordPress bindings of `Options` and `Shortcodes`). It works the same way: same PHAR/PHPUnit version selection, cached in the git-ignored `wp/tests/bin/`, and the same strictness:
+
+```sh
+cd wp/tests && ./run-tests.sh
+cd wp/tests && ./run-tests-all.sh
+```
+
+WordPress is not loaded. `wp/tests/Support/WordPress.php` stubs the WordPress functions and classes the code calls, keeping their state in a resettable `Support\WP`. `Support/TestOptions.php` is the real `Options`, made offline and installed as the singleton. Add stubs as new code is covered. See `wp/tests/README.md`. Whatever needs a real WordPress (full shortcode rendering, admin pages) is still checked by hand.
 
 Everything else is verified manually, in a real WordPress install:
 

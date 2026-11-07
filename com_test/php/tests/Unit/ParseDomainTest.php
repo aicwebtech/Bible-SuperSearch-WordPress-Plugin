@@ -27,7 +27,7 @@ class ParseDomainTest extends TestCase
             'bare host'         => ['biblesupersearch.com', 'biblesupersearch.com'],
             'https url'         => ['https://api.biblesupersearch.com', 'api.biblesupersearch.com'],
             'http url'          => ['http://biblesupersearch.com', 'biblesupersearch.com'],
-            'with path'         => ['https://example.com/wp/index.php', 'example.com'],
+            'with path'         => ['https://example.com/app/index.php', 'example.com'],
             'trailing slash'    => ['https://example.com/', 'example.com'],
             'www stripped'      => ['http://www.example.com/path', 'example.com'],
             'port stripped'     => ['https://example.com:8080/x', 'example.com'],

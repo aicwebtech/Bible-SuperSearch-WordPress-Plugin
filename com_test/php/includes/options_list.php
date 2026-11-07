@@ -755,7 +755,7 @@ return [
             'label'         => 'API Proxy',
             'sublabel'      => '(Recommended) Relay API Requests Through This Website',
             'desc'          => 'Routes Bible SuperSearch API requests through this website instead of sending them directly from the visitor\'s browser. ' .
-                                'Recommended for security reasons (to hide your API key), and to avoid cross-website (ie CORS) issues. ',
+                                'Recommended for privacy (visitors\' browsers never contact the API server directly), and to avoid cross-website (ie CORS) issues. ',
             'type'          => 'checkbox',
             'default'       => true,
         ],

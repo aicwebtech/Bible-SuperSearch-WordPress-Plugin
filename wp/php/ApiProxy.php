@@ -77,6 +77,13 @@ class ApiProxy
         $data    = array_diff_key($data, array_flip(static::$reserved_params));
 
         $Options = Options::getInstance();
+
+        // WordPress allows HEAD on GET routes.  Answer it here: relaying it would
+        // fetch the whole response (ie a Bible download) from the API just to discard it
+        if($request->get_method() == 'HEAD') {
+            return new \WP_REST_Response(NULL, $Options->apiProxyAllowed($action, $version) ? 200 : 404);
+        }
+
         $result  = $Options->apiProxy($action, $data, $version, $request->get_method());
 
         if($result === FALSE) {
@@ -92,10 +99,6 @@ class ApiProxy
         }
 
         // Files are streamed as-is, bypassing the REST API's JSON encoding
-        while(ob_get_level()) {
-            ob_end_clean();
-        }
-
         if(!$Options->apiStream($result)) {
             return new \WP_REST_Response([
                 'results'     => [],

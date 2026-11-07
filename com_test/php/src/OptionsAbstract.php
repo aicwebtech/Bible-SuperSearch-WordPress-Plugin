@@ -898,17 +898,13 @@ abstract class OptionsAbstract
      */
     public function apiProxy($action, $data, $version = NULL, $method = 'POST') 
     {
+        if(!$this->apiProxyAllowed($action, $version)) {
+            return FALSE;
+        }
+
         $action  = $action ?: 'query';
         $version = $version ?: NULL;
         $raw     = in_array($action, static::$api_proxy_raw_actions, TRUE);
-
-        if(!$raw && !in_array($action, static::$api_proxy_actions, TRUE)) {
-            return FALSE;
-        }
-
-        if($version !== NULL && !preg_match('/^v[0-9]+$/', $version)) {
-            return FALSE;
-        }
 
         $data = is_array($data) ? $data : [];
 
@@ -957,6 +953,24 @@ abstract class OptionsAbstract
             'body'    => $result,
             'headers' => [],
         ];
+    }
+
+    /**
+     * Whether apiProxy() relays the given action and version
+     * 
+     * @param string|null $action API action, defaults to 'query'
+     * @param string|null $version API version (v<integer>), or NULL for the un-versioned API
+     * @return bool
+     */
+    public function apiProxyAllowed($action, $version = NULL) 
+    {
+        $action = $action ?: 'query';
+
+        if(!in_array($action, static::$api_proxy_actions, TRUE) && !in_array($action, static::$api_proxy_raw_actions, TRUE)) {
+            return FALSE;
+        }
+
+        return !$version || (bool) preg_match('/^v[0-9]+$/', $version);
     }
 
     /**
@@ -1115,9 +1129,14 @@ abstract class OptionsAbstract
 
     /**
      * Sends the status and allowed headers of a streamed raw action
+     * Any buffered output (from the platform, or other code) would corrupt the file, so it is discarded
      */
     protected function _apiStreamHeaders($status, $headers)
     {
+        while(ob_get_level()) {
+            ob_end_clean();
+        }
+
         $headers = array_intersect_key($headers, array_flip(static::$api_proxy_raw_headers));
 
         if(!isset($headers['content-type'])) {
