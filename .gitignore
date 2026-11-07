@@ -1,4 +1,5 @@
 pushall
-# PHPUnit PHAR, downloaded on demand by com_test/php/run-tests.sh
+# PHPUnit PHARs, downloaded on demand by com_test/php/run-tests.sh and wp/tests/run-tests.sh
 com_test/php/tests/bin/
+wp/tests/bin/
 .phpunit.cache/

@@ -7,8 +7,8 @@ use BibleSuperSearch\Common\Tests\Support\TestOptions;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Landing pages are supplied by the platform (a WordPress page/post containing
- * the shortcode); the abstract only selects among them.
+ * Landing pages are supplied by the platform (pages containing the Bible
+ * SuperSearch application); the abstract only selects among them.
  */
 class LandingPageTest extends TestCase
 {

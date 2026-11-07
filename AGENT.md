@@ -74,16 +74,25 @@ When editing shortcode logic:
 
 ## Testing Expectations
 
-The shared PHP library in `com_test/php` has a PHPUnit suite (standalone PHAR, no
-Composer; needs PHP 8.2+). Run it after touching `com_test/php/src` or the
-option lists:
+There are two PHPUnit suites (standalone PHAR, no Composer; both run on PHP 7.3 - 8.5):
+
+- `com_test/php`: the shared, platform-independent library. Run it after touching
+  `com_test/php/src` or the option lists. It must stay free of WordPress, because
+  `com_test` will become its own library.
+- `wp/tests`: the WordPress-specific code in `wp/php`, run against WordPress stubs
+  without loading WordPress. Run it after touching `wp/php`, and also after
+  `com_test/php/src` changes, since the WordPress classes build on it.
 
 ```sh
-cd com_test/php && ./run-tests.sh
+cd com_test/php && ./run-tests.sh        # default php
+cd com_test/php && ./run-tests-all.sh    # every supported php installed
+cd wp/tests && ./run-tests.sh
+cd wp/tests && ./run-tests-all.sh
 ```
 
-Add or update tests under `com_test/php/tests/Unit` alongside the change; see
-`com_test/php/tests/README.md`. Everything under `wp/` is verified by hand.
+Add or update tests in the matching suite alongside the change; see
+`com_test/php/tests/README.md` and `wp/tests/README.md`. What needs a real
+WordPress (rendered shortcodes, admin pages) is still verified by hand.
 
 At minimum after shortcode-related changes:
 
